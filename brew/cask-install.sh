@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-# Install command-line tools using Homebrew.
+which -s brew
+if [[ $? != 0 ]] ; then
+    # Install Homebrew
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
 # Make sure we’re using the latest Homebrew.
 brew update
@@ -9,6 +13,7 @@ brew upgrade
 brew cask upgrade
 
 
+# Install command-line tools using Homebrew.
 brew tap "homebrew/cask"
 brew tap "homebrew/cask-drivers"
 brew tap "homebrew/cask-fonts"
@@ -46,6 +51,8 @@ brew cask install "opera"
 # fonts
 brew cask install "font-fira-code"
 brew cask install "font-hack"
+brew cask install "font-inconsolata"
+
 
 # Developer Tools
 brew cask install "jetbrains-toolbox"
