@@ -71,8 +71,8 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
 ```
 
 ## TODOs:
-- [] Add list of aliases
-- [] Add full list of Mac Apps
+- [ ] Add list of aliases
+- [ ] Add full list of Mac Apps
 
 ## Feedback
 
