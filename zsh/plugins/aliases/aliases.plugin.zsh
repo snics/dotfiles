@@ -12,6 +12,11 @@ alias dt="cd ~/Desktop"
 alias p="cd ~/Projects"
 alias g="git"
 
+# Open Shortcuts
+alias dl="open ~/Downloads"
+alias dt="open ~/Desktop"
+alias p="open ~/Projects"
+
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
 	colorflag="--color"
