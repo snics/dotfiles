@@ -86,7 +86,6 @@ plugins=(
     history
     zsh-completions
     zsh-autosuggestions
-    ssh
 
     ## Custom code
     aliases

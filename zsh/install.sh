@@ -25,11 +25,19 @@ brew install fasd
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
+cp -f -r $HOME/.dotfiles/zsh/plugins/* $HOME/.oh-my-zsh/custom/plugins
+
 wget https://raw.githubusercontent.com/caiogondim/bullet-train-oh-my-zsh-theme/master/bullet-train.zsh-theme -O $HOME/.oh-my-zsh/custom/themes/bullet-train.zsh-theme
-cp -f $HOME/.dotfiles/zsh/plugins/* $HOME/.oh-my-zsh/custom/plugins
+git clone https://github.com/akarzim/zsh-docker-aliases.git $HOME/.oh-my-zsh/custom/plugins/docker-aliases
+git clone https://github.com/zsh-users/zsh-completions $HOME/.oh-my-zsh/custom/plugins/zsh-completions
+git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
 
 cp -f $HOME/.dotfiles/zsh/.zshrc ~/.zshrc
 
+# Permissions error
+source ~/.zshrc
+compaudit | xargs chmod g-w
 
 echo "======================================================"
 echo "oh-my-zsh and zsh config install done...."
