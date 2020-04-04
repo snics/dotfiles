@@ -88,13 +88,44 @@ brew install ucspi-tcp # `tcpserver` etc.
 brew install xpdf
 brew install xz
 
+# NeoVim Packages
+brew install bat
+brew install cloc
+brew install diff-so-fancy
+brew install entr
+brew install exa
+brew install fd
+brew install fzf
+brew install gh
+brew install gnupg
+brew install highlight
+brew install htop
+brew install hub
+brew install lazydocker
+brew install lazygit
+brew install markdown
+brew install neofetch
+brew install nmap
+brew install python
+brew install reattach-to-user-namespace
+brew install ripgrep
+brew install shellcheck
+brew install the_silver_searcher
+brew install tig
+brew install tldr
+brew install tmux
+brew install trash
+brew install wdiff
+brew install yarn
+brew install z
+
 # Install other useful binaries.
 brew install ack
 brew install exiv2
 brew install git
 brew install git-lfs
 brew install gs
-brew install imagemagick --with-webp
+brew install imagemagick
 brew install lua
 brew install lynx
 brew install p7zip
@@ -110,7 +141,10 @@ brew install zopfli
 brew install dockutil
 
 # Install docker
-brew install docker
+brew tap "homebrew/cask"
+brew tap "homebrew/cask-drivers"
+
+brew cask install docker
 brew install boot2docker
 brew install docker-compose
 
