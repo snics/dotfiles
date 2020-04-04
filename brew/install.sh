@@ -106,5 +106,10 @@ brew install vbindiff
 brew install zopfli
 brew install dockutil
 
+# Install docker
+brew install docker
+brew install boot2docker
+brew install docker-compose
+
 # Remove outdated versions from the cellar.
 brew cleanup
