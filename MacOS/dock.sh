@@ -121,7 +121,7 @@ defaults write com.apple.dock wvous-b2-modifier -int 0
 mkdir "$HOME/Projects"
 
 dockutil --no-restart --remove all
-dockutil --no-restart --add '/Applications/System Preferences.app'
+dockutil --no-restart --add '/System/Applications/System Preferences.app'
 dockutil --no-restart --add '/Applications/Spotify.app'
 
 # Add space to System configuration
