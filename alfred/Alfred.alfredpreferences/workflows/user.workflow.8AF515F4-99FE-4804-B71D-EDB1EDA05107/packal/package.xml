@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<workflow>
+  <name>Lorem Ipsum</name>
+  <version>1.0</version>
+  <bundle>com.robert-arellano.lorem-ipsum</bundle>
+  <updated>1507913237</updated>
+  <file>lorem_ipsum.alfredworkflow</file>
+</workflow>

@@ -1,0 +1,60 @@
+{
+  "alfredtheme" : {
+    "result" : {
+      "textSpacing" : 5,
+      "subtext" : {
+        "size" : 12,
+        "colorSelected" : "#FFFFFFCB",
+        "font" : "System",
+        "color" : "#FFFFFF7E"
+      },
+      "shortcut" : {
+        "size" : 13,
+        "colorSelected" : "#FFFFFFFF",
+        "font" : "System",
+        "color" : "#FFFFFF7E"
+      },
+      "backgroundSelected" : "#50505AFF",
+      "text" : {
+        "size" : 18,
+        "colorSelected" : "#FFFFFFFF",
+        "font" : "System",
+        "color" : "#FDFCFFCB"
+      },
+      "iconPaddingHorizontal" : 8,
+      "paddingVertical" : 3,
+      "iconSize" : 32
+    },
+    "separator" : {
+      "color" : "#CBCBCBF3",
+      "thickness" : 0
+    },
+    "search" : {
+      "paddingVertical" : 8,
+      "background" : "#0000003E",
+      "spacing" : 8,
+      "text" : {
+        "size" : 33,
+        "colorSelected" : "#000000FF",
+        "font" : "System Light",
+        "color" : "#FFFFFFFF"
+      },
+      "backgroundSelected" : "#FDF6FFFF"
+    },
+    "scrollbar" : {
+      "color" : "#494648FF",
+      "thickness" : 4
+    },
+    "name" : "Alfred Dark by Nico",
+    "window" : {
+      "color" : "#000000C6",
+      "paddingHorizontal" : 4,
+      "width" : 594,
+      "borderPadding" : 2,
+      "borderColor" : "#0000007F",
+      "blur" : 40,
+      "roundness" : 3,
+      "paddingVertical" : 0
+    }
+  }
+}

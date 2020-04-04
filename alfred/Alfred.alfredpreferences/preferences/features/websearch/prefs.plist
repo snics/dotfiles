@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>customSites</key>
+	<dict>
+		<key>2B442DFE-2528-465C-ACAD-94E2C759AE8A</key>
+		<dict>
+			<key>enabled</key>
+			<true/>
+			<key>keyword</key>
+			<string>de</string>
+			<key>text</key>
+			<string>Google Translate für Deutsch zu Englisch</string>
+			<key>url</key>
+			<string>https://translate.google.com/?hl=de#de/en/{query}</string>
+			<key>utf8</key>
+			<true/>
+		</dict>
+		<key>8EF4083E-D5DA-40CB-AE0B-5C3816244D89</key>
+		<dict>
+			<key>enabled</key>
+			<true/>
+			<key>keyword</key>
+			<string>en</string>
+			<key>text</key>
+			<string>Google Translate für Englisch zu Deutsch</string>
+			<key>url</key>
+			<string>https://translate.google.com/?hl=de#en/de/{query}</string>
+			<key>utf8</key>
+			<true/>
+		</dict>
+		<key>FF251832-FBFC-41E8-8804-89DFF2ADC62A</key>
+		<dict>
+			<key>enabled</key>
+			<true/>
+			<key>keyword</key>
+			<string>dhl</string>
+			<key>text</key>
+			<string>DHL Sendungsverfolgung</string>
+			<key>url</key>
+			<string>https://nolp.dhl.de/nextt-online-public/de/search?piececode={query}</string>
+			<key>utf8</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>

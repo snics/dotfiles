@@ -1,0 +1,9 @@
+Sources:
+
+Icon by Svengraph (CC):
+
+http://svengraph.deviantart.com/
+http://www.iconfinder.com/icondetails/61825/512/lock_icon
+
+PHP-Code by tylerhall
+Link: https://gist.github.com/521810
