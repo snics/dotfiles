@@ -98,7 +98,7 @@ plugins=(
     last-command
     rm
     secrets
-    theme
+    theme-settings
     vi-mode
     gitkraken
 )
