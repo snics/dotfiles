@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+echo "=========================================================="
+echo "Welcome to Homebrew cask formulae dotfiles Installation."
+echo "=========================================================="
+
 which -s brew
 if [[ $? != 0 ]] ; then
     # Install Homebrew
@@ -52,6 +56,9 @@ brew cask install "opera"
 brew cask install "font-fira-code"
 brew cask install "font-hack"
 brew cask install "font-inconsolata"
+brew cask install "font-fira-code"
+brew cask install "font-jetbrains-mono"
+brew cask install "font-cascadia-mono"
 
 
 # Developer Tools
@@ -83,3 +90,7 @@ brew cask install "quicklookase"
 
 # Remove outdated versions from the cellar.
 brew cleanup
+
+echo "======================================================"
+echo "Homebrew cask formulae install done...."
+echo "======================================================"

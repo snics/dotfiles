@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+echo "======================================================"
+echo "Welcome to dock setup."
+echo "======================================================"
+
 ###############################################################################
 # Dock, Dashboard, and hot corners                                            #
 ###############################################################################
@@ -147,3 +151,8 @@ defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-ty
 
 dockutil --add '~/Downloads' --view list --display folder --allhomes
 dockutil --add '/Applications' --view grid --display folder --allhomes
+
+
+echo "======================================================"
+echo "Dock setup done...."
+echo "======================================================"

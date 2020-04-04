@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+echo "======================================================"
+echo "Welcome to oh-my-zsh and zs dotfiles Installation."
+echo "======================================================"
+
 which -s brew
 if [[ $? != 0 ]] ; then
     # Install Homebrew
@@ -25,3 +29,8 @@ wget https://raw.githubusercontent.com/caiogondim/bullet-train-oh-my-zsh-theme/m
 cp -f $HOME/.dotfiles/zsh/*.zsh $HOME/.oh-my-zsh/custom
 
 cp -f $HOME/.dotfiles/zsh/.zshrc ~/.zshrc
+
+
+echo "======================================================"
+echo "oh-my-zsh and zsh config install done...."
+echo "======================================================"
