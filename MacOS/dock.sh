@@ -11,8 +11,8 @@ echo "======================================================"
 # Enable highlight hover effect for the grid view of a stack (Dock)
 defaults write com.apple.dock mouse-over-hilite-stack -bool true
 
-# Set the icon size of Dock items to 36 pixels
-defaults write com.apple.dock tilesize -int 36
+# Set the icon size of Dock items to 45 pixels
+defaults write com.apple.dock tilesize -int 45
 
 # Change minimize/maximize window effect
 defaults write com.apple.dock mineffect -string "scale"
@@ -65,7 +65,7 @@ defaults write com.apple.dock autohide-time-modifier -float 0
 defaults write com.apple.dock showhidden -bool true
 
 # Don’t show recent applications in Dock
-#defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock show-recents -bool false
 
 # Disable the Launchpad gesture (pinch with thumb and three fingers)
 #defaults write com.apple.dock showLaunchpadGestureEnabled -int 0
@@ -118,6 +118,8 @@ defaults write com.apple.dock wvous-b2-modifier -int 0
 # Double quotes Whenever you use $HOME in the path
 # Single quotes for the rest of the applications
 
+mkdir "$HOME/Projects"
+
 dockutil --no-restart --remove all
 dockutil --no-restart --add '/Applications/System Preferences.app'
 dockutil --no-restart --add '/Applications/Spotify.app'
@@ -144,11 +146,11 @@ defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-ty
 
 dockutil --no-restart --add "/Applications/iTerm.app"
 dockutil --no-restart --add "/Applications/GitKraken.app"
-dockutil --no-restart --add "/Applications/WebStorm.app"
 
 # Add space to System configuration
 defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
 
+dockutil --add '~/Projects' --view list --display folder --allhomes
 dockutil --add '~/Downloads' --view list --display folder --allhomes
 dockutil --add '/Applications' --view grid --display folder --allhomes
 

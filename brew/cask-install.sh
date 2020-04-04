@@ -50,6 +50,9 @@ brew cask install "moneymoney"
 brew cask install "numi"
 brew cask install "OBS"
 brew cask install "sketch"
+brew cask install "keyboard-maestro"
+brew cask install "mission-control-plus"
+brew cask install "chatmate-for-whatsapp"
 
 # Browsers
 brew cask install "google-chrome"
