@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-echo "======================================================"
-echo "Welcome to git dotfiles Installation."
-echo "======================================================"
+echo -e "\\n\\nSetup git default configuration...."
+echo ""
 
 cp -f $HOME/.dotfiles/git/.gitconfig $HOME/.gitconfig
 
-echo "======================================================"
-echo "git config install done...."
-echo "======================================================"
+echo ""
+echo "Setup git default configuration done!"
+echo ""

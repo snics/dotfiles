@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo -e "\\n\\nInstall app store apps...."
+echo ""
+
 which -s brew
 if [[ $? != 0 ]] ; then
     # Install Homebrew
@@ -29,3 +32,7 @@ mas install 1176895641
 mas install 585829637
 # Magnet
 mas install 441258766
+
+echo ""
+echo "Install app store apps done!"
+echo ""

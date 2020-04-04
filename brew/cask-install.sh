@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-echo "=========================================================="
-echo "Welcome to Homebrew cask formulae dotfiles Installation."
-echo "=========================================================="
+echo -e "\\n\\nInstall homebrew cask formulae...."
+echo ""
 
 which -s brew
 if [[ $? != 0 ]] ; then
@@ -60,15 +59,6 @@ brew cask install "firefox"
 brew cask install "opera"
 
 
-# fonts
-brew cask install "font-fira-code"
-brew cask install "font-hack"
-brew cask install "font-inconsolata"
-brew cask install "font-fira-code"
-brew cask install "font-jetbrains-mono"
-brew cask install "font-cascadia-mono"
-
-
 # Developer Tools
 brew cask install "jetbrains-toolbox"
 brew cask install "Atom"
@@ -100,6 +90,6 @@ brew cask install "quicklookase"
 # Remove outdated versions from the cellar.
 brew cleanup
 
-echo "======================================================"
-echo "Homebrew cask formulae install done...."
-echo "======================================================"
+echo ""
+echo "Install homebrew cask formulae done!"
+echo ""

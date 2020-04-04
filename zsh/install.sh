@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-echo "======================================================"
-echo "Welcome to oh-my-zsh and zs dotfiles Installation."
-echo "======================================================"
+echo -e "\\n\\nSetup oh-my-zsh and zsh settings."
+echo ""
 
 which -s brew
 if [[ $? != 0 ]] ; then
@@ -32,13 +31,16 @@ git clone https://github.com/akarzim/zsh-docker-aliases.git $HOME/.oh-my-zsh/cus
 git clone https://github.com/zsh-users/zsh-completions $HOME/.oh-my-zsh/custom/plugins/zsh-completions
 git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 
-
 cp -f $HOME/.dotfiles/zsh/.zshrc ~/.zshrc
 
 # Permissions error
 source ~/.zshrc
 compaudit | xargs chmod g-w
 
-echo "======================================================"
-echo "oh-my-zsh and zsh config install done...."
-echo "======================================================"
+curl -o cleanup https://raw.githubusercontent.com/fwartner/mac-cleanup/master/cleanup.sh
+chmod +x cleanup
+mv cleanup /usr/local/bin/cleanup
+
+echo ""
+echo "Setup oh-my-zsh and zsh settings done...."
+echo ""

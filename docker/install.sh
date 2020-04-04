@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-echo "======================================================"
-echo "Welcome to Homebrew formulae dotfiles Installation."
-echo "======================================================"
+echo -e "\\n\\nInstall Docker, docker-compose, minikube, kubernetes-cli rancher-cli helm v2 and helm v3..."
+echo ""
 
 # Install command-line tools using Homebrew.
 which -s brew
@@ -32,15 +31,17 @@ brew cleanup
 echo install helm v2
 curl -LO https://get.helm.sh/helm-v2.16.5-darwin-amd64.tar.gz
 tar -zxvf ./helm-v2.16.5-darwin-amd64.tar.gz
+chmod +x ./darwin-amd64/helm
 mv ./darwin-amd64/helm /usr/local/bin/helm
 rm -rf darwin-amd64
 
 echo install helm v3
 curl -LO https://get.helm.sh/helm-v3.1.2-darwin-amd64.tar.gz
 tar -zxvf ./helm-v3.1.2-darwin-amd64.tar.gz
+chmod +x ./darwin-amd64/helm
 mv darwin-amd64/helm /usr/local/bin/helm3
 rm -rf darwin-amd64
 
-echo "======================================================"
-echo "Homebrew formulae install done...."
-echo "======================================================"
+echo ""
+echo -e "\\n\\nInstall Docker, docker-compose, minikube, kubernetes-cli rancher-cli helm v2 and helm v3 done!"
+echo ""

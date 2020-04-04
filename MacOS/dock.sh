@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-echo "======================================================"
-echo "Welcome to dock setup."
-echo "======================================================"
+echo "Setup mac dock."
+echo ""
 
 ###############################################################################
 # Dock, Dashboard, and hot corners                                            #
@@ -118,7 +117,7 @@ defaults write com.apple.dock wvous-b2-modifier -int 0
 # Double quotes Whenever you use $HOME in the path
 # Single quotes for the rest of the applications
 
-mkdir "$HOME/Projects"
+[ ! -d "$HOME/Projects" ] && mkdir "$HOME/Projects"
 
 dockutil --no-restart --remove all
 dockutil --no-restart --add '/System/Applications/System Preferences.app'
@@ -156,6 +155,6 @@ dockutil --add '~/Downloads' --view list --display folder --allhomes
 dockutil --add '/Applications' --view grid --display folder --allhomes
 
 
-echo "======================================================"
-echo "Dock setup done...."
-echo "======================================================"
+echo ""
+echo "Dock setup done!"
+echo ""
