@@ -1,3 +1,3 @@
-#!$SHEBANG$
+#!/usr/bin/env bash
 
-$END$
+cp -f $HOME/.dotfiles/git/.gitconfig $HOME/.gitconfig
