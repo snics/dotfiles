@@ -17,7 +17,7 @@ function doIt() {
       read -p "Would you like to put on my Mac Dock (y/n) " -n 1;
       echo "";
       if [[ $REPLY =~ ^[Yy]$ ]]; then
-          source ./MacOS/dock.sh;
+          source ./macOS/dock.sh;
       fi;
 
       read -p "Do you want to use Alred 4? (y/n) " -n 1;
@@ -53,11 +53,11 @@ function doIt() {
 
   read -p "Do you want to have my Development/Project folder structure? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-      source ./MacOS/dev-folder-structure.sh
+      source ./macOS/dev-folder-structure.sh
   fi;
 
   source ./git/settings.sh;
-  source ./MacOS/settings.sh;
+  source ./macOS/settings.sh;
 
   echo ""
   echo "Set your user tokens as environment variables, such as ~/.secrets"
