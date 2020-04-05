@@ -10,7 +10,14 @@ alias -- -="cd -"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias p="cd ~/Projects"
+alias s="cd ~/Documents/Screenshots"
 alias g="git"
+
+# Open Shortcuts
+alias odl="open ~/Downloads"
+alias odt="open ~/Desktop"
+alias op="open ~/Projects"
+alias os="open ~/Documents/Screenshots"
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
@@ -86,7 +93,7 @@ unset jscbin;
 alias c="tr -d '\n' | pbcopy"
 
 # Recursively delete `.DS_Store` files
-alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+alias clean="find . -type f -name '*.DS_Store' -ls -delete"
 
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.

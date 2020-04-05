@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-echo "======================================================"
-echo "Welcome to git dotfiles Installation."
-echo "======================================================"
+echo -e "\\n\\nInstall node Node.js and NVM...."
+echo ""
 
 which -s brew
 if [[ $? != 0 ]] ; then
@@ -19,6 +18,4 @@ brew install node
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 
-echo "======================================================"
-echo "git config install done...."
-echo "======================================================"
+echo "Install node Node.js and NVM done!"

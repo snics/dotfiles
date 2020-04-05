@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-echo "======================================================"
-echo "Welcome to Homebrew formulae dotfiles Installation."
-echo "======================================================"
+echo -e "\\n\\nInstall homebrew formulae...."
+echo ""
 
 # Install command-line tools using Homebrew.
 which -s brew
@@ -48,8 +47,6 @@ brew install wget
 brew install gnupg
 
 # Install more recent versions of some macOS tools.
-brew install vim
-brew install neovim
 brew install grep
 brew install openssh
 brew install screen
@@ -88,7 +85,7 @@ brew install ucspi-tcp # `tcpserver` etc.
 brew install xpdf
 brew install xz
 
-# NeoVim Packages
+# Packages
 brew install bat
 brew install cloc
 brew install diff-so-fancy
@@ -144,6 +141,6 @@ brew install dockutil
 # Remove outdated versions from the cellar.
 brew cleanup
 
-echo "======================================================"
-echo "Homebrew formulae install done...."
-echo "======================================================"
+echo ""
+echo "Install homebrew formulae done!"
+echo ""

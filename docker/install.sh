@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-echo "======================================================"
-echo "Welcome to Homebrew formulae dotfiles Installation."
-echo "======================================================"
+echo -e "\\n\\nInstall Docker, docker-compose, minikube, kubernetes-cli rancher-cli helm v2 and helm v3..."
+echo ""
 
 # Install command-line tools using Homebrew.
 which -s brew
@@ -30,17 +29,23 @@ brew install rancher-cli
 brew cleanup
 
 echo install helm v2
+[ ! -d "./.tmp" ] && mkdir -p ./.tmp
+
 curl -LO https://get.helm.sh/helm-v2.16.5-darwin-amd64.tar.gz
-tar -zxvf ./helm-v2.16.5-darwin-amd64.tar.gz
-mv ./darwin-amd64/helm /usr/local/bin/helm
-rm -rf darwin-amd64
+mv ./helm-v2.16.5-darwin-amd64.tar.gz ./.tmp
+tar -zxvf ./.tmp/helm-v2.16.5-darwin-amd64.tar.gz
+chmod +x ./.tmp/darwin-amd64/helm
+mv ./.tmp/darwin-amd64/helm /usr/local/bin/helm
 
 echo install helm v3
 curl -LO https://get.helm.sh/helm-v3.1.2-darwin-amd64.tar.gz
-tar -zxvf ./helm-v3.1.2-darwin-amd64.tar.gz
-mv darwin-amd64/helm /usr/local/bin/helm3
-rm -rf darwin-amd64
+mv ./helm-v2.16.5-darwin-amd64.tar.gz ./.tmp
+tar -zxvf ./.tmp/helm-v3.1.2-darwin-amd64.tar.gz
+chmod +x ./.tmp/darwin-amd64/helm
+mv ./.tmp/darwin-amd64/helm /usr/local/bin/helm
 
-echo "======================================================"
-echo "Homebrew formulae install done...."
-echo "======================================================"
+[ -d "./.tmp" ] && rm -rf ./.tmp
+
+echo ""
+echo -e "\\n\\nInstall Docker, docker-compose, minikube, kubernetes-cli rancher-cli helm v2 and helm v3 done!"
+echo ""

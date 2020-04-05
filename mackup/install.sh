@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-echo "======================================================"
-echo "Welcome to mackup dotfiles Installation."
-echo "======================================================"
+echo -e "\\n\\nInstall Mackup...."
+echo ""
 
 # Install command-line tools using Homebrew.
 which -s brew
@@ -23,6 +22,6 @@ brew cleanup
 
 cp -f $HOME/.dotfiles/mackup/.mackup.cfg $HOME/.mackup.cfg
 
-echo "======================================================"
-echo "mackup install done...."
-echo "======================================================"
+echo ""
+echo "Install Mackup done!"
+echo ""
