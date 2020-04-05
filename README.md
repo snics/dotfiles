@@ -120,8 +120,10 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
 
 ## TODOs:
 
-- [ ] Add list of aliases
-- [ ] Add full list of Mac Apps
+- [ ] Add list of aliases.
+- [ ] Add full list of Mac Apps.
+- [ ] Add full list of all Vim and NeoVim shortcut.
+- [ ] Add mackup default start settings for direkt using with out of own settings in the iCloud.
 
 ## Feedback
 
