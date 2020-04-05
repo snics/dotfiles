@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.andrewbenson.directions</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>0C3A017D-70C3-4F5E-839E-16683114596E</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>CD2262E3-AF6B-4402-9F1F-2C6B97DB051E</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>3B162B65-B2D5-45EB-B905-97EE094578C3</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>64C05D74-15E7-4CB0-854F-66E613BB5CC2</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>B6CDB1AF-CC10-4878-8BE5-6A6CD88A9E01</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>CD2262E3-AF6B-4402-9F1F-2C6B97DB051E</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>CD2262E3-AF6B-4402-9F1F-2C6B97DB051E</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>3B162B65-B2D5-45EB-B905-97EE094578C3</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Andrew Benson</string>
+	<key>description</key>
+	<string>Quickly get directions via Google Maps from currnet location to provided destination or place of interest</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Directions</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>go2</string>
+				<key>subtext</key>
+				<string>Directions to "{query}" from current location</string>
+				<key>text</key>
+				<string>Directions from Current Location</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>0C3A017D-70C3-4F5E-839E-16683114596E</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>68</integer>
+				<key>script</key>
+				<string>import csv
+import sys
+import subprocess
+
+destination = sys.argv[1]
+
+
+## Get location data from whereami script
+location = subprocess.check_output(['./whereami'])
+location = location.splitlines()
+
+## Extract latitude from location data
+latitude = str(location[0]).replace("Latitude: ","")
+latitude = latitude.replace("'","")
+
+## Extract longitude from location data
+longitude = str(location[1]).replace("Longitude: ","")
+longitude = longitude.replace("'","")
+
+## Combine latitude and longitude to create GPS string
+gpsstring = latitude + "," + longitude
+
+
+sys.stdout.write(gpsstring + "/" + destination)</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>./whereami</string>
+				<key>type</key>
+				<integer>3</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>3B162B65-B2D5-45EB-B905-97EE094578C3</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>https://www.google.com/maps/dir/{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>64C05D74-15E7-4CB0-854F-66E613BB5CC2</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict/>
+			<key>type</key>
+			<string>alfred.workflow.utility.junction</string>
+			<key>uid</key>
+			<string>CD2262E3-AF6B-4402-9F1F-2C6B97DB051E</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>directions</string>
+				<key>subtext</key>
+				<string>Directions to "{query}" from current location</string>
+				<key>text</key>
+				<string>Directions from Current Location</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>B6CDB1AF-CC10-4878-8BE5-6A6CD88A9E01</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>0C3A017D-70C3-4F5E-839E-16683114596E</key>
+		<dict>
+			<key>xpos</key>
+			<integer>60</integer>
+			<key>ypos</key>
+			<integer>80</integer>
+		</dict>
+		<key>3B162B65-B2D5-45EB-B905-97EE094578C3</key>
+		<dict>
+			<key>xpos</key>
+			<integer>370</integer>
+			<key>ypos</key>
+			<integer>160</integer>
+		</dict>
+		<key>64C05D74-15E7-4CB0-854F-66E613BB5CC2</key>
+		<dict>
+			<key>xpos</key>
+			<integer>590</integer>
+			<key>ypos</key>
+			<integer>160</integer>
+		</dict>
+		<key>B6CDB1AF-CC10-4878-8BE5-6A6CD88A9E01</key>
+		<dict>
+			<key>xpos</key>
+			<integer>60</integer>
+			<key>ypos</key>
+			<integer>230</integer>
+		</dict>
+		<key>CD2262E3-AF6B-4402-9F1F-2C6B97DB051E</key>
+		<dict>
+			<key>xpos</key>
+			<integer>260</integer>
+			<key>ypos</key>
+			<integer>190</integer>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>https://andrewbenson.xyz</string>
+</dict>
+</plist>

@@ -1,99 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>bundleid</key>
-	<string>ascii.kudusch</string>
-	<key>category</key>
-	<string>Tools</string>
-	<key>connections</key>
-	<dict>
-		<key>4BEB7976-34A8-486C-952D-F202EDBDABB2</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>9F1B0B65-EF6F-43D4-ADDB-A22B2D49A4B4</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
-		</array>
-	</dict>
-	<key>createdby</key>
-	<string>Kudusch</string>
-	<key>description</key>
-	<string>Converts ASCII characters to their values in multiple bases and vice versa</string>
-	<key>disabled</key>
-	<false/>
-	<key>name</key>
-	<string>ASCII Converter</string>
-	<key>objects</key>
-	<array>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>autopaste</key>
-				<false/>
-				<key>clipboardtext</key>
-				<string>The converted string is: {query}</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>9F1B0B65-EF6F-43D4-ADDB-A22B2D49A4B4</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argumenttype</key>
-				<integer>1</integer>
-				<key>escaping</key>
-				<integer>126</integer>
-				<key>keyword</key>
-				<string>ascii_converter</string>
-				<key>runningsubtext</key>
-				<string>Please wait…</string>
-				<key>script</key>
-				<string>set vInput to "{query}"if vInput = "" then set vInput to the clipboardset vTitle to mStringToNumber(vInput, 16)set vUID to "tohex"set vARG to vTitleset vVALID to ""set vAuto to ""set vSubtitle to "This was converted to hexadecimal"set vIcon to "icon.png"set vToHex to mMakeItem(vUID, vARG, vVALID, vAuto, vTitle, vSubtitle, vIcon)try	set vTitle to mNumberToString(vInput, 16)	set vSubtitle to "This was converted from hexadecimal."	set vUID to "fromhex"	set vARG to vTitle	set vVALID to ""	set vAuto to ""	set vIcon to "icon.png"	set vFromHex to mMakeItem(vUID, vARG, vVALID, vAuto, vTitle, vSubtitle, vIcon)end tryset vTitle to mStringToNumber(vInput, 10)set vUID to "todec"set vARG to vTitleset vVALID to ""set vAuto to ""set vSubtitle to "This was converted to decimal"set vIcon to "icon.png"set vToDec to mMakeItem(vUID, vARG, vVALID, vAuto, vTitle, vSubtitle, vIcon)try	set vTitle to mNumberToString(vInput, 10)	set vSubtitle to "This was converted from decimal."	set vUID to "fromdec"	set vARG to vTitle	set vVALID to ""	set vAuto to ""	set vIcon to "icon.png"	set vFromDec to mMakeItem(vUID, vARG, vVALID, vAuto, vTitle, vSubtitle, vIcon)end tryset vTitle to mStringToNumber(vInput, 2)set vUID to "tobin"set vARG to vTitleset vVALID to ""set vAuto to ""set vSubtitle to "This was converted to binary"set vIcon to "icon.png"set vToBin to mMakeItem(vUID, vARG, vVALID, vAuto, vTitle, vSubtitle, vIcon)try	set vTitle to mNumberToString(vInput, 2)	set vSubtitle to "This was converted from binary."	set vUID to "frombin"	set vARG to vTitle	set vVALID to ""	set vAuto to ""	set vIcon to "icon.png"	if vTitle ≠ {} then set vFromBin to mMakeItem(vUID, vARG, vVALID, vAuto, vTitle, vSubtitle, vIcon)end trytry	return mAddToXMLFeedBack({vToHex, vToDec, vToBin, vFromHex})on error	try		return mAddToXMLFeedBack({vToHex, vToDec, vToBin, vFromBin})	on error		try			return mAddToXMLFeedBack({vToHex, vToDec, vToBin, vFromDec})		on error			return mAddToXMLFeedBack({vToHex, vToDec, vToBin})		end try	end tryend tryon mMakeItem(vUID, vARG, vVALID, vAuto, vTitle, vSubtitle, vIcon)	set vXMLInput to "&lt;item uid=\"" &amp; vUID &amp; "\" arg=\"" &amp; vARG &amp; "\" valid=\"" &amp; vVALID &amp; "\" autocomplete=\"" &amp; vAuto &amp; "\"&gt;
-		&lt;title&gt;" &amp; vTitle &amp; "&lt;/title&gt;
-		&lt;subtitle&gt;" &amp; vSubtitle &amp; "&lt;/subtitle&gt;
-		&lt;icon&gt;" &amp; vIcon &amp; "&lt;/icon&gt;
-	&lt;/item&gt;"	return vXMLInputend mMakeItemon mAddToXMLFeedBack(vItemList)	set vXMLTop to "&lt;?xml version=\"1.0\"?&gt;
-&lt;items&gt;"	set vXMLEnd to "&lt;/items&gt;"		set vXMLOutput to ""		repeat with i from 1 to number of items in vItemList		set vXMLOutput to vXMLOutput &amp; (item i of vItemList) &amp; return	end repeat		return vXMLTop &amp; return &amp; vXMLOutput &amp; vXMLEndend mAddToXMLFeedBackon mNumberToString(vInput, vBase)	if vBase = 2 then		set vTemp to {}		repeat with i from 1 to ((number of characters in vInput) / 8)			set vTemp to vTemp &amp; (characters (((i) * 8) - 7) through (((i) * 8)) of vInput as string)		end repeat		set vInput to vTemp	else		set vPre to AppleScript's text item delimiters		set AppleScript's text item delimiters to " "		set vInput to every text item in vInput as list		set AppleScript's text item delimiters to vPre	end if	set vOut to {}	repeat with i from 1 to number of items in vInput		set vOut to vOut &amp; mNumberToChar(item i of vInput, vBase)	end repeat	return vOutend mNumberToStringon mStringToNumber(vInput, vBase)	set vOut to {}	repeat with i from 1 to number of characters in vInput		set vOut to vOut &amp; mCharToNumber(character i of vInput, vBase)	end repeat	if vBase = 2 then		repeat with i from 1 to (number of items in vOut)			repeat 8 - (number of characters in item i of vOut) times				set item i of vOut to ("0" &amp; item i of vOut) as list			end repeat		end repeat	else		set vPre to AppleScript's text item delimiters		set AppleScript's text item delimiters to " "		set vOut to vOut as string		set AppleScript's text item delimiters to vPre	end if	return vOutend mStringToNumberon mCharToNumber(vInput, vBase)	return mBase10toBaseX(ASCII number vInput, vBase)end mCharToNumberon mNumberToChar(vInput, vBase)	return ASCII character of BaseXToBase10(vInput, vBase)end mNumberToChar--input: int,inton mBase10toBaseX(vInput, vBase)	set vDigitList to {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}	set n to vInput	set x to 0		set vOut to {}		--try	repeat while n ≠ 0		set x to n mod vBase		set vOut to (item (x + 1) of vDigitList) &amp; vOut		set n to n div vBase	end repeat	--on error	--return "The number you entered is not in base 10!"	--end try	return vOut as string	end mBase10toBaseX--input:string,inton BaseXToBase10(vInput, vBase)	set vDigitList to {"1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}	set n to 0	set vInput to every item in vInput as list	set vInput to reverse of vInput	set vOut to 0		repeat while n &lt; number of items in vInput		if item (n + 1) of vInput ≠ "0" then			set x to 1			repeat while item x of vDigitList ≠ item (n + 1) of vInput				set x to x + 1			end repeat			if x ≥ vBase then				return "That number can't have that base!"			end if			set vOut to vOut + (x * (vBase ^ n))		else			set vOut to vOut + (0 * (vBase ^ n))		end if		set n to n + 1	end repeat		return vOut as integer	end BaseXToBase10</string>
-				<key>subtext</key>
-				<string>Converts ASCII characters to their values in multiple bases and vice versa</string>
-				<key>title</key>
-				<string>ASCII Converter</string>
-				<key>type</key>
-				<integer>6</integer>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>4BEB7976-34A8-486C-952D-F202EDBDABB2</string>
-		</dict>
-	</array>
-	<key>readme</key>
-	<string>Version 1.1
-
-With no argument, the workflow will use the content of the clipboard.</string>
-	<key>uidata</key>
-	<dict>
-		<key>4BEB7976-34A8-486C-952D-F202EDBDABB2</key>
-		<dict>
-			<key>ypos</key>
-			<real>10</real>
-		</dict>
-		<key>9F1B0B65-EF6F-43D4-ADDB-A22B2D49A4B4</key>
-		<dict>
-			<key>ypos</key>
-			<real>10</real>
-		</dict>
-	</dict>
-	<key>webaddress</key>
-	<string>blog.kudusch.de</string>
-</dict>
-</plist>

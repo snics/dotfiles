@@ -4,29 +4,42 @@
 <dict>
 	<key>customSites</key>
 	<dict>
-		<key>2B442DFE-2528-465C-ACAD-94E2C759AE8A</key>
+		<key>1616C6AD-F33F-4FE9-85F6-AAD611000BB4</key>
 		<dict>
 			<key>enabled</key>
 			<true/>
 			<key>keyword</key>
-			<string>de</string>
+			<string>dp en</string>
 			<key>text</key>
-			<string>Google Translate für Deutsch zu Englisch</string>
+			<string>Deepl Translate '{query}' from German to English</string>
 			<key>url</key>
-			<string>https://translate.google.com/?hl=de#de/en/{query}</string>
+			<string>https://www.deepl.com/translator#en/de/{query}</string>
 			<key>utf8</key>
 			<true/>
 		</dict>
-		<key>8EF4083E-D5DA-40CB-AE0B-5C3816244D89</key>
+		<key>4155B0F7-1739-48F7-B5EA-94F9754E474A</key>
 		<dict>
 			<key>enabled</key>
 			<true/>
 			<key>keyword</key>
-			<string>en</string>
+			<string>xing</string>
 			<key>text</key>
-			<string>Google Translate für Englisch zu Deutsch</string>
+			<string>Search Xing for '{query}'</string>
 			<key>url</key>
-			<string>https://translate.google.com/?hl=de#en/de/{query}</string>
+			<string>https://www.xing.com/search/members?keywords={query}</string>
+			<key>utf8</key>
+			<true/>
+		</dict>
+		<key>D5B9B0CA-236B-4985-95A7-46D858CE37D9</key>
+		<dict>
+			<key>enabled</key>
+			<true/>
+			<key>keyword</key>
+			<string>dp de</string>
+			<key>text</key>
+			<string>Deepl Translate '{query}' from German to English</string>
+			<key>url</key>
+			<string>https://www.deepl.com/translator#en/de/{query}</string>
 			<key>utf8</key>
 			<true/>
 		</dict>

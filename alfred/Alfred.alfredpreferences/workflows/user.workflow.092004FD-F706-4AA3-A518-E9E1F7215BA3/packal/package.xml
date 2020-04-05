@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<workflow>
-  <name>Caffeine Toggle</name>
-  <version>1.1</version>
-  <bundle>com.caffeine.toggle</bundle>
-  <updated>1389557478</updated>
-  <file>caffeine_toggle.alfredworkflow</file>
-</workflow>
