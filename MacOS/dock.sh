@@ -153,8 +153,8 @@ dockutil --no-restart --add "/Applications/GitKraken.app"
 # Add space to System configuration
 defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
 
-dockutil --add '~/Projects' --view list --display folder --sort name  --allhomes
-dockutil --add '~/Downloads' --view list --display folder --allhomes
+dockutil --no-restart --add '~/Projects' --view list --display folder --sort name  --allhomes
+dockutil --no-restart --add '~/Downloads' --view list --display folder --allhomes
 dockutil --add '/Applications' --view grid --display folder --allhomes
 
 
