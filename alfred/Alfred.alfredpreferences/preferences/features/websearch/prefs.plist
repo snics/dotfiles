@@ -13,7 +13,7 @@
 			<key>text</key>
 			<string>Deepl Translate '{query}' from German to English</string>
 			<key>url</key>
-			<string>https://www.deepl.com/translator#en/de/{query}</string>
+			<string>https://www.deepl.com/translator#de/en/{query}</string>
 			<key>utf8</key>
 			<true/>
 		</dict>
@@ -37,7 +37,7 @@
 			<key>keyword</key>
 			<string>dp de</string>
 			<key>text</key>
-			<string>Deepl Translate '{query}' from German to English</string>
+			<string>Deepl Translate '{query}' from English to German</string>
 			<key>url</key>
 			<string>https://www.deepl.com/translator#en/de/{query}</string>
 			<key>utf8</key>
