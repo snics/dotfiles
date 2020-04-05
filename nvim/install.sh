@@ -34,25 +34,11 @@ mkdir -p ~/.vim-tmp
 echo -e "\\n\\ninstalling to ~/.config"
 echo "=============================="
 if [ ! -d "$HOME/.config" ]; then
-    echo "Creating ~/.config"
+    echo "Creating ~/.config/nvim"
     mkdir -p "$HOME/.config"
+
+    [ ! -d "$HOME/.config/nvim" ] mkdir -p "$HOME/.config/nvim"
 fi
-
-echo -e "\\n\\nCreating NeoVim symlinks"
-echo "=============================="
-VIMFILES=( "$HOME/.config/nvim:$DOTFILES/nvim"
-        "$HOME/.config/nvim:$DOTFILES/nvim/init.vim" )
-
-for file in "${VIMFILES[@]}"; do
-    KEY=${file%%:*}
-    VALUE=${file#*:}
-    if [ -e "${KEY}" ]; then
-        echo "${KEY} already exists... skipping."
-    else
-        echo "Creating symlink for $KEY"
-        ln -s "${VALUE}" "${KEY}"
-    fi
-done
 
 echo -e "\\n\\nCreating vim symlinks"
 echo "=============================="
