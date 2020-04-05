@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo -e "\\n\\nSetup MacOS settings..."
+echo -e "\\n\\nSetup macOS settings..."
 echo ""
 
 # ~/.macos — https://mths.be/macos
