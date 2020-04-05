@@ -51,12 +51,22 @@ function doIt() {
       source ./nvim/install.sh
   fi;
 
+  read -p "Do you want to have my Development/Project folder structure? (y/n) " -n 1;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+      source ./MacOS/dev-folder-structure.sh
+  fi;
+
   source ./git/settings.sh;
   source ./MacOS/settings.sh;
 
   echo ""
   echo "Set your user tokens as environment variables, such as ~/.secrets"
   echo "See the README for examples."
+
+  read -p "Do you want to restart your Mac (This is recommended now)? (y/n) " -n 1;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+      sudo reboot
+  fi;
 }
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
