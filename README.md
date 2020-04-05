@@ -138,6 +138,6 @@ Suggestions/improvements
 
 ## Thanks to…
 
-- [mathiasbynens](https://github.com/mathiasbynens/dotfiles) - Mathias’s
-- dotfiles [nicknisi](https://github.com/nicknisi/dotfiles)
-nicknisi'nicknisi
+- [Mathias’s dotfiles](https://github.com/mathiasbynens/dotfiles) - Good Settings for macOS.
+- [Nicknisi dotfiles](https://github.com/nicknisi/dotfiles) - Good settings for NeoVim.
+- [Alfred Snippets - Git Commit Messages](https://github.com/apertureless/alfred-git-snippets) - I used for the default Alfred settings.
