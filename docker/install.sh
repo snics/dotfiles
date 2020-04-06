@@ -29,22 +29,22 @@ brew install rancher-cli
 brew cleanup
 
 echo install helm v2
-[ ! -d "./.tmp" ] && mkdir -p ./.tmp
+TMP_PATH="$HOME/.dotfiles/.tmp"
+[ ! -d "$TMP_PATH" ] && mkdir -p "$TMP_PATH"
+[ ! -d "$TMP_PATH/helm2" ] && mkdir -p "$TMP_PATH/helm2"
+[ ! -d "$TMP_PATH/helm3" ] && mkdir -p "$TMP_PATH/helm3"
 
-curl -LO https://get.helm.sh/helm-v2.16.5-darwin-amd64.tar.gz
-mv ./helm-v2.16.5-darwin-amd64.tar.gz ./.tmp
-tar -zxvf ./.tmp/helm-v2.16.5-darwin-amd64.tar.gz
-chmod +x ./.tmp/darwin-amd64/helm
-mv ./.tmp/darwin-amd64/helm /usr/local/bin/helm
+wget https://get.helm.sh/helm-v2.16.5-darwin-amd64.tar.gz -O $TMP_PATH/helm2.tar.gz; tar -xf $TMP_PATH/helm2.tar.gz -C $TMP_PATH/helm2; rm $TMP_PATH/helm2.tar.gz
+wget https://get.helm.sh/helm-v3.1.2-darwin-amd64.tar.gz -O $TMP_PATH/helm3.tar.gz; tar -xf $TMP_PATH/helm3.tar.gz -C $TMP_PATH/helm3; rm $TMP_PATH/helm3.tar.gz
 
-echo install helm v3
-curl -LO https://get.helm.sh/helm-v3.1.2-darwin-amd64.tar.gz
-mv ./helm-v2.16.5-darwin-amd64.tar.gz ./.tmp
-tar -zxvf ./.tmp/helm-v3.1.2-darwin-amd64.tar.gz
-chmod +x ./.tmp/darwin-amd64/helm
-mv ./.tmp/darwin-amd64/helm /usr/local/bin/helm
+echo -e "\\ninstall helm v2"
+cp -p $TMP_PATH/helm2/darwin-amd64/helm /usr/local/bin/helm
+cp -p $TMP_PATH/helm2/darwin-amd64/helm /usr/local/bin/helm2
 
-[ -d "./.tmp" ] && rm -rf ./.tmp
+echo -e "\\ninstall helm v3"
+cp -p $TMP_PATH/helm3/darwin-amd64/helm /usr/local/bin/helm3
+
+[ -d "$TMP_PATH" ] && rm -rf $TMP_PATH
 
 echo ""
 echo -e "\\n\\nInstall Docker, docker-compose, minikube, kubernetes-cli rancher-cli helm v2 and helm v3 done!"

@@ -19,7 +19,7 @@ echo ""
 [ ! -d "$HOME/Projects/Scripts" ] && mkdir -p "$HOME/Projects/Scripts"
 
 # Scope for helpful tools that make life easier.
-[ ! -d "$HOME/Projects/Tools" ] && mkdir  -p"$HOME/Projects/Tools"
+[ ! -d "$HOME/Projects/Tools" ] && mkdir -p "$HOME/Projects/Tools"
 
 # Scope for programming languages or dev things I want to try or learn.
 [ ! -d "$HOME/Projects/Learning" ] && mkdir -p "$HOME/Projects/Learning"
@@ -31,6 +31,7 @@ then
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p "$HOME/Projects/Clients"
   fi;
+	echo -e "\\n";
 fi
 
 # Scope for Startups Project.
@@ -40,6 +41,7 @@ then
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p "$HOME/Projects/Startups"
   fi;
+	echo -e "\\n";
 fi
 
 # Scope for Talks/Meetups/Lecturer work.
@@ -49,6 +51,7 @@ then
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p "$HOME/Projects/Talks"
   fi;
+	echo -e "\\n";
 fi
 
 echo ""

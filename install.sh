@@ -22,7 +22,7 @@ function doIt() {
 
       read -p "Do you want to use Alred 4? (y/n) " -n 1;
       if [[ $REPLY =~ ^[Yy]$ ]]; then
-          source ./alfred/install.sh
+          source ./alfred/settings.sh
       fi;
   fi;
 
@@ -53,7 +53,7 @@ function doIt() {
 
   read -p "Do you want to have my Development/Project folder structure? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-      source ./macOS/dev-folder-structure.sh
+      source ./macOS/project-folder-structure.sh
   fi;
 
   source ./git/settings.sh;

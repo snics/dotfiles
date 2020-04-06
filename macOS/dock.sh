@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "Setup mac dock."
+echo -e "\\n\\nSetup mac dock."
 echo ""
 
 ###############################################################################
