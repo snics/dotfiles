@@ -83,22 +83,20 @@ plugins=(
     npm
     node
     osx
-    history
     zsh-completions
     zsh-autosuggestions
 
     ## Custom code
+    history-settings
+    theme-settings
     aliases
     zsh-aliases
     colors
     fasd
     nvm
     key-bindings
-    last-command
     rm
     secrets
-    theme-settings
-    vi-mode
     gitkraken
 )
 
