@@ -182,3 +182,4 @@ Suggestions/improvements
 - [IP Alfred Workflow](http://www.packal.org/workflow/whats-my-ip) - I used for the default Alfred settings.
 - [Faker Alfred Workflow](http://www.packal.org/workflow/alfred-faker) - I used for the default Alfred settings.
 - [Copy URL Alfred Workflow](https://github.com/fallroot/copy-url-for-alfred) - I used for the default Alfred settings.
+- [JetBrains Open project Alfred Workflow](https://github.com/bchatard/alfred-jetbrains) - I used for the default Alfred settings.
