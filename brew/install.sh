@@ -115,6 +115,7 @@ brew install trash
 brew install wdiff
 brew install yarn
 brew install z
+brew install ntfs-3g
 
 # Install other useful binaries.
 brew install ack
