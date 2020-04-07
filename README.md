@@ -178,5 +178,6 @@ Suggestions/improvements
 - [Resize Image for Alfred](http://www.packal.org/workflow/resize-image) - I used for the default Alfred settings.
 - [Caniuse for Alfred](https://github.com/willfarrell/alfred-caniuse-workflow) - I used for the default Alfred settings.
 - [Font Awesome Workflow for Alfred](https://github.com/willfarrell/alfred-caniuse-workflow) - I used for the default Alfred settings.
-- [Github Workflow](https://github.com/willfarrell/alfred-github-workflow) - I used for the default Alfred settings.
-- [IP Workflow](http://www.packal.org/workflow/whats-my-ip) - I used for the default Alfred settings.
+- [Github Alfred Workflow](https://github.com/willfarrell/alfred-github-workflow) - I used for the default Alfred settings.
+- [IP Alfred Workflow](http://www.packal.org/workflow/whats-my-ip) - I used for the default Alfred settings.
+- [Faker Alfred Workflow](http://www.packal.org/workflow/alfred-faker) - I used for the default Alfred settings.
