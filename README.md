@@ -176,3 +176,4 @@ Suggestions/improvements
 - [Image Optimization for Alfred](http://www.packal.org/workflow/image-optimization) - I used for the default Alfred settings.
 - [Resize Image for Alfred](http://www.packal.org/workflow/resize-image) - I used for the default Alfred settings.
 - [Caniuse for Alfred](https://github.com/willfarrell/alfred-caniuse-workflow) - I used for the default Alfred settings.
+- [Font Awesome Workflow for Alfred](https://github.com/willfarrell/alfred-caniuse-workflow) - I used for the default Alfred settings.
