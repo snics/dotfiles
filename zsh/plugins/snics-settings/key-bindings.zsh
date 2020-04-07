@@ -1,5 +1,3 @@
-bindkey -v
-
 # Map widgets to key
 bindkey '^@'  fzf-select-widget
 bindkey '^c' fzf-change-directory

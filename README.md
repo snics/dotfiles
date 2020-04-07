@@ -124,6 +124,35 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
 - [ ] Add full list of Mac Apps.
 - [ ] Add full list of all Vim and NeoVim shortcut.
 - [ ] Add mackup default start settings for direkt using with out of own settings in the iCloud.
+- [ ] Create pull requests for mackup applications that are not supported:
+  - [ ] 1Password 7
+  - [ ] BeardedSpice
+  - [ ] Cardhop
+  - [ ] ChatMate for WhatsApp
+  - [ ] CleanMyMac X
+  - [ ] Clockify Desktop
+  - [ ] CloudMounter
+  - [ ] coconutBattery 3
+  - [ ] Fantastical 3
+  - [ ] Gemini 2
+  - [ ] Gifox
+  - [ ] iStat Menus 6
+  - [ ] JetBrains Toolbox
+  - [ ] Mission Control Plus
+  - [ ] MoneyMoney
+  - [ ] Numi
+  - [ ] OBS
+  - [ ] Paw
+  - [ ] Postman
+  - [ ] React Native Debugger
+  - [ ] Robo 3T
+  - [ ] Sketch
+  - [ ] Spark Mail App
+  - [ ] The Unarchiver
+  - [ ] Todoist
+  - [ ] VirtualBox
+  - [ ] zoom.us
+
 
 ## Feedback
 
