@@ -125,6 +125,7 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
 - [ ] Add list of aliases.
 - [ ] Add full list of Mac Apps.
 - [ ] Add full list of all Vim and NeoVim shortcut.
+- [ ] Fix problems with Alfred Github Workflow
 - [ ] Add mackup default start settings for direkt using with out of own settings in the iCloud.
 - [ ] Create pull requests for mackup applications that are not supported:
   - [ ] 1Password 7
@@ -178,3 +179,4 @@ Suggestions/improvements
 - [Caniuse for Alfred](https://github.com/willfarrell/alfred-caniuse-workflow) - I used for the default Alfred settings.
 - [Font Awesome Workflow for Alfred](https://github.com/willfarrell/alfred-caniuse-workflow) - I used for the default Alfred settings.
 - [Github Workflow](https://github.com/willfarrell/alfred-github-workflow) - I used for the default Alfred settings.
+- [IP Workflow](http://www.packal.org/workflow/whats-my-ip) - I used for the default Alfred settings.
