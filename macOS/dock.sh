@@ -154,8 +154,8 @@ dockutil --no-restart --add "/Applications/GitKraken.app"
 defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
 
 dockutil --no-restart --add '~/Projects' --view list --display folder --sort name  --allhomes
-dockutil --no-restart --add '~/Downloads' --view list --display folder --allhomes
-dockutil --add '/Applications' --view grid --display folder --allhomes
+dockutil --no-restart --add '~/Downloads' --view list --display folder --sort dateadded --allhomes
+dockutil --add '/Applications' --view grid --display folder --sort name --allhomes
 
 
 echo ""
