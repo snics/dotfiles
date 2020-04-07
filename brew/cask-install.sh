@@ -53,6 +53,7 @@ brew cask install "sketch"
 brew cask install "keyboard-maestro"
 brew cask install "mission-control-plus"
 brew cask install "chatmate-for-whatsapp"
+brew cask install "coconutbattery"
 
 # Browsers
 brew cask install "google-chrome"
