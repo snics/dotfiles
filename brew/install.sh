@@ -16,6 +16,11 @@ brew update
 # Upgrade any already-installed formulae.
 brew upgrade
 
+brew tap "homebrew/cask"
+brew tap "homebrew/cask-drivers"
+brew tap "homebrew/cask-fonts"
+brew tap "homebrew/cask-versions"
+
 # Save Homebrew’s installed location.
 BREW_PREFIX=$(brew --prefix)
 
@@ -115,6 +120,7 @@ brew install trash
 brew install wdiff
 brew install yarn
 brew install z
+brew cask install "osxfuse"
 brew install ntfs-3g
 
 # Install other useful binaries.

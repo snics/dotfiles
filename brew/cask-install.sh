@@ -80,7 +80,6 @@ brew cask install "imageoptim"
 brew cask install "dash"
 
 
-
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
 brew cask install "qlcolorcode"
 brew cask install "qlimagesize"
