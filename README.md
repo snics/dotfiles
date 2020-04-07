@@ -173,3 +173,4 @@ Suggestions/improvements
 - [Nicknisi dotfiles](https://github.com/nicknisi/dotfiles) - Good settings for NeoVim.
 - [Alfred Snippets - Git Commit Messages](https://github.com/apertureless/alfred-git-snippets) - I used for the default Alfred settings.
 - [Homebrew and Cask for Alfred](https://github.com/fniephaus/alfred-homebrew) - I used for the default Alfred settings.
+- [Image Optimization for Alfred](http://www.packal.org/workflow/image-optimization) - I used for the default Alfred settings.
