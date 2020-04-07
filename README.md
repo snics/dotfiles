@@ -1,4 +1,5 @@
 # Nico's dotfiles
+![terminal.gif](docs/terminal.gif)
 
 Welcome to my world. This is an advanced developed macOS setup.
 
@@ -53,6 +54,7 @@ sh ~/.dotfiles/install.sh
 ```
 
 ## Vim and NeoVim Setup
+![NeoVim.png](docs/NeoVim.png)
 
 vim and neovim should just work once the correct plugins are installed.
 To install the plugins, you will need to open Neovim with following
