@@ -18,8 +18,6 @@ brew upgrade
 brew tap homebrew/command-not-found
 
 brew install zsh
-brew install zsh-completions
-brew install zsh-autosuggestions
 brew install fasd
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -30,6 +28,14 @@ wget https://raw.githubusercontent.com/caiogondim/bullet-train-oh-my-zsh-theme/m
 git clone https://github.com/akarzim/zsh-docker-aliases.git $HOME/.oh-my-zsh/custom/plugins/docker-aliases
 git clone https://github.com/zsh-users/zsh-completions $HOME/.oh-my-zsh/custom/plugins/zsh-completions
 git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone https://github.com/bernardop/iterm-tab-color-oh-my-zsh.git $HOME/.oh-my-zsh/custom/plugins/iterm-tab-color
+git clone git@github.com:igoradamenko/npm.plugin.zsh.git $HOME/.oh-my-zsh/custom/plugins/npm
+git clone https://github.com/torifat/npms.git $HOME/.oh-my-zsh/custom/plugins/npms
+git clone https://github.com/dijitalmunky/nvm-auto.git $HOME/.oh-my-zsh/custom/plugins/nvm-auto
+git clone https://github.com/ytet5uy4/fzf-widgets.git $HOME/.oh-my-zsh/custom/plugins/fzf-widgets
+
+# Custom configs
+cp -f $HOME/.dotfiles/zsh/custom/.tc-config $HOME/.oh-my-zsh/custom/plugins/iterm-tab-color/.tc-config
 
 cp -f $HOME/.dotfiles/zsh/.zshrc ~/.zshrc
 

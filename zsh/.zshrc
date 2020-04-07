@@ -68,11 +68,12 @@ HIST_STAMPS="dd.mm.yyyy"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+
 plugins=(
     sudo
     command-not-found
     brew
-    git
+    gitfast
     iterm2
     docker
     docker-aliases
@@ -81,23 +82,17 @@ plugins=(
     helm
     jsontools
     npm
+    npms
+    nvm-auto
     node
     osx
     zsh-completions
     zsh-autosuggestions
+    iterm-tab-color
 
-    ## Custom code
-    history-settings
-    theme-settings
-    aliases
-    zsh-aliases
-    colors
-    fasd
-    nvm
-    key-bindings
-    rm
-    secrets
-    gitkraken
+
+    ## My Settings
+    snics-settings
 )
 
 source $ZSH/oh-my-zsh.sh
