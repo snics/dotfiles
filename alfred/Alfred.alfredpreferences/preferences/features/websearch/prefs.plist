@@ -4,19 +4,6 @@
 <dict>
 	<key>customSites</key>
 	<dict>
-		<key>1616C6AD-F33F-4FE9-85F6-AAD611000BB4</key>
-		<dict>
-			<key>enabled</key>
-			<true/>
-			<key>keyword</key>
-			<string>dp en</string>
-			<key>text</key>
-			<string>Deepl Translate '{query}' from German to English</string>
-			<key>url</key>
-			<string>https://www.deepl.com/translator#de/en/{query}</string>
-			<key>utf8</key>
-			<true/>
-		</dict>
 		<key>4155B0F7-1739-48F7-B5EA-94F9754E474A</key>
 		<dict>
 			<key>enabled</key>
@@ -27,32 +14,6 @@
 			<string>Search Xing for '{query}'</string>
 			<key>url</key>
 			<string>https://www.xing.com/search/members?keywords={query}</string>
-			<key>utf8</key>
-			<true/>
-		</dict>
-		<key>D5B9B0CA-236B-4985-95A7-46D858CE37D9</key>
-		<dict>
-			<key>enabled</key>
-			<true/>
-			<key>keyword</key>
-			<string>dp de</string>
-			<key>text</key>
-			<string>Deepl Translate '{query}' from English to German</string>
-			<key>url</key>
-			<string>https://www.deepl.com/translator#en/de/{query}</string>
-			<key>utf8</key>
-			<true/>
-		</dict>
-		<key>FF251832-FBFC-41E8-8804-89DFF2ADC62A</key>
-		<dict>
-			<key>enabled</key>
-			<true/>
-			<key>keyword</key>
-			<string>dhl</string>
-			<key>text</key>
-			<string>DHL Sendungsverfolgung</string>
-			<key>url</key>
-			<string>https://nolp.dhl.de/nextt-online-public/de/search?piececode={query}</string>
 			<key>utf8</key>
 			<true/>
 		</dict>
