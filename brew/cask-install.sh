@@ -77,6 +77,8 @@ brew cask install "react-native-debugger"
 brew cask install "robo-3t"
 brew cask install "transmit"
 brew cask install "imageoptim"
+brew cask install "dash"
+
 
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
