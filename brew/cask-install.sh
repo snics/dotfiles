@@ -55,6 +55,7 @@ brew cask install "mission-control-plus"
 brew cask install "chatmate-for-whatsapp"
 brew cask install "coconutbattery"
 brew cask install "beardedspice"
+brew cask install "tweetbot"
 
 # Browsers
 brew cask install "google-chrome"
