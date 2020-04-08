@@ -183,3 +183,4 @@ Suggestions/improvements
 - [Faker Alfred Workflow](http://www.packal.org/workflow/alfred-faker) - I used for the default Alfred settings.
 - [Copy URL Alfred Workflow](https://github.com/fallroot/copy-url-for-alfred) - I used for the default Alfred settings.
 - [JetBrains Open project Alfred Workflow](https://github.com/bchatard/alfred-jetbrains) - I used for the default Alfred settings.
+- [Spotify mini player Alfred Workflow](http://alfred-spotify-mini-player.com) - I used for the default Alfred settings.
