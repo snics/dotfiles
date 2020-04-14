@@ -1,5 +1,6 @@
 # Nico's dotfiles
-![terminal.gif](docs/terminal.gif)
+
+![macOS.png](docs/macOS.png)
 
 Welcome to my world. This is an advanced developed macOS setup.
 
@@ -54,7 +55,7 @@ sh ~/.dotfiles/install.sh
 ```
 
 ## Vim and NeoVim Setup
-![NeoVim.png](docs/NeoVim.png)
+![terminal.gif](docs/terminal.gif)
 
 vim and neovim should just work once the correct plugins are installed.
 To install the plugins, you will need to open Neovim with following
@@ -63,6 +64,9 @@ command:
 ```
 ➜ nvim +PlugInstall
 ```
+
+### Example of how Vim and NeoVim looks
+![NeoVim.png](docs/NeoVim.png)
 
 ## My deployment folder structure
 
@@ -166,7 +170,7 @@ Suggestions/improvements
 ## Author
 
 | [![twitter/NicoSwiatecki](http://gravatar.com/avatar/23a38342df4d30085f1bbe71058cc89b?s=70)](http://twitter.com/NicoSwiatecki "Follow @NicoSwiatecki on Twitter") |
-|:------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 | [Nico Swiatecki](https://swiatecki.io/)                                                                                                                           |
 
 ## Thanks to…
