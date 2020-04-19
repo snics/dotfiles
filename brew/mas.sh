@@ -32,6 +32,8 @@ mas install 1176895641
 mas install 585829637
 # Magnet
 mas install 441258766
+# SnippetsLab
+mas install 1006087419
 
 echo ""
 echo "Install app store apps done!"

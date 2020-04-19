@@ -160,6 +160,7 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
   - [ ] Todoist
   - [ ] VirtualBox
   - [ ] zoom.us
+  - [ ] SnippetsLab
 
 
 ## Feedback
