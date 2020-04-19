@@ -21,6 +21,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>17B8463B-D0CE-4D29-AB1D-A6137D57F355</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>8B242CDF-F239-4484-8186-49F518BD64CE</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
 		<array>
 			<dict>
@@ -295,6 +308,46 @@
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>https://fontawesome.com/icons?d=gallery&amp;q={query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>8B242CDF-F239-4484-8186-49F518BD64CE</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>faweb</string>
+				<key>subtext</key>
+				<string></string>
+				<key>text</key>
+				<string>Search "{query}" on the Web Font Awesome</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>17B8463B-D0CE-4D29-AB1D-A6137D57F355</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>https://github.com/ruedap/alfred-font-awesome-workflow</string>
@@ -306,6 +359,13 @@
 			<integer>500</integer>
 			<key>ypos</key>
 			<real>340</real>
+		</dict>
+		<key>17B8463B-D0CE-4D29-AB1D-A6137D57F355</key>
+		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
+			<key>ypos</key>
+			<integer>490</integer>
 		</dict>
 		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
 		<dict>
@@ -327,6 +387,13 @@
 			<integer>700</integer>
 			<key>ypos</key>
 			<real>340</real>
+		</dict>
+		<key>8B242CDF-F239-4484-8186-49F518BD64CE</key>
+		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
+			<key>ypos</key>
+			<integer>490</integer>
 		</dict>
 		<key>8CBC1CA3-D946-4766-9551-505842A4BE52</key>
 		<dict>
