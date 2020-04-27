@@ -35,7 +35,39 @@ alias sudo='sudo '
 alias week='date +%V'
 
 # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cask upgrade; brew cleanup; mas upgrade; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; sudo gem cleanup'
+update () {
+  echo "Update System"
+	sudo softwareupdate -i -a
+	echo "Update System done!"
+
+  echo "Update Apps"
+	brew update
+	brew upgrade
+	brew cask upgrade
+	brew cleanup
+
+	mas upgrade
+	echo "Update Apps done!"
+
+	echo "Update NPM modules"
+	npm install npm -g
+	npm update -g
+  echo "Update NPM modules done!"
+
+	echo "Update gem modules"
+	sudo gem update --system
+	sudo gem update
+	sudo gem cleanup
+	echo "Update gem modules done!"
+
+	echo "Update Oh My ZSH"
+	upgrade_oh_my_zsh
+	find $HOME/.oh-my-zsh/custom -type d -depth 2 -exec git --git-dir={}/.git --work-tree=/{} pull origin master \;
+	echo "Update Oh My ZSH done!"
+
+	echo "All updates done!"
+}
+
 
 # Google Chrome
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'

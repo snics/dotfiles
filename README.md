@@ -15,6 +15,7 @@ other contributions are welcome.
 ## Contents
 
 + [Initial Setup and Installation](#initial-setup-and-installation)
++ [Update Installation modules](#update-installation-modules)
 + [Vim and Neovim Setup](#vim-and-neovim-setup)
 + [More about my deployment folder structure](#my-deployment-folder-structure)
 + [Alfred 4 Setup](#vim-and-neovim-setup)
@@ -53,6 +54,9 @@ To run the install wizards please run the command in console:
 ```bash
 sh ~/.dotfiles/install.sh
 ```
+
+## Update Installation modules
+An update installation Apps and modules is thankfully simple I have created an alias for it with which you can update everything. You just have to enter `update in terminal and everything will be updated``
 
 ## Vim and NeoVim Setup
 ![terminal.gif](docs/terminal.gif)
