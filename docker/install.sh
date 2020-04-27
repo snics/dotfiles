@@ -28,23 +28,29 @@ brew install rancher-cli
 # Remove outdated versions from the cellar.
 brew cleanup
 
-echo install helm v2
+HELM_VERSION=v2.16.6
+HELM3_VERSION=v3.2.0
+
+echo "install helm $HELM_VERSION"
 TMP_PATH="$HOME/.dotfiles/.tmp"
 [ ! -d "$TMP_PATH" ] && mkdir -p "$TMP_PATH"
 [ ! -d "$TMP_PATH/helm2" ] && mkdir -p "$TMP_PATH/helm2"
 [ ! -d "$TMP_PATH/helm3" ] && mkdir -p "$TMP_PATH/helm3"
 
-wget https://get.helm.sh/helm-v2.16.5-darwin-amd64.tar.gz -O $TMP_PATH/helm2.tar.gz; tar -xf $TMP_PATH/helm2.tar.gz -C $TMP_PATH/helm2; rm $TMP_PATH/helm2.tar.gz
-wget https://get.helm.sh/helm-v3.1.2-darwin-amd64.tar.gz -O $TMP_PATH/helm3.tar.gz; tar -xf $TMP_PATH/helm3.tar.gz -C $TMP_PATH/helm3; rm $TMP_PATH/helm3.tar.gz
+wget https://get.helm.sh/helm-${HELM_VERSION}-darwin-amd64.tar.gz -O $TMP_PATH/helm2.tar.gz; tar -xf $TMP_PATH/helm2.tar.gz -C $TMP_PATH/helm2; rm $TMP_PATH/helm2.tar.gz
+wget https://get.helm.sh/helm-${HELM_VERSION}-darwin-amd64.tar.gz -O $TMP_PATH/helm3.tar.gz; tar -xf $TMP_PATH/helm3.tar.gz -C $TMP_PATH/helm3; rm $TMP_PATH/helm3.tar.gz
 
-echo -e "\\ninstall helm v2"
+echo -e "\\ninstall helm $HELM_VERSION"
 cp -p $TMP_PATH/helm2/darwin-amd64/helm /usr/local/bin/helm
 cp -p $TMP_PATH/helm2/darwin-amd64/helm /usr/local/bin/helm2
 
-echo -e "\\ninstall helm v3"
+echo -e "\\ninstall helm $HELM3_VERSION"
 cp -p $TMP_PATH/helm3/darwin-amd64/helm /usr/local/bin/helm3
 
 [ -d "$TMP_PATH" ] && rm -rf $TMP_PATH
+
+cp -p $HOME/.dotfiles/docker/helm-update.sh /usr/local/bin/helm-update
+chmod 775 /usr/local/bin/helm-update
 
 echo ""
 echo -e "\\n\\nInstall Docker, docker-compose, minikube, kubernetes-cli rancher-cli helm v2 and helm v3 done!"

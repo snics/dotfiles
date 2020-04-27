@@ -54,11 +54,17 @@ update () {
 	npm update -g
   echo "Update NPM modules done!"
 
-	echo "Update gem modules"
+	echo "Update Ruby gems"
 	sudo gem update --system
 	sudo gem update
 	sudo gem cleanup
-	echo "Update gem modules done!"
+	echo "Update Ruby gems done!"
+
+	if [ ! -d /usr/local/bin/helm ]; then
+	    echo "Update helm"
+	    helm-update
+	    echo "Update helm done!"
+	fi
 
 	echo "Update Oh My ZSH"
 	upgrade_oh_my_zsh
