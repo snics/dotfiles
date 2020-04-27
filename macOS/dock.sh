@@ -142,7 +142,6 @@ dockutil --no-restart --add "/Applications/Fantastical.app"
 dockutil --no-restart --add "/Applications/Cardhop.app"
 dockutil --no-restart --add "/Applications/Todoist.app"
 dockutil --no-restart --add "/Applications/Franz.app"
-dockutil --no-restart --add "/Applications/ChatMate for WhatsApp.app"
 
 # Add space to System configuration
 defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
