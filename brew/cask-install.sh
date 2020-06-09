@@ -55,6 +55,7 @@ brew cask install "mission-control-plus"
 brew cask install "coconutbattery"
 brew cask install "beardedspice"
 brew cask install "tweetbot"
+brew cask install "typora"
 
 # Browsers
 brew cask install "google-chrome"
