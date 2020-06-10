@@ -83,6 +83,7 @@ plugins=(
     jsontools
     npm
     npms
+    zsh-better-npm-completion
     nvm-auto
     node
     osx

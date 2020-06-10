@@ -33,6 +33,7 @@ git clone git@github.com:igoradamenko/npm.plugin.zsh.git $HOME/.oh-my-zsh/custom
 git clone https://github.com/torifat/npms.git $HOME/.oh-my-zsh/custom/plugins/npms
 git clone https://github.com/dijitalmunky/nvm-auto.git $HOME/.oh-my-zsh/custom/plugins/nvm-auto
 git clone https://github.com/ytet5uy4/fzf-widgets.git $HOME/.oh-my-zsh/custom/plugins/fzf-widgets
+git clone https://github.com/lukechilds/zsh-better-npm-completion $HOME/.oh-my-zsh/custom/plugins/zsh-better-npm-completion
 
 # Custom configs
 cp -f $HOME/.dotfiles/zsh/custom/.tc-config $HOME/.oh-my-zsh/custom/plugins/iterm-tab-color/.tc-config
