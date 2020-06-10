@@ -122,6 +122,7 @@ brew install yarn
 brew install z
 brew cask install "osxfuse"
 brew install ntfs-3g
+brew install pandoc
 
 # Install other useful binaries.
 brew install ack
