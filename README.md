@@ -143,7 +143,7 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
   - [ ] ChatMate for WhatsApp
   - [ ] CleanMyMac X
   - [ ] Clockify Desktop
-  - [ ] CloudMounter
+  - [ ] Mountain Duck
   - [ ] coconutBattery 3
   - [ ] Fantastical 3
   - [ ] Gemini 2
