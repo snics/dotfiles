@@ -165,6 +165,7 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
   - [ ] VirtualBox
   - [ ] zoom.us
   - [ ] SnippetsLab
+  - [ ] SwitchResX
 
 
 ## Feedback
