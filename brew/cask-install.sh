@@ -62,6 +62,7 @@ brew cask install "switchresx"
 brew cask install "google-chrome"
 brew cask install "firefox"
 brew cask install "opera"
+brew cask install "tor-browser"
 
 
 # Developer Tools
