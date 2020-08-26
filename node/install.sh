@@ -28,6 +28,7 @@ npm i -g npm-upgrade
 npm i -g npm-check
 npm i -g np
 npm i -g npm-name-cli
+npm i -g node-green-cli
 
 
 echo ""
