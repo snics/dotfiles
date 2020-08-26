@@ -79,6 +79,8 @@ brew cask install "transmit"
 brew cask install "imageoptim"
 brew cask install "dash"
 brew cask install "visual-studio-code"
+brew cask install "parallels"
+brew cask install "parallels-access"
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
 brew cask install "qlcolorcode"
