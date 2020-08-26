@@ -30,6 +30,10 @@ npm i -g np
 npm i -g npm-name-cli
 npm i -g node-green-cli
 
+echo ""
+echo "Install node scripts utils!"
+echo ""
+curl -o- https://gist.githubusercontent.com/mabhub/5b9a32da340d89770eccbcfc3b702569/raw/9ebe6398427fa6e4e31d8a8f5d9e758ac679f5ca/nvm-list > /usr/local/bin/nvm-list && chmod -R a+rwx /usr/local/bin/nvm-list
 
 echo ""
 echo "Install node Node.js and NVM done!"
