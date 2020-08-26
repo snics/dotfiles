@@ -21,19 +21,6 @@
 				<false/>
 			</dict>
 		</array>
-		<key>17B8463B-D0CE-4D29-AB1D-A6137D57F355</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>8B242CDF-F239-4484-8186-49F518BD64CE</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
 		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
 		<array>
 			<dict>
@@ -103,11 +90,37 @@
 				<false/>
 			</dict>
 		</array>
+		<key>C615C773-7FFC-43AF-9DBE-B176581F7310</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>3A868F87-C09C-4FC2-8E34-4A0FB5ACBB1E</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>CE9A7E05-0277-46D5-941F-E5DEC7D9F6F7</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
 				<string>8CBC1CA3-D946-4766-9551-505842A4BE52</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>E029E8D3-1106-41EF-891B-5A3DBC4AD7DD</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>3A868F87-C09C-4FC2-8E34-4A0FB5ACBB1E</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -124,7 +137,7 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Font Awesome 5.13.0.0</string>
+	<string>Font Awesome 5.14.0.0</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -135,7 +148,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>./faw put --name {query}</string>
+				<string>./font-awesome-workflow --put-name {query}</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -178,7 +191,7 @@
 				<key>runningsubtext</key>
 				<string>...</string>
 				<key>script</key>
-				<string>./faw find {query}</string>
+				<string>./font-awesome-workflow --find {query}</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -224,7 +237,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>./faw put --ref {query}</string>
+				<string>./font-awesome-workflow --put-ref {query}</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -247,7 +260,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>./faw put --code {query}</string>
+				<string>./font-awesome-workflow --put-code {query}</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -293,7 +306,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>./faw put --url {query}</string>
+				<string>./font-awesome-workflow --put-url {query}</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -311,6 +324,56 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>focusedappvariable</key>
+				<false/>
+				<key>focusedappvariablename</key>
+				<string></string>
+				<key>hotkey</key>
+				<integer>0</integer>
+				<key>hotmod</key>
+				<integer>0</integer>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>E029E8D3-1106-41EF-891B-5A3DBC4AD7DD</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>faweb</string>
+				<key>subtext</key>
+				<string>'{query}' as icon</string>
+				<key>text</key>
+				<string>Suche auf Font Awesome</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>C615C773-7FFC-43AF-9DBE-B176581F7310</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>browser</key>
 				<string></string>
 				<key>spaces</key>
@@ -323,28 +386,7 @@
 			<key>type</key>
 			<string>alfred.workflow.action.openurl</string>
 			<key>uid</key>
-			<string>8B242CDF-F239-4484-8186-49F518BD64CE</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argumenttype</key>
-				<integer>0</integer>
-				<key>keyword</key>
-				<string>faweb</string>
-				<key>subtext</key>
-				<string></string>
-				<key>text</key>
-				<string>Search "{query}" on the Web Font Awesome</string>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.keyword</string>
-			<key>uid</key>
-			<string>17B8463B-D0CE-4D29-AB1D-A6137D57F355</string>
+			<string>3A868F87-C09C-4FC2-8E34-4A0FB5ACBB1E</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -360,13 +402,6 @@
 			<key>ypos</key>
 			<real>340</real>
 		</dict>
-		<key>17B8463B-D0CE-4D29-AB1D-A6137D57F355</key>
-		<dict>
-			<key>xpos</key>
-			<integer>300</integer>
-			<key>ypos</key>
-			<integer>490</integer>
-		</dict>
 		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
 		<dict>
 			<key>xpos</key>
@@ -381,19 +416,19 @@
 			<key>ypos</key>
 			<real>10</real>
 		</dict>
+		<key>3A868F87-C09C-4FC2-8E34-4A0FB5ACBB1E</key>
+		<dict>
+			<key>xpos</key>
+			<integer>695</integer>
+			<key>ypos</key>
+			<integer>555</integer>
+		</dict>
 		<key>61DCB2DD-8EF7-447E-BED3-63AA4B73235C</key>
 		<dict>
 			<key>xpos</key>
 			<integer>700</integer>
 			<key>ypos</key>
 			<real>340</real>
-		</dict>
-		<key>8B242CDF-F239-4484-8186-49F518BD64CE</key>
-		<dict>
-			<key>xpos</key>
-			<integer>500</integer>
-			<key>ypos</key>
-			<integer>490</integer>
 		</dict>
 		<key>8CBC1CA3-D946-4766-9551-505842A4BE52</key>
 		<dict>
@@ -409,6 +444,13 @@
 			<key>ypos</key>
 			<real>120</real>
 		</dict>
+		<key>C615C773-7FFC-43AF-9DBE-B176581F7310</key>
+		<dict>
+			<key>xpos</key>
+			<integer>310</integer>
+			<key>ypos</key>
+			<integer>555</integer>
+		</dict>
 		<key>CE9A7E05-0277-46D5-941F-E5DEC7D9F6F7</key>
 		<dict>
 			<key>xpos</key>
@@ -416,11 +458,18 @@
 			<key>ypos</key>
 			<real>230</real>
 		</dict>
+		<key>E029E8D3-1106-41EF-891B-5A3DBC4AD7DD</key>
+		<dict>
+			<key>xpos</key>
+			<integer>310</integer>
+			<key>ypos</key>
+			<integer>435</integer>
+		</dict>
 	</dict>
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>5.13.0.0</string>
+	<string>5.14.0.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/ruedap/alfred-font-awesome-workflow</string>
 </dict>
