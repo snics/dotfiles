@@ -35,6 +35,15 @@ mas install 441258766
 # SnippetsLab
 mas install 1006087419
 
+# Final Cut Pro
+mas install 424389933
+# Motion 5
+mas install 434290957
+# Compressor
+mas install 424390742
+# Logic Pro X
+mas install 634148309
+
 echo ""
 echo "Install app store apps done!"
 echo ""
