@@ -48,15 +48,12 @@ brew cask install "clockify"
 brew cask install "keepingyouawake"
 brew cask install "moneymoney"
 brew cask install "numi"
-brew cask install "OBS"
-brew cask install "sketch"
 brew cask install "keyboard-maestro"
 brew cask install "mission-control-plus"
 brew cask install "coconutbattery"
 brew cask install "beardedspice"
 brew cask install "tweetbot"
 brew cask install "typora"
-brew cask install "switchresx"
 
 # Browsers
 brew cask install "google-chrome"
@@ -81,7 +78,7 @@ brew cask install "robo-3t"
 brew cask install "transmit"
 brew cask install "imageoptim"
 brew cask install "dash"
-
+brew cask install "visual-studio-code"
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
 brew cask install "qlcolorcode"
@@ -93,6 +90,13 @@ brew cask install "quicklook-json"
 brew cask install "suspicious-package"
 brew cask install "webpquicklook"
 brew cask install "quicklookase"
+
+# Media programmes
+brew cask install "OBS"
+brew cask install "switchresx"
+brew cask install "kap"
+brew cask install "soundflower"
+brew cask install "sketch"
 
 # Remove outdated versions from the cellar.
 brew cleanup
