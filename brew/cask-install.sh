@@ -54,6 +54,7 @@ brew cask install "coconutbattery"
 brew cask install "beardedspice"
 brew cask install "tweetbot"
 brew cask install "typora"
+brew cask install "sipgate-softphone"
 
 # Browsers
 brew cask install "google-chrome"
