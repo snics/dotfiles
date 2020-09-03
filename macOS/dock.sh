@@ -131,6 +131,7 @@ defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-ty
 
 dockutil --no-restart --add '/Applications/Safari.app'
 dockutil --no-restart --add '/Applications/Google Chrome.app'
+dockutil --no-restart --add '/Applications/Chromium.app'
 dockutil --no-restart --add '/Applications/Firefox.app'
 dockutil --no-restart --add '/Applications/Opera.app'
 

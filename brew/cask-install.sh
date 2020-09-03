@@ -58,6 +58,7 @@ brew cask install "sipgate-softphone"
 
 # Browsers
 brew cask install "google-chrome"
+brew cask install "chromium"
 brew cask install "firefox"
 brew cask install "opera"
 brew cask install "tor-browser"
