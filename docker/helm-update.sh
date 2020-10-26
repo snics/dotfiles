@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-HELM_VERSION=v2.16.10
+HELM_VERSION=v2.17.0
 HELM3_VERSION=v3.3.0
 
 echo -e "\nUpdate helm $HELM_VERSION and helm $HELM3_VERSION..."

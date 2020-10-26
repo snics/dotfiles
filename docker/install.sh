@@ -28,7 +28,7 @@ brew install rancher-cli
 # Remove outdated versions from the cellar.
 brew cleanup
 
-HELM_VERSION=v2.16.10
+HELM_VERSION=v2.17.0
 HELM3_VERSION=v3.3.0
 
 echo "install helm $HELM_VERSION"
