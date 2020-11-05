@@ -144,6 +144,9 @@ brew install jq
 brew install vbindiff
 brew install zopfli
 brew install dockutil
+brew install rke
+brew install awscli
+brew install s3cmd
 
 
 # Remove outdated versions from the cellar.
