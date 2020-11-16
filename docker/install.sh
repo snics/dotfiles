@@ -29,7 +29,7 @@ brew install rancher-cli
 brew cleanup
 
 HELM_VERSION=v2.17.0
-HELM3_VERSION=v3.3.0
+HELM3_VERSION=v3.4.1
 
 echo "install helm $HELM_VERSION"
 TMP_PATH="$HOME/.dotfiles/.tmp"
