@@ -34,6 +34,8 @@ mas install 585829637
 mas install 441258766
 # SnippetsLab
 mas install 1006087419
+# Medis reids clint for mac
+mas install 1063631769
 
 # Final Cut Pro
 mas install 424389933
