@@ -46,6 +46,11 @@ function doIt() {
       source ./flutter/install.sh
   fi;
 
+  read -p "Do you want to use Kotlin? (y/n) " -n 1;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+      source ./kotlin/install.sh
+  fi;
+
   read -p "Would you like to use Mackup? (Keep your application settings in sync (OS X/Linux). https://github.com/lra/mackup) (y/n)" -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       source ./mackup/install.sh
