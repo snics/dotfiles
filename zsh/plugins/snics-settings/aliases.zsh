@@ -67,7 +67,7 @@ update () {
 	fi
 
 	echo "Update Oh My ZSH"
-	upgrade_oh_my_zsh
+	omz update
 	find $HOME/.oh-my-zsh/custom -type d -depth 2 -exec git --git-dir={}/.git --work-tree=/{} pull origin master \;
 	echo "Update Oh My ZSH done!"
 
