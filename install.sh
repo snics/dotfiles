@@ -41,6 +41,11 @@ function doIt() {
       source ./docker/install.sh
   fi;
 
+  read -p "Do you want to use Flutter? (y/n) " -n 1;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+      source ./flutter/install.sh
+  fi;
+
   read -p "Would you like to use Mackup? (Keep your application settings in sync (OS X/Linux). https://github.com/lra/mackup) (y/n)" -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       source ./mackup/install.sh
