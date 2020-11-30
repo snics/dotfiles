@@ -45,6 +45,8 @@ mas install 434290957
 mas install 424390742
 # Logic Pro X
 mas install 634148309
+# GoodNotes 5
+mas install 1444383602
 
 echo ""
 echo "Install app store apps done!"
