@@ -147,6 +147,7 @@ brew install dockutil
 brew install rke
 brew install awscli
 brew install s3cmd
+brew install minio-mc
 
 # Remove outdated versions from the cellar.
 brew cleanup
