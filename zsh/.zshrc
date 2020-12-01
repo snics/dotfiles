@@ -70,26 +70,27 @@ HIST_STAMPS="dd.mm.yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 
 plugins=(
-    sudo
-    command-not-found
     brew
-    gitfast
-    iterm2
+    command-not-found
     docker
     docker-aliases
     docker-compose
-    kubectl
+    flutter
+    gitfast
     helm
+    iterm-tab-color
+    iterm2
     jsontools
+    kubectl
+    node
     npm
     npms
-    zsh-better-npm-completion
     nvm-auto
-    node
     osx
-    zsh-completions
+    sudo
     zsh-autosuggestions
-    iterm-tab-color
+    zsh-better-npm-completion
+    zsh-completions
 
 
     ## My Settings
