@@ -66,7 +66,6 @@ brew cask install "tor-browser"
 
 # Developer Tools
 brew cask install "jetbrains-toolbox"
-brew cask install "Atom"
 brew cask install "visual-studio-code"
 brew cask install "iterm2"
 brew cask install "kaleidoscope"
