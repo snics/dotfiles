@@ -142,7 +142,6 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
   - [ ] 1Password 7
   - [ ] BeardedSpice
   - [ ] Cardhop
-  - [ ] ChatMate for WhatsApp
   - [ ] CleanMyMac X
   - [ ] Clockify Desktop
   - [ ] Mountain Duck
@@ -168,6 +167,9 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
   - [ ] zoom.us
   - [ ] SnippetsLab
   - [ ] SwitchResX
+  - [ ] Kap
+  - [ ] Final Cut Pro
+  - [ ] Motion
 
 
 ## Feedback
