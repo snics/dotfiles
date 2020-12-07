@@ -131,6 +131,8 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
 ## TODOs:
 
 - [ ] Add settings for tmux.
+- [ ] Add settings for Visual Studio Code.
+- [ ] Add settings for Github Cloud IDEA.
 - [ ] Add list of aliases.
 - [ ] Add full list of Mac Apps.
 - [ ] Add full list of all Vim and NeoVim shortcut.
