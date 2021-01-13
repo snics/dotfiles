@@ -11,7 +11,7 @@ echo ""
 defaults write com.apple.dock mouse-over-hilite-stack -bool true
 
 # Set the icon size of Dock items to 45 pixels
-defaults write com.apple.dock tilesize -int 45
+defaults write com.apple.dock tilesize -int 40
 
 # Change minimize/maximize window effect
 defaults write com.apple.dock mineffect -string "scale"
@@ -143,10 +143,12 @@ dockutil --no-restart --add "/Applications/Fantastical.app"
 dockutil --no-restart --add "/Applications/Cardhop.app"
 dockutil --no-restart --add "/Applications/Todoist.app"
 dockutil --no-restart --add "/Applications/Franz.app"
+dockutil --no-restart --add "/Applications/Notion.app"
 
 # Add space to System configuration
 defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
 
+dockutil --no-restart --add "/Applications/Visual Studio Code.app"
 dockutil --no-restart --add "/Applications/iTerm.app"
 dockutil --no-restart --add "/Applications/GitKraken.app"
 
@@ -156,7 +158,6 @@ defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-ty
 dockutil --no-restart --add '~/Projects' --view list --display folder --sort name  --allhomes
 dockutil --no-restart --add '~/Downloads' --view list --display folder --sort dateadded --allhomes
 dockutil --add '/Applications' --view grid --display folder --sort name --allhomes
-
 
 echo ""
 echo "Dock setup done!"

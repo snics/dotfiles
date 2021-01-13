@@ -55,6 +55,7 @@ brew cask install "beardedspice"
 brew cask install "tweetbot"
 brew cask install "typora"
 brew cask install "sipgate-softphone"
+brew cask install "notion"
 
 # Browsers
 brew cask install "google-chrome"
