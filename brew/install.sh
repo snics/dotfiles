@@ -20,6 +20,8 @@ brew tap "homebrew/cask"
 brew tap "homebrew/cask-drivers"
 brew tap "homebrew/cask-fonts"
 brew tap "homebrew/cask-versions"
+brew tap "buo/cask-upgrade"
+brew tap "homebrew/command-not-found"
 
 # Save Homebrew’s installed location.
 BREW_PREFIX=$(brew --prefix)
