@@ -43,7 +43,8 @@ update () {
   echo "Update Apps"
 	brew update
 	brew upgrade
-	brew cask upgrade
+	# Update cask apps
+	brew cu -a -y
 	brew cleanup
 
 	mas upgrade
@@ -73,7 +74,10 @@ update () {
 
 	echo "All updates done!"
 }
-
+outdated () {
+	brew outdated
+	brew cu -a
+}
 
 # Google Chrome
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
