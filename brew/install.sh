@@ -122,7 +122,7 @@ brew install trash
 brew install wdiff
 brew install yarn
 brew install z
-brew cask install "osxfuse"
+brew install --cask "osxfuse"
 brew install ntfs-3g
 brew install pandoc
 
