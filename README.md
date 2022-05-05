@@ -130,6 +130,8 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
 
 ## TODOs:
 
+- [ ] Remove custom helm settings and add asdf as default.
+- [ ] Remove NVM settings and add asdf as default.
 - [ ] Add settings for tmux.
 - [ ] Add settings for Visual Studio Code.
 - [ ] Add settings for Github Cloud IDEA.

@@ -86,12 +86,12 @@ plugins=(
     npm
     npms
     nvm-auto
-    osx
+    asdf
+    macos
     sudo
     zsh-autosuggestions
     zsh-better-npm-completion
     zsh-completions
-
 
     ## My Settings
     snics-settings

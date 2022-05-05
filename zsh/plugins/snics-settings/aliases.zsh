@@ -53,7 +53,11 @@ update () {
 	echo "Update NPM modules"
 	npm install npm -g
 	npm update -g
-  echo "Update NPM modules done!"
+	echo "Update NPM modules done!"
+
+	echo "Update asdf plugins"
+	asdf plugin update --all
+	echo "Update asdf plugins done!"
 
 	echo "Update Ruby gems"
 	sudo gem update --system

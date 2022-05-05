@@ -51,6 +51,17 @@ function doIt() {
       source ./kotlin/install.sh
   fi;
 
+  read -p "Do you want to use asdf? (y/n) " -n 1;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+      source ./asdf/install.sh
+
+      read -p "Do you want to install my asdf plugins (y/n) " -n 1;
+      echo "";
+      if [[ $REPLY =~ ^[Yy]$ ]]; then
+        source ./asdf/dock.sh;
+      fi;
+  fi;
+
   read -p "Would you like to use Mackup? (Keep your application settings in sync (OS X/Linux). https://github.com/lra/mackup) (y/n)" -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       source ./mackup/install.sh
