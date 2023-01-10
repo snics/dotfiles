@@ -20,7 +20,7 @@ function doIt() {
           source ./macOS/dock.sh;
       fi;
 
-      read -p "Do you want to use Alred 4? (y/n) " -n 1;
+      read -p "Do you want to use Alred? (y/n) " -n 1;
       if [[ $REPLY =~ ^[Yy]$ ]]; then
           source ./alfred/settings.sh
       fi;

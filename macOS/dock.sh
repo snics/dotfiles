@@ -123,27 +123,22 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 [ ! -d "$HOME/Projects" ] && mkdir "$HOME/Projects"
 
 dockutil --no-restart --remove all
-dockutil --no-restart --add '/System/Applications/System Preferences.app'
+dockutil --no-restart --add '/System/Applications/System Settings.app'
 dockutil --no-restart --add '/Applications/Spotify.app'
 
 # Add space to System configuration
 defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
 
-dockutil --no-restart --add '/Applications/Safari.app'
 dockutil --no-restart --add '/Applications/Google Chrome.app'
-dockutil --no-restart --add '/Applications/Chromium.app'
-dockutil --no-restart --add '/Applications/Firefox.app'
-dockutil --no-restart --add '/Applications/Opera.app'
 
 # Add space to System configuration
 defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
 
-dockutil --no-restart --add "/Applications/Spark.app"
+dockutil --no-restart --add "/Applications/Superhuman.app"
 dockutil --no-restart --add "/Applications/Fantastical.app"
 dockutil --no-restart --add "/Applications/Cardhop.app"
 dockutil --no-restart --add "/Applications/Todoist.app"
 dockutil --no-restart --add "/Applications/Franz.app"
-dockutil --no-restart --add "/Applications/Notion.app"
 
 # Add space to System configuration
 defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
