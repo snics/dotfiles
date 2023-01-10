@@ -17,7 +17,7 @@ brew cask upgrade
 
 # Utils
 brew install "kotlin"
-brew cask install "kotlin-native"
+brew install --cask "kotlin-native"
 
 # Remove outdated versions from the cellar.
 brew cleanup

@@ -16,15 +16,15 @@ brew tap "homebrew/cask-fonts"
 brew tap "homebrew/cask-versions"
 
 # fonts
-brew cask install "font-fira-code"
-brew cask install "font-hack"
-brew cask install "font-inconsolata"
-brew cask install "font-fira-code"
-brew cask install "font-jetbrains-mono"
-brew cask install "font-cascadia-mono"
-brew cask install "font-hack-nerd-font"
-brew cask install "font-open-sans"
-brew cask install "font-ubuntu"
+brew install --cask "font-fira-code"
+brew install --cask "font-hack"
+brew install --cask "font-inconsolata"
+brew install --cask "font-fira-code"
+brew install --cask "font-jetbrains-mono"
+brew install --cask "font-cascadia-mono"
+brew install --cask "font-hack-nerd-font"
+brew install --cask "font-open-sans"
+brew install --cask "font-ubuntu"
 
 
 # Install powerline fonts

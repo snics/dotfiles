@@ -115,7 +115,7 @@ def main(wf):
         if query and query.startswith('install'):
             for formula in filter_all_casks(wf, query):
                 wf.add_item(formula, 'Install cask',
-                            arg='brew cask install %s' % formula,
+                            arg='brew install --cask %s' % formula,
                             valid=True,
                             icon=helpers.get_icon(wf, 'package'))
         elif query and any(query.startswith(x) for x in ['search', 'home']):

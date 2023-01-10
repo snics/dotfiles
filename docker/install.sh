@@ -18,7 +18,7 @@ brew upgrade
 brew tap "homebrew/cask"
 brew tap "homebrew/cask-drivers"
 
-brew cask install docker
+brew install --cask docker
 brew install boot2docker
 brew install docker-compose
 brew install minikube

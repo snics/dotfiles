@@ -17,9 +17,9 @@ brew cask upgrade
 
 # Utils
 brew install "swift"
-brew cask install "flutter"
-brew cask install "android-sdk"
-brew cask install "adoptopenjdk8"
+brew install --cask "flutter"
+brew install --cask "android-sdk"
+brew install --cask "adoptopenjdk8"
 
 # Remove outdated versions from the cellar.
 brew cleanup
