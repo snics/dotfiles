@@ -788,13 +788,6 @@ defaults write com.operasoftware.Opera PMPrintingExpandedStateForPrint2 -boolean
 defaults write com.operasoftware.OperaDeveloper PMPrintingExpandedStateForPrint2 -boolean true
 
 ###############################################################################
-# Tweetbot.app                                                                #
-###############################################################################
-
-# Bypass the annoyingly slow t.co URL shortener
-defaults write com.tapbots.TweetbotMac OpenURLsDirectly -bool true
-
-###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################
 

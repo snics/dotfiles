@@ -23,6 +23,8 @@ brew cask install "font-fira-code"
 brew cask install "font-jetbrains-mono"
 brew cask install "font-cascadia-mono"
 brew cask install "font-hack-nerd-font"
+brew cask install "font-open-sans"
+brew cask install "font-ubuntu"
 
 
 # Install powerline fonts
