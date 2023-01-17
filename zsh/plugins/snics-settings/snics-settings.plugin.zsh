@@ -4,6 +4,7 @@ source "$HOME/.oh-my-zsh/custom/plugins/fzf-widgets/init.zsh"
 source "${0:h}/secrets.zsh"
 source "${0:h}/zsh-aliases.zsh"
 source "${0:h}/aliases.zsh"
+source "${0:h}/update.zsh"
 source "${0:h}/theme-settings.zsh"
 
 # My Settings
