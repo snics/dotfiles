@@ -2,7 +2,7 @@ mkdock () {
     echo "Make dock..."
 
     dockutil --no-restart --remove all
-    dockutil --no-restart --add '/System/Applications/System Settings.app'
+    dockutil --no-restart  --add '/System/Applications/System Settings.app'
     dockutil --no-restart --add '/Applications/Spotify.app'
 
     # Add space to System configuration
