@@ -4,12 +4,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="bullet-train"
-
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
@@ -69,29 +63,94 @@ HIST_STAMPS="dd.mm.yyyy"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
+source ~/.zplug/init.zsh
+
+# Load the oh-my-zsh's library.
+zplug "zsh-users/zsh-history-substring-search"
+
+# Make sure to use double quotes
+zplug "zsh-users/zsh-syntax-highlighting"
+
+# Fish-like auto suggestions
+zplug "zsh-users/zsh-autosuggestions"
+
+# Extra zsh completions
+zplug "zsh-users/zsh-completions"
+
+# For terminal tab gives a color based on commands that run there
+zplug "bernardop/iterm-tab-color-oh-my-zsh"
+
+# Better npm code completion
+zplug "torifat/npms"
+
+
+zplug "ytet5uy4/fzf-widgets"
+if zplug check 'ytet5uy4/fzf-widgets'; then
+    # Map widgets to key
+    bindkey '^@'  fzf-select-widget
+    bindkey '^@.' fzf-edit-dotfiles
+    bindkey '^@c' fzf-change-directory
+    bindkey '^@n' fzf-change-named-directory
+    bindkey '^@f' fzf-edit-files
+    bindkey '^@k' fzf-kill-processes
+    bindkey '^@s' fzf-exec-ssh
+    bindkey '^\'  fzf-change-recent-directory
+    bindkey '^r'  fzf-insert-history
+    bindkey '^xf' fzf-insert-files
+    bindkey '^xd' fzf-insert-directory
+    bindkey '^xn' fzf-insert-named-directory
+
+    ## Git
+    bindkey '^@g'  fzf-select-git-widget
+    bindkey '^@ga' fzf-git-add-files
+    bindkey '^@gc' fzf-git-change-repository
+
+    # GitHub
+    bindkey '^@h'  fzf-select-github-widget
+    bindkey '^@hs' fzf-github-show-issue
+    bindkey '^@hc' fzf-github-close-issue
+
+    ## Docker
+    bindkey '^@d'  fzf-select-docker-widget
+    bindkey '^@dc' fzf-docker-remove-containers
+    bindkey '^@di' fzf-docker-remove-images
+    bindkey '^@dv' fzf-docker-remove-volumes
+
+    # Start fzf in a tmux pane
+    FZF_WIDGET_TMUX=1
+fi
+
+# Load the theme.
+zplug "caiogondim/bullet-train.zsh", as:theme
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
+
 plugins=(
     brew
     command-not-found
     docker
-    docker-aliases
     docker-compose
     flutter
     gitfast
     helm
-    iterm-tab-color
     iterm2
     jsontools
     kubectl
     node
     npm
-    npms
-    nvm-auto
     asdf
     macos
     sudo
-    zsh-autosuggestions
-    zsh-better-npm-completion
-    zsh-completions
+    command-not-found
 
     ## My Settings
     snics-settings
