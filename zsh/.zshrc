@@ -120,6 +120,14 @@ if zplug check 'ytet5uy4/fzf-widgets'; then
     FZF_WIDGET_TMUX=1
 fi
 
+# Good aliases list and finder aliases
+zplug "akash329d/zsh-alias-finder"
+
+# adds fuzzy search to tab completion of z
+zplug "changyuheng/fz", defer:1
+zplug "rupa/z", use:z.sh
+
+
 # Load the theme.
 zplug "caiogondim/bullet-train.zsh", as:theme
 
@@ -135,6 +143,8 @@ fi
 zplug load --verbose
 
 plugins=(
+    1password
+    asdf
     brew
     command-not-found
     docker
@@ -145,12 +155,10 @@ plugins=(
     iterm2
     jsontools
     kubectl
+    macos
     node
     npm
-    asdf
-    macos
     sudo
-    command-not-found
 
     ## My Settings
     snics-settings
