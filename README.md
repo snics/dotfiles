@@ -135,37 +135,8 @@ cp -f ~/.dotfiles/.secrets.example ~/.secrets
 - [ ] Add settings for tmux.
 - [ ] Add settings for Visual Studio Code.
 - [ ] Add settings for Github Cloud IDEA.
-- [ ] Add list of aliases.
 - [ ] Add full list of Mac Apps.
 - [ ] Add full list of all Vim and NeoVim shortcut.
-- [ ] Fix problems with Alfred Github Workflow
-- [ ] Add mackup default start settings for direkt using with out of own settings in the iCloud.
-- [ ] Create pull requests for mackup applications that are not supported:
-  - [ ] 1Password 7
-  - [ ] BeardedSpice
-  - [ ] Cardhop
-  - [ ] CleanMyMac X
-  - [ ] Clockify Desktop
-  - [ ] Mountain Duck
-  - [ ] coconutBattery 3
-  - [ ] Fantastical 3
-  - [ ] Gemini 2
-  - [ ] Gifox
-  - [ ] iStat Menus 6
-  - [ ] JetBrains Toolbox
-  - [ ] Mission Control Plus
-  - [ ] Numi
-  - [ ] OBS
-  - [ ] Paw
-  - [ ] The Unarchiver
-  - [ ] Todoist
-  - [ ] zoom.us
-  - [ ] SnippetsLab
-  - [ ] SwitchResX
-  - [ ] Kap
-  - [ ] Final Cut Pro
-  - [ ] Motion
-
 
 ## Feedback
 

@@ -21,31 +21,43 @@ brew tap "homebrew/cask-drivers"
 brew install --cask docker
 brew install boot2docker
 brew install docker-compose
+brew install lazydocker
 brew install minikube
 brew install kubernetes-cli
 brew install rancher-cli
+brew install rke
+
+# Helm
+brew install helm
+
+# podman
+brew install podman
+brew install podman-desktop
+
+# Lima
+brew install lima
+
+# trivy
+brew install trivy
+
+# Kuberntes GUIs
+brew install --cask lens
+brew install --cask kubenav
 
 # Remove outdated versions from the cellar.
 brew cleanup
 
 HELM_VERSION=v2.17.0
-HELM3_VERSION=v3.4.2
 
 echo "install helm $HELM_VERSION"
 TMP_PATH="$HOME/.dotfiles/.tmp"
 [ ! -d "$TMP_PATH" ] && mkdir -p "$TMP_PATH"
 [ ! -d "$TMP_PATH/helm2" ] && mkdir -p "$TMP_PATH/helm2"
-[ ! -d "$TMP_PATH/helm3" ] && mkdir -p "$TMP_PATH/helm3"
 
 wget https://get.helm.sh/helm-${HELM_VERSION}-darwin-amd64.tar.gz -O $TMP_PATH/helm2.tar.gz; tar -xf $TMP_PATH/helm2.tar.gz -C $TMP_PATH/helm2; rm $TMP_PATH/helm2.tar.gz
-wget https://get.helm.sh/helm-${HELM_VERSION}-darwin-amd64.tar.gz -O $TMP_PATH/helm3.tar.gz; tar -xf $TMP_PATH/helm3.tar.gz -C $TMP_PATH/helm3; rm $TMP_PATH/helm3.tar.gz
 
 echo -e "\\ninstall helm $HELM_VERSION"
-cp -p $TMP_PATH/helm2/darwin-amd64/helm /usr/local/bin/helm
 cp -p $TMP_PATH/helm2/darwin-amd64/helm /usr/local/bin/helm2
-
-echo -e "\\ninstall helm $HELM3_VERSION"
-cp -p $TMP_PATH/helm3/darwin-amd64/helm /usr/local/bin/helm3
 
 [ -d "$TMP_PATH" ] && rm -rf $TMP_PATH
 
@@ -53,5 +65,5 @@ cp -p $HOME/.dotfiles/docker/helm-update.sh /usr/local/bin/helm-update
 chmod 775 /usr/local/bin/helm-update
 
 echo ""
-echo -e "\\n\\nInstall Docker, docker-compose, minikube, kubernetes-cli rancher-cli helm v2 and helm v3 done!"
+echo -e "\\n\\nInstall Docker, docker-compose, minikube, kubernetes-cli rancher-cli helm v2, helm v3 podman done!"
 echo ""

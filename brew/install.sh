@@ -124,6 +124,7 @@ brew install yarn
 brew install z
 brew install --cask "osxfuse"
 brew install ntfs-3g
+brew install ntfs-3g-mac
 brew install pandoc
 
 # Install other useful binaries.
@@ -150,6 +151,7 @@ brew install rke
 brew install awscli
 brew install s3cmd
 brew install minio-mc
+
 
 # Remove outdated versions from the cellar.
 brew cleanup

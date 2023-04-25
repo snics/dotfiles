@@ -51,6 +51,7 @@ brew install --cask "keyboard-maestro"
 brew install --cask "mission-control-plus"
 brew install --cask "coconutbattery"
 brew install --cask "sipgate-softphone"
+brew install --cask "macfuse"
 
 # Browsers
 brew install --cask "google-chrome"
@@ -59,6 +60,10 @@ brew install --cask "firefox"
 brew install --cask "opera"
 brew install --cask "tor-browser"
 
+# Microsoft Office
+brew install --cask "microsoft-excel"
+brew install --cask "microsoft-powerpoint"
+brew install --cask "microsoft-word"
 
 # Developer Tools
 brew install --cask "jetbrains-toolbox"
