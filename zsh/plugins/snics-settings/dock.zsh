@@ -15,8 +15,8 @@ mkdock () {
 
     dockutil --no-restart --add "/Applications/Superhuman.app"
     dockutil --no-restart --add "/Applications/Fantastical.app"
-    dockutil --no-restart --add "/Applications/Cardhop.app"
     dockutil --no-restart --add "/Applications/Todoist.app"
+    dockutil --no-restart --add "/Applications/Notion.app"
     dockutil --no-restart --add "/Applications/Franz.app"
 
     # Add space to System configuration

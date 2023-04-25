@@ -6,6 +6,9 @@ alias -g N="| /dev/null"
 alias -g S='| sort'
 alias -g G='| grep' # now you can do: ls foo G something
 
+# Docker
+alias docker="/Applications/Docker.app/Contents/Resources/bin/docker"
+
 # Functions
 #
 # (f)ind by (n)ame

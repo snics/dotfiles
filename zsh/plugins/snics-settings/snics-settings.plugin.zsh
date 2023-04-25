@@ -19,3 +19,6 @@ source "${0:h}/nvm.zsh"
 
 # App Opens
 source "${0:h}/gitkraken.zsh"
+
+# Automation Settings
+source "${0:h}/automation/lsapps.zsh"
