@@ -4,6 +4,7 @@ source "${0:h}/zsh-aliases.zsh"
 source "${0:h}/aliases.zsh"
 source "${0:h}/dock.zsh"
 source "${0:h}/update.zsh"
+source "${0:h}/backup.zsh"
 source "${0:h}/theme-settings.zsh"
 
 # My Settings
@@ -22,3 +23,4 @@ source "${0:h}/gitkraken.zsh"
 
 # Automation Settings
 source "${0:h}/automation/lsapps.zsh"
+source "${0:h}/automation/pdftotext.zsh"

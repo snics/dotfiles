@@ -1,9 +1,9 @@
 typeset -g exa_params
-exa_params=('--git' '--icons' '--classify' '--group-directories-first' '--time-style=long-iso' '--group' '--color-scale')
+exa_params=('--oneline' '--git' '--icons' '--classify' '--group-directories-first' '--time-style=long-iso' '--group' '--color-scale')
 
 # ls
 _ls() {
-	exa ${exa_params} $@
+  exa ${exa_params} $@
 }
 alias ls="_ls"
 
@@ -18,6 +18,11 @@ _lt() {
   exa --tree --level=2 ${exa_params} $@
 }
 alias lt="_lt"
+
+_tree() {
+  exa --tree ${exa_params} $@
+}
+alias tree="_tree"
 
  # list, size, type, git
 _l() {

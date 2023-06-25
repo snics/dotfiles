@@ -16,6 +16,8 @@ zplug "bernardop/iterm-tab-color-oh-my-zsh"
 # Better npm code completion
 zplug "torifat/npms"
 
+# Automatically switch versions of node by looking for a .nvmrc file in the path tree
+zplug "aspirewit/zsh-nvm-auto-switch"
 
 zplug "ytet5uy4/fzf-widgets"
 if zplug check 'ytet5uy4/fzf-widgets'; then

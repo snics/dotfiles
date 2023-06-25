@@ -18,12 +18,17 @@ brew upgrade
 brew tap "homebrew/cask"
 brew tap "homebrew/cask-drivers"
 
-brew install --cask docker
-brew install boot2docker
+# Docker
+brew install docker
 brew install docker-compose
 brew install lazydocker
+
+# Kubernetes
 brew install minikube
 brew install kubernetes-cli
+brew install kind
+
+# Rancher tools
 brew install rancher-cli
 brew install rke
 
@@ -39,6 +44,9 @@ brew install lima
 
 # trivy
 brew install trivy
+
+# OpenShift
+brew install openshift-cli
 
 # Kuberntes GUIs
 brew install --cask lens
