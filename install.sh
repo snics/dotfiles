@@ -51,6 +51,10 @@ function doIt() {
       source ./golang/install.sh
   fi;
 
+  read -p "Do you want to use Rust? (y/n) " -n 1;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+      source ./rust/install.sh
+  fi;
 
   read -p "Do you want to use Kotlin? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
