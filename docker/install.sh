@@ -16,10 +16,9 @@ brew update
 brew upgrade
 
 brew tap "homebrew/cask"
-brew tap "homebrew/cask-drivers"
 
 # Docker
-brew install docker
+brew install --cask docker
 brew install docker-compose
 brew install lazydocker
 
@@ -37,7 +36,7 @@ brew install helm
 
 # podman
 brew install podman
-brew install podman-desktop
+brew install --cask podman-desktop
 
 # Lima
 brew install lima
