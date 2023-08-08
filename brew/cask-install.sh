@@ -18,7 +18,6 @@ brew cask upgrade
 
 # Install command-line tools using Homebrew.
 brew tap "homebrew/cask"
-brew tap "homebrew/cask-drivers"
 brew tap "homebrew/cask-fonts"
 brew tap "homebrew/cask-versions"
 brew tap "buo/cask-upgrade"
@@ -39,7 +38,6 @@ brew install --cask "fantastical"
 brew install --cask "franz"
 brew install --cask "zoom"
 brew install --cask "mountain-duck"
-brew install --cask "logitech-camera-settings"
 brew install --cask "cleanmymac"
 brew install --cask "gemini"
 brew install --cask "the-unarchiver"

@@ -26,8 +26,6 @@ mas upgrade
 
 # Xcode
 mas install 497799835
-# Spark Mail App
-mas install 1176895641
 # Todoist
 mas install 585829637
 # Magnet

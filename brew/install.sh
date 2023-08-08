@@ -17,7 +17,6 @@ brew update
 brew upgrade
 
 brew tap "homebrew/cask"
-brew tap "homebrew/cask-drivers"
 brew tap "homebrew/cask-fonts"
 brew tap "homebrew/cask-versions"
 brew tap "buo/cask-upgrade"
@@ -122,7 +121,7 @@ brew install trash
 brew install wdiff
 brew install yarn
 brew install z
-brew install --cask "osxfuse"
+brew install --cask macfuse
 brew install ntfs-3g
 brew install ntfs-3g-mac
 brew install pandoc
