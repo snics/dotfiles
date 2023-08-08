@@ -58,7 +58,7 @@ function doIt() {
       read -p "Do you want to install my asdf plugins (y/n) " -n 1;
       echo "";
       if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./asdf/dock.sh;
+        source ./asdf/plugins.sh;
       fi;
   fi;
 
@@ -77,7 +77,6 @@ function doIt() {
       source ./macOS/project-folder-structure.sh
   fi;
 
-  source ./git/settings.sh;
   source ./macOS/settings.sh;
 
   echo ""
