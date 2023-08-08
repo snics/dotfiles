@@ -24,7 +24,7 @@ _replace_start() {
 
 _backup_mackup() {
   # create backup folder of mackup
-  mkdir -p ~/mackup-backups
+  mkdir -p ~/.mackup
 
   # create backup with mackup (--force to overwrite existing backup and run without of ask)
   mackup backup --force
@@ -88,6 +88,37 @@ _backup_folder() {
   for pattern in "${_exclude_patterns[@]}"; do
     _exclude_options+="--exclude=$pattern "
   done
+
+  # Copy the files to the target directory with rsync, ignoring the patterns listed in the ignore file
+  for _p in "${_backup_source_paths[@]}"; do
+    _path=$(_replace_start "$_p" "~" "$HOME")
+    _target_dir=$(_replace_start "$_p" "~" "_HOME")
+
+    echo "Creating backup: $_index/$_max"
+
+    rsync -a $_exclude_options $_path "$_backup_target_dir/$_target_dir"
+    ((_index++))
+  done
+
+  # Archive and compress the target directory
+  tar -zcvf "$_backup_archive" "$_backup_target_dir"
+
+  # Delete the target directory after archiving and compressing
+  # rm -rf $_backup_target_dir
+
+  # Output a confirmation
+  echo "Backup was successfully."
+}
+
+
+_backup_folder() {
+  # Delete the target directory if it already exists
+  rm -rf $_backup_target_dir
+  # Create the target directory if it doesn't already exist
+  mkdir -p $_backup_target_dir
+
+  _max=${#_backup_source_paths[@]}
+  _index=1
 
   # Copy the files to the target directory with rsync, ignoring the patterns listed in the ignore file
   for _p in "${_backup_source_paths[@]}"; do
