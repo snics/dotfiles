@@ -69,7 +69,6 @@ zplug "unixorn/docker-helpers.zshplugin"
 ### Adds fuzzy search to tab completion of go
 zplug "wintermi/zsh-golang"
 
-
 # Load it all up for suggestions and completions
 
 ### completions and suggestions

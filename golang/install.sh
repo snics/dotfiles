@@ -17,6 +17,8 @@ brew upgrade
 # Installing Golang
 brew install "go"
 
+# Create a directory for Go workspace based on best practices
+mkdir -p $HOME/go/{bin,src,pkg}
 
 # Utils
 ## Installing Delve, a debugger for Go
@@ -27,6 +29,9 @@ brew install "gopls"
 
 ## Installing Gox, a cross-compilation tool for Go
 brew install "gox"
+
+# install g (A golang version manager)
+curl -sSL https://git.io/g-install | sh -s -- -y
 
 ## Remove outdated versions from the cellar.
 brew cleanup
