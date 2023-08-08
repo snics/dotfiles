@@ -46,6 +46,12 @@ function doIt() {
       source ./flutter/install.sh
   fi;
 
+  read -p "Do you want to use Golang? (y/n) " -n 1;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+      source ./golang/install.sh
+  fi;
+
+
   read -p "Do you want to use Kotlin? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       source ./kotlin/install.sh
