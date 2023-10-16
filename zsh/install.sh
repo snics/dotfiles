@@ -18,6 +18,8 @@ brew upgrade
 brew install zsh
 brew install fzf
 brew install peco
+brew install exa
+brew install bat
 brew install zplug
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
