@@ -31,13 +31,13 @@ brew install lazydocker
 # dive is a tool to explore a Docker image, layer contents, and discover ways to reduce image size.
 brew install dive
 
-# Skopeo is a command-line utility that performs various operations on container images and image repositories. In English: Skopeo is a command line utility to work with container images and repositories.
+# Skopeo is a command-line utility that performs various operations on container images and image repositories.
 brew install skopeo
 
-# Container-diff is a tool to analyze differences between container images. In English: Container-diff is a tool for analyzing and comparing container images.
+# Container-diff is a tool to analyze differences between container images.
 brew install container-diff
 
-# Lynis is a security auditing tool for UNIX systems, like Linux, macOS, and others. In English: Lynis is a security and system auditing tool for Unix-based systems.
+# Lynis is a security auditing tool for UNIX systems, like Linux, macOS, and others.
 brew install lynis
 
 # Sysdig is an open-source system monitoring and tracing tool.
@@ -48,6 +48,9 @@ brew install ctop
 
 # Hadolint is a linter for Dockerfiles to ensure best practices are followed.
 brew install hadolint
+
+# Dockle is a Docker image linter, security, and best practices enforcement tool.
+brew install goodwithtech/r/dockle
 
 # Clair is an open-source project for the static analysis of vulnerabilities in container images.
 brew install clair
@@ -60,7 +63,7 @@ brew install docker-slim
 
 ## Kubernetes
 
-# Minikube is a tool that allows running Kubernetes locally. In German: Minikube ist ein Werkzeug, das es ermöglicht, Kubernetes lokal auszuführen.
+# Minikube is a tool that allows running Kubernetes locally.
 brew install minikube
 
 # kubernetes-cli (kubectl) is a command-line tool to interact with Kubernetes clusters.
@@ -74,6 +77,9 @@ brew install helm
 
 # podman is a tool to manage containers and images, similar to Docker, but without a central daemon.
 brew install podman
+
+# podman-compose is a tool for running multi-container applications on podman, but without a central daemon.
+brew install podman-compose
 
 # podman-desktop provides a GUI for the podman tool.
 brew install --cask podman-desktop
