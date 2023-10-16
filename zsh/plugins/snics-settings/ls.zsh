@@ -9,8 +9,8 @@ alias ls="exa ${exa_params}"
 alias lS="exa -1 ${exa_params}"
 
 # tree
-alias lt="exa --tree --level=2 ${tree_exa_params}"
-alias tree="exa --tree --level=3 ${tree_exa_params}"
+alias lt="exa --tree --level=90 ${tree_exa_params}"
+alias tree="exa --tree --level=90 ${tree_exa_params}"
 
 # list, size, type, git
 alias l="exa --git-ignore ${exa_params}"
