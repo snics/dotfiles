@@ -15,6 +15,7 @@ source "${0:h}/key-bindings.zsh"
 source "${0:h}/fasd.zsh"
 source "${0:h}/rm.zsh"
 source "${0:h}/ls.zsh"
+source "${0:h}/cat.zsh"
 source "${0:h}/nvim.zsh"
 source "${0:h}/nvm.zsh"
 
