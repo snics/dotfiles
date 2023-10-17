@@ -50,6 +50,7 @@ brew install --cask "mission-control-plus"
 brew install --cask "coconutbattery"
 brew install --cask "sipgate-softphone"
 brew install --cask "macfuse"
+brew install --cask "notion"
 
 # Browsers
 brew install --cask "google-chrome"
