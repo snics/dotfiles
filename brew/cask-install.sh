@@ -51,6 +51,7 @@ brew install --cask "coconutbattery"
 brew install --cask "sipgate-softphone"
 brew install --cask "macfuse"
 brew install --cask "notion"
+brew install --cask "miro"
 
 # Browsers
 brew install --cask "google-chrome"
