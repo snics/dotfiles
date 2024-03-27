@@ -121,6 +121,7 @@ brew install trash
 brew install wdiff
 brew install yarn
 brew install z
+brew install starship
 brew install --cask macfuse
 brew install ntfs-3g
 brew install ntfs-3g-mac
