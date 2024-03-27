@@ -8,6 +8,7 @@ echo ""
 
 # Scope for projects at GitHub.
 [ ! -d "$HOME/Projects/GitHub" ] && mkdir -p "$HOME/Projects/GitHub"
+[ ! -d "$HOME/Projects/GitHub" ] && mkdir -p "$HOME/Projects/GitHub/raycast-extensions"
 
 # Scope for projects at GitLab.
 [ ! -d "$HOME/Projects/GitLab" ] && mkdir -p "$HOME/Projects/GitLab"

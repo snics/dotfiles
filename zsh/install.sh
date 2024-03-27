@@ -21,6 +21,7 @@ brew install peco
 brew install exa
 brew install bat
 brew install zplug
+brew install google-cloud-sdk
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
