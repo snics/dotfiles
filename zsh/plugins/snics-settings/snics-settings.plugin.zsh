@@ -7,6 +7,9 @@ source "${0:h}/update.zsh"
 source "${0:h}/backup.zsh"
 source "${0:h}/theme-settings.zsh"
 
+# Kubernetes Settings
+source "${0:h}/krew.zsh"
+
 # My Settings
 source "${0:h}/history-settings.zsh"
 source "${0:h}/key-bindings.zsh"
@@ -25,3 +28,6 @@ source "${0:h}/gitkraken.zsh"
 # Automation Settings
 source "${0:h}/automation/lsapps.zsh"
 source "${0:h}/automation/pdftotext.zsh"
+
+# Cloud Settings
+source "${0:h}/cloud/google.zsh"
