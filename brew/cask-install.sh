@@ -68,6 +68,7 @@ brew install --cask "microsoft-word"
 
 # Developer Tools
 brew install --cask "jetbrains-toolbox"
+brew install --cask "zed"
 brew install --cask "visual-studio-code"
 brew install --cask "iterm2"
 brew install --cask "kaleidoscope"
