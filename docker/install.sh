@@ -63,6 +63,9 @@ brew install docker-slim
 
 ## Kubernetes
 
+# Lang
+brew install pkl
+
 # Minikube is a tool that allows running Kubernetes locally.
 brew install minikube
 
@@ -97,6 +100,16 @@ brew install openshift-cli
 
 # Kompose is a tool to help users familiar with 'docker-compose' transition to Kubernetes.
 brew install kompose
+
+# Kubeaudit is a tool to audit Kubernetes clusters for various different security concerns.
+brew install kubeaudit
+
+# Kubescape is a tool for testing if Kubernetes is deployed securely.
+brew install kubescape
+
+# kubeshark is a tool for visualizing Kubernetes network traffic.
+brew tap kubeshark/kubeshark
+brew install kubeshark
 
 # Kubernetes GUIs
 # Lens is a Kubernetes integrated development environment (IDE).
