@@ -31,8 +31,8 @@ alias a='cd'               # Change to directory
 alias s='ls'               # Show / list
 alias d='cd'               # Change to directory
 alias f='open'             # Open file (may vary depending on your OS)
-alias sd='selectd'         # Interactive directory selection
-alias sf='selectf'         # Interactive file selection
+alias sd='_selectd'        # Interactive directory selection
+alias sf='_selectf'        # Interactive file selection
 alias z='cd'               # Change to directory
-alias zz='icd'             # Interactive change to directory
+alias zz='_icd'            # Interactive change to directory
 
