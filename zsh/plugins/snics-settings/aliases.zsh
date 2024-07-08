@@ -34,10 +34,6 @@ alias sudo='sudo '
 # Get week number
 alias week='date +%V'
 
-
-
-
-
 # Google Chrome
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
 
@@ -229,3 +225,8 @@ alias k9='kill -9'
 
 # Homebrew
 alias brewu='brew update && brew upgrade && brew cleanup && brew doctor'
+
+# Kubernetes
+alias kctx="kubectx"
+alias kns="kubens"
+

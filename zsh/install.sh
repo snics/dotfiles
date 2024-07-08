@@ -16,18 +16,23 @@ brew update
 brew upgrade
 
 brew install zsh
-brew install fasd
 brew install fzf
 brew install peco
+brew install exa
+brew install bat
+brew install zplug
+brew install google-cloud-sdk
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-cp -f -r $HOME/.dotfiles/zsh/plugins/* $HOME/.oh-my-zsh/custom/plugins
+ln -s -f $HOME/.dotfiles/zsh/plugins $HOME/.oh-my-zsh/custom/plugins
 
 # Custom configs
-cp -f $HOME/.dotfiles/zsh/custom/.tc-config $HOME/.oh-my-zsh/custom/plugins/iterm-tab-color/.tc-config
+ln -s -f $HOME/.dotfiles/zsh/custom/.tc-config $HOME/.oh-my-zsh/custom/plugins/iterm-tab-color/.tc-config
 
-cp -f $HOME/.dotfiles/zsh/.zshrc ~/.zshrc
+ln -s -f $HOME/.dotfiles/zsh/.zshrc ~/.zshrc
+# TODO: Add better custom starship.toml
+ln -s -f $HOME/.dotfiles/zsh/starship.toml ~/.config/starship.toml
 
 # Permissions error
 source ~/.zshrc

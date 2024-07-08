@@ -1,4 +1,4 @@
-source ~/.zplug/init.zsh
+source $ZPLUG_HOME/init.zsh
 
 # load all plugins form my zplug settings
 source "${0:h}/plugins.zsh"

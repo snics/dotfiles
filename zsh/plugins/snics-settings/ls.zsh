@@ -1,55 +1,28 @@
 typeset -g exa_params
 exa_params=('--oneline' '--git' '--icons' '--classify' '--group-directories-first' '--time-style=long-iso' '--group' '--color-scale')
+tree_exa_params=('--git' '--icons' '--classify' '--group-directories-first' '--time-style=long-iso' '--group' '--color-scale')
 
 # ls
-_ls() {
-  exa ${exa_params} $@
-}
-alias ls="_ls"
+alias ls="exa ${exa_params}"
 
 # one column, just names
-_lS() {
-  exa -1 ${exa_params} $@
-}
-alias lS="_lS"
+alias lS="exa -1 ${exa_params}"
 
 # tree
-_lt() {
-  exa --tree --level=2 ${exa_params} $@
-}
-alias lt="_lt"
+alias lt="exa --tree --level=90 ${tree_exa_params}"
+alias tree="exa --tree --level=90 ${tree_exa_params}"
 
-_tree() {
-  exa --tree ${exa_params} $@
-}
-alias tree="_tree"
-
- # list, size, type, git
-_l() {
-  exa --git-ignore ${exa_params} $@
-}
-alias l="_l"
+# list, size, type, git
+alias l="exa --git-ignore ${exa_params}"
 
 # all list
-_la() {
-  exa -a ${exa_params} $@
-}
-alias la="_la"
+alias la="exa -a ${exa_params}"
 
 # all + extended list
-_lx() {
-  exa -lbhHigUmuSa@ ${exa_params} $@
-}
-alias lx="_lx"
+alias lx="exa -lbhHigUmuSa@ ${exa_params}"
 
 # long list
-_ll() {
-  exa --header --long ${exa_params} $@
-}
-alias ll="_ll"
+alias ll="exa --header --long ${exa_params}"
 
 # long list, modified date sort
-_llm() {
-  exa --header --long --sort=modified ${exa_params} $@
-}
-alias llm="_llm"
+alias llm="exa --header --long --sort=modified ${exa_params}"

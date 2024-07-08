@@ -1,2 +1,2 @@
 # Load the theme.
-zplug "caiogondim/bullet-train.zsh", as:theme
+eval "$(starship init zsh)"

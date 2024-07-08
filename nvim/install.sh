@@ -18,43 +18,13 @@ brew update
 # Upgrade any already-installed formulae.
 brew upgrade
 
-brew install vim
+brew install git
 brew install neovim
 
-echo "creating vim directories"
-mkdir -p ~/.vim-tmp
-
-# create vim symlinks
-# As I have moved off of vim as my full time editor in favor of neovim,
-# I feel it doesn't make sense to leave my vimrc intact in the dotfiles repo
-# as it is not really being actively maintained. However, I would still
-# like to configure vim, so lets symlink ~/.vimrc and ~/.vim over to their
-# neovim equivalent.
-
-echo -e "\\n\\ninstalling to ~/.config"
-echo "=============================="
-if [ ! -d "$HOME/.config" ]; then
-    echo "Creating ~/.config/nvim"
-    mkdir -p "$HOME/.config"
-
-    [ ! -d "$HOME/.config/nvim" ] mkdir -p "$HOME/.config/nvim"
-fi
-
-echo -e "\\n\\nCreating vim symlinks"
-echo "=============================="
-VIMFILES=( "$HOME/.vim:$DOTFILES/nvim"
-        "$HOME/.vimrc:$DOTFILES/nvim/init.vim" )
-
-for file in "${VIMFILES[@]}"; do
-    KEY=${file%%:*}
-    VALUE=${file#*:}
-    if [ -e "${KEY}" ]; then
-        echo "${KEY} already exists... skipping."
-    else
-        echo "Creating symlink for $KEY"
-        ln -s "${VALUE}" "${KEY}"
-    fi
-done
+# TODO: Set up NeoVim from the dotfiles as a symlink
+git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
+# TODO: Add my custemized settings the dotfiles
+# TODO: Add Neovim as the default editor to all the shells
 
 
 echo "Install Vim and NeoVim done!"

@@ -17,7 +17,6 @@ brew update
 brew upgrade
 
 brew tap "homebrew/cask"
-brew tap "homebrew/cask-drivers"
 brew tap "homebrew/cask-fonts"
 brew tap "homebrew/cask-versions"
 brew tap "buo/cask-upgrade"
@@ -104,6 +103,8 @@ brew install gh
 brew install gnupg
 brew install highlight
 brew install htop
+# TODO: Add custom settings for htop https://github.com/aristocratos/btop
+brew install btop
 brew install hub
 brew install lazydocker
 brew install lazygit
@@ -122,7 +123,8 @@ brew install trash
 brew install wdiff
 brew install yarn
 brew install z
-brew install --cask "osxfuse"
+brew install starship
+brew install --cask macfuse
 brew install ntfs-3g
 brew install ntfs-3g-mac
 brew install pandoc
@@ -144,6 +146,7 @@ brew install rlwrap
 brew install ssh-copy-id
 brew install tree
 brew install jq
+brew install yq
 brew install vbindiff
 brew install zopfli
 brew install dockutil

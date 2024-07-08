@@ -1,6 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Apple M1 brew
+eval $(/opt/homebrew/bin/brew shellenv)
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -63,29 +66,11 @@ HIST_STAMPS="dd.mm.yyyy"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
+export ZPLUG_HOME=$(brew --prefix)/opt/zplug
 source ~/.dotfiles/zsh/zplug/init.zsh
 
 plugins=(
-    1password
-    asdf
-    brew
-    command-not-found
-    copyfile
-    docker
-    docker-compose
-    flutter
-    gitfast
-    helm
-    iterm2
-    jsontools
-    kubectl
-    macos
-    node
-    npm
-    sudo
-    web-search
-
-    ## My Settings
+    # My Settings
     snics-settings
 )
 
@@ -116,3 +101,5 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+autoload -U compinit; compinit
