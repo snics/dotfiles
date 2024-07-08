@@ -80,7 +80,6 @@ brew install --cask "transmit"
 brew install --cask "imageoptim"
 brew install --cask "dash"
 brew install --cask "parallels"
-brew install --cask "parallels-access"
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
 brew install --cask "qlcolorcode"
@@ -95,8 +94,8 @@ brew install --cask "quicklookase"
 
 # Media programmes
 brew install --cask "obs"
-brew install --cask "switchresx"
-brew install --cask "kap"
+brew install --cask "screen-studio"
+brew install --cask "cleanshot"
 brew install --cask "loopback"
 brew install --cask "fission"
 brew install --cask "audio-hijack"
