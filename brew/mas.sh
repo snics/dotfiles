@@ -30,8 +30,6 @@ mas install 497799835
 mas install 1176895641
 # Todoist
 mas install 585829637
-# Magnet
-mas install 441258766
 # SnippetsLab
 mas install 1006087419
 # Medis reids clint for mac
