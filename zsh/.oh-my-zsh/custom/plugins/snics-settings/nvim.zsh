@@ -1,4 +1,4 @@
 alias vi="nvim"
 alias vim="nvim"
 
-export EDITOR='vi'
+export EDITOR='nvim'

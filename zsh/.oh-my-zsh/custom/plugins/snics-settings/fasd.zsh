@@ -9,7 +9,7 @@ _selectd() {
 
 _selectf() {
     local file
-    file=$(find * -type f | fzf --preview 'bat --color "always" {}')
+    file=$(find * -type f | fzf --preview 'bat --plain --number --color "always" {}')
 
     if [ -n "$file" ]; then
         open "$file"
