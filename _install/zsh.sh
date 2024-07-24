@@ -3,7 +3,7 @@
 echo -e "Install zsh...."
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-stow ~/.dotfiles/zsh
+stow zsh;
 
 # Install tool for cleanup the mac
 curl -o cleanup https://raw.githubusercontent.com/fwartner/mac-cleanup/master/cleanup.sh
