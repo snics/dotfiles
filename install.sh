@@ -48,6 +48,8 @@ function doIt() {
         source ./macOS/project-folder-structure.sh
     fi;
 
+    source ./_install/git.sh
+
     source ./macOS/settings.sh;
 
     echo ""

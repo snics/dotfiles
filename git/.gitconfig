@@ -95,7 +95,7 @@
   svnl = svn log --oneline --show-commit
 [commit]
   # https://help.github.com/articles/signing-commits-using-gpg/
-  gpgsign = true
+	gpgsign = true
 [format]
   pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
 [mergetool]
@@ -179,3 +179,16 @@
 
 [url "git://gitlab.devninjas/"]
   insteadOf = "devn:"
+[user]
+	name = Nico Swiatecki
+	email = nico@devninjas.io
+	signingkey = 8725897D90672890
+[github]
+	user = snics
+	token = 7ab207810c1522885d71e829947b23e0e4fbcbcf
+[gpg]
+	program = usr/local/bin/gpg
+[init]
+	defaultBranch = main
+[tag]
+	forceSignAnnotated = false
