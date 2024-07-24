@@ -67,7 +67,7 @@ HIST_STAMPS="dd.mm.yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 
 export ZPLUG_HOME=$(brew --prefix)/opt/zplug
-source ~/.dotfiles/zsh/zplug/init.zsh
+source ~/.zplug/init.zsh
 
 plugins=(
     # My Settings
