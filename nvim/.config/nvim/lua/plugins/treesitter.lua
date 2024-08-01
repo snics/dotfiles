@@ -6,5 +6,6 @@ return {
             local options = require("configs.treesitter")
             return options
         end
-    }
+    },
+    -- Add support for https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 }
