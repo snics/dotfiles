@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo -e "Install Golang...."
+echo "Install Golang...."
 
 # Create a directory for Go workspace based on best practices
 mkdir -p $HOME/go/{bin,src,pkg}
