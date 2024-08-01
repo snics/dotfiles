@@ -12,7 +12,47 @@ _selectf() {
     file=$(find * -type f | fzf --preview 'bat --plain --number --color "always" {}')
 
     if [ -n "$file" ]; then
-        open "$file"
+        local options=(
+            "Open with default application"
+            "Open with less"
+            "Open with vim"
+            "Open with cat"
+            "Open with Web Browser"
+            "Open with WebStorm"
+            "Open with IntelliJ IDEA"
+            "Open with CLion"
+        )
+        local choice=$(printf '%s\n' "${options[@]}" | fzf --prompt="Select how to open $file: ")
+
+        case $choice in
+            "Open with default application")
+                open "$file"
+                ;;
+            "Open with less")
+                less "$file"
+                ;;
+            "Open with vim")
+                vi "$file"
+                ;;
+            "Open with cat")
+                cat "$file"
+                ;;
+            "Open with Web Browser")
+                open -a "Google Chrome" "$file"
+                ;;
+            "Open with WebStorm")
+                open -a "WebStorm" "$file"
+                ;;
+            "Open with IntelliJ IDEA")
+                open -a "IntelliJ IDEA" "$file"
+                ;;
+            "Open with CLion")
+                open -a "CLion" "$file"
+                ;;
+            *)
+                echo "Invalid choice"
+                ;;
+        esac
     fi
 }
 
