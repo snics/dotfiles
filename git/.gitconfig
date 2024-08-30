@@ -182,12 +182,12 @@
 [user]
 	name = Nico Swiatecki
 	email = nico@devninjas.io
-	signingkey = 8725897D90672890
+	signingkey = 39F9107A1A8D5844
 [github]
 	user = snics
 	token = 7ab207810c1522885d71e829947b23e0e4fbcbcf
 [gpg]
-	program = usr/local/bin/gpg
+	program = /usr/local/bin/gpg
 [init]
 	defaultBranch = main
 [tag]
