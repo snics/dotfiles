@@ -1,22 +1,29 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
 # ~/.config/starship.toml
 palette = "catppuccin_macchiato"
 
 add_newline = true
 command_timeout = 1000
+scan_timeout = 10
 format = '''
-[┌](overlay1) $os$username$hostname$kubernetes$directory$git_branch$git_status
-[└─❯](overlay1) '''
+[┌](surface1) $os$memory_usage$battery$sudo$username$directory $git_branch$git_commit$git_metrics $fill $container$meson$direnv$kubernetes$helm$dart$deno$nodejs$golang$rust$package
+[└─$cmd_duration$character](surface1) '''
 
-# Drop ugly default prompt characters
+# set up the character module to display the prompt character
 [character]
 success_symbol = "[❯](maroon)"
 error_symbol = "[❯](red)"
 vimcmd_symbol = "[❮](green)"
+vimcmd_replace_one_symbol = "[❮](purple)"
+vimcmd_replace_symbol = "[❮](purple)"
+vimcmd_visual_symbol = "[❮](yellow)"
 
-# ---
-
+# Set the OS model to display the OS icon
 [os]
-format = '[$symbol](white) '
+format = '[$symbol]($style)'
+style = "bold text"
 disabled = false
 
 [os.symbols]
@@ -64,91 +71,129 @@ Unknown = " "
 Void = " "
 Windows = "󰍲 "
 
-# ---
-
-
-# Shows the username
+# Set username module to display the current user's username
 [username]
-style_user = 'white'
-style_root = 'black'
+style_user = 'blue bold'
+style_root = 'black bold'
 format = '[$user]($style) '
 disabled = false
 show_always = true
 
-# Shows the hostname
-[hostname]
-ssh_only = false
-format = 'on [$hostname](bold) '
+[sudo]
+format = '[as $symbol]($style)'
+symbol = '🧙 '
+allow_windows = true
+disabled = true
+
+# Set up the battery module to display the battery percentage
+[battery]
+format = '[$symbol$percentage]($style) '
+full_symbol = " "
+charging_symbol = ""
+discharging_symbol = "󰂃"
+unknown_symbol = " "
+empty_symbol = " "
 disabled = false
+
+[[battery.display]] # 'bold red' style and discharging_symbol when capacity is between 0% and 10%
+threshold = 10
+style = 'bold red'
+
+[[battery.display]]
+threshold = 30
+style = 'bold yellow'
+
+# Set up cmd_duration module to display the time it took for the last command to execute
+[cmd_duration]
+format = ' 󰔚 [$duration](bold yellow) '
 
 # Shows current directory
 [directory]
-truncation_length = 4
+truncation_length = 3
 truncation_symbol = '…/'
-home_symbol = '󰋜 ~'
-read_only_style = '197'
+home_symbol = ' ~'
+read_only_style = 'red'
 read_only = '  '
-format = 'at [$path]($style)[$read_only]($read_only_style) '
-
-# Shows current git branch
-[git_branch]
-symbol = " "
-format = 'via [$symbol$branch]($style)'
-truncation_length = 2
-truncation_symbol = '…/'
-style = 'bold'
-
-# Shows current git status
-[git_status]
-format = '[$all_status$ahead_behind]($style) '
-style = 'green'
-conflicted = '🏳'
-up_to_date = ''
-untracked = ' '
-ahead = '⇡${count}'
-diverged = '⇕⇡${ahead_count}⇣${behind_count}'
-behind = '⇣${count}'
-stashed = '󰋻 '
-modified = ' '
-staged = '[++\($count\)](green)'
-renamed = '襁 '
-deleted = ' '
-
-# Shows kubernetes context and namespace
-[kubernetes]
-format = 'via [$symbol$context\($namespace\)]($style) '
-symbol = "󱃾 "
-style = 'blue'
-disabled = false
-
-# ---
-
-[docker_context]
-symbol = " "
-disabled = true
-
-[helm]
-disabled = true
-
-[nodejs]
-symbol = " "
-disabled = true
+format = 'at [$path]($style)[$read_only]($read_only_style)'
 
 [dart]
-symbol = " "
-disabled = true
+symbol = " "
 
-[terraform]
-symbol = "󱁢 "
-disabled = true
+[deno]
+format = '[$symbol($version )]($style) '
+symbol = "🦕"
+
+[docker_context]
+format = '[$symbol$context]($style) '
+symbol = "🐳 "
+
+[git_branch]
+always_show_remote = false
+format = 'on [$symbol$branch(:$remote_branch)]($style)'
+symbol = " "
+style = ' maroon'
+
+[git_commit]
+commit_hash_length = 3
+format = '[\($hash$tag\)]($style)'
+style = 'yellow'
+only_detached = true
+tag_disabled = true
+tag_max_candidates = 0
+tag_symbol = "🏷️ "
+
+[git_metrics]
+format = ' ([$added]($added_style))([$deleted]($deleted_style))'
+disabled = false
+only_nonzero_diffs = false
+
+[golang]
+format = '[$symbol($version )]($style) '
+symbol = ""
+style = 'bold blue'
+
+[helm]
+format = '[$symbol($version )]($style) '
+style = 'bold blue'
+
+[kubernetes]
+format = '[$symbol$context( \($namespace\))]($style) '
+style = 'bold blue'
+
+[lua]
+format = '[$symbol($version )]($style) '
+symbol = ""
+style = 'bold blue'
+
+[memory_usage]
+format = '[$symbol${ram}( | ${swap})]($style) '
+disabled = false
+threshold = 95
+symbol = '󰍛'
+style = 'pink'
+
+[meson]
+format = '[$symbol$project]($style) '
+
+[nodejs]
+format = '[$symbol($version)]($style) '
+style = 'bold green'
+
+[package]
+style = 'bold peach'
+symbol = "📦 "
 
 [rust]
-symbol = " "
-disabled = true
+format = '[$symbol($version )]($style) '
+symbol = ""
+style = 'bold red'
 
+[terraform]
+format = '[$symbol$workspace]($style) '
+symbol = "󱁢"
+style = 'bold mauve'
 
 # palette tables should be last in the config ⚓️
-
 # Catppucci theme
 [palettes.catppuccin_macchiato]
 rosewater = "#f4dbd6"
