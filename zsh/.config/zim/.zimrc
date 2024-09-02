@@ -1,0 +1,38 @@
+# Basic plugins
+zmodule environment
+zmodule input
+zmodule run-help
+zmodule archive
+zmodule asdf
+zmodule direnv
+zmodule magic-enter
+zmodule homebrew
+zmodule k
+
+# Auto completions and syntax highlighting
+zmodule zsh-users/zsh-syntax-highlighting
+zmodule zsh-users/zsh-completions --fpath src
+zmodule zsh-users/zsh-autosuggestions
+zmodule zsh-users/zsh-history-substring-search
+zmodule completion
+zmodule Aloxaf/fzf-tab
+
+# Comunity plugins
+zmodule joke/zim-starship
+zmodule joke/zim-helm
+zmodule joke/zim-k9s
+zmodule joke/zim-kubectl
+zmodule joke/zim-minikube
+zmodule joke/zim-yq
+zmodule kiesman99/zim-zoxide
+
+# Oh My Zsh plugins
+zmodule ohmyzsh/ohmyzsh --root plugins/sudo
+
+zmodule ~/.config/zim-modules/bat
+zmodule ~/.config/zim-modules/eza
+zmodule ~/.config/zim-modules/fzf
+
+zmodule ~/.config/zim-modules/docker --fpath functions --source init.zsh
+zmodule ~/.config/zim-modules/podman --fpath functions --source init.zsh
+
