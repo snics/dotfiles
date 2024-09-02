@@ -11,6 +11,7 @@ tap "homebrew/cask-versions" # Alternate versions of Casks. [Homebrew Cask Versi
 tap "homebrew/command-not-found" # Command-not-found hook for Homebrew. [Homebrew Command Not Found](https://github.com/Homebrew/homebrew-command-not-found)
 tap "kubeshark/kubeshark" # API traffic viewer for Kubernetes. [Kubeshark](https://github.com/kubeshark/homebrew-tap)
 tap "lotyp/formulae" # Various useful Homebrew formulas. [Lotyp Formulae](https://github.com/lotyp/homebrew-formulae)
+tap "joshmedeski/sesh" # Sesh: A tool for managing shell sessions. [Sesh](https://github.com/joshmedeski/sesh)
 
 # Install various CLI tools and utilities
 brew "ack" # A tool like grep, optimized for programmers. [Ack](https://beyondgrep.com/)
@@ -129,6 +130,7 @@ brew "rke" # Rancher Kubernetes Engine, a simple Kubernetes installer. [RKE](htt
 brew "rlwrap" # Readline wrapper, allowing the use of readline features with arbitrary programs. [Rlwrap](https://github.com/hanslub42/rlwrap)
 brew "rustup" # The Rust toolchain installer. [Rustup](https://rustup.rs/)
 brew "s3cmd" # Command line tool for managing Amazon S3 and CloudFront services. [S3cmd](https://s3tools.org/s3cmd)
+brew "sesh" # A tool for managing shell sessions. [Source](https://github.com/joshmedeski/sesh)
 brew "shellcheck" # A shell script static analysis tool. [ShellCheck](https://www.shellcheck.net/)
 brew "skopeo" # Command line utility that performs various operations on container images and image repositories. [Skopeo](https://github.com/containers/skopeo)
 brew "socat" # Multipurpose relay (SOcket CAT). [Socat](http://www.dest-unreach.org/socat/)
