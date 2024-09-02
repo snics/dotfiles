@@ -35,13 +35,13 @@ fi
 # Initialize modules.
 source ${ZIM_HOME}/init.zsh
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
+# Set up tmux.
+# Download TPM (Tmux Plugin Manager) if missing.
+if command -v git &> /dev/null; then
+  if [[ ! -d "${HOME}/.tmux/plugins/tpm" ]]; then
+    git clone https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
+  fi
+fi
 
 # Set keybindings to vi mode.
 bindkey -e
