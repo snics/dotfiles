@@ -154,7 +154,6 @@ brew "ucspi-tcp" # Command-line tools for building TCP client-server application
 brew "vbindiff" # Visual binary diff, visually compare binary files. [Vbindiff](https://www.cjmweb.net/vbindiff/)
 brew "wdiff" # Display word differences between text files. [Wdiff](https://www.gnu.org/software/wdiff/)
 brew "wget" # Internet file retriever. [Wget](https://www.gnu.org/software/wget/)
-brew "whalebrew" # Create aliases for Docker images. [Whalebrew](https://github.com/whalebrew/whalebrew)
 brew "woff2" # Web Open Font Format 2.0. [Woff2](https://github.com/google/woff2)
 brew "xpdf" # PDF viewer. [Xpdf](https://www.xpdfreader.com/)
 brew "yarn" # JavaScript package manager. [Yarn](https://yarnpkg.com/)
@@ -265,5 +264,3 @@ mas "Logic Pro", id: 634148309 # Professional music production software. [Logic 
 mas "Medis", id: 1063631769 # Redis database management tool. [Medis](https://apps.apple.com/us/app/medis/id1063631769)
 mas "Todoist", id: 585829637 # Task manager and to-do list application. [Todoist](https://todoist.com/)
 mas "Xcode", id: 497799835 # Apple's IDE for macOS. [Xcode](https://developer.apple.com/xcode/)
-
-whalebrew "directory" # Tool for managing Docker images as directories. [Whalebrew](https://github.com/whalebrew/whalebrew)
