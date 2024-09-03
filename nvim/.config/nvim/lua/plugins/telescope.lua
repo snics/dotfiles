@@ -33,6 +33,11 @@ return {
           },
         },
       },
+      pickers = {
+        find_files = {
+          find_command = { "fd", "--type", "f", "--hidden", "--follow", "--no-ignore", "--exclude", ".git" },
+        },
+      },
     })
 
     telescope.load_extension("fzf") -- load fzf extension
