@@ -55,6 +55,13 @@ return {
         { "<leader>w", group = "Auto session", icon = "" }, -- group for auto session
         { "<leader>ws", icon = "", desc = "Save session for auto session root dir" }, -- add icon to save session for auto session root dir
         { "<leader>wr", icon = "", desc = "Restore session for current working directory" }, -- add icon to restore session for current working directory
+
+        -- Trouble
+        { "<leader>x", group = "Trouble", icon = "" }, -- group for trouble
+        { "<leader>xd", icon = "󱪘", desc = "Open trouble document diagnostics" }, -- add icon to open trouble document diagnostics
+        { "<leader>xq", icon = "󰁨", desc = "Open trouble quickfix list" }, -- add icon to open trouble quickfix list
+        { "<leader>xl", icon = "", desc = "Open trouble location list" }, -- add icon to open trouble location list
+        { "<leader>xt", icon = "", desc = "Open todos in trouble" }, -- add icon to open todos in trouble
     })
   end,
 }
