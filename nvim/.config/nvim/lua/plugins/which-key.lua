@@ -44,10 +44,15 @@ return {
 
         -- Telescope
         { "<leader>f", group = "Telescope", icon = "" }, -- group for telescope
-        { "<leader>ff", icon = "󰈞", desc = "Fuzzy find files in current working directory" }, -- add icon to fuzzy find files in cwd
+        { "<leader>ff", icon = "󰈞", desc = "Fuzzy find files in current working directory" }, -- add icon to fuzzy find files in current working directory
         { "<leader>fr", icon = "󰈞", desc = "Fuzzy find recent files" }, -- add icon to fuzzy find recent files
-        { "<leader>fs", icon = "", desc = "Find string in current working directory" }, -- add icon to find string in cwd
-        { "<leader>fc", icon = "", desc = "Find string under cursor in current working directory" }, -- add icon to find string under cursor in cwd
+        { "<leader>fs", icon = "", desc = "Find string in current working directory" }, -- add icon to find string in current working directory
+        { "<leader>fc", icon = "", desc = "Find string under cursor in current working directory" }, -- add icon to find string under cursor in current working directory
+
+        -- Auto session
+        { "<leader>w", group = "Auto session", icon = "" }, -- group for auto session
+        { "<leader>ws", icon = "", desc = "Save session for auto session root dir" }, -- add icon to save session for auto session root dir
+        { "<leader>wr", icon = "", desc = "Restore session for current working directory" }, -- add icon to restore session for current working directory
     })
   end,
 }
