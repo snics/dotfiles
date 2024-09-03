@@ -8,7 +8,7 @@ add_newline = true
 command_timeout = 1000
 scan_timeout = 10
 format = '''
-[┌](surface1) $os$memory_usage$battery$sudo$username$directory $git_branch$git_commit$git_metrics $fill $container$meson$direnv$kubernetes$helm$dart$deno$nodejs$golang$rust$package
+[┌](surface1) $os$memory_usage$battery$sudo$username$directory$git_branch$git_commit$git_metrics$kubernetes $fill $container$meson$direnv$helm$dart$deno$nodejs$golang$rust$package
 [└─$cmd_duration$character](surface1) '''
 
 # set up the character module to display the prompt character
@@ -109,12 +109,12 @@ format = ' 󰔚 [$duration](bold yellow) '
 
 # Shows current directory
 [directory]
+format = 'at [$path]($style)[$read_only]($read_only_style) '
 truncation_length = 3
 truncation_symbol = '…/'
 home_symbol = ' ~'
 read_only_style = 'red'
 read_only = '  '
-format = 'at [$path]($style)[$read_only]($read_only_style)'
 
 [dart]
 symbol = " "
@@ -129,9 +129,9 @@ symbol = "🐳 "
 
 [git_branch]
 always_show_remote = false
-format = 'on [$symbol$branch(:$remote_branch)]($style)'
+format = 'on [$symbol$branch(:$remote_branch)]($style) '
 symbol = " "
-style = ' maroon'
+style = ' sky'
 
 [git_commit]
 commit_hash_length = 3
@@ -143,7 +143,7 @@ tag_max_candidates = 0
 tag_symbol = "🏷️ "
 
 [git_metrics]
-format = ' ([$added]($added_style))([$deleted]($deleted_style))'
+format = '([$added]($added_style))([$deleted]($deleted_style)) '
 disabled = false
 only_nonzero_diffs = false
 
@@ -157,8 +157,13 @@ format = '[$symbol($version )]($style) '
 style = 'bold blue'
 
 [kubernetes]
-format = '[$symbol$context( \($namespace\))]($style) '
-style = 'bold blue'
+format = '⋯ [$symbol ( $user on )$context\($namespace\)]($style) '
+style = 'bold sky'
+symbol = "⛵"
+disabled = false
+contexts = [
+    { context_pattern = "minikube", symbol = "🐳⛵" },
+]
 
 [lua]
 format = '[$symbol($version )]($style) '
