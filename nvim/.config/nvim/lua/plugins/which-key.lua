@@ -41,6 +41,13 @@ return {
         { "<leader>ef", icon = "" }, -- add icon to toggle file explorer on current file
         { "<leader>ec", icon = "󰁄" }, -- add icon to collapse file explorer
         { "<leader>er", icon = "󰕂" }, -- add icon to refresh file explorer
+
+        -- Telescope
+        { "<leader>f", group = "Telescope", icon = "" }, -- group for telescope
+        { "<leader>ff", icon = "󰈞", desc = "Fuzzy find files in current working directory" }, -- add icon to fuzzy find files in cwd
+        { "<leader>fr", icon = "󰈞", desc = "Fuzzy find recent files" }, -- add icon to fuzzy find recent files
+        { "<leader>fs", icon = "", desc = "Find string in current working directory" }, -- add icon to find string in cwd
+        { "<leader>fc", icon = "", desc = "Find string under cursor in current working directory" }, -- add icon to find string under cursor in cwd
     })
   end,
 }
