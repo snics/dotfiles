@@ -11,6 +11,7 @@ return {
 
     -- configure treesitter
     treesitter.setup({ -- enable syntax highlighting
+      auto_install = true, -- auto install language parsers
       highlight = {
         enable = true,
       },
@@ -77,7 +78,7 @@ return {
       incremental_selection = {
         enable = true,
         keymaps = {
-          init_selection = "<C-space>",bs
+          init_selection = "<C-space>",
           node_incremental = "<C-space>",
           scope_incremental = false,
           node_decremental = "<bs>",
