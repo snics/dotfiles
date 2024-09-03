@@ -11,6 +11,8 @@ config.term = "xterm-256color"
 config.enable_tab_bar = false
 config.window_decorations = "RESIZE"
 config.default_cursor_style = 'SteadyUnderline'
+
+-- Default window padding
 config.window_padding = {
   left = 10,
   right = 10,
@@ -27,5 +29,4 @@ local customSchemes = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
 customSchemes.background = "#181825"
 config.color_schemes = { ["SnicsThema"] = customSchemes }
 config.color_scheme = "SnicsThema"
-
 return config
