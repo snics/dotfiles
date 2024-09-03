@@ -6,6 +6,7 @@ return {
      "folke/trouble.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     "nvim-tree/nvim-web-devicons",
+    "folke/todo-comments.nvim",
   },
   config = function()
     local telescope = require("telescope") -- telescope
@@ -41,6 +42,7 @@ return {
     })
 
     telescope.load_extension("fzf") -- load fzf extension
+    telescope.load_extension("todo-comments") -- load todo-comments extension
 
     -- set keymaps
     local keymap = vim.keymap -- for conciseness
@@ -49,5 +51,6 @@ return {
     keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" }) -- fuzzy find recent files
     keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in current working directory" }) -- find string in cwd
     keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in current working directory" }) -- find string under cursor in cwd
+    keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "find all todos" }) -- find all todos
   end,
 }

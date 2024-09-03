@@ -49,6 +49,7 @@ return {
         { "<leader>fr", icon = "󰈞", desc = "Fuzzy find recent files" }, -- add icon to fuzzy find recent files
         { "<leader>fs", icon = "", desc = "Find string in current working directory" }, -- add icon to find string in current working directory
         { "<leader>fc", icon = "", desc = "Find string under cursor in current working directory" }, -- add icon to find string under cursor in current working directory
+        { "<leader>ft", icon = "", desc = "Find all todos" }, -- add icon to find all todos
 
         -- Auto session
         { "<leader>w", group = "Auto session", icon = "" }, -- group for auto session
