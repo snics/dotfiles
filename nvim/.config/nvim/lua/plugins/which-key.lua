@@ -20,6 +20,21 @@ return {
         { "<leader>+", icon = "" }, -- add icon to decrement number
         { "<leader>-", icon = "" }, -- add icon to decrement number
 
+        -- LSP Config
+        { "gR", desc = "Show LSP references", icon = "󰁨" },
+        { "gD", desc = "Go to declaration", icon = "󰁨" },
+        { "gd", desc = "Show LSP definitions", icon = "󰁨" },
+        { "gi", desc = "Show LSP implementations", icon = "󰁨" },
+        { "gt", desc = "Show LSP type definitions", icon = "󰁨" },
+        { "<leader>ca", desc = "See available code actions", icon = "󰁨" },
+        { "<leader>rn", desc = "Smart rename", icon = "󰁨" },
+        { "<leader>D", desc = "Show buffer diagnostics", icon = "󰁨" },
+        { "<leader>d", desc = "Show line diagnostics", icon = "󰁨" },
+        { "[d", desc = "Go to previous diagnostic", icon = "󰁨" },
+        { "]d", desc = "Go to next diagnostic", icon = "󰁨" },
+        { "K", desc = "Show documentation for what is under cursor", icon = "󰁨" },
+        { "<leader>rs", desc = "Restart LSP", icon = "󰁨" },
+
         -- Window management
         { "<leader>s", group = "Window management", icon = "" }, -- group for window management
         { "<leader>sv", icon = "" }, -- add icon to split window vertically
