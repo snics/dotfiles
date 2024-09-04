@@ -10,13 +10,14 @@ return {
 
     -- import mason-lspconfig
     local mason_lspconfig = require("mason-lspconfig")
+    local mason_tool_installer = require("mason-tool-installer")
 
     -- enable mason and configure icons
     mason.setup({
       ui = {
         icons = {
           package_installed = "",
-          package_pending = "➜",
+          package_pending = "󰜉",
           package_uninstalled = "",
         },
       },
@@ -55,6 +56,27 @@ return {
         "yamlls", -- YAML Language Server
         "vimls", -- Vim Language Server
         "lemminx", -- XML Language Server
+      },
+    })
+
+    mason_tool_installer.setup({
+      ensure_installed = {
+        -- Linting tools
+        "ansible-lint", -- Ansible Lint
+        "eslint_d", -- ESLint Daemon
+        "hadolint", -- Dockerfile linter, validate inline bash
+        "htmlhint", -- A Static Code Analysis Tool for HTML
+        "jsonlint", -- JSON Lint
+        "luacheck", -- A tool for linting and static analysis of Lua code.
+        "markdownlint-cli2", -- Markdown linting and style checking
+        "shellcheck", -- sh, bash, ksk and zsh script analysis and linting
+        "sqlfluff", -- A SQL linter and auto-formatter for Humans
+        "stylelint", -- A mighty, modern CSS linter
+        "tflint", -- TFLint is a Terraform linter focused on possible errors, best practices, etc.
+        "trivy", -- A Simple and Comprehensive Vulnerability Scanner for Containers and other Artifacts
+        "vale", -- Vale is a syntax-aware linter for prose built with speed and extensibility in mind.
+        "vint", -- Fast and Highly Extensible Vim script Language Lint
+        "yamllint", -- A linter for YAML files
       },
     })
   end,
