@@ -67,7 +67,6 @@ return {
         "hadolint", -- Dockerfile linter, validate inline bash
         "htmlhint", -- A Static Code Analysis Tool for HTML
         "jsonlint", -- JSON Lint
-        "luacheck", -- A tool for linting and static analysis of Lua code.
         "markdownlint-cli2", -- Markdown linting and style checking
         "shellcheck", -- sh, bash, ksk and zsh script analysis and linting
         "sqlfluff", -- A SQL linter and auto-formatter for Humans
@@ -77,6 +76,20 @@ return {
         "vale", -- Vale is a syntax-aware linter for prose built with speed and extensibility in mind.
         "vint", -- Fast and Highly Extensible Vim script Language Lint
         "yamllint", -- A linter for YAML files
+
+        -- Formatting tools
+        "bibtex-tidy", -- A tool to tidy up BibTeX files
+        "jq", -- A lightweight and flexible command-line JSON processor
+        "latexindent", -- A Perl script to indent and reformat .tex and .bib files
+        "prettierd", -- Prettier Daemon for JavaScript, TypeScript, CSS, HTML, JSON, YAML, Markdown, etc.
+        "rustywind", -- A Rustywind is a Rust implementation of TailwindCSS JIT
+        "selene", -- Lua linter and formatter
+        "shellharden", -- A tool to help improve shell scripts
+        "shfmt", -- A shell script formatter
+        "sqlfmt", -- SQL Formatter
+        "stylua", -- A Lua formatter for Lua source code
+        "xmlformatter", -- XML formatter
+        "yq", -- yq is a lightweight and portable command-line YAML processor
       },
     })
   end,
