@@ -2,9 +2,17 @@ vim.g.mapleader = " " -- set leader key to space
 
 local keymap = vim.keymap -- for conciseness
 
-keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" }) -- exit insert mode with jk
---
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" }) -- clear search highlights
+-- General
+keymap.set("i", "jj", "<ESC>", { desc = "Exit insert mode" }) -- exit insert mode with jj
+keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>') -- Clear highlights on search when pressing <Esc> in normal mode
+
+-- Closeing
+keymap.set("n", "<leader>qq", "<cmd>q<CR>", { desc = "Close buffers" }) -- close buffers
+keymap.set("n", "<leader>QQ", "<cmd>q!<CR>", { desc = "Close force buffer" }) -- close force buffer
+
+-- Save
+keymap.set("n", "<leader>ss", "<cmd>w<CR>", { desc = "Save buffer" }) -- save buffer
+keymap.set("n", "<leader>SS", "<cmd>wq<CR>", { desc = "Save buffer and close" }) -- save buffer and close
 
 -- increment/decrement numbers
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment

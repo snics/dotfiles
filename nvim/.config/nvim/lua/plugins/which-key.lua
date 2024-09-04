@@ -16,6 +16,18 @@ return {
     -- Register your keybindings
     local wk = require("which-key")
     wk.add({
+        -- General
+        { "jj", desc = "Exit insert mode", icon = "󰉿", mode = "i" },
+        { "<Esc>", desc = "Clear highlights", icon = "󰌑" },
+
+        -- Closing
+        { "<leader>qq", desc = "Close buffers", icon = "󰩈", mode = "n" },
+        { "<leader>QQ", desc = "Close force buffer", icon = "󰩈", mode = "n" },
+
+        -- Save
+        { "<leader>ss", desc = "Save buffer", icon = "󰈸", mode = "n" },
+        { "<leader>SS", desc = "Save buffer and close", icon = "󰈸", mode = "n" },
+
         -- Increment/decrement numbers
         { "<leader>+", icon = "" }, -- add icon to decrement number
         { "<leader>-", icon = "" }, -- add icon to decrement number
@@ -87,6 +99,25 @@ return {
         { "<leader>pf", icon = "", desc = "Format current file", }, -- add icon to format file or range (in visual mode)
         { "<leader>pf", icon = "", desc = "Format current selection", mode = "v" }, -- add icon to format file or range (in visual mode)
         { "<leader>pa", icon = "󰁨", desc = "Format all files in the current directory" }, -- add icon to format all files in the current directory
+
+        -- Git
+        { "<leader>G", group = "Git", icon = "󰊢" }, -- group for git
+        { "<leader>Go", icon = "", desc = "Open lazy git" }, -- add icon to lazy git
+
+        -- Gitsigns hunk
+        { "<leader>h", group = "Git [H]unk", icon = "" }, -- group for gitsigns
+        { "<leader>hs", desc = "Stage hunk", icon = "" }, -- add icon to stage hunk
+        { "<leader>hs", desc = "Stage hunk", icon = "", mode = "v" }, -- add icon to stage hunk in visual mode
+        { "<leader>hr", desc = "Reset hunk", icon = "" }, -- add icon to reset hunk
+        { "<leader>hr", desc = "Reset hunk", icon = "", mode = "v" }, -- add icon to reset hunk in visual mode
+        { "<leader>hS", desc = "Stage buffer", icon = "" }, -- add icon to stage buffer
+        { "<leader>hR", desc = "Reset buffer", icon = "" }, -- add icon to reset buffer
+        { "<leader>hu", desc = "Undo stage hunk", icon = "" }, -- add icon to undo stage hunk
+        { "<leader>hp", desc = "Preview hunk", icon = "" }, -- add icon to preview hunk
+        { "<leader>hb", desc = "Blame line", icon = "" }, -- add icon to blame line
+        { "<leader>hB", desc = "Toggle line blame", icon = "" }, -- add icon to toggle line blame
+        { "<leader>hd", desc = "Diff this", icon = "" }, -- add icon to diff this
+        { "<leader>hD", desc = "Diff this ~", icon = "" }, -- add icon to diff this ~
     })
   end,
 }
