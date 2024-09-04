@@ -120,7 +120,7 @@ read_only = '  '
 symbol = " "
 
 [deno]
-format = '[$symbol($version )]($style) '
+format = '[$symbol($version)]($style) '
 symbol = "🦕"
 
 [docker_context]
