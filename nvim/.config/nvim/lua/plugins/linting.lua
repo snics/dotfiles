@@ -13,7 +13,7 @@ return {
             javascript = { "eslint_d" },
             javascriptreact = { "eslint_d" },
             json = { "jsonlint" },
-            lua = { "luacheck" },
+            lua = { "selene" },
             markdown = { "markdownlint-cli2", "vale" },
             rst = { "vale" },
             sh = { "shellcheck" },
@@ -38,7 +38,7 @@ return {
         })
 
         -- trigger linting the current file
-        vim.keymap.set("n", "<leader>l", function()
+        vim.keymap.set("n", "<leader>ll", function()
             lint.try_lint()
         end, { desc = "Trigger linting for current file" })
     end,

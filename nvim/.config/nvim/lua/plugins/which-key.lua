@@ -62,6 +62,16 @@ return {
         { "<leader>xq", icon = "󰁨", desc = "Open trouble quickfix list" }, -- add icon to open trouble quickfix list
         { "<leader>xl", icon = "", desc = "Open trouble location list" }, -- add icon to open trouble location list
         { "<leader>xt", icon = "", desc = "Open todos in trouble" }, -- add icon to open todos in trouble
+
+        -- Linting
+        { "<leader>l", group = "Linting", icon = "" }, -- group for linting
+        { "<leader>ll", icon = "", desc = "Trigger linting for current file" }, -- add icon to trigger linting for current file
+
+        -- Formatting
+        { "<leader>p", group = "Formatting", icon = "" }, -- group for formatting
+        { "<leader>pf", icon = "", desc = "Format current file", }, -- add icon to format file or range (in visual mode)
+        { "<leader>pf", icon = "", desc = "Format current selection", mode = "v" }, -- add icon to format file or range (in visual mode)
+        { "<leader>pa", icon = "󰁨", desc = "Format all files in the current directory" }, -- add icon to format all files in the current directory
     })
   end,
 }
