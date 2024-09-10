@@ -23,7 +23,7 @@ return {
             typescript = { "eslint_d" },
             typescriptreact = { "eslint_d" },
             vim = { "vint" },
-            yaml = { "yamllint", "trivy" },
+            yaml = { "yamllint" },
             zsh = { "shellcheck" },
         }
 
