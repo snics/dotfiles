@@ -52,7 +52,7 @@ return {
         "taplo", -- Toolkit for TOML
         "tailwindcss", -- Tailwind CSS Language Server
         "terraformls", -- Terraform Language Server
-        "tsserver",  -- TypeScript Language Server
+        "ts_ls",  -- TypeScript Language Server
         "yamlls", -- YAML Language Server
         "vimls", -- Vim Language Server
         "lemminx", -- XML Language Server
@@ -73,7 +73,6 @@ return {
         "stylelint", -- A mighty, modern CSS linter
         "tflint", -- TFLint is a Terraform linter focused on possible errors, best practices, etc.
         "trivy", -- A Simple and Comprehensive Vulnerability Scanner for Containers and other Artifacts
-        "vale", -- Vale is a syntax-aware linter for prose built with speed and extensibility in mind.
         "vint", -- Fast and Highly Extensible Vim script Language Lint
         "yamllint", -- A linter for YAML files
 

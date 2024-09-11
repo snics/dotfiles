@@ -14,7 +14,7 @@ return {
             javascriptreact = { "eslint_d" },
             json = { "jsonlint" },
             lua = { "selene" },
-            markdown = { "markdownlint-cli2", "vale" },
+            markdown = { "markdownlint-cli2" },
             rst = { "vale" },
             sh = { "shellcheck" },
             sql = { "sqlfluff" },
