@@ -1,20 +1,26 @@
 # set your user tokens as environment variables, such as ~/.secrets
 # See the README for examples.
+[include]
+   path = ~/.dotfiles/git/catppuccin.gitconfig
+[core]
+    pager = delta
 [color]
   ui = auto
 [color "branch"]
   current = yellow reverse
   local = yellow
   remote = green
-[color "diff"]
-  meta = yellow bold
-  frag = magenta bold
-  old = red
-  new = green
 [color "status"]
    added = yellow
    changed = green
    untracked = cyan
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+   navigate = true
+   side-by-side = true
+   line-numbers = true
+   features = catppuccin-mocha
 [alias]
   # add
   a = add                           # add
@@ -104,6 +110,7 @@
   cmd="mvim -c 'Gdiff' $MERGED"     # use fugitive.vim for 3-way merge
   keepbackup=false
 [merge]
+  conflictstyle = diff3
   summary = true
   verbosity = 1
   tool = mvimdiff
@@ -148,6 +155,7 @@
 [diff]
   # Git diff will use (i)ndex, (w)ork tree, (c)ommit and (o)bject
   # instead of a/b/c/d as prefixes for patches
+  colorMoved = default
   mnemonicprefix = true
   algorithm = patience
 [rerere]
