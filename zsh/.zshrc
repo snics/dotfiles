@@ -1,3 +1,6 @@
+# Source: Global settings and Environment variables
+source ~/.dotfiles/zsh/settings/global_settings.zsh
+
 # Set up homebrew.
 if [[ -f "/opt/homebrew/bin/brew" ]] then
   # If you're using macOS, you'll want this enabled
@@ -8,11 +11,11 @@ if [ -e ~/.secrets ]; then
   source ~/.secrets
 fi
 
-source ~/.dotfiles/_global/zsh/completion.zsh
-source ~/.dotfiles/_global/zsh/bat.zsh
-source ~/.dotfiles/_global/zsh/eza.zsh
-source ~/.dotfiles/_global/zsh/fzf.zsh
-
+# All of my custom settings
+source ~/.dotfiles/zsh/settings/completion.zsh
+source ~/.dotfiles/zsh/settings/bat.zsh
+source ~/.dotfiles/zsh/settings/eza.zsh
+source ~/.dotfiles/zsh/settings/fzf.zsh
 
 # Set up zimfw plugin manager.
 ZIM_HOME=~/.config/zim
