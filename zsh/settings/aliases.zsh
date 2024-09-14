@@ -1,3 +1,11 @@
+# Easier navigation: .., ..., ...., ....., ~ and -
+alias ..="z .."
+alias ...="z ../.."
+alias ....="z ../../.."
+alias .....="z ../../../.."
+alias ~="z ~"
+alias -- -="z -"
+
 # Get week number
 alias week='date +%V'
 
@@ -12,6 +20,9 @@ alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'
 # Flush Directory Service cache
 alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
 
+# Recursively delete `.DS_Store` files
+alias clean="find . -type f -name '*.DS_Store' -ls -delete"
+
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.
 # Finally, clear download history from quarantine. https://mths.be/bum
@@ -24,4 +35,3 @@ alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && kil
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
-
