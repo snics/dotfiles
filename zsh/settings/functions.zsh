@@ -1,0 +1,1 @@
+source ~/.dotfiles/zsh/settings/functions/mkdock.zsh

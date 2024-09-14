@@ -13,6 +13,7 @@ fi
 
 # All of my custom settings
 source ~/.dotfiles/zsh/settings/aliases.zsh
+source ~/.dotfiles/zsh/settings/functions.zsh
 source ~/.dotfiles/zsh/settings/completion.zsh
 source ~/.dotfiles/zsh/settings/bat.zsh
 source ~/.dotfiles/zsh/settings/eza.zsh
