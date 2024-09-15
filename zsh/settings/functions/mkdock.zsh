@@ -1,7 +1,9 @@
 _mkdock () {
-    echo "Make dock..."
+    # Start spinner
+    revolver start "🐳Configuring dock..."
 
-    dockutil --no-restart --remove all
+    # Entfernt alle Einträge aus dem Dock
+    dockutil --no-restart --remove all &> /dev/null
 
     apps=(
         "/System/Applications/System Settings.app"
@@ -24,22 +26,23 @@ _mkdock () {
     for app in "${apps[@]}"; do
         if [[ "$app" == " " ]]; then
             # Add space to System configuration
-            defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
+            defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}' &> /dev/null
         else
             # Add app to the dock
-            dockutil --no-restart --add "$app"
+            dockutil --add "$app" &> /dev/null
         fi
     done
 
     # Add folders to the dock
-    dockutil --no-restart --add '~/Projects' --view list --display folder --sort name --allhomes
-    dockutil --no-restart --add '~/Downloads' --view list --display folder --sort dateadded --allhomes
-    dockutil --no-restart --add '/Applications' --view grid --display folder --sort name --allhomes
+    dockutil --add '~/Projects' --view list --display folder --sort name --replacing 'Projects' --allhomes &> /dev/null
+    dockutil --add '~/Downloads' --view list --display folder --sort dateadded --replacing 'Downloads' --allhomes &> /dev/null
+    dockutil --add '/Applications' --view grid --display folder --sort name --replacing 'Applications' --allhomes &> /dev/null
 
     # Restart the dock
     killall Dock
 
-    echo "Dock done!"
+    # Stop spinner
+    revolver stop
 }
 
 alias dock='_mkdock'
