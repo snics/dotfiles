@@ -11,16 +11,14 @@ If this particular setup doesn't work for you, please feel free to
 borrow some ideas from it. Pull requests, comments, requests and any
 other contributions are welcome.
 
-
 ## Contents
 
-+ [Initial Setup and Installation](#initial-setup-and-installation)
-+ [Update Installation modules](#update-installation-modules)
-+ [Vim and Neovim Setup](#vim-and-neovim-setup)
-+ [More about my deployment folder structure](#my-deployment-folder-structure)
-+ [Alfred 4 Setup](#vim-and-neovim-setup)
-+ [Setup ~/.secrets](#setup-secrets)
-
+- [Initial Setup and Installation](#initial-setup-and-installation)
+- [Update Installation modules](#update-installation-modules)
+- [Vim and Neovim Setup](#vim-and-neovim-setup)
+- [More about my deployment folder structure](#my-deployment-folder-structure)
+- [Alfred 4 Setup](#vim-and-neovim-setup)
+- [Setup ~/.secrets](#setup-secrets)
 
 ## Supports
 
@@ -56,9 +54,11 @@ sh ~/.dotfiles/install.sh
 ```
 
 ## Update Installation modules
+
 An update installation Apps and modules is thankfully simple I have created an alias for it with which you can update everything. You just have to enter `update in terminal and everything will be updated``
 
 ## Vim and NeoVim Setup
+
 ![terminal.gif](docs/terminal.gif)
 
 vim and neovim should just work once the correct plugins are installed.
@@ -70,6 +70,7 @@ command:
 ```
 
 ### Example of how Vim and NeoVim looks
+
 ![NeoVim.png](docs/NeoVim.png)
 
 ## My deployment folder structure
@@ -83,7 +84,7 @@ the folder structure as follows:
 
 ```bash
 . ~/Projects    # Root folder for all development files
-└── GitHub    # All the stuff that's on GitHub is in here.  
+└── GitHub    # All the stuff that's on GitHub is in here.
 └── GitLab    # All the artwork on GitLab is in here.
 └── Scripts   # I store scripts here that automate things or make my life easier every now and then.
 └── Tools     # Here I save tools and tips that I am currently working on.
@@ -105,6 +106,7 @@ more details can be found at
 https://www.alfredapp.com/help/advanced/sync/
 
 But here is a small step by step description:
+
 1. Open folder with command `open ~/.dotfiles/alfred`.
 2. Open Alfred 4 settings.
 3. Go to Advanced.
@@ -146,8 +148,8 @@ Suggestions/improvements
 ## Author
 
 | [![twitter/NicoSwiatecki](http://gravatar.com/avatar/23a38342df4d30085f1bbe71058cc89b?s=70)](http://twitter.com/NicoSwiatecki "Follow @NicoSwiatecki on Twitter") |
-|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| [Nico Swiatecki](https://swiatecki.io/)                                                                                                                           |
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                              [Nico Swiatecki](https://swiatecki.io/)                                                              |
 
 ## Thanks to…
 
