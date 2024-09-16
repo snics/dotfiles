@@ -1,6 +1,6 @@
 _mkdock () {
     # Start spinner
-    revolver start "🐳Configuring dock..."
+    revolver --style 'dots3' start "🐳Configuring dock..."
 
     # Entfernt alle Einträge aus dem Dock
     dockutil --no-restart --remove all &> /dev/null
@@ -42,6 +42,8 @@ _mkdock () {
     killall Dock
 
     # Stop spinner
+    revolver update 'Dock creation done! 🎉'
+    sleep 1
     revolver stop
 }
 

@@ -14,6 +14,7 @@ tap "lotyp/formulae" # Various useful Homebrew formulas. [Lotyp Formulae](https:
 tap "joshmedeski/sesh" # Sesh: A tool for managing shell sessions. [Sesh](https://github.com/joshmedeski/sesh)
 tap "robusta-dev/homebrew-krr" # Kubernetes Resource Reporter. [KRR](https://github.com/robusta-dev/krr)
 tap "robusta-dev/homebrew-holmesgpt" # Holmes GPT: A tool for managing GPT partitions. [Holmes GPT](https://github.com/robusta-dev/holmesgpt)
+tap "molovo/revolver" # Revolver: A simple command-line tool for rotating text. [Revolver](https://github.com/molovo/revolver)
 
 # Install various CLI tools and utilities
 brew "ack" # A tool like grep, optimized for programmers. [Ack](https://beyondgrep.com/)
@@ -107,6 +108,7 @@ brew "mas" # Mac App Store command line interface. [Mas](https://github.com/mas-
 brew "minikube" # Run Kubernetes locally. [Minikube](https://minikube.sigs.k8s.io/docs/)
 brew "minio-mc" # MinIO Client (mc) provides a modern alternative to UNIX commands like ls, cat, cp, mirror, diff, find etc. [MinIO Client](https://min.io/docs/minio/linux/reference/minio-mc.html)
 brew "moreutils" # Additional Unix utilities. [Moreutils](https://joeyh.name/code/moreutils/)
+brew "revolver" # A simple command-line tool for rotating text. [Revolver](https://github.com/molovo/revolver)
 brew "neofetch" # A command-line system information tool. [Neofetch](https://github.com/dylanaraps/neofetch)
 brew "neovim" # Ambitious Vim-fork focused on extensibility and usability. [Neovim](https://neovim.io/)
 brew "netpbm" # Toolkit for manipulation of graphic images. [Netpbm](http://netpbm.sourceforge.net/)
