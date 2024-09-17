@@ -1,0 +1,39 @@
+plugins:
+  # Add get YAML Blames
+  blame:
+    shortCut: b
+    confirm: false
+    description: "Blame"
+    scopes:
+    - all
+    command: sh
+    background: false
+    args:
+    - -c
+    - "kubectl-blame $RESOURCE_NAME $NAME -n $NAMESPACE --context $CONTEXT | less"
+
+  # Add plugins for debugging
+  debug:
+    shortCut: Shift-D
+    description: Add debug container
+    dangerous: true
+    scopes:
+    - containers
+    command: bash
+    background: false
+    confirm: true
+    args:
+    - -c
+    - "kubectl debug -it --context $CONTEXT -n=$NAMESPACE $POD --target=$NAME --image=nicolaka/netshoot:v0.12 --share-processes -- zsh"
+
+  # Add plugins for image scanning
+  dive:
+    shortCut: d
+    confirm: true
+    description: "Dive image"
+    scopes:
+    - containers
+    command: dive
+    background: false
+    args:
+    - $COL-IMAGE
