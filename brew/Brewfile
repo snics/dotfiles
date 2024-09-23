@@ -260,6 +260,7 @@ cask "syntax-highlight" # Quick Look plugin for source code with syntax highligh
 cask "the-unarchiver" # Unarchiving tool for many different archive formats. [The Unarchiver](https://theunarchiver.com/)
 cask "tor-browser" # Anonymity online. [Tor Browser](https://www.torproject.org/)
 cask "transmit" # Powerful and versatile file transfer app. [Transmit](https://panic.com/transmit/)
+cask "vial" # Keyboard firmware for Atmel AVR and ARM USB families. [Vial](https://get.vial.moe/)
 cask "vlc" # Open-source cross-platform multimedia player. [VLC](https://www.videolan.org/vlc/)
 cask "webpquicklook" # Quick Look plugin for WebP image files. [WebPQuickLook](https://github.com/emin/WebPQuickLook)
 cask "wezterm" # GPU-accelerated cross-platform terminal emulator. [Wezterm](https://wezfurlong.org/wezterm/)
