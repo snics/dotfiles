@@ -192,7 +192,7 @@
 	email = nico@devninjas.io
 	signingkey = 39F9107A1A8D5844
 [gpg]
-	program = /usr/local/bin/gpg
+	program = gpg2
 [init]
 	defaultBranch = main
 [tag]
