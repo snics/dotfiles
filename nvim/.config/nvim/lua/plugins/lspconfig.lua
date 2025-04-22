@@ -80,6 +80,28 @@ return {
           },
         })
       end,
+
+      -- Spezielle Konfiguration für YAML LSP
+      ["yamlls"] = function()
+          lspconfig.yamlls.setup({
+            capabilities = capabilities,
+            settings = {
+              yaml = {
+                schemas = {
+                  kubernetes = "globPattern",
+                  -- Nutze ein externes Schema für Kubernetes
+                  ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.1-standalone-strict/all.json"] = "globPattern",
+                  -- Falls du Kustomize-Dateien hast:
+                  ["http://json.schemastore.org/kustomization"] = "*.kustomization.yaml",
+                },
+                format = { enable = true },
+                validate = true,
+                completion = true,
+                hover = true,
+              }
+            }
+          })
+      end,
     })
   end,
 }
