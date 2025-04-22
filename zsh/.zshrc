@@ -11,6 +11,8 @@ if [ -e ~/.secrets ]; then
   source ~/.secrets
 fi
 
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
 # All of my custom settings
 source ~/.dotfiles/zsh/settings/aliases.zsh
 source ~/.dotfiles/zsh/settings/functions.zsh
@@ -50,3 +52,6 @@ fi
 
 # Set keybindings to vi mode.
 bindkey -e
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /opt/homebrew/bin/tofu tofu

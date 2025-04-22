@@ -29,6 +29,8 @@ zmodule kiesman99/zim-zoxide
 # Oh My Zsh plugins
 zmodule ohmyzsh/ohmyzsh --root plugins/sudo
 
+zmodule macunha1/zsh-terraform --source terraform.plugin.zsh
+
 zmodule ~/.config/zim-modules/bat
 zmodule ~/.config/zim-modules/eza
 zmodule ~/.config/zim-modules/fzf
