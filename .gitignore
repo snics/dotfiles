@@ -53,3 +53,4 @@ gen
 
 # Project settings
 .tmp/
+zsh/.config/zim-modules/*
