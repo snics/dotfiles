@@ -1,6 +1,6 @@
 _mkdock () {
     # Start spinner
-    revolver --style 'dots3' start "🐳Configuring dock..."
+    revolver --style 'dots3' start "💻 Configuring dock..."
 
     # Entfernt alle Einträge aus dem Dock
     dockutil --no-restart --remove all &> /dev/null
@@ -13,12 +13,13 @@ _mkdock () {
         "/Applications/Arc.app"
         " "  # Add space
         "/Applications/Superhuman.app"
-        "/Applications/Fantastical.app"
-        "/Applications/Todoist.app"
+        "/Applications/Notion Calendar.app"
+        "/Applications/Notion.app"
         "/Applications/Franz.app"
+        "/Applications/Cliq.app"
         " "  # Add space
         "/Applications/Zed.app"
-        "/Applications/WezTerm.app"
+        "/Applications/Ghostty.app"
         "/Applications/GitKraken.app"
         " "  # Add space
     )
