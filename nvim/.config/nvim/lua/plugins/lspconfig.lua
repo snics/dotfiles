@@ -88,11 +88,7 @@ return {
             settings = {
               yaml = {
                 schemas = {
-                  kubernetes = "globPattern",
-                  -- Nutze ein externes Schema für Kubernetes
-                  ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.1-standalone-strict/all.json"] = "globPattern",
-                  -- Falls du Kustomize-Dateien hast:
-                  ["http://json.schemastore.org/kustomization"] = "*.kustomization.yaml",
+                  [require('kubernetes').yamlls_schema()] = "*.yaml",
                 },
                 format = { enable = true },
                 validate = true,
