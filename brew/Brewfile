@@ -127,6 +127,7 @@ brew "zopfli" # Compression algorithm based on deflate. [Zopfli](https://github.
 brew "pigz" # Parallel implementation of gzip for modern multi-processor, multi-core machines. [Pigz](https://zlib.net/pigz/)
 brew "pkl" # Tool for working with PKL files. [PKL](https://github.com/irmen/pickletools)
 brew "pngcheck" # Verifies the integrity of PNG and dump information about PNG image files. [Pngcheck](http://www.libpng.org/pub/png/apps/pngcheck.html)
+brew "pnpm" # Fast, disk space efficient package manager. [PNPM](https://pnpm.io/)
 brew "podman" # Tool for managing OCI containers and pods. [Podman](https://podman.io/)
 brew "podman-compose" # Docker Compose replacement for Podman. [Podman Compose](https://github.com/containers/podman-compose)
 brew "pv" # Monitor the progress of data through a pipe. [Pv](https://linux.die.net/man/1/pv)
