@@ -195,6 +195,7 @@ cask "bartender" # Organize your menu bar apps. [Bartender](https://www.macbarte
 cask "basictex" # Small distribution of TeX and friends. [BasicTeX](https://www.tug.org/mactex/morepackages.html)
 cask "cardhop" # Manage your contacts with ease. [Cardhop](https://flexibits.com/cardhop)
 cask "cleanshot" # Screenshot and screen recording tool. [CleanShot](https://cleanshot.com/)
+cask "cursor" # AI powered VSCode. [Cursor](https://www.cursor.com/)
 cask "discord" # Free voice and text chat for gamers. [Discord](https://discord.com/)
 cask "docker" # Pack, ship, and run any application as a lightweight container. [Docker](https://www.docker.com/)
 cask "elgato-stream-deck" # Stream Deck software. [Stream Deck](https://www.elgato.com/en/gaming/stream
