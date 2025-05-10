@@ -223,6 +223,7 @@ cask "jetbrains-gateway" # Remote development gateway by JetBrains. [JetBrains G
 cask "jetbrains-toolbox" # Manage all your JetBrains tools. [JetBrains Toolbox](https://www.jetbrains.com/toolbox-app/)
 cask "kaleidoscope" # Powerful compare tool for macOS. [Kaleidoscope](https://kaleidoscope.app/)
 cask "keepingyouawake" # Prevents your Mac from going to sleep. [KeepingYouAwake](https://keepingyouawake.app/)
+cask "keymapp" # ZSA keymapp for flash and view keybord settings [keymapp](https://blog.zsa.io/keymapp/)
 cask "kotlin-native" # Kotlin/Native compiler and tools. [Kotlin/Native](https://kotlinlang.org/docs/native-overview.html)
 cask "kubenav" # Kubernetes and Helm dashboard. [Kubenav](https://kubenav.io/)
 cask "lens" # Kubernetes IDE. [Lens](https://k8slens.dev/)
