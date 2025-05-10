@@ -38,6 +38,7 @@ return {
         "dockerls", -- Docker Language Server
         "eslint", -- ESLint Language Server
         "graphql", -- GraphQL Language Server
+        "gopls", -- Go Language Server
         "html", -- HTML Language Server
         "htmx", -- HTMX Language Server
         "helm_ls", -- Helm Language Server

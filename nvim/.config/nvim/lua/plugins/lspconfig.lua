@@ -16,6 +16,9 @@ return {
     -- import cmp-nvim-lsp plugin
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
+    -- import mason_tool_installer plugin
+    local util = require "lspconfig/util"
+
     local keymap = vim.keymap -- for conciseness
 
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -80,6 +83,25 @@ return {
           },
         })
       end,
+
+      ["gopls"] = function()
+              -- configure lua server (with special settings)
+              lspconfig["gopls"].setup({
+                capabilities = capabilities,
+                cmd = {"gopls"},
+                filetypes = { "go", "gomod", "gowork", "gotmpl" },
+                root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+                settings = {
+                    gopls = {
+                      completeUnimported = true,
+                      usePlaceholders = true,
+                      analyses = {
+                        unusedparams = true,
+                      },
+                    },
+                },
+              })
+            end,
 
       -- Spezielle Konfiguration für YAML LSP
       ["yamlls"] = function()
