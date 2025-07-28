@@ -6,8 +6,6 @@ tap "derailed/popeye" # A Kubernetes cluster resource sanitizer. [Popeye](https:
 tap "goodwithtech/r" # Tools for Kubernetes security. [R](https://github.com/goodwithtech/homebrew-r)
 tap "hashicorp/tap" # HashiCorp tools. [HashiCorp](https://developer.hashicorp.com/terraform)
 tap "homebrew/bundle" # Bundler for non-Ruby dependencies from Homebrew. [Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle)
-tap "homebrew/cask-fonts" # Casks for fonts. [Homebrew Cask Fonts](https://github.com/Homebrew/homebrew-cask-fonts)
-tap "homebrew/cask-versions" # Alternate versions of Casks. [Homebrew Cask Versions](https://github.com/Homebrew/homebrew-cask-versions)
 tap "homebrew/command-not-found" # Command-not-found hook for Homebrew. [Homebrew Command Not Found](https://github.com/Homebrew/homebrew-command-not-found)
 tap "kubeshark/kubeshark" # API traffic viewer for Kubernetes. [Kubeshark](https://github.com/kubeshark/homebrew-tap)
 tap "lotyp/formulae" # Various useful Homebrew formulas. [Lotyp Formulae](https://github.com/lotyp/homebrew-formulae)
