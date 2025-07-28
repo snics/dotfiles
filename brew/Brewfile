@@ -250,6 +250,7 @@ cask "raycast" # Blazing fast, totally extendable launcher. [Raycast](https://ww
 cask "reader" # reader, a read-later app [Readwise](https://readwise.io/read)
 cask "screen-studio" # Screen recording and streaming software. [Screen Studio](https://screen.studio/)
 cask "sipgate" # SIP client for making and receiving calls. [Sipgate](https://www.sipgate.com/)
+cask "slack" # Team collaboration and messaging app. [Slack](https://slack.com/)
 cask "spotify" # Music streaming service. [Spotify](https://www.spotify.com/)
 cask "stats" if OS.mac? # A utility to get your macOS statistics. [Stats](https://github.com/exelban/stats)
 cask "superhuman" # Fastest email experience ever made. [Superhuman](https://superhuman.com/)
