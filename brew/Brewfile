@@ -224,6 +224,7 @@ cask "keymapp" # ZSA keymapp for flash and view keybord settings [keymapp](https
 cask "kotlin-native" # Kotlin/Native compiler and tools. [Kotlin/Native](https://kotlinlang.org/docs/native-overview.html)
 cask "kubenav" # Kubernetes and Helm dashboard. [Kubenav](https://kubenav.io/)
 cask "lens" # Kubernetes IDE. [Lens](https://k8slens.dev/)
+cask "linear-linear" # Linear is a project management tool for software teams. [Linear](https://linear.app/)
 cask "logi-options+" # Logitech Options+ software. [Logi Options+](https://www.logitech.com/software/options.html)
 cask "macfuse" # File system integration framework. [MacFUSE](https://osxfuse.github.io/)
 cask "mission-control-plus" # Adds more functionality to Mission Control. [Mission Control Plus](https://fadel.io/missioncontrol/)
