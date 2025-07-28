@@ -190,7 +190,7 @@
 [user]
 	name = Nico Swiatecki
 	email = nico@devninjas.io
-	signingkey = 39F9107A1A8D5844
+	signingKey = 8F65D195ED1CA6ED4120360FD525A868E8801ADC
 [gpg]
 	program = gpg2
 [init]
