@@ -185,7 +185,6 @@ brew "lotyp/formulae/dockutil" # Command-line interface for managing dock items.
 cask "1password" # Password manager and secure wallet. [1Password](https://1password.com/)
 cask "1password-cli" # Command-line interface for 1Password. [1Password CLI](https://1password.com/downloads/command-line/)
 cask "adobe-creative-cloud" # Adobe Creative Cloud suite. [Adobe Creative Cloud](https://www.adobe.com/creativecloud.html)
-cask "adoptopenjdk8" # Prebuilt OpenJDK binaries. [AdoptOpenJDK](https://adoptopenjdk.net/)
 cask "android-sdk" # Android SDK. [Android SDK](https://developer.android.com/studio)
 cask "arc" # The Arc browser. [Arc](https://arc.net/)
 cask "balenaetcher" # Flash OS images to SD cards & USB drives. [Balena Etcher](https://www.balena.io/etcher/)
