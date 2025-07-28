@@ -197,7 +197,6 @@ cask "discord" # Free voice and text chat for gamers. [Discord](https://discord.
 cask "elgato-stream-deck" # Stream Deck software. [Stream Deck](https://www.elgato.com/en/gaming/stream
 cask "elgato-wave-link" # Wave Link software. [Wave Link](https://www.elgato.com/en/gaming/wave-3)
 cask "figma" # Figma desktop app. [Figma](https://www.figma.com/)
-cask "firefox" # Fast, privacy-focused web browser. [Firefox](https://www.mozilla.org/firefox/)
 cask "flutter" # Google's UI toolkit for building natively compiled applications. [Flutter](https://flutter.dev/)
 cask "font-cascadia-mono" # Cascadia Mono font. [Cascadia Mono](https://github.com/microsoft/cascadia-code)
 cask "font-fira-code" # Fira Code font. [Fira Code](https://github.com/tonsky/FiraCode)
