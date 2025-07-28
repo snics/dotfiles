@@ -36,7 +36,6 @@ brew "btop" # Resource monitor that shows usage and stats for processor, memory,
 brew "cifer" # Simple, fast, and secure encryption tool. [Cifer](https://github.com/pshved/cifer)
 brew "clair" # Static analysis for vulnerabilities in application containers (currently supports Docker). [Clair](https://github.com/quay/clair)
 brew "cloc" # Count lines of code in many programming languages. [Cloc](https://github.com/AlDanial/cloc)
-brew "container-diff" # Analyzes Docker images and compares their differences. [Container Diff](https://github.com/GoogleContainerTools/container-diff)
 brew "ctop" # Top-like interface for container metrics. [Ctop](https://github.com/bcicen/ctop)
 brew "cmctl" # Command-line tool for managing cert-manager Infrastructure resources. [cmctl](https://github.com/cert-manager/cmctl)
 brew "delve" # Debugger for the Go programming language. [Delve](https://github.com/go-delve/delve)
