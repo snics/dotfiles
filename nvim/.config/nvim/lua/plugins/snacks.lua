@@ -2,9 +2,7 @@ return {
          "folke/snacks.nvim",
          priority = 1000,
          lazy = false,
-         dependencies = {
-           "folke/todo-comments.nvim",
-         },
+
          ---@type snacks.Config
          opts = {
            bigfile = { enabled = true },
@@ -81,14 +79,7 @@ return {
            -- Telescope compatibility shortcuts
            { "<leader>fs", function() Snacks.picker.grep() end, desc = "Find string in current working directory" },
            { "<leader>fc", function() Snacks.picker.grep_word() end, desc = "Find string under cursor in current working directory" },
-           -- TODO: Test todo comment for picker
-           { "<leader>ft", function() 
-             -- Try Snacks todo_comments picker, fallback to trouble
-             local ok, _ = pcall(function() Snacks.picker.todo_comments() end)
-             if not ok then
-               vim.cmd("Trouble todo toggle")
-             end
-           end, desc = "Find all todos" },
+           { "<leader>ft", function() Snacks.picker.todo_comments() end, desc = "Find all todos" },
            -- search
            { '<leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
            { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search History" },
