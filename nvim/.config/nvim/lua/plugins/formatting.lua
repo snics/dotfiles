@@ -47,7 +47,7 @@ return {
 			conform.format_all({
 				lsp_fallback = true,
 				async = false,
-				timeout_ms = 000,
+				timeout_ms = 1000,
 			})
 		end, { desc = "Format all files in the current directory" })
 	end,
