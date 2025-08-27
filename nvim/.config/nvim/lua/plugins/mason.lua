@@ -1,5 +1,7 @@
 return {
   "williamboman/mason.nvim",
+  priority = 100, -- High priority to ensure Mason loads first
+  build = ":MasonUpdate",
   dependencies = {
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -57,6 +59,67 @@ return {
         "yamlls", -- YAML Language Server
         "vimls", -- Vim Language Server
         "lemminx", -- XML Language Server
+      },
+      -- Setup handlers für alle installierten Server
+      handlers = {
+        -- Default handler für alle Server
+        function(server_name)
+          require('lspconfig')[server_name].setup({
+            capabilities = require('cmp_nvim_lsp').default_capabilities()
+          })
+        end,
+        -- Spezielle Konfiguration für Lua
+        ["lua_ls"] = function()
+          require('lspconfig').lua_ls.setup({
+            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+            settings = {
+              Lua = {
+                diagnostics = { globals = { "vim" } },
+                completion = { callSnippet = "Replace" },
+              },
+            },
+          })
+        end,
+        -- Spezielle Konfiguration für Go
+        ["gopls"] = function()
+          require('lspconfig').gopls.setup({
+            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+            cmd = {"gopls"},
+            filetypes = { "go", "gomod", "gowork", "gotmpl" },
+            root_dir = require("lspconfig/util").root_pattern("go.work", "go.mod", ".git"),
+            settings = {
+              gopls = {
+                completeUnimported = true,
+                usePlaceholders = true,
+                analyses = { unusedparams = true },
+              },
+            },
+          })
+        end,
+        -- Spezielle Konfiguration für GraphQL
+        ["graphql"] = function()
+          require('lspconfig').graphql.setup({
+            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+            filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+          })
+        end,
+        -- Spezielle Konfiguration für YAML mit Kubernetes Support
+        ["yamlls"] = function()
+          require('lspconfig').yamlls.setup({
+            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+            settings = {
+              yaml = {
+                schemas = {
+                  [require('kubernetes').yamlls_schema()] = "*.yaml",
+                },
+                format = { enable = true },
+                validate = true,
+                completion = true,
+                hover = true,
+              }
+            }
+          })
+        end,
       },
     })
 
