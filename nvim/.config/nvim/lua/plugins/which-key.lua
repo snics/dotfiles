@@ -47,8 +47,8 @@ return {
         { "K", desc = "Show documentation for what is under cursor", icon = "󰁨" },
         { "<leader>rs", desc = "Restart LSP", icon = "󰁨" },
 
-        -- Window management
-        { "<leader>s", group = "Window management", icon = "" }, -- group for window management
+        -- Search/Snacks (CHANGED: was Window management)
+        { "<leader>s", group = "Search", icon = "" }, -- group for window management
         { "<leader>sv", icon = "" }, -- add icon to split window vertically
         { "<leader>sh", icon = "" }, -- add icon to split windwo horizontally
         { "<leader>se", icon = "󰖮" }, -- add icon to make splits equal size
@@ -70,13 +70,13 @@ return {
         { "<leader>ec", icon = "󰁄" }, -- add icon to collapse file explorer
         { "<leader>er", icon = "󰕂" }, -- add icon to refresh file explorer
 
-        -- Telescope
-        { "<leader>f", group = "Telescope", icon = "" }, -- group for telescope
-        { "<leader>ff", icon = "󰈞", desc = "Fuzzy find files in current working directory" }, -- add icon to fuzzy find files in current working directory
-        { "<leader>fr", icon = "󰈞", desc = "Fuzzy find recent files" }, -- add icon to fuzzy find recent files
-        { "<leader>fs", icon = "", desc = "Find string in current working directory" }, -- add icon to find string in current working directory
-        { "<leader>fc", icon = "", desc = "Find string under cursor in current working directory" }, -- add icon to find string under cursor in current working directory
-        { "<leader>ft", icon = "", desc = "Find all todos" }, -- add icon to find all todos
+        -- Find (Snacks picker)
+        { "<leader>f", group = "Find", icon = "" }, -- group for find operations
+        { "<leader>ff", icon = "󰈞", desc = "Find files" }, -- Snacks picker
+        { "<leader>fr", icon = "󰈞", desc = "Find recent files" }, -- Snacks picker
+        { "<leader>fs", icon = "", desc = "Find string in current working directory" }, -- Snacks grep
+        { "<leader>fc", icon = "", desc = "Find string under cursor in current working directory" }, -- Snacks grep_word
+        { "<leader>ft", icon = "", desc = "Find all todos" }, -- Trouble todo
 
         -- Auto session
         { "<leader>w", group = "Auto session", icon = "" }, -- group for auto session

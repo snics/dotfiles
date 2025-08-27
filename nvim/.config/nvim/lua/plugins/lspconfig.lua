@@ -25,14 +25,11 @@ return {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
       callback = function(ev)
         -- set keybinds
-        keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", { desc = "Show LSP references", buffer = ev.buf, silent = true }) -- show definition, references§
+        -- NOTE: LSP navigation (gd, gr, gi, gy, <leader>ss, <leader>sD) now handled by Snacks picker (see snacks.lua)
         keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration",  buffer = ev.buf, silent = true }) -- go to declaration§
-        keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", { desc = "Show LSP definitions",  buffer = ev.buf, silent = true }) -- show lsp definitions§
-        keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", { desc = "Show LSP implementations",  buffer = ev.buf, silent = true }) -- show lsp implementations§
-        keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "Show LSP type definitions",  buffer = ev.buf, silent = true }) -- show lsp type definitions§
         keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "See available code actions",  buffer = ev.buf, silent = true }) -- see available code actions, in visual mode will apply to selection§
         keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Smart rename",  buffer = ev.buf, silent = true }) -- smart rename
-        keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", { desc = "Show buffer diagnostics",  buffer = ev.buf, silent = true }) -- show  diagnostics for file§
+
         keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Show line diagnostics",  buffer = ev.buf, silent = true }) -- show diagnostics for line§
         keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic",  buffer = ev.buf, silent = true }) -- jump to previous diagnostic in buffer§
         keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic",  buffer = ev.buf, silent = true }) -- jump to next diagnostic in buffer§

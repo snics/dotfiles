@@ -11,8 +11,8 @@ keymap.set("n", "<leader>qq", "<cmd>q<CR>", { desc = "Close buffers" }) -- close
 keymap.set("n", "<leader>QQ", "<cmd>q!<CR>", { desc = "Close force buffer" }) -- close force buffer
 
 -- Save
-keymap.set("n", "<leader>ss", "<cmd>w<CR>", { desc = "Save buffer" }) -- save buffer
-keymap.set("n", "<leader>SS", "<cmd>wq<CR>", { desc = "Save buffer and close" }) -- save buffer and close
+keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Save buffer" }) -- save buffer
+keymap.set("n", "<leader>W", "<cmd>wq<CR>", { desc = "Save buffer and close" }) -- save buffer and close
 
 -- increment/decrement numbers
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment

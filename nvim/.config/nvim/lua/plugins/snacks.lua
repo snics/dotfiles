@@ -2,6 +2,9 @@ return {
          "folke/snacks.nvim",
          priority = 1000,
          lazy = false,
+         dependencies = {
+           "folke/todo-comments.nvim",
+         },
          ---@type snacks.Config
          opts = {
            bigfile = { enabled = true },
@@ -75,6 +78,17 @@ return {
            { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
            { "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
            { "<leader>sw", function() Snacks.picker.grep_word() end, desc = "Visual selection or word", mode = { "n", "x" } },
+           -- Telescope compatibility shortcuts
+           { "<leader>fs", function() Snacks.picker.grep() end, desc = "Find string in current working directory" },
+           { "<leader>fc", function() Snacks.picker.grep_word() end, desc = "Find string under cursor in current working directory" },
+           -- TODO: Test todo comment for picker
+           { "<leader>ft", function() 
+             -- Try Snacks todo_comments picker, fallback to trouble
+             local ok, _ = pcall(function() Snacks.picker.todo_comments() end)
+             if not ok then
+               vim.cmd("Trouble todo toggle")
+             end
+           end, desc = "Find all todos" },
            -- search
            { '<leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
            { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search History" },
@@ -96,6 +110,8 @@ return {
            { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },
            { "<leader>sR", function() Snacks.picker.resume() end, desc = "Resume" },
            { "<leader>su", function() Snacks.picker.undo() end, desc = "Undo History" },
+           { "<leader>st", function() Snacks.picker.todo_comments() end, desc = "Todo Comments" },
+           { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Todo/Fix/Fixme" },
            { "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "Colorschemes" },
            -- LSP
            { "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },
