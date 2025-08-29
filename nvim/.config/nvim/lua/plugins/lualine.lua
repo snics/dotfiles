@@ -57,6 +57,31 @@ return {
         section_separators = { left = '', right = ''},
       },
       sections = {
+        lualine_c = {
+          { "filename" },
+          -- YAML-Pfad-Anzeige
+          {
+            function()
+              if vim.bo.filetype == "yaml" then
+                local ok, yaml = pcall(require, "yaml_nvim")
+                if ok then
+                  local yaml_path = yaml.get_yaml_key()
+                  if yaml_path and yaml_path ~= "" then
+                    -- Nutze das YAML-Icon aus nvim-web-devicons
+                    local devicons = require("nvim-web-devicons")
+                    local yaml_icon = devicons.get_icon_by_filetype("yaml") or ""
+                    return yaml_icon .. " " .. yaml_path
+                  end
+                end
+              end
+              return ""
+            end,
+            cond = function()
+              return vim.bo.filetype == "yaml"
+            end,
+            color = { gui = "italic" },
+          },
+        },
         lualine_x = {
           {
             lazy_status.updates,
