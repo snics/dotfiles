@@ -118,6 +118,17 @@ return {
         { "<leader>hB", desc = "Toggle line blame", icon = "" }, -- add icon to toggle line blame
         { "<leader>hd", desc = "Diff this", icon = "" }, -- add icon to diff this
         { "<leader>hD", desc = "Diff this ~", icon = "" }, -- add icon to diff this ~
+        
+        -- YAML Tools
+        { "<leader>y", group = "YAML Tools", icon = "󰈙" },
+        { "<leader>yv", desc = "Show YAML path and value", icon = "󰈙" },
+        { "<leader>yy", desc = "Yank YAML path and value", icon = "󰅌" },
+        { "<leader>yk", desc = "Yank YAML key", icon = "󰌌" },
+        { "<leader>yV", desc = "Yank YAML value", icon = "󰅌" },
+        { "<leader>yq", desc = "YAML quickfix", icon = "󰎟" },
+        { "<leader>yh", desc = "Remove YAML highlight", icon = "󰸱" },
+        { "<leader>ys", desc = "YAML Snacks picker", icon = "󰍉" },
+        { "<leader>yt", desc = "YAML Telescope picker", icon = "󰭎" },
     })
   end,
 }
