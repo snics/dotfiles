@@ -60,67 +60,91 @@ return {
         "vimls", -- Vim Language Server
         "lemminx", -- XML Language Server
       },
-      -- Setup handlers für alle installierten Server
-      handlers = {
-        -- Default handler für alle Server
-        function(server_name)
-          require('lspconfig')[server_name].setup({
-            capabilities = require('cmp_nvim_lsp').default_capabilities()
-          })
-        end,
-        -- Spezielle Konfiguration für Lua
-        ["lua_ls"] = function()
-          require('lspconfig').lua_ls.setup({
-            capabilities = require('cmp_nvim_lsp').default_capabilities(),
-            settings = {
-              Lua = {
-                diagnostics = { globals = { "vim" } },
-                completion = { callSnippet = "Replace" },
-              },
-            },
-          })
-        end,
-        -- Spezielle Konfiguration für Go
-        ["gopls"] = function()
-          require('lspconfig').gopls.setup({
-            capabilities = require('cmp_nvim_lsp').default_capabilities(),
-            cmd = {"gopls"},
-            filetypes = { "go", "gomod", "gowork", "gotmpl" },
-            root_dir = require("lspconfig/util").root_pattern("go.work", "go.mod", ".git"),
-            settings = {
-              gopls = {
-                completeUnimported = true,
-                usePlaceholders = true,
-                analyses = { unusedparams = true },
-              },
-            },
-          })
-        end,
-        -- Spezielle Konfiguration für GraphQL
-        ["graphql"] = function()
-          require('lspconfig').graphql.setup({
-            capabilities = require('cmp_nvim_lsp').default_capabilities(),
-            filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-          })
-        end,
-        -- Spezielle Konfiguration für YAML mit Kubernetes Support
-        ["yamlls"] = function()
-          require('lspconfig').yamlls.setup({
-            capabilities = require('cmp_nvim_lsp').default_capabilities(),
-            settings = {
-              yaml = {
-                schemas = {
-                  [require('kubernetes').yamlls_schema()] = "*.yaml",
-                },
-                format = { enable = true },
-                validate = true,
-                completion = true,
-                hover = true,
-              }
-            }
-          })
-        end,
+      -- Automatically install ensure_installed servers
+      automatic_installation = true,
+    })
+
+    -- Get default capabilities
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+    -- Setup individual LSP servers with lspconfig
+    local lspconfig = require("lspconfig")
+
+    -- Default setup for most servers
+    local servers = {
+      "ansiblels", "bashls", "biome", "cssls", "css_variables", "cssmodules_ls",
+      "denols", "docker_compose_language_service", "dockerls", "eslint",
+      "html", "htmx", "helm_ls", "jsonls", "ltex", "mdx_analyzer", "marksman",
+      "nginx_language_server", "powershell_es", "sqlls", "taplo", "tailwindcss",
+      "terraformls", "ts_ls", "vimls", "lemminx"
+    }
+
+    for _, server in ipairs(servers) do
+      lspconfig[server].setup({
+        capabilities = capabilities,
+      })
+    end
+
+    -- Special configuration for Lua
+    lspconfig.lua_ls.setup({
+      capabilities = capabilities,
+      settings = {
+        Lua = {
+          diagnostics = { globals = { "vim" } },
+          completion = { callSnippet = "Replace" },
+        },
       },
+    })
+
+    -- Special configuration for Go
+    lspconfig.gopls.setup({
+      capabilities = capabilities,
+      cmd = {"gopls"},
+      filetypes = { "go", "gomod", "gowork", "gotmpl" },
+      root_dir = require("lspconfig/util").root_pattern("go.work", "go.mod", ".git"),
+      settings = {
+        gopls = {
+          completeUnimported = true,
+          usePlaceholders = true,
+          analyses = { unusedparams = true },
+        },
+      },
+    })
+
+    -- Special configuration for GraphQL
+    lspconfig.graphql.setup({
+      capabilities = capabilities,
+      filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+    })
+
+    -- Special configuration for YAML with Kubernetes support
+    lspconfig.yamlls.setup({
+      capabilities = capabilities,
+      settings = {
+        yaml = {
+          schemaStore = {
+            -- Enable built-in schemaStore support
+            enable = true,
+            -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+            url = "",
+          },
+          schemas = {
+            kubernetes = "*.{yaml,yml}",
+            ["https://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+            ["https://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+            ["https://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+            ["https://json.schemastore.org/helm-chart"] = "Chart.{yml,yaml}",
+            ["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}",
+            ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}",
+            ["https://json.schemastore.org/ansible-playbook"] = "playbook*.{yml,yaml}",
+            ["https://json.schemastore.org/ansible-inventory"] = "inventory*.{yml,yaml}",
+          },
+          format = { enable = true },
+          validate = true,
+          completion = true,
+          hover = true,
+        }
+      }
     })
 
     mason_tool_installer.setup({
