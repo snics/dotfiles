@@ -125,26 +125,126 @@ return {
           schemaStore = {
             -- Enable built-in schemaStore support
             enable = true,
-            -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-            url = "",
+            -- Use default URL
+            url = "https://www.schemastore.org/api/json/catalog.json",
           },
-          schemas = {
-            kubernetes = "*.{yaml,yml}",
-            ["https://json.schemastore.org/github-workflow"] = ".github/workflows/*",
-            ["https://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
-            ["https://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
-            ["https://json.schemastore.org/helm-chart"] = "Chart.{yml,yaml}",
-            ["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}",
-            ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}",
-            ["https://json.schemastore.org/ansible-playbook"] = "playbook*.{yml,yaml}",
-            ["https://json.schemastore.org/ansible-inventory"] = "inventory*.{yml,yaml}",
+          schemas = (function()
+            local schemas = {}
+            
+            -- Versuche kubernetes.nvim zu laden (nur wenn Cluster verfügbar)
+            local ok, kubernetes = pcall(require, 'kubernetes')
+            if ok then
+              local schema_path = kubernetes.yamlls_schema()
+              if schema_path then
+                -- Verwende kubernetes.nvim für alle YAML-Dateien wenn verfügbar
+                schemas[schema_path] = "*.{yaml,yml}"
+                vim.notify("[yamlls] Using kubernetes.nvim schema for live cluster support", vim.log.levels.INFO)
+              end
+            else
+              -- Fallback auf statisches Kubernetes-Schema für spezifische Patterns
+              schemas["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.34.0-standalone-strict/all.json"] = {
+                -- Core Workload Resources
+                "*pod*.{yaml,yml}", "*po*.{yaml,yml}",
+                "*service*.{yaml,yml}", "*svc*.{yaml,yml}",
+                "*deployment*.{yaml,yml}", "*deploy*.{yaml,yml}",
+                "*replicaset*.{yaml,yml}", "*rs*.{yaml,yml}",
+                "*daemonset*.{yaml,yml}", "*ds*.{yaml,yml}",
+                "*statefulset*.{yaml,yml}", "*sts*.{yaml,yml}",
+                "*job*.{yaml,yml}",
+                "*cronjob*.{yaml,yml}", "*cj*.{yaml,yml}",
+                
+                -- Config & Storage
+                "*configmap*.{yaml,yml}", "*cm*.{yaml,yml}",
+                "*secret*.{yaml,yml}",
+                "*persistentvolume*.{yaml,yml}", "*pv*.{yaml,yml}",
+                "*persistentvolumeclaim*.{yaml,yml}", "*pvc*.{yaml,yml}",
+                "*storageclass*.{yaml,yml}", "*sc*.{yaml,yml}",
+                
+                -- Networking
+                "*ingress*.{yaml,yml}", "*ing*.{yaml,yml}",
+                "*networkpolicy*.{yaml,yml}", "*netpol*.{yaml,yml}",
+                "*endpoints*.{yaml,yml}", "*ep*.{yaml,yml}",
+                "*endpointslice*.{yaml,yml}",
+                
+                -- Security & Access
+                "*serviceaccount*.{yaml,yml}", "*sa*.{yaml,yml}",
+                "*role*.{yaml,yml}",
+                "*rolebinding*.{yaml,yml}",
+                "*clusterrole*.{yaml,yml}",
+                "*clusterrolebinding*.{yaml,yml}",
+                "*podsecuritypolicy*.{yaml,yml}", "*psp*.{yaml,yml}",
+                
+                -- Advanced Workloads
+                "*horizontalpodautoscaler*.{yaml,yml}", "*hpa*.{yaml,yml}",
+                "*verticalpodautoscaler*.{yaml,yml}", "*vpa*.{yaml,yml}",
+                "*poddisruptionbudget*.{yaml,yml}", "*pdb*.{yaml,yml}",
+                
+                -- API & Custom Resources
+                "*customresourcedefinition*.{yaml,yml}", "*crd*.{yaml,yml}",
+                "*apiservice*.{yaml,yml}",
+                "*mutatingwebhookconfiguration*.{yaml,yml}",
+                "*validatingwebhookconfiguration*.{yaml,yml}",
+                
+                -- Nodes & Cluster
+                "*node*.{yaml,yml}", "*no*.{yaml,yml}",
+                "*namespace*.{yaml,yml}", "*ns*.{yaml,yml}",
+                "*resourcequota*.{yaml,yml}", "*quota*.{yaml,yml}",
+                "*limitrange*.{yaml,yml}", "*limits*.{yaml,yml}",
+                
+                -- Events & Monitoring
+                "*event*.{yaml,yml}", "*ev*.{yaml,yml}",
+                "*componentstatus*.{yaml,yml}", "*cs*.{yaml,yml}",
+                
+                -- Special patterns
+                "*.k8s.{yaml,yml}",
+                "*kubernetes*.{yaml,yml}",
+                "k8s/**/*.{yaml,yml}",
+                "kubernetes/**/*.{yaml,yml}",
+                "manifests/**/*.{yaml,yml}",
+              }
+            end
+            
+            -- Andere Schemas (immer verfügbar)
+            schemas["https://json.schemastore.org/github-workflow"] = ".github/workflows/*"
+            schemas["https://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}"
+            schemas["https://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}"
+            schemas["https://json.schemastore.org/helm-chart"] = "Chart.{yml,yaml}"
+            schemas["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}"
+            schemas["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}"
+            schemas["https://json.schemastore.org/ansible-playbook"] = "playbook*.{yml,yaml}"
+            schemas["https://json.schemastore.org/ansible-inventory"] = "inventory*.{yml,yaml}"
+            
+            return schemas
+          end)(),
+          format = { 
+            enable = true,
+            singleQuote = false,
+            bracketSpacing = true,
           },
-          format = { enable = true },
           validate = true,
           completion = true,
           hover = true,
+          -- Kubernetes support now handled by kubernetes.nvim plugin
         }
-      }
+      },
+      -- Verbesserte Dateierkennung
+      filetypes = { 
+        "yaml", 
+        "yml", 
+        "yaml.docker-compose",
+        "yaml.gitlab",
+        "yaml.ansible"
+      },
+      -- Root directory detection
+      root_dir = require("lspconfig/util").root_pattern(
+        ".git",
+        "docker-compose.yml",
+        "docker-compose.yaml",
+        "Chart.yaml",
+        "values.yaml",
+        "ansible.cfg",
+        ".gitlab-ci.yml"
+      ),
     })
 
     mason_tool_installer.setup({
