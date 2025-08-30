@@ -19,11 +19,31 @@ function M.setup()
   
   -- Setup default servers (simple configurations)
   local default_servers = {
-    "ansiblels", "bashls", "biome", "cssls", "css_variables", "cssmodules_ls",
-    "denols", "docker_compose_language_service", "dockerls", "eslint",
-    "html", "htmx", "helm_ls", "ltex", "mdx_analyzer", "marksman",
-    "nginx_language_server", "powershell_es", "sqlls", "taplo", "tailwindcss",
-    "terraformls", "ts_ls", "vimls", "lemminx"
+    "ansiblels", 
+    "bashls", 
+    "biome", 
+    "cssls", 
+    "css_variables", 
+    "cssmodules_ls",
+    "denols", 
+    "docker_compose_language_service", 
+    "dockerls", 
+    "eslint",
+    "html", 
+    "htmx", 
+    "helm_ls", 
+    "ltex", 
+    "mdx_analyzer", 
+    "marksman",
+    "nginx_language_server", 
+    "powershell_es", 
+    "sqlls", 
+    "taplo", 
+    "tailwindcss",
+    "terraformls", 
+    "ts_ls", 
+    "vimls", 
+    "lemminx"
   }
   
   for _, server in ipairs(default_servers) do
