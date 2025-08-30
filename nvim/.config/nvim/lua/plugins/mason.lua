@@ -5,6 +5,7 @@ return {
   dependencies = {
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+    "b0o/schemastore.nvim", -- JSON schemas for yamlls and jsonls
   },
   config = function()
     -- import mason
@@ -123,25 +124,26 @@ return {
       settings = {
         yaml = {
           schemaStore = {
-            -- Enable built-in schemaStore support
-            enable = true,
-            -- Use default URL
-            url = "https://www.schemastore.org/api/json/catalog.json",
+            -- Disable built-in schemaStore support since we use SchemaStore.nvim
+            enable = false,
+            -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+            url = "",
           },
           schemas = (function()
-            local schemas = {}
+            -- 1. SchemaStore.nvim for all standard schemas (highest priority)
+            local schemas = require('schemastore').yaml.schemas()
             
-            -- Versuche kubernetes.nvim zu laden (nur wenn Cluster verfügbar)
-            local ok, kubernetes = pcall(require, 'kubernetes')
-            if ok then
+            -- 2. Kubernetes Schema - Smart Loading (overrides SchemaStore Kubernetes if needed)
+            local k8s_ok, kubernetes = pcall(require, 'kubernetes')
+            if k8s_ok then
               local schema_path = kubernetes.yamlls_schema()
               if schema_path then
-                -- Verwende kubernetes.nvim für alle YAML-Dateien wenn verfügbar
+                -- Use kubernetes.nvim for all YAML files when available
                 schemas[schema_path] = "*.{yaml,yml}"
                 vim.notify("[yamlls] Using kubernetes.nvim schema for live cluster support", vim.log.levels.INFO)
               end
             else
-              -- Fallback auf statisches Kubernetes-Schema für spezifische Patterns
+              -- Fallback to static Kubernetes schema for specific patterns
               schemas["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.34.0-standalone-strict/all.json"] = {
                 -- Core Workload Resources
                 "*pod*.{yaml,yml}", "*po*.{yaml,yml}",
@@ -204,16 +206,6 @@ return {
               }
             end
             
-            -- Andere Schemas (immer verfügbar)
-            schemas["https://json.schemastore.org/github-workflow"] = ".github/workflows/*"
-            schemas["https://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}"
-            schemas["https://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}"
-            schemas["https://json.schemastore.org/helm-chart"] = "Chart.{yml,yaml}"
-            schemas["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}"
-            schemas["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}"
-            schemas["https://json.schemastore.org/ansible-playbook"] = "playbook*.{yml,yaml}"
-            schemas["https://json.schemastore.org/ansible-inventory"] = "inventory*.{yml,yaml}"
-            
             return schemas
           end)(),
           format = { 
@@ -227,7 +219,7 @@ return {
           -- Kubernetes support now handled by kubernetes.nvim plugin
         }
       },
-      -- Verbesserte Dateierkennung
+                -- Improved file type detection
       filetypes = { 
         "yaml", 
         "yml", 
