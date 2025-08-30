@@ -16,6 +16,7 @@ function M.setup()
   require("config.lsp.servers.lua_ls").setup(lspconfig, M.capabilities)
   require("config.lsp.servers.gopls").setup(lspconfig, M.capabilities)
   require("config.lsp.servers.graphql").setup(lspconfig, M.capabilities)
+  require("config.lsp.servers.helm_ls").setup(lspconfig, M.capabilities)
   
   -- Setup default servers (simple configurations)
   local default_servers = {
@@ -31,7 +32,6 @@ function M.setup()
     "eslint",
     "html", 
     "htmx", 
-    "helm_ls", 
     "ltex", 
     "mdx_analyzer", 
     "marksman",
