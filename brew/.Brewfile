@@ -146,6 +146,7 @@ brew "skopeo" # Command line utility that performs various operations on contain
 brew "socat" # Multipurpose relay (SOcket CAT). [Socat](http://www.dest-unreach.org/socat/)
 brew "sqlmap" # Automatic SQL injection and database takeover tool. [Sqlmap](https://sqlmap.org/)
 brew "ssh-copy-id" # brew "ssh-copy-id" # Add a public key to a remote machine's authorized_keys file. [Ssh-copy-id](https://www.openssh.com/manual.html)
+brew "sst/tap/opencode" # This is a OSS Code Agenda for the terminal. [OpenCode](https://github.com/sst/opencode)
 brew "starship" # The minimal, blazing-fast, and infinitely customizable prompt for any shell! [Starship](https://starship.rs/)
 brew "stern" # Multi pod and container log tailing for Kubernetes. [Stern](https://github.com/stern/stern)
 brew "stow" # Manage installation of multiple software packages in the same directory tree. [Stow](https://www.gnu.org/software/stow/)
