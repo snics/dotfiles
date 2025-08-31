@@ -24,11 +24,10 @@ function M.setup(lspconfig, capabilities)
             if schema_path then
               -- Use kubernetes.nvim for all YAML files when available
               schemas[schema_path] = "*.{yaml,yml}"
-              vim.notify("[yamlls] Using kubernetes.nvim schema for live cluster support", vim.log.levels.INFO)
             end
           else
             -- Fallback to static Kubernetes schema for specific patterns
-            schemas["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.34.0-standalone-strict/all.json"] = {
+            schemas["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.34.0/all.json"] = {
               -- Core Workload Resources
               "*pod*.{yaml,yml}", "*po*.{yaml,yml}",
               "*service*.{yaml,yml}", "*svc*.{yaml,yml}",
@@ -88,9 +87,7 @@ function M.setup(lspconfig, capabilities)
               "kubernetes/**/*.{yaml,yml}",
               "manifests/**/*.{yaml,yml}",
             }
-            vim.notify("[yamlls] Using static Kubernetes schema (no cluster connection)", vim.log.levels.INFO)
           end
-          
           return schemas
         end)(),
         format = { 
