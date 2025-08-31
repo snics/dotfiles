@@ -28,6 +28,19 @@ return {
       completion = {
         completeopt = "menu,menuone,preview,noselect", -- completion options
       },
+      
+      -- Window styling with borders for LSP hints
+      window = {
+        completion = cmp.config.window.bordered({
+          border = "rounded",
+          winhighlight = "Normal:Pmenu,FloatBorder:VertSplit,CursorLine:PmenuSel,Search:None",
+        }),
+        documentation = cmp.config.window.bordered({
+          border = "rounded",
+          winhighlight = "Normal:Pmenu,FloatBorder:VertSplit,CursorLine:PmenuSel,Search:None",
+        }),
+      },
+      
       snippet = { -- configure how nvim-cmp interacts with snippet engine
         expand = function(args)
           luasnip.lsp_expand(args.body) -- expand the snippet
