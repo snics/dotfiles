@@ -1,0 +1,277 @@
+# 🎯 NEOVIM DOTFILES CURSOR RULES
+# Consistent configuration and documentation standards for Neovim plugins
+
+## 📋 GENERAL PRINCIPLES
+1. **Consistency First**: All configurations must follow established patterns
+2. **Documentation Always**: Every keybinding, option, and configuration must be documented
+3. **English Only**: All comments, descriptions, and documentation in English
+4. **Icon Usage**: Use appropriate icons for visual clarity and categorization
+5. **Maintainability**: Structure code for easy updates and modifications
+
+## 🔑 WHICH-KEY.LUA RULES
+
+### 🎯 PRIMARY OBJECTIVES
+- **Complete Synchronization**: which-key.lua MUST reflect ALL keybindings from ALL plugin files
+- **Zero Orphans**: Remove any keybindings that no longer exist in source plugins
+- **Comprehensive Documentation**: Every key must have clear description and source reference
+- **Logical Grouping**: Related keys must be grouped with appropriate group keys
+- **Icon Consistency**: Use meaningful icons throughout
+
+### 📚 SECTION STRUCTURE
+```lua
+-- 🔷 [SECTION NAME] - [Brief description]
+-- Source: [filename.lua] - [Plugin name]
+-- Purpose: [What this section accomplishes]
+```
+
+### 🔑 KEYBINDING FORMAT
+```lua
+{ "key", desc = "Clear description", icon = "󰅖", mode = "n" }, -- Source: filename.lua - Additional context if complex
+```
+
+### 📦 GROUP KEY REQUIREMENTS
+When you have 3+ related keybindings, create a group:
+```lua
+{ "<leader>g", group = "Group Name", icon = "󰅖" }, -- Source: filename.lua - Group description
+```
+
+### 🎨 ICON GUIDELINES & STANDARDS
+
+#### 📚 ICON SOURCES
+All icons must come from these approved sources:
+1. **Nerd Fonts** (https://www.nerdfonts.com/cheat-sheet) - Complete icon library
+2. **nvim-web-devicons** - File type and technology icons
+3. **Devicons** - Development-related icons
+4. **Font Awesome** symbols within Nerd Fonts
+
+#### 🎯 ICON SELECTION PRINCIPLES
+- **Semantic Meaning**: Icon should clearly represent the action/concept
+- **Visual Distinction**: Different categories should use visually distinct icons
+- **Consistency**: Same action types should use same icon family
+- **Readability**: Icons must be clear at small sizes
+- **Universal Recognition**: Prefer commonly understood symbols
+
+#### 📂 ICON CATEGORIES & EXAMPLES
+
+##### 🗂️ Files & Navigation
+- **Files/Explorer**: 󰈞 󰝰 󰉋 󰷊 󰈙 󰧮 󰎞 󰈚
+- **Folders**: 󰉋 󰝰 󰷊 󰉖 󰴉 󰉕
+- **Search/Find**: 󰍉 󰈞 󰱼 󰍵 󰊄 󰀻 󰃀
+- **Recent/History**: 󰋚 󰦛 󰃰 󰄉 󰔚
+
+##### 🎨 Development & Code
+- **Languages**: 󰌘 󰈙 󰛦 󰈮 󰌕 󰖟 󰡄 󰅴 󱃖
+- **Text Objects**: 󰒅 󰒆 󰒓 󰊕 󰌗 󰕷 󰑓 󰅩 󰘧 󰏪
+- **Functions**: 󰊕 󰡪 󰆧 󰛩 󰆦
+- **Classes**: 󰌗 󰠱 󰡃 󰙅
+- **Variables**: 󰀫 󰆧 󰏪
+- **Formatting**: 󰉿 󰁨 󰛔 󰉤 󰘦
+- **Linting**: 󰒡 󰨮 󰃀 󰅮
+
+##### 🔧 Git & Version Control
+- **Git Operations**: 󰊢 󰜿 󰙅 󰖟 󰊢 󰘬 󰘭 󰊠 󰊤
+- **Branches**: 󰘬 󰘭 󰈿 󰘩
+- **Commits**: 󰜘 󰔫 󰫞 󰫣
+- **Diffs**: 󰦒 󰓃 󰰞
+- **Merge**: 󰘭 󰓃 󰮉
+
+##### 🚀 Actions & Operations
+- **Run/Execute**: 󰐊 󱓞 󰅀 󰜎
+- **Build**: 󰚀 󰛂 󰯋 󰮯
+- **Debug**: 󰃤 󰨰 󰃤 󰃮
+- **Test**: 󰤑 󰙨 󰙩 󰤓
+- **Deploy**: 󰛁 󰮯 󰜎
+
+##### 📊 System & Tools
+- **LSP/Diagnostics**: 󰁨 󱪘 󰒡 󰅱 󰳤 󰳦
+- **Terminal/Shell**: 󰞷 󰝰 󰩟 󰻀 󰑮
+- **Database**: 󰆼 󰰀 󰳘 󱘲
+- **Network**: 󰌘 󰛵 󰖟 󰤀
+- **Server**: 󰒋 󰊤 󰔡
+
+##### 🎭 UI & Interface
+- **Navigation**: 󰒭 󰒮 󰁨 󰵮 󰍉 󰜮 󰜴 󰜳
+- **Tabs**: 󰓩 󰝜 󰭌 󰒭 󰒮 󰓪 󰄮 󰄯
+- **Windows**: 󰖮 󰝤 󰬀 󰬁 󰬂 󰁍 󰁌
+- **Buffers**: 󰩈 󰆓 󰭿 󰅩 󰝒
+- **Sessions**: 󰅍 󰁯 󰄉 󰘦
+- **Settings**: 󰒓 󰙵 󰒡 󱎊
+
+##### 🎯 Specialized Tools
+- **YAML**: 󰈙 󰌌 󰅌 󰎟 󰈚
+- **JSON**: 󰘦 󰗱 󱘦
+- **Markdown**: 󰍔 󰧱 󰎞
+- **Docker**: 󰡨 󰮯
+- **Kubernetes**: ☸ 󱃾
+- **Trouble/Debug**: 󱪘 󰅱 󰎟 󰃤 󰙧
+- **Package Managers**: 󰏗 󰏖 󰎙
+
+##### 💾 File Operations
+- **Save/Close**: 󰈸 󰩈 󰭌 󰄀 󰗺
+- **Copy/Paste**: 󰅌 󰅍 󰗊 󰩦
+- **Delete**: 󰩺 󰩹 󰗷
+- **Rename**: 󰑕 󰟕 󰤌
+- **Move**: 󰼶 󰰪 󰪹
+
+#### 🔍 ICON SELECTION WORKFLOW
+1. **Identify Category**: Determine the primary function/category
+2. **Check Examples**: Use category examples as starting point
+3. **Verify Readability**: Test icon visibility in your terminal
+4. **Ensure Uniqueness**: Avoid duplicate icons within same context
+5. **Document Choice**: Note why specific icon was chosen if non-obvious
+
+#### 🚫 ICON RESTRICTIONS
+- **No ASCII Characters**: Use proper Unicode symbols, not ascii art
+- **No Custom Icons**: Only use icons from approved sources
+- **No Emoji**: Use Nerd Font symbols instead of emoji
+- **No Duplicate Meanings**: Same icon shouldnt represent different actions
+- **No Ambiguous Icons**: Icon meaning should be immediately clear
+
+#### 💡 ICON TIPS
+- **Test Visibility**: Ensure icons are visible in your terminal setup
+- **Use Fallbacks**: Consider terminals that might not render all icons
+- **Group Consistency**: Related items should use icons from same family
+- **Color Independence**: Icons should work without color information
+- **Size Considerations**: Icons should be readable at various font sizes
+
+### 🔄 UPDATE WORKFLOW
+When updating ANY plugin configuration:
+
+1. **Check Source**: Identify all keybindings in the modified plugin file
+2. **Update which-key**: Add/modify/remove corresponding entries in which-key.lua
+3. **Group Logic**: Create groups for 3+ related keys
+4. **Documentation**: Add source reference and clear descriptions
+5. **Icon Selection**: Choose appropriate icons from the guidelines
+6. **Mode Specification**: Always specify correct modes (n, v, i, o, x, etc.)
+7. **Validation**: Ensure no orphaned keys remain
+
+### 📝 COMMENT STANDARDS
+
+#### Section Comments:
+```lua
+-- 🔷 TREESITTER TEXTOBJECTS & SELECTION
+-- Source: treesitter.lua - nvim-treesitter & nvim-treesitter-textobjects
+-- Purpose: Smart text selection, navigation, and manipulation using syntax tree
+```
+
+#### Complex Key Comments:
+```lua
+{ "<C-enter>", desc = "Start/Expand selection", icon = "󰒅", mode = "n" }, -- Source: treesitter.lua - Ctrl+Enter for Mac compatibility
+```
+
+#### Group Key Comments:
+```lua
+{ "<leader>y", group = "YAML Tools", icon = "󰈙" }, -- Source: yaml.lua - YAML-specific operations and navigation
+```
+
+### 🚫 FORBIDDEN PATTERNS
+- **No undocumented keys**: Every key must have a description
+- **No missing source references**: Always indicate source file
+- **No inconsistent icons**: Follow icon guidelines
+- **No orphaned keys**: Remove keys that dont exist in source
+- **No duplicate descriptions**: Each key description must be unique
+- **No mode omission**: Always specify mode when not default
+
+### 🔍 MANDATORY SECTIONS
+which-key.lua MUST contain sections for:
+1. **General Navigation** (built-in Neovim)
+2. **LSP Operations** (lspconfig.lua)
+3. **File Explorer** (file-explorer related plugins)
+4. **Search/Find** (snacks.lua, telescope.lua if present)
+5. **Git Operations** (gitsigns, lazygit)
+6. **Formatting** (formatting.lua)
+7. **Linting** (linting.lua)
+8. **Treesitter** (treesitter.lua)
+9. **YAML Tools** (yaml.lua if present)
+10. **Session Management** (session plugins)
+11. **Trouble/Diagnostics** (trouble.lua)
+12. **Tab/Window Management** (built-in)
+
+### 📏 ORDERING RULES
+1. **General operations** (save, close, navigation)
+2. **LSP operations** (code actions, definitions, diagnostics)
+3. **File operations** (explorer, find, search)
+4. **Version control** (git operations)
+5. **Code quality** (formatting, linting)
+6. **Language features** (treesitter, language-specific tools)
+7. **Session/workspace** (session management, trouble)
+8. **Window management** (tabs, splits, buffers)
+
+### 🎯 QUALITY CHECKLIST
+Before committing changes to which-key.lua:
+- [ ] All plugin keybindings are documented
+- [ ] No orphaned entries exist
+- [ ] All entries have source references
+- [ ] Groups are created for related keys (3+)
+- [ ] Icons are consistent and meaningful
+- [ ] Descriptions are clear and unique
+- [ ] Modes are correctly specified
+- [ ] Sections are properly ordered
+- [ ] Comments follow standards
+- [ ] English language throughout
+
+### 🔧 MAINTENANCE COMMANDS
+When updating plugins, always run:
+```vim
+:checkhealth which-key  " Verify configuration
+:WhichKey              " Test key mappings
+```
+
+## 🚀 PLUGIN-SPECIFIC RULES
+
+### 📁 File Organization
+- **One plugin per file** when possible
+- **Logical grouping** for related functionality
+- **Consistent naming**: kebab-case for files
+- **Clear dependencies**: Always specify plugin dependencies
+
+### 💡 Configuration Standards
+- **Always document why** not just what
+- **Use local variables** for plugin configurations
+- **Error handling** for plugin loading
+- **Performance considerations** (lazy loading, event triggers)
+
+### 🎨 Code Style
+- **2-space indentation**
+- **Clear variable names**
+- **Consistent comment formatting**
+- **Logical section breaks**
+- **Descriptive function names**
+
+### 🔄 VERSION CONTROL
+- **Atomic commits** for each plugin change
+- **Clear commit messages** describing changes
+- **Update which-key.lua** in same commit as plugin changes
+- **Test before committing**
+
+## 🔄 TREESITTER UPDATE RULES
+
+### 🎯 WHEN TREESITTER.LUA CHANGES
+Always update which-key.lua sections:
+
+#### Incremental Selection Keys:
+- Source: treesitter.lua - incremental_selection config
+- Update: `<C-enter>`, `<C-backspace>` keybindings
+- Mac Compatibility: Note Ctrl+Enter instead of Ctrl+Space
+
+#### Textobjects Keys:
+- Source: treesitter.lua - textobjects.select config
+- Update: All `a*`/`i*` textobject keybindings (af, if, ac, ic, etc.)
+- Modes: Always specify `{ "o", "x" }` for textobjects
+
+#### Navigation Keys:
+- Source: treesitter.lua - textobjects.move config
+- Update: All `]*`/`[*` navigation keybindings
+- Categories: Functions (m/M), Classes (c/C), Conditionals (i/I), Loops (l/L)
+
+#### Swap Keys:
+- Source: treesitter.lua - textobjects.swap config
+- Update: `<leader>a`, `<leader>A` parameter swapping
+
+### 🎯 REQUIRED TREESITTER DOCUMENTATION
+```lua
+-- 🔷 TREESITTER TEXTOBJECTS & INCREMENTAL SELECTION
+-- Source: treesitter.lua - nvim-treesitter & nvim-treesitter-textobjects
+-- Purpose: Smart text selection, navigation, and manipulation using syntax tree
+-- Note: Uses Ctrl+Enter for Mac compatibility instead of Ctrl+Space
+```

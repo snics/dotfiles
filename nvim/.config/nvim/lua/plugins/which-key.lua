@@ -129,6 +129,68 @@ return {
         { "<leader>yh", desc = "Remove YAML highlight", icon = "󰸱" },
         { "<leader>ys", desc = "YAML Snacks picker", icon = "󰍉" },
         { "<leader>yt", desc = "YAML Telescope picker", icon = "󰭎" },
+
+        -- 🚀 Treesitter Textobjects & Incremental Selection
+        { "<C-space>", desc = "Start/Expand selection", icon = "󰒅", mode = "n" },
+        { "<C-space>", desc = "Expand selection", icon = "󰒅", mode = "v" },
+        { "<C-s>", desc = "Expand selection to scope", icon = "󰒓", mode = "v" },
+        { "<C-backspace>", desc = "Shrink selection", icon = "󰒆", mode = "v" },
+        
+        -- 📝 Treesitter Textobjects - Functions & Classes
+        { "af", desc = "Select around function", icon = "󰊕", mode = { "o", "x" } },
+        { "if", desc = "Select inside function", icon = "󰊕", mode = { "o", "x" } },
+        { "ac", desc = "Select around class", icon = "󰌗", mode = { "o", "x" } },
+        { "ic", desc = "Select inside class", icon = "󰌗", mode = { "o", "x" } },
+        
+        -- 📝 Treesitter Textobjects - Parameters & Arguments
+        { "aa", desc = "Select around argument", icon = "󰏪", mode = { "o", "x" } },
+        { "ia", desc = "Select inside argument", icon = "󰏪", mode = { "o", "x" } },
+        
+        -- 📝 Treesitter Textobjects - Control Flow
+        { "ai", desc = "Select around conditional", icon = "󰕷", mode = { "o", "x" } },
+        { "ii", desc = "Select inside conditional", icon = "󰕷", mode = { "o", "x" } },
+        { "al", desc = "Select around loop", icon = "󰑓", mode = { "o", "x" } },
+        { "il", desc = "Select inside loop", icon = "󰑓", mode = { "o", "x" } },
+        
+        -- 📝 Treesitter Textobjects - Blocks & Calls
+        { "ab", desc = "Select around block", icon = "󰅩", mode = { "o", "x" } },
+        { "ib", desc = "Select inside block", icon = "󰅩", mode = { "o", "x" } },
+        { "aC", desc = "Select around call", icon = "󰘧", mode = { "o", "x" } },
+        { "iC", desc = "Select inside call", icon = "󰘧", mode = { "o", "x" } },
+        
+        -- 🗂️ Treesitter Textobjects - YAML (Kubernetes/Helm)
+        { "as", desc = "Select around assignment (key: value)", icon = "󰈙", mode = { "o", "x" } }, -- Source: treesitter.lua
+        { "is", desc = "Select inside assignment (value only)", icon = "󰈙", mode = { "o", "x" } }, -- Source: treesitter.lua
+        { "ak", desc = "Select assignment key (left side)", icon = "󰌌", mode = { "o", "x" } }, -- Source: treesitter.lua
+        { "av", desc = "Select assignment value (right side)", icon = "󰅌", mode = { "o", "x" } }, -- Source: treesitter.lua
+        { "an", desc = "Select around number", icon = "󰩥", mode = { "o", "x" } }, -- Source: treesitter.lua
+        { "at", desc = "Select around comment", icon = "󰨱", mode = { "o", "x" } }, -- Source: treesitter.lua
+        { "it", desc = "Select inside comment", icon = "󰨱", mode = { "o", "x" } }, -- Source: treesitter.lua
+        { "aS", desc = "Select around YAML statement", icon = "󰈙", mode = { "o", "x" } }, -- Source: treesitter.lua
+        
+        -- 🧭 Treesitter Navigation - Next
+        { "]m", desc = "Next function start", icon = "󰊕" },
+        { "]M", desc = "Next function end", icon = "󰊕" },
+        { "]c", desc = "Next class start", icon = "󰌗" },
+        { "]C", desc = "Next class end", icon = "󰌗" },
+        { "]i", desc = "Next conditional start", icon = "󰕷" },
+        { "]I", desc = "Next conditional end", icon = "󰕷" },
+        { "]l", desc = "Next loop start", icon = "󰑓" },
+        { "]L", desc = "Next loop end", icon = "󰑓" },
+        
+        -- 🧭 Treesitter Navigation - Previous
+        { "[m", desc = "Previous function start", icon = "󰊕" },
+        { "[M", desc = "Previous function end", icon = "󰊕" },
+        { "[c", desc = "Previous class start", icon = "󰌗" },
+        { "[C", desc = "Previous class end", icon = "󰌗" },
+        { "[i", desc = "Previous conditional start", icon = "󰕷" },
+        { "[I", desc = "Previous conditional end", icon = "󰕷" },
+        { "[l", desc = "Previous loop start", icon = "󰑓" },
+        { "[L", desc = "Previous loop end", icon = "󰑓" },
+        
+        -- 🔄 Treesitter Swapping
+        { "<leader>a", desc = "Swap parameter with next", icon = "󰓡" },
+        { "<leader>A", desc = "Swap parameter with previous", icon = "󰓡" },
     })
   end,
 }
