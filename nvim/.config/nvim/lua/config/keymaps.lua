@@ -30,3 +30,11 @@ keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" 
 keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
+
+-- Visual Mode Indentation (preserves visual mode)
+keymap.set("v", "<", "<gv", { desc = "Unindent selection and keep visual mode" }) -- unindent and stay in visual mode
+keymap.set("v", ">", ">gv", { desc = "Indent selection and keep visual mode" }) -- indent and stay in visual mode
+
+-- Visual Mode Indentation with leader keys (alternative)
+keymap.set("v", "<leader><", "<gv", { desc = "Unindent selection and keep visual mode" }) -- unindent with leader
+keymap.set("v", "<leader>>", ">gv", { desc = "Indent selection and keep visual mode" }) -- indent with leader

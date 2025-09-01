@@ -95,10 +95,16 @@ return {
         { "<leader>ll", icon = "", desc = "Trigger linting for current file" }, -- add icon to trigger linting for current file
 
         -- Formatting
-        { "<leader>p", group = "Formatting", icon = "" }, -- group for formatting
-        { "<leader>pf", icon = "", desc = "Format current file", }, -- add icon to format file or range (in visual mode)
-        { "<leader>pf", icon = "", desc = "Format current selection", mode = "v" }, -- add icon to format file or range (in visual mode)
+        { "<leader>p", group = "Formatting", icon = "󰁨" }, -- group for formatting
+        { "<leader>pf", icon = "󰁨", desc = "Format current file", }, -- add icon to format file or range (in visual mode)
+        { "<leader>pf", icon = "󰁨", desc = "Format current selection", mode = "v" }, -- add icon to format file or range (in visual mode)
         { "<leader>pa", icon = "󰁨", desc = "Format all files in the current directory" }, -- add icon to format all files in the current directory
+
+        -- Visual Mode Indentation
+        { "<", desc = "Unindent selection", icon = "󰁨", mode = "v" }, -- unindent and keep visual mode
+        { ">", desc = "Indent selection", icon = "󰁨", mode = "v" }, -- indent and keep visual mode
+        { "<leader><", desc = "Unindent selection", icon = "󰁨", mode = "v" }, -- unindent with leader and keep visual mode
+        { "<leader>>", desc = "Indent selection", icon = "󰁨", mode = "v" }, -- indent with leader and keep visual mode
 
         -- Git
         { "<leader>G", group = "Git", icon = "󰊢" }, -- group for git
