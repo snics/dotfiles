@@ -28,6 +28,8 @@ return {
 
     -- Configure diagnostic signs using the new API
     vim.diagnostic.config({
+      -- Disable virtual text to prevent conflicts with tiny-inline-diagnostic
+      virtual_text = false,
       signs = {
         text = {
           [vim.diagnostic.severity.ERROR] = " ",
@@ -35,7 +37,13 @@ return {
           [vim.diagnostic.severity.HINT] = "󰠠 ",
           [vim.diagnostic.severity.INFO] = " ",
         }
-      }
+      },
+      -- Update diagnostics on insert leave for better UX
+      update_in_insert = false,
+      -- Show diagnostics in insert mode (tiny-inline-diagnostic handles this)
+      underline = true,
+      -- Severity sort order for diagnostics
+      severity_sort = true,
     })
   end,
 }
