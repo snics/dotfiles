@@ -197,6 +197,16 @@ return {
         -- 🔄 Treesitter Swapping
         { "<leader>a", desc = "Swap parameter with next", icon = "󰓡" },
         { "<leader>A", desc = "Swap parameter with previous", icon = "󰓡" },
+
+        -- 💬 Comment.nvim
+        { "gc", group = "Comment", icon = "💬" },
+        { "gcc", desc = "Toggle line comment", icon = "💬" },
+        { "gbc", desc = "Toggle block comment", icon = "💬" },
+        { "gco", desc = "Add comment below", icon = "💬" },
+        { "gcO", desc = "Add comment above", icon = "💬" },
+        { "gcA", desc = "Add comment at end of line", icon = "💬" },
+        { "gc", desc = "Line comment operator", icon = "💬", mode = "v" },
+        { "gb", desc = "Block comment operator", icon = "💬", mode = "v" },
     })
   end,
 }
