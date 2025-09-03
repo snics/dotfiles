@@ -219,6 +219,20 @@ return {
         { "r", desc = "Remote Flash", icon = "⚡", mode = "o" },
         { "R", desc = "Treesitter Search", icon = "⚡", mode = { "o", "x" } },
         { "<c-s>", desc = "Toggle Flash Search", icon = "⚡", mode = "c" },
+
+        -- 🤖 Opencode AI Assistant
+        { "<leader>o", group = "Opencode AI", icon = "🤖" },
+        { "<leader>oA", desc = "Ask opencode", icon = "💭" },
+        { "<leader>oa", desc = "Ask about cursor/selection", icon = "🔍", mode = { "n", "v" } },
+        { "<leader>ot", desc = "Toggle embedded opencode", icon = "🖥️" },
+        { "<leader>on", desc = "New session", icon = "🆕" },
+        { "<leader>oy", desc = "Copy last message", icon = "📋" },
+        { "<leader>op", desc = "Select prompt", icon = "📝", mode = { "n", "v" } },
+        { "<leader>oe", desc = "Explain code at cursor", icon = "💡" },
+        { "<leader>or", desc = "Review selected code", icon = "🔍", mode = "v" },
+        { "<leader>od", desc = "Document code at cursor", icon = "📚" },
+        { "<S-C-u>", desc = "Scroll messages up", icon = "⬆️" },
+        { "<S-C-d>", desc = "Scroll messages down", icon = "⬇️" },
     })
   end,
 }
