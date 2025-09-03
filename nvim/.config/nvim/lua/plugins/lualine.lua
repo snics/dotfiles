@@ -67,7 +67,7 @@ return {
                 if ok then
                   local yaml_path = yaml.get_yaml_key()
                   if yaml_path and yaml_path ~= "" then
-                    -- Nutze das YAML-Icon aus nvim-web-devicons
+                    -- Use the YAML icon from nvim-web-devicons
                     local devicons = require("nvim-web-devicons")
                     local yaml_icon = devicons.get_icon_by_filetype("yaml") or ""
                     return yaml_icon .. " " .. yaml_path

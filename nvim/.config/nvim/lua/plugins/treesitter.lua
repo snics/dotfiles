@@ -78,7 +78,7 @@ return {
             "typescript",
             "yaml",
         },
-        -- 🚀 INCREMENTAL SELECTION (gehört zu textobjects)
+        -- 🚀 INCREMENTAL SELECTION (part of textobjects)
         incremental_selection = {
           enable = true,
           keymaps = {
@@ -107,7 +107,7 @@ return {
             enable = true,
             lookahead = true, -- Automatically jump forward to textobj
             keymaps = {
-              -- 🔥 THE ESSENTIAL CORE (diese nutzt du täglich)
+              -- 🔥 THE ESSENTIAL CORE (you use these daily)
               ["af"] = "@function.outer",    -- around function
               ["if"] = "@function.inner",    -- inside function
               ["ac"] = "@class.outer",       -- around class  
@@ -115,7 +115,7 @@ return {
               ["aa"] = "@parameter.outer",   -- around argument
               ["ia"] = "@parameter.inner",   -- inside argument
               
-              -- 🎯 CONTROL FLOW (sehr nützlich)
+              -- 🎯 CONTROL FLOW (very useful)
               ["ai"] = "@conditional.outer", -- around if
               ["ii"] = "@conditional.inner", -- inside if
               ["al"] = "@loop.outer",        -- around loop

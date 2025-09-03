@@ -1,13 +1,13 @@
 return {
     'diogo464/kubernetes.nvim',
     cond = function()
-        -- Nur laden wenn kubectl verfügbar ist und Cluster erreichbar
+        -- Only load when kubectl is available and cluster is reachable
         local kubectl_available = vim.fn.executable('kubectl') == 1
         if not kubectl_available then
             return false
         end
         
-        -- Prüfe Cluster-Verbindung (non-blocking)
+        -- Check cluster connection (non-blocking)
         local handle = io.popen('kubectl cluster-info --request-timeout=2s 2>/dev/null')
         if handle then
             local result = handle:read('*l')

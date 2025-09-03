@@ -6,10 +6,10 @@ return {
     "folke/snacks.nvim", -- optional (for YAML picker)
   },
   config = function()
-    -- Korrekte API basierend auf der offiziellen Dokumentation
+    -- Correct API based on official documentation
     local yaml = require("yaml_nvim")
     
-    -- Keybindings mit direkter Lua API (viel eleganter!)
+    -- Keybindings with direct Lua API (much more elegant!)
     local keymap = vim.keymap
     
     keymap.set("n", "<leader>yv", function() yaml.view() end, { desc = "Show YAML path and value" })
@@ -19,7 +19,7 @@ return {
     keymap.set("n", "<leader>yq", function() yaml.quickfix() end, { desc = "YAML quickfix" })
     keymap.set("n", "<leader>yh", function() yaml.remove_highlight() end, { desc = "Remove YAML highlight" })
     
-    -- Conditional keybindings für optionale Dependencies
+    -- Conditional keybindings for optional dependencies
     if pcall(require, "snacks") then
       keymap.set("n", "<leader>ys", function() yaml.snacks() end, { desc = "YAML Snacks picker" })
     end
