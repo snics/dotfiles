@@ -74,12 +74,8 @@ return {
         { "<leader>tp", icon = "󰒮" }, -- add icon to go to previous tab
         { "<leader>tf", icon = "󰓪" }, -- add icon to move current buffer to new tab
 
-        -- File explorer
-        { "<leader>e", group = "File explorer", icon = "" }, -- group for file explorer
-        { "<leader>ee", icon = "", desc = "Toggle file explorer" }, -- add icon to toggle file explorer
-        { "<leader>ef", icon = "" }, -- add icon to toggle file explorer on current file
-        { "<leader>ec", icon = "󰁄" }, -- add icon to collapse file explorer
-        { "<leader>er", icon = "󰕂" }, -- add icon to refresh file explorer
+        -- Snacks File Explorer
+        { "<leader>e", desc = "Toggle Explorer", icon = "" }, -- group for file explorer
 
         -- Find (Snacks picker)
         { "<leader>f", group = "Find", icon = "" }, -- group for find operations
