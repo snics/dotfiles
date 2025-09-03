@@ -1,0 +1,8 @@
+# Ignore test files directory
+test-files/
+
+# Ignore other development/testing files if needed
+# *.test.*
+# *.spec.*
+# __tests__/
+# .test/
