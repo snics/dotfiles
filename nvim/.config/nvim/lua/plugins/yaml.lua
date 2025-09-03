@@ -3,8 +3,7 @@ return {
   ft = { "yaml", "yml" },
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
-    "folke/snacks.nvim", -- optional
-    "ibhagwan/fzf-lua" -- optional
+    "folke/snacks.nvim", -- optional (für YAML picker)
   },
   config = function()
     -- Korrekte API basierend auf der offiziellen Dokumentation
