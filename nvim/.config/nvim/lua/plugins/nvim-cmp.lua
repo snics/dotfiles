@@ -14,7 +14,7 @@ return {
     "saadparwaiz1/cmp_luasnip", -- for autocompletion
     "rafamadriz/friendly-snippets", -- useful snippets
     "onsails/lspkind.nvim", -- vs-code like pictograms
-    "zbirenbaum/copilot-cmp" -- Copilot completion source
+    "Exafunction/windsurf.nvim" -- Windsurf/Codeium completion source
   },
   config = function()
     local cmp = require("cmp")
@@ -57,7 +57,7 @@ return {
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
-        { name = "copilot", group_index = 2 }, -- Copilot Source
+        { name = "codeium", group_index = 2 }, -- Windsurf/Codeium Source
         { name = "nvim_lsp"}, -- language server protocol
         { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
@@ -69,6 +69,9 @@ return {
         format = lspkind.cmp_format({
           maxwidth = 50,
           ellipsis_char = "...",
+          symbol_map = { 
+            Codeium = "󰘦", -- Windsurf/Codeium icon
+          }
         }),
       },
     })
