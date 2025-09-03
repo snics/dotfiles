@@ -218,6 +218,13 @@ return {
         { "gcA", desc = "Add comment at end of line", icon = "💬" },
         { "gc", desc = "Line comment operator", icon = "💬", mode = "v" },
         { "gb", desc = "Block comment operator", icon = "💬", mode = "v" },
+
+        -- ⚡ Flash Navigation
+        { "s", desc = "Flash Jump", icon = "⚡", mode = { "n", "x", "o" } },
+        { "S", desc = "Flash Treesitter", icon = "⚡", mode = { "n", "x", "o" } },
+        { "r", desc = "Remote Flash", icon = "⚡", mode = "o" },
+        { "R", desc = "Treesitter Search", icon = "⚡", mode = { "o", "x" } },
+        { "<c-s>", desc = "Toggle Flash Search", icon = "⚡", mode = "c" },
     })
   end,
 }
