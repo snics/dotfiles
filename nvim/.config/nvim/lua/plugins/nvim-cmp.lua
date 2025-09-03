@@ -67,7 +67,7 @@ return {
         end }, -- Windsurf/Codeium Source
         { name = "nvim_lsp"}, -- language server protocol
         { name = "luasnip" }, -- snippets
-        { name = "buffer" }, -- text within current buffer
+        { name = "buffer", max_item_count = 3 }, -- text within current buffer (max 3)
         { name = "path" }, -- file system paths
       }),
 
