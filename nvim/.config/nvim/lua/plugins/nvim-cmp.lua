@@ -24,6 +24,10 @@ return {
     -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
     require("luasnip.loaders.from_vscode").lazy_load() -- lazy load to prevent startup lag
 
+    -- Define AI-themed colors for Codeium
+    vim.api.nvim_set_hl(0, "CmpItemKindCodeium", { fg = "#DA70D6", bg = "NONE" }) -- Lila/Orchid für AI
+    vim.api.nvim_set_hl(0, "CmpItemMenuCodeium", { fg = "#DA70D6", bg = "NONE" }) -- Lila/Orchid für AI Menu
+
     cmp.setup({
       completion = {
         completeopt = "menu,menuone,preview,noselect", -- completion options
@@ -51,13 +55,16 @@ return {
         ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
         ["<C-b>"] = cmp.mapping.scroll_docs(-4), -- scroll documentation up
         ["<C-f>"] = cmp.mapping.scroll_docs(4), -- scroll documentation down
-        ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
+        ["<C-S-Space>"] = cmp.mapping.complete(), -- show completion suggestions
         ["<C-e>"] = cmp.mapping.abort(), -- close completion window
         ["<CR>"] = cmp.mapping.confirm({ select = false }), -- confirm completion
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
-        { name = "codeium", group_index = 2 }, -- Windsurf/Codeium Source
+        { name = "codeium", group_index = 2, entry_filter = function(entry, ctx) 
+          -- Only show in CMP when virtual text is disabled OR not available
+          return not vim.g.windsurf_virtual_text_enabled
+        end }, -- Windsurf/Codeium Source
         { name = "nvim_lsp"}, -- language server protocol
         { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
@@ -70,8 +77,16 @@ return {
           maxwidth = 50,
           ellipsis_char = "...",
           symbol_map = { 
-            Codeium = "󰘦", -- Windsurf/Codeium icon
-          }
+            Codeium = "󰘦", -- Brain icon für AI/Windsurf/Codeium
+          },
+          before = function(entry, vim_item)
+            -- Set AI-like color for Codeium entries
+            if entry.source.name == "codeium" then
+              vim_item.kind_hl_group = "CmpItemKindCodeium"
+              vim_item.menu_hl_group = "CmpItemMenuCodeium"
+            end
+            return vim_item
+          end,
         }),
       },
     })

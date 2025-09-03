@@ -233,6 +233,18 @@ return {
         { "<leader>od", desc = "Document code at cursor", icon = "📚" },
         { "<S-C-u>", desc = "Scroll messages up", icon = "⬆️" },
         { "<S-C-d>", desc = "Scroll messages down", icon = "⬇️" },
+
+        -- Windsurf (Codeium)
+        { "<leader>w", group = "Windsurf", icon = "󰘦" },
+        { "<leader>wv", desc = "Toggle Windsurf virtual text", icon = "" },
+        { "<leader>wV", desc = "Windsurf virtual text ON", icon = "" },
+        { "<leader>wx", desc = "Windsurf virtual text OFF", icon = "" },
+        -- Inline suggestions (insert mode)
+        { "<C-l>", desc = "Windsurf: accept", mode = "i", icon = "" },
+        { "<M-]>", desc = "Windsurf: next suggestion", mode = "i", icon = "" },
+        { "<M-[>", desc = "Windsurf: prev suggestion", mode = "i", icon = "" },
+        { "<M-c>", desc = "Windsurf: clear suggestion", mode = "i", icon = "" },
+
     })
   end,
 }
