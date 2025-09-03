@@ -64,7 +64,6 @@ return {
         { "<leader>sh", icon = "" }, -- add icon to split windwo horizontally
         { "<leader>se", icon = "󰖮" }, -- add icon to make splits equal size
         { "<leader>sx", icon = "" }, -- add icon to close current split
-        { "<leader>sm", icon = "" }, -- add icon to maximize/minimize a split
 
         -- Tap management
         { "<leader>t", group = "Tab management", icon = "󰓩" }, -- group for tab management
