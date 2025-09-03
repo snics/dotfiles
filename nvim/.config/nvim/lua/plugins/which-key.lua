@@ -145,7 +145,6 @@ return {
         { "<leader>yq", desc = "YAML quickfix", icon = "󰎟" },
         { "<leader>yh", desc = "Remove YAML highlight", icon = "󰸱" },
         { "<leader>ys", desc = "YAML Snacks picker", icon = "󰍉" },
-        { "<leader>yt", desc = "YAML Telescope picker", icon = "󰭎" },
 
         -- 🚀 Treesitter Textobjects & Incremental Selection
         { "<C-space>", desc = "Start/Expand selection", icon = "󰒅", mode = "n" },

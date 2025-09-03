@@ -24,10 +24,6 @@ return {
     if pcall(require, "snacks") then
       keymap.set("n", "<leader>ys", function() yaml.snacks() end, { desc = "YAML Snacks picker" })
     end
-    
-    if pcall(require, "telescope") then
-      keymap.set("n", "<leader>yt", function() yaml.telescope() end, { desc = "YAML Telescope picker" })
-    end
 
   end,
 }

@@ -133,6 +133,8 @@ func (e *NotFoundError) Error() string {
 	return fmt.Sprintf("%s with id %s not found", e.Resource, e.ID)
 }
 
+// TODO: Implement persistence layer with database
+// HACK: Using in-memory storage for now
 // Repository implementation
 type InMemoryRepository struct {
 	users  map[int]*User

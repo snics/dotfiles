@@ -289,6 +289,8 @@ class UserServiceImpl implements UserService {
   }
 }
 
+// TODO: Refactor diese Utility-Klasse in separate Module
+// FIXME: Type guards funktionieren nicht mit strictNullChecks
 // Utility functions with advanced TypeScript features
 class TypeUtils {
   // Conditional types
