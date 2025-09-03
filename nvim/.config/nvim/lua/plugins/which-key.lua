@@ -20,6 +20,17 @@ return {
         { "jj", desc = "Exit insert mode", icon = "󰉿", mode = "i" },
         { "<Esc>", desc = "Clear highlights", icon = "󰌑" },
 
+        -- Smooth Scroll (Snacks)
+        { "<C-u>", desc = "Smooth half-page up", icon = "󰒭" }, -- Source: snacks.lua - Snacks.scroll
+        { "<C-d>", desc = "Smooth half-page down", icon = "󰒮" }, -- Source: snacks.lua - Snacks.scroll
+        { "<C-b>", desc = "Smooth page up", icon = "󰁌" }, -- Source: snacks.lua - Snacks.scroll
+        { "<C-f>", desc = "Smooth page down", icon = "󰁎" }, -- Source: snacks.lua - Snacks.scroll
+        { "<C-y>", desc = "Smooth line up", icon = "󰁝" }, -- Source: snacks.lua - Snacks.scroll
+        { "<C-e>", desc = "Smooth line down", icon = "󰁅" }, -- Source: snacks.lua - Snacks.scroll
+        { "zt", desc = "Scroll cursor to top", icon = "󰁌" }, -- Source: snacks.lua - Snacks.scroll
+        { "zz", desc = "Scroll cursor to center", icon = "󰁍" }, -- Source: snacks.lua - Snacks.scroll
+        { "zb", desc = "Scroll cursor to bottom", icon = "󰁎" }, -- Source: snacks.lua - Snacks.scroll
+
         -- Closing
         { "<leader>qq", desc = "Close buffers", icon = "󰩈", mode = "n" },
         { "<leader>QQ", desc = "Close force buffer", icon = "󰩈", mode = "n" },
