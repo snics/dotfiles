@@ -5,6 +5,7 @@ return {
     "hrsh7th/cmp-buffer", -- source for text in buffer
     "hrsh7th/cmp-path", -- source for file system paths
     "hrsh7th/cmp-nvim-lsp", -- LSP capabilities for cmp
+    "hrsh7th/cmp-nvim-lsp-signature-help", -- LSP signature help
     "hrsh7th/cmp-cmdline", -- cmdline completion (':', '/', '?')
     {
       "L3MON4D3/LuaSnip",
@@ -128,7 +129,7 @@ return {
       sources = cmp.config.sources({
         { 
           name = "codeium", 
-          group_index = 2, 
+        { name = "nvim_lsp_signature_help" }, -- Works everywhere
           entry_filter = function() return not vim.g.windsurf_virtual_text_enabled end -- AI everywhere!
         },
         { name = "nvim_lsp", entry_filter = function() return not is_in_comment() end },
