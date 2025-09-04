@@ -38,7 +38,7 @@ return {
     vim.api.nvim_set_hl(0, "CmpItemMenuCodeium", { link = "Statement" })
     vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment" })
 
-    -- Smart helper function
+    -- Smart helper functions
     local has_words_before = function()
       local line, col = unpack(vim.api.nvim_win_get_cursor(0))
       if col == 0 then return false end
@@ -46,10 +46,35 @@ return {
       return text:sub(col, col):match("%s") == nil
     end
 
+    local is_in_comment = function()
+      local context = require("cmp.config.context")
+      return context.in_treesitter_capture("comment") or context.in_syntax_group("Comment")
+    end
+
+    local get_loaded_buffers = function()
+      local bufs = {}
+      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "" then
+          table.insert(bufs, buf)
+        end
+      end
+      return bufs
+    end
+
     cmp.setup({
       completion = {
         completeopt = "menu,menuone,preview,noselect", -- completion options
       },
+
+      -- Disable in prompts and for very large files (but allow AI in comments!)
+      enabled = function()
+        if vim.bo.buftype == "prompt" then return false end
+        local ok, stat = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(0))
+        if ok and stat and stat.size and stat.size > 1024 * 1024 then
+          return false
+        end
+        return true
+      end,
       
       -- Window styling with borders for LSP hints
       window = {
@@ -101,27 +126,20 @@ return {
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
-        { name = "codeium", group_index = 2, entry_filter = function(entry, ctx) 
-          -- Only show in CMP when virtual text is disabled OR not available
-          return not vim.g.windsurf_virtual_text_enabled
-        end }, -- Windsurf/Codeium Source
-        { name = "nvim_lsp"}, -- language server protocol
-        { name = "luasnip" }, -- snippets
-        {
-          name = "buffer",
-          keyword_length = 3,
-          get_bufnrs = function()
-            -- nur geladene, sichtbare, nicht-terminal Buffers
-            local bufs = {}
-            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-              if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "" then
-                table.insert(bufs, buf)
-              end
-            end
-            return bufs
-          end,
+        { 
+          name = "codeium", 
+          group_index = 2, 
+          entry_filter = function() return not vim.g.windsurf_virtual_text_enabled end -- AI everywhere!
         },
-        { name = "path" }, -- file system paths
+        { name = "nvim_lsp", entry_filter = function() return not is_in_comment() end },
+        { name = "luasnip",  entry_filter = function() return not is_in_comment() end },
+        { 
+          name = "buffer", 
+          keyword_length = 3,
+          entry_filter = function() return not is_in_comment() end,
+          get_bufnrs = get_loaded_buffers,
+        },
+        { name = "path", entry_filter = function() return not is_in_comment() end },
       }),
 
       -- configure lspkind for vs-code like pictograms in completion menu
@@ -142,6 +160,44 @@ return {
           end,
         }),
       },
+
+      -- Advanced sorting (LSP before snippets)
+      sorting = {
+        priority_weight = 2,
+        comparators = {
+          cmp.config.compare.offset,
+          cmp.config.compare.exact,
+          cmp.config.compare.score,
+          -- deprioritize snippets
+          function(e1, e2)
+            local t = require("cmp.types").lsp.CompletionItemKind
+            if e1:get_kind() == t.Snippet and e2:get_kind() ~= t.Snippet then return false end
+            if e2:get_kind() == t.Snippet and e1:get_kind() ~= t.Snippet then return true end
+          end,
+          cmp.config.compare.recently_used,
+          cmp.config.compare.locality,
+          cmp.config.compare.kind,
+          cmp.config.compare.sort_text,
+          cmp.config.compare.length,
+          cmp.config.compare.order,
+        },
+      },
+
+      performance = {
+        debounce = 60,
+        fetching_timeout = 200,
+        max_view_entries = 120,
+      },
+    })
+
+    -- Cmdline completion (':', '/', '?')
+    cmp.setup.cmdline({ "/", "?" }, {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = { { name = "buffer" } },
+    })
+    cmp.setup.cmdline(":", {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
     })
   end,
 }
