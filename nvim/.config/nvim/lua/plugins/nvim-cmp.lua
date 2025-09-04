@@ -25,8 +25,8 @@ return {
     require("luasnip.loaders.from_vscode").lazy_load() -- lazy load to prevent startup lag
 
     -- Define AI-themed colors for Codeium
-    vim.api.nvim_set_hl(0, "CmpItemKindCodeium", { fg = "#DA70D6", bg = "NONE" }) -- Lila/Orchid für AI
-    vim.api.nvim_set_hl(0, "CmpItemMenuCodeium", { fg = "#DA70D6", bg = "NONE" }) -- Lila/Orchid für AI Menu
+    vim.api.nvim_set_hl(0, "CmpItemKindCodeium", { link = "Statement" })
+    vim.api.nvim_set_hl(0, "CmpItemMenuCodeium", { link = "Statement" })
 
     cmp.setup({
       completion = {
