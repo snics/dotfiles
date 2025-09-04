@@ -245,6 +245,10 @@ return {
         { "<M-[>", desc = "Windsurf: prev suggestion", mode = "i", icon = "" },
         { "<M-c>", desc = "Windsurf: clear suggestion", mode = "i", icon = "" },
 
+        -- 🚀 Smart Tab Navigation (nvim-cmp + LuaSnip)
+        { "<Tab>", desc = "Smart Tab: Next completion/Jump snippet/Trigger", mode = "i", icon = "⭐" },
+        { "<S-Tab>", desc = "Smart S-Tab: Prev completion/Jump back", mode = "i", icon = "⭐" },
+
     })
   end,
 }
