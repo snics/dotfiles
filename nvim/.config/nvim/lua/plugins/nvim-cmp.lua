@@ -61,6 +61,18 @@ return {
       return bufs
     end
 
+    -- Entry filter functions
+    local codeium_filter = function()
+      -- AI works everywhere! Only disable when virtual text is active
+      return not vim.g.windsurf_virtual_text_enabled
+    end
+
+    -- Block completion in comments for non-AI sources
+    local non_comment_filter = function()
+      -- Block completion in comments for non-AI sources
+      return not is_in_comment()
+    end
+
     cmp.setup({
       preselect = cmp.PreselectMode.None,
       completion = {
@@ -127,20 +139,12 @@ return {
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
-        { 
-          name = "codeium", 
+        { name = "codeium", group_index = 2, entry_filter = codeium_filter },
+        { name = "nvim_lsp", entry_filter = non_comment_filter },
         { name = "nvim_lsp_signature_help" }, -- Works everywhere
-          entry_filter = function() return not vim.g.windsurf_virtual_text_enabled end -- AI everywhere!
-        },
-        { name = "nvim_lsp", entry_filter = function() return not is_in_comment() end },
-        { name = "luasnip",  entry_filter = function() return not is_in_comment() end },
-        { 
-          name = "buffer", 
-          keyword_length = 3,
-          entry_filter = function() return not is_in_comment() end,
-          get_bufnrs = get_loaded_buffers,
-        },
-        { name = "path", entry_filter = function() return not is_in_comment() end },
+        { name = "luasnip", entry_filter = non_comment_filter },
+        { name = "buffer", keyword_length = 3, entry_filter = non_comment_filter, get_bufnrs = get_loaded_buffers },
+        { name = "path", entry_filter = non_comment_filter },
       }),
 
       -- configure lspkind for vs-code like pictograms in completion menu
