@@ -15,8 +15,6 @@ return {
     "rafamadriz/friendly-snippets", -- useful snippets
     "onsails/lspkind.nvim", -- vs-code like pictograms
     "Exafunction/windsurf.nvim", -- Windsurf/Codeium completion source
-    -- Optional but highly recommended:
-    -- "windwp/nvim-autopairs",             -- autopairs integration with cmp
   },
   config = function()
     local cmp = require("cmp")
@@ -36,7 +34,6 @@ return {
     -- Define AI-themed colors for Codeium
     vim.api.nvim_set_hl(0, "CmpItemKindCodeium", { link = "Statement" })
     vim.api.nvim_set_hl(0, "CmpItemMenuCodeium", { link = "Statement" })
-    vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment" })
 
     -- Smart helper functions
     local has_words_before = function()
@@ -46,11 +43,13 @@ return {
       return text:sub(col, col):match("%s") == nil
     end
 
+    -- Check if the cursor is in a comment
     local is_in_comment = function()
       local context = require("cmp.config.context")
       return context.in_treesitter_capture("comment") or context.in_syntax_group("Comment")
     end
 
+    -- Get loaded buffers
     local get_loaded_buffers = function()
       local bufs = {}
       for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -144,7 +143,9 @@ return {
 
       -- configure lspkind for vs-code like pictograms in completion menu
       formatting = {
+        fields = { "kind", "abbr", "menu" },
         format = lspkind.cmp_format({
+          mode = "symbol_text",
           maxwidth = 50,
           ellipsis_char = "...",
           symbol_map = { 
