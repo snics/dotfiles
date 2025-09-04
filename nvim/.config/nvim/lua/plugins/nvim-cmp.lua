@@ -7,6 +7,14 @@ return {
     "hrsh7th/cmp-nvim-lsp", -- LSP capabilities for cmp
     "hrsh7th/cmp-nvim-lsp-signature-help", -- LSP signature help
     "hrsh7th/cmp-cmdline", -- cmdline completion (':', '/', '?')
+    "petertriho/cmp-git", -- git completion
+    "f3fora/cmp-spell", -- spell completion
+    "hrsh7th/cmp-emoji", -- emoji completion
+    
+    -- TODO: Language-specific completions for future projects:
+    -- "Saecki/crates.nvim", -- Rust: Cargo.toml dependencies
+    -- "ray-x/go.nvim", -- Go development enhancements
+    
     {
       "L3MON4D3/LuaSnip",
       version = "v2.*",
@@ -71,6 +79,28 @@ return {
     local non_comment_filter = function()
       -- Block completion in comments for non-AI sources
       return not is_in_comment()
+    end
+
+    local git_filter = function()
+      -- Enable Git completion in Git-related contexts
+      local bufname = vim.api.nvim_buf_get_name(0)
+      local filetype = vim.bo.filetype
+      return filetype == "gitcommit" 
+        or filetype == "gitrebase" 
+        or filetype == "gitconfig"
+        or bufname:match("COMMIT_EDITMSG")
+        or bufname:match("MERGE_MSG")
+        or bufname:match("/.git/")
+    end
+
+    local text_and_comment_filter = function()
+      -- Enable in Git, Markdown, Text files AND comments
+      local filetype = vim.bo.filetype
+      return filetype == "gitcommit" 
+        or filetype == "markdown" 
+        or filetype == "text" 
+        or filetype == "txt"
+        or is_in_comment()
     end
 
     cmp.setup({
@@ -142,6 +172,9 @@ return {
         { name = "codeium", group_index = 2, entry_filter = codeium_filter },
         { name = "nvim_lsp", entry_filter = non_comment_filter },
         { name = "nvim_lsp_signature_help" }, -- Works everywhere
+        { name = "git", entry_filter = git_filter }, -- Git completion in git contexts
+        { name = "spell", entry_filter = text_and_comment_filter }, -- Spell check in text/comments
+        { name = "emoji", entry_filter = text_and_comment_filter }, -- Emojis in text/comments
         { name = "luasnip", entry_filter = non_comment_filter },
         { name = "buffer", keyword_length = 3, entry_filter = non_comment_filter, get_bufnrs = get_loaded_buffers },
         { name = "path", entry_filter = non_comment_filter },
@@ -156,6 +189,9 @@ return {
           ellipsis_char = "...",
           symbol_map = { 
             Codeium = "󰘦", -- Brain icon für AI/Windsurf/Codeium
+            git = "󰊢", -- Git branch icon
+            spell = "󰓆", -- Spell check icon
+            emoji = "󰞅", -- Emoji icon
           },
           before = function(entry, vim_item)
             -- Set AI-like color for Codeium entries
@@ -196,6 +232,44 @@ return {
         max_view_entries = 120,
       },
     })
+
+    -- Git completion setup
+    require("cmp_git").setup({
+      -- Enable conventional commits
+      enableRemoteUrlRewrites = false,
+      remotes = { "upstream", "origin" },
+      -- Conventional commit types
+      commit_types = {
+        { "feat", "A new feature" },
+        { "fix", "A bug fix" },
+        { "docs", "Documentation changes" },
+        { "style", "Code style changes (formatting, missing semi colons, etc)" },
+        { "refactor", "Code refactoring" },
+        { "perf", "Performance improvements" },
+        { "test", "Adding missing tests" },
+        { "chore", "Changes to build process or auxiliary tools" },
+        { "ci", "CI/CD changes" },
+        { "build", "Build system changes" },
+        { "revert", "Revert previous commit" },
+      },
+    })
+
+    -- Spell check configuration (Deutsch + Englisch)
+    vim.opt.spell = false -- Disabled by default
+    vim.opt.spelllang = { "de", "en" }
+    vim.opt.spellsuggest = "best,3"
+    
+    -- Auto-enable spell check in text contexts
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = { "gitcommit", "markdown", "text", "txt" },
+      callback = function()
+        vim.opt_local.spell = true
+        vim.opt_local.spelllang = { "de_de", "en_us" } -- More specific language codes
+      end,
+    })
+
+    -- Emoji configuration 
+    require("cmp_emoji").setup()
 
     -- Cmdline completion (':', '/', '?')
     cmp.setup.cmdline({ "/", "?" }, {
