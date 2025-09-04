@@ -29,37 +29,36 @@ return {
     mason_lspconfig.setup({
       -- list of servers for mason to install
       ensure_installed = {
-        -- LSP servers
-        "ansiblels", -- Ansible Language Server
-        "bashls", -- Bash Language Server
-        "biome", -- Biome Language Server
-        "cssls", -- CSS Language Server
-        "css_variables", -- CSS Variables Language Server
-        "cssmodules_ls", -- CSS Modules Language Server
-        "denols", -- Deno Language Server
-        "docker_compose_language_service", -- Docker Compose Language Service
-        "dockerls", -- Docker Language Server
-        "eslint", -- ESLint Language Server
-        "graphql", -- GraphQL Language Server
-        "gopls", -- Go Language Server
-        "html", -- HTML Language Server
-        "htmx", -- HTMX Language Server
-        "helm_ls", -- Helm Language Server
-        "jsonls", -- JSON Language Server
-        "lua_ls",  -- Lua Language Server
-        "ltex",  -- LaTeX Language Server
-        "mdx_analyzer", -- MDX Analyzer Language Server
-        "marksman", -- Markdown Language Server
-        "nginx_language_server", -- Nginx Language Server
-        "powershell_es", -- PowerShell Language Server
-        "sqlls", -- SQL Language Server
-        "taplo", -- Toolkit for TOML
-        "tailwindcss", -- Tailwind CSS Language Server
-        "terraformls", -- Terraform Language Server
-        "ts_ls",  -- TypeScript Language Server
-        "yamlls", -- YAML Language Server
-        "vimls", -- Vim Language Server
-        "lemminx", -- XML Language Server
+        -- Core Language Servers
+        "ansiblels",                         -- Ansible-YAML (Playbooks/Roles/Inventory); *.yml, *.yaml
+        "bashls",                            -- Shellscript (bash/sh; zsh ohne eigenen LS); *.sh
+        "cssls",                             -- CSS/SCSS/LESS; *.css, *.scss, *.less
+        "css_variables",                     -- CSS Variables/Custom Properties; CSS :root, var()
+        "denols",                            -- Deno (TS/JS-Runtime & Tooling); *.ts, *.tsx, *.js, *.jsx (deno-Projekte)
+        "docker_compose_language_service",   -- Docker-Compose YAML (Compose v2); docker-compose.yml, compose.yml/.yaml
+        "dockerls",                          -- Dockerfile; Dockerfile, Containerfile, *.Dockerfile
+        "emmet_ls",                          -- Emmet für HTML/CSS; Schnelle Snippets
+        "gopls",                             -- Go; *.go, go.mod, go.work
+        "graphql",                           -- GraphQL Schemas/Operations; *.graphql, *.gql (+ gql-Tagged Templates)
+        "helm_ls",                           -- Helm Charts (Kubernetes); *.yaml Templates
+        "html",                              -- HTML; *.html
+        "rust_analyzer",                     -- Rust; *.rs, Cargo.toml, Cargo.lock
+        "jsonls",                            -- JSON/JSONC (z. B. tsconfig); *.json, *.jsonc
+        "lua_ls",                            -- Lua (inkl. Neovim Lua); *.lua
+        "marksman",                          -- Markdown; *.md
+        "mdx_analyzer",                      -- MDX (Markdown + JSX/TSX); *.mdx
+        "pkl",                               -- Pkl (Apple); *.pkl
+        "sqlls",                             -- SQL Language Server; *.sql
+        "tailwindcss",                       -- Tailwind IntelliSense (Klassen in HTML/JS/TS/JSX/TSX)
+        "taplo",                             -- TOML (Taplo); *.toml (z. B. Cargo.toml)
+        "terraformls",                       -- Terraform (HCL); *.tf, *.tfvars
+        "tofu_ls",                           -- OpenTofu (HCL); *.tf, *.tfvars (OpenTofu)
+        "ts_ls",                             -- TypeScript/JavaScript/React; *.ts, *.tsx, *.js, *.jsx
+        "yamlls",                            -- YAML (inkl. K8s/KYAML via Schemas); *.yml, *.yaml
+        
+        -- Additional LSPs for enhanced support
+        "eslint",                            -- ESLint Language Server für JS/TS Linting (mit none-ls)
+        "biome",                             -- Biome (moderne Alternative zu ESLint/Prettier, mit none-ls)
       },
       -- Automatically install ensure_installed servers
       automatic_installation = true,

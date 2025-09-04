@@ -25,25 +25,22 @@ function M.setup()
     "biome", 
     "cssls", 
     "css_variables", 
-    "cssmodules_ls",
     "denols", 
     "docker_compose_language_service", 
     "dockerls", 
+    "emmet_ls",
     "eslint",
     "html", 
-    "htmx", 
-    "ltex", 
     "mdx_analyzer", 
     "marksman",
-    "nginx_language_server", 
-    "powershell_es", 
+    "pkl",
+    "rust_analyzer",
     "sqlls", 
     "taplo", 
     "tailwindcss",
     "terraformls", 
-    "ts_ls", 
-    "vimls", 
-    "lemminx"
+    "tofu_ls",
+    "ts_ls"
   }
   
   for _, server in ipairs(default_servers) do
