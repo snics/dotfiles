@@ -2,28 +2,38 @@ return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
   dependencies = {
-    "hrsh7th/cmp-buffer", -- source for text in buffer
-    "hrsh7th/cmp-path", -- source for file system paths
+    -- 🚀 Core LSP Sources (highest priority)
     "hrsh7th/cmp-nvim-lsp", -- LSP capabilities for cmp
     "hrsh7th/cmp-nvim-lsp-signature-help", -- LSP signature help
-    "hrsh7th/cmp-cmdline", -- cmdline completion (':', '/', '?')
-    "petertriho/cmp-git", -- git completion
-    "f3fora/cmp-spell", -- spell completion
-    "hrsh7th/cmp-emoji", -- emoji completion
     
-    -- TODO: Language-specific completions for future projects:
-    -- "Saecki/crates.nvim", -- Rust: Cargo.toml dependencies
-    -- "ray-x/go.nvim", -- Go development enhancements
-    
+    -- 📝 Snippet Engine & Sources
+    "saadparwaiz1/cmp_luasnip", -- for autocompletion
+    "rafamadriz/friendly-snippets", -- useful snippets
     {
       "L3MON4D3/LuaSnip",
       version = "v2.*",
       build = "make install_jsregexp",
     },
-    "saadparwaiz1/cmp_luasnip", -- for autocompletion
-    "rafamadriz/friendly-snippets", -- useful snippets
+    
+    -- 🔧 Basic Sources
+    "hrsh7th/cmp-buffer", -- source for text in buffer
+    "hrsh7th/cmp-path", -- source for file system paths
+    "hrsh7th/cmp-cmdline", -- cmdline completion (':', '/', '?')
+    
+    -- 🎯 Extended Sources
+    "petertriho/cmp-git", -- git completion
+    "f3fora/cmp-spell", -- spell completion
+    "hrsh7th/cmp-emoji", -- emoji completion
+    
+    -- 🎨 UI & Formatting
     "onsails/lspkind.nvim", -- vs-code like pictograms
+    
+    -- 🤖 AI Sources
     "Exafunction/windsurf.nvim", -- Windsurf/Codeium completion source
+    
+    -- TODO: Language-specific completions for future projects:
+    -- "Saecki/crates.nvim", -- Rust: Cargo.toml dependencies
+    -- "ray-x/go.nvim", -- Go development enhancements
   },
   config = function()
     local cmp = require("cmp")
