@@ -61,6 +61,7 @@ return {
     end
 
     cmp.setup({
+      preselect = cmp.PreselectMode.None,
       completion = {
         completeopt = "menu,menuone,preview,noselect", -- completion options
       },
