@@ -47,12 +47,12 @@ return {
         "lua_ls",                            -- Lua (inkl. Neovim Lua); *.lua
         "marksman",                          -- Markdown; *.md
         "mdx_analyzer",                      -- MDX (Markdown + JSX/TSX); *.mdx
-        "pkl",                               -- Pkl (Apple); *.pkl
+        "pkl_lsp",                           -- PKL Language Server (Apple); *.pkl
         "sqlls",                             -- SQL Language Server; *.sql
         "tailwindcss",                       -- Tailwind IntelliSense (Klassen in HTML/JS/TS/JSX/TSX)
         "taplo",                             -- TOML (Taplo); *.toml (z. B. Cargo.toml)
         "terraformls",                       -- Terraform (HCL); *.tf, *.tfvars
-        "tofu_ls",                           -- OpenTofu (HCL); *.tf, *.tfvars (OpenTofu)
+        "tofu_ls",                           -- OpenTofu (HCL); *.tf, *.tfvars
         "ts_ls",                             -- TypeScript/JavaScript/React; *.ts, *.tsx, *.js, *.jsx
         "yamlls",                            -- YAML (inkl. K8s/KYAML via Schemas); *.yml, *.yaml
         
@@ -60,8 +60,8 @@ return {
         "eslint",                            -- ESLint Language Server für JS/TS Linting (mit none-ls)
         "biome",                             -- Biome (moderne Alternative zu ESLint/Prettier, mit none-ls)
       },
-      -- Automatically install ensure_installed servers
-      automatic_installation = true,
+      -- Disable auto enable. This will be done by the lspconfig plugin.
+      automatic_enable = false,
     })
 
     -- Setup all LSP servers using modular configuration

@@ -9,44 +9,25 @@ M.capabilities = require('cmp_nvim_lsp').default_capabilities()
 -- Setup all LSP servers
 function M.setup()
   local lspconfig = require("lspconfig")
+  local mason_lspconfig = require("mason-lspconfig")
   
-  -- Load individual server configurations
-  require("config.lsp.servers.jsonls").setup(lspconfig, M.capabilities)
-  require("config.lsp.servers.yamlls").setup(lspconfig, M.capabilities)
-  require("config.lsp.servers.lua_ls").setup(lspconfig, M.capabilities)
-  require("config.lsp.servers.gopls").setup(lspconfig, M.capabilities)
-  require("config.lsp.servers.graphql").setup(lspconfig, M.capabilities)
-  require("config.lsp.servers.helm_ls").setup(lspconfig, M.capabilities)
+  -- Get all installed LSP servers from mason-lspconfig
+  local installed_servers = mason_lspconfig.get_installed_servers()
   
-  -- Setup default servers (simple configurations)
-  local default_servers = {
-    "ansiblels", 
-    "bashls", 
-    "biome", 
-    "cssls", 
-    "css_variables", 
-    "denols", 
-    "docker_compose_language_service", 
-    "dockerls", 
-    "emmet_ls",
-    "eslint",
-    "html", 
-    "mdx_analyzer", 
-    "marksman",
-    "pkl",
-    "rust_analyzer",
-    "sqlls", 
-    "taplo", 
-    "tailwindcss",
-    "terraformls", 
-    "tofu_ls",
-    "ts_ls"
-  }
-  
-  for _, server in ipairs(default_servers) do
-    lspconfig[server].setup({
-      capabilities = M.capabilities,
-    })
+  -- Process each installed LSP server
+  for _, server_name in ipairs(installed_servers) do
+    -- Try to load server-specific configuration if it exists
+    local ok, server_module = pcall(require, "config.lsp.servers." .. server_name)
+    
+    if ok and server_module.setup then
+      -- Server has custom configuration, use it
+      server_module.setup(lspconfig, M.capabilities)
+    else
+      -- No custom config found, use default configuration
+      lspconfig[server_name].setup({
+        capabilities = M.capabilities,
+      })
+    end
   end
 end
 
