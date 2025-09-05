@@ -6,6 +6,7 @@ return {
     build = ":TSUpdate",
     dependencies = {
       "windwp/nvim-ts-autotag",
+      "apple/pkl-neovim",  -- PKL support by Apple
     },
     config = function()
       -- import nvim-treesitter plugin
