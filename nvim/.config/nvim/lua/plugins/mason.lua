@@ -47,18 +47,18 @@ return {
         "lua_ls",                            -- Lua (inkl. Neovim Lua); *.lua
         "marksman",                          -- Markdown; *.md
         "mdx_analyzer",                      -- MDX (Markdown + JSX/TSX); *.mdx
-        "pkl_lsp",                           -- PKL Language Server (Apple); *.pkl
         "sqlls",                             -- SQL Language Server; *.sql
         "tailwindcss",                       -- Tailwind IntelliSense (Klassen in HTML/JS/TS/JSX/TSX)
         "taplo",                             -- TOML (Taplo); *.toml (z. B. Cargo.toml)
         "terraformls",                       -- Terraform (HCL); *.tf, *.tfvars
-        "tofu_ls",                           -- OpenTofu (HCL); *.tf, *.tfvars
         "ts_ls",                             -- TypeScript/JavaScript/React; *.ts, *.tsx, *.js, *.jsx
         "yamlls",                            -- YAML (inkl. K8s/KYAML via Schemas); *.yml, *.yaml
         
         -- Additional LSPs for enhanced support
         "eslint",                            -- ESLint Language Server für JS/TS Linting (mit none-ls)
         "biome",                             -- Biome (moderne Alternative zu ESLint/Prettier, mit none-ls)
+
+        -- TODO: add pkl-ls and tofu-ls after mason_lspconfig supports it.
       },
       -- Disable auto enable. This will be done by the lspconfig plugin.
       automatic_enable = false,
@@ -69,34 +69,42 @@ return {
 
     mason_tool_installer.setup({
       ensure_installed = {
-        -- Linting tools
-        "ansible-lint", -- Ansible Lint
-        "eslint_d", -- ESLint Daemon
-        "hadolint", -- Dockerfile linter, validate inline bash
-        "htmlhint", -- A Static Code Analysis Tool for HTML
-        "jsonlint", -- JSON Lint
-        "markdownlint-cli2", -- Markdown linting and style checking
-        "shellcheck", -- sh, bash, ksk and zsh script analysis and linting
-        "sqlfluff", -- A SQL linter and auto-formatter for Humans
-        "stylelint", -- A mighty, modern CSS linter
-        "tflint", -- TFLint is a Terraform linter focused on possible errors, best practices, etc.
-        "trivy", -- A Simple and Comprehensive Vulnerability Scanner for Containers and other Artifacts
-        "vint", -- Fast and Highly Extensible Vim script Language Lint
-        "yamllint", -- A linter for YAML files
+        -- Security & Secret Scanning
+        "gitleaks",          -- Secret-Scanner (API-Keys, Tokens) in Repo/FS; alle Sprachen; pre-commit/CI
+        "semgrep",           -- SAST Multi-Lang (JS/TS/Go/Python/…); Framework-Regeln (React, Node); CI/pre-commit
+        "trivy",             -- Vulnerability/Misconfig/Secrets Scanner: Container, FS, IaC (Terraform/K8s/Dockerfile/Helm), SBOM
+        "trufflehog",        -- Secret-Scanner mit Online-Verifikation; Git/GitHub/FS; pre-commit/CI
 
-        -- Formatting tools
-        "bibtex-tidy", -- A tool to tidy up BibTeX files
-        "jq", -- A lightweight and flexible command-line JSON processor
-        "latexindent", -- A Perl script to indent and reformat .tex and .bib files
-        "prettierd", -- Prettier Daemon for JavaScript, TypeScript, CSS, HTML, JSON, YAML, Markdown, etc.
-        "rustywind", -- A Rustywind is a Rust implementation of TailwindCSS JIT
-        "selene", -- Lua linter and formatter
-        "shellharden", -- A tool to help improve shell scripts
-        "shfmt", -- A shell script formatter
-        "sqlfmt", -- SQL Formatter
-        "stylua", -- A Lua formatter for Lua source code
-        "xmlformatter", -- XML formatter
-        "yq", -- yq is a lightweight and portable command-line YAML processor
+        -- Linting Tools
+        "actionlint",        -- Linter für GitHub Actions; Dateien: .github/workflows/*.yml; CI-Guard
+        "ansible-lint",      -- Ansible YAML Linter/Best Practices; Dateien: ansible/**/*.yml (Playbooks, Rollen)
+        "hadolint",          -- Dockerfile-Linter (auch Inline-Bash via ShellCheck); Dateien: Dockerfile*
+        "kube-linter",       -- Kubernetes/Helm Manifest-Linter (Best Practices); Dateien: k8s/*.yaml, charts/**; IaC
+        "markdownlint-cli2", -- Markdown/MDX Lint; Dateien: *.md, *.mdx (Regelbar per .markdownlint.json)
+        "markuplint",        -- HTML Linter (Semantik/Barrierefreiheit/Attr-Checks); Dateien: *.html
+        "shellcheck",        -- Shell Linter; Dateien: *.sh, bash/zsh; auch in Dockerfiles
+        "sqlfluff",          -- SQL Linter/Formatter (Dialekte, auch Jinja); Dateien: *.sql
+        "stylelint",         -- CSS/Sass/Less Linter; Dateien: *.css/*.scss; auch Tailwind-Regeln möglich
+        "tflint",            -- Terraform Linter (HCL); Dateien: *.tf; Terraform & OpenTofu
+        "yamllint",          -- YAML Linter (Syntax/Schema-frei); Dateien: *.yml/*.yaml
+
+        -- Go-specific Tools
+        "golangci-lint",     -- Go Meta-Linter (viele Regeln/Tools gebündelt); Dateien: *.go; Projekte: Go
+        "gofumpt",           -- Go Formatter (strenger gofmt); Dateien: *.go
+        "golines",           -- Go Zeilenumbruch/Reflow; Dateien: *.go (ergänzt gofumpt)
+
+        -- Formatters
+        "biome",             -- JS/TS/JSON/HTML/CSS: Lint+Format+LSP in einem; Frameworks: React, Deno, Bun, Node
+        "prettierd",         -- Prettier als Daemon (schnell); Dateien: HTML/CSS/JS/TS/JSON/MD/etc
+        "shfmt",             -- Shell Formatter; Dateien: *.sh (bash/zsh/sh)
+        "stylua",            -- Lua Formatter; Dateien: *.lua
+        "taplo",             -- TOML Lint/Format; Dateien: *.toml (z. B. taplo.toml, Cargo.toml)
+        "yamlfmt",           -- YAML Formatter; Dateien: *.yml/*.yaml
+        "yamlfix",           -- YAML Formatter (struktur-bewusst, Sortierung/Normalisierung)
+
+        -- Legacy/Utilities (keeping existing)
+        "jq",                -- JSON processor
+        "yq",                -- YAML processor
       },
     })
   end,
