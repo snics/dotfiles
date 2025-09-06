@@ -30,6 +30,7 @@ return {
     
     -- Visual enhancements
     "onsails/lspkind.nvim", -- Icons for completion items
+    "roobert/tailwindcss-colorizer-cmp.nvim", -- Tailwind color previews in completion
     
     -- AI-powered completion
     "Exafunction/windsurf.nvim", -- Codeium/Windsurf AI suggestions
@@ -43,6 +44,11 @@ return {
     local cmp = require("cmp")
     local luasnip = require("luasnip")
     local lspkind = require("lspkind")
+    
+    -- Setup Tailwind CMP colorizer
+    require("tailwindcss-colorizer-cmp").setup({
+      color_square_width = 2,
+    })
 
     -- Theme integration: Link AI completion colors to Catppuccin theme
     vim.api.nvim_set_hl(0, "CmpItemKindCodeium", { link = "Statement" })
@@ -204,28 +210,36 @@ return {
         { name = "path", entry_filter = non_comment_filter }, -- File paths
       }),
 
-      -- Visual formatting with icons
+      -- Visual formatting with icons and Tailwind color previews
       formatting = {
         fields = { "kind", "abbr", "menu" }, -- Show icon, text, source
-        format = lspkind.cmp_format({
-          mode = "symbol_text", -- Icon + text mode
-          maxwidth = 50,
-          ellipsis_char = "...",
-          symbol_map = { 
-            Codeium = "󰘦", -- AI brain icon
-            git = "󰊢",     -- Git branch
-            spell = "󰓆",   -- Spell check
-            emoji = "󰞅",   -- Emoji
-          },
-          before = function(entry, vim_item)
-            -- Apply special colors to AI completion
-            if entry.source.name == "codeium" then
-              vim_item.kind_hl_group = "CmpItemKindCodeium"
-              vim_item.menu_hl_group = "CmpItemMenuCodeium"
-            end
-            return vim_item
-          end,
-        }),
+        format = function(entry, vim_item)
+          -- First apply Tailwind colorizer
+          local tailwind_item = require("tailwindcss-colorizer-cmp").formatter(entry, vim_item)
+          
+          -- Then apply lspkind formatting
+          local formatted = lspkind.cmp_format({
+            mode = "symbol_text", -- Icon + text mode
+            maxwidth = 50,
+            ellipsis_char = "...",
+            symbol_map = { 
+              Codeium = "󰘦", -- AI brain icon
+              git = "󰊢",     -- Git branch
+              spell = "󰓆",   -- Spell check
+              emoji = "󰞅",   -- Emoji
+            },
+            before = function(entry, vim_item)
+              -- Apply special colors to AI completion
+              if entry.source.name == "codeium" then
+                vim_item.kind_hl_group = "CmpItemKindCodeium"
+                vim_item.menu_hl_group = "CmpItemMenuCodeium"
+              end
+              return vim_item
+            end,
+          })(entry, tailwind_item)
+          
+          return formatted
+        end,
       },
 
       -- Intelligent sorting: LSP first, then usage, snippets last
