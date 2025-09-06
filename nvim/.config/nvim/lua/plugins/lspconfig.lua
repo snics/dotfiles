@@ -32,10 +32,10 @@ return {
       virtual_text = false,
       signs = {
         text = {
-          [vim.diagnostic.severity.ERROR] = " ",
-          [vim.diagnostic.severity.WARN] = " ",
-          [vim.diagnostic.severity.HINT] = "󰠠 ",
-          [vim.diagnostic.severity.INFO] = " ",
+          [vim.diagnostic.severity.ERROR] = "󰅚 ", -- Error icon (cross/X)
+          [vim.diagnostic.severity.WARN] = "󰀪 ",  -- Warning icon (triangle with exclamation)
+          [vim.diagnostic.severity.HINT] = "󰌶 ",  -- Hint icon (lightbulb)
+          [vim.diagnostic.severity.INFO] = "󰋽 ",  -- Info icon (info circle)
         }
       },
       -- Update diagnostics on insert leave for better UX
