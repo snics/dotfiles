@@ -3,6 +3,7 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvimtools/none-ls-extras.nvim", -- Wichtig für zusätzliche Sources wie eslint_d
+    "gbprod/none-ls-shellcheck.nvim", -- Shellcheck diagnostics und code actions
   },
   event = { "BufReadPre", "BufNewFile" },
   config = function()
@@ -16,6 +17,10 @@ return {
     -- Additional sources from none-ls-extras
     local require_eslint = require("none-ls.diagnostics.eslint_d")
     local require_eslint_actions = require("none-ls.code_actions.eslint_d")
+    
+    -- Additional sources from none-ls-shellcheck
+    local shellcheck_diagnostics = require("none-ls-shellcheck.diagnostics")
+    local shellcheck_code_actions = require("none-ls-shellcheck.code_actions")
     
     null_ls.setup({
       -- Sources define what tools none-ls will use
@@ -39,10 +44,6 @@ return {
         
         -- Prettier Daemon - Fast formatter for HTML/CSS/JS/TS/JSON/MD/YAML etc.
         formatting.prettierd.with({
-          -- Will use .prettierrc if it exists in project
-          env = {
-            PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("~/.config/nvim/.prettierrc.json"),
-          },
           filetypes = {
             "javascript", 
             "javascriptreact", 
@@ -69,7 +70,9 @@ return {
         }),
         
         -- TOML formatter
-        formatting.taplo,
+        -- NOTE: taplo is not available as a built-in in none-ls
+        -- Consider using external tool or different formatter
+        -- formatting.taplo,
         
         -- YAML formatter
         formatting.yamlfmt,
@@ -116,7 +119,8 @@ return {
         }),
         
         -- Shell linter - detects common shell script issues
-        diagnostics.shellcheck,
+        -- Using none-ls-shellcheck plugin since it was removed from core
+        shellcheck_diagnostics,
         
         -- YAML linter
         diagnostics.yamllint.with({
@@ -164,32 +168,32 @@ return {
         -- Dockerfile linter
         diagnostics.hadolint.with({
           filetypes = { "dockerfile" },
-          -- Will auto-detect Dockerfile, Containerfile, *.Dockerfile
+          -- Force hadolint to run on any file that looks like a Dockerfile
+          runtime_condition = function(params)
+            -- Run on any file that contains "Dockerfile" in the name
+            return params.bufname:match("Dockerfile") ~= nil
+              or params.bufname:match("dockerfile") ~= nil
+              or params.bufname:match("Containerfile") ~= nil
+              or vim.bo.filetype == "dockerfile"
+          end,
         }),
         
         -- Terraform linter (only in Terraform projects)
-        diagnostics.tflint.with({
-          condition = function(utils)
-            return utils.root_has_file({ "*.tf", "*.tfvars", ".terraform" })
-          end,
-        }),
+        -- NOTE: tflint is not available as a built-in in none-ls
+        -- You can use terraform-ls for diagnostics or run tflint externally
+        -- TODO: Consider using tflint as an external command source
+        -- diagnostics.tflint.with({
+        --   condition = function(utils)
+        --     return utils.root_has_file({ "*.tf", "*.tfvars", ".terraform" })
+        --   end,
+        -- }),
         
         -- Security scanners
         diagnostics.semgrep.with({
           extra_args = { "--config", "auto" }, -- Use automatic ruleset detection
         }),
         
-        diagnostics.trivy.with({
-          args = {
-            "fs",
-            "--scanners",
-            "vuln,secret,misconfig",
-            "--format",
-            "json",
-            "--quiet",
-            "$DIRNAME",
-          },
-        }),
+        diagnostics.trivy,
         
         -- ================================================================================
         -- CODE ACTIONS
@@ -214,7 +218,8 @@ return {
         }),
         
         -- Shell script code actions
-        code_actions.shellcheck,
+        -- Using none-ls-shellcheck plugin since it was removed from core
+        shellcheck_code_actions,
         
         -- ================================================================================
         -- HOVER
@@ -302,7 +307,7 @@ return {
       -- Diagnostic display configuration
       diagnostic_config = {
         underline = true,         -- Underline problematic code
-        virtual_text = true,      -- Show inline diagnostic messages
+        virtual_text = false,     -- DISABLED: Using tiny-inline-diagnostic instead
         signs = true,             -- Show signs in the sign column
         update_in_insert = false, -- Don't update diagnostics in insert mode
         severity_sort = true,     -- Sort diagnostics by severity

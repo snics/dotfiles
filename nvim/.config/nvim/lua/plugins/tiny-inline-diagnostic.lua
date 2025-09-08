@@ -43,9 +43,9 @@ return {
       options = {
         -- Display the source of the diagnostic (e.g., basedpyright, vsserver, lua_ls etc.)
         show_source = {
-          enabled = false,
+          enabled = true,
           -- Show source only when multiple sources exist for the same diagnostic
-          if_many = true,
+          if_many = false,
         },
 
         -- Use icons defined in the diagnostic configuration instead of preset icons
