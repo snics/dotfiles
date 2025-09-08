@@ -1,0 +1,345 @@
+---
+# =============================================================================
+# Ansible Playbook Test File with Intentional Errors
+# Tests for ansible-lint
+# =============================================================================
+
+# Error: Missing name for play
+- hosts: all
+  tasks:
+    - name: Task without module
+      # Missing module call
+
+# Error: Play with poor name
+- name: test  # Name not descriptive, lowercase
+  hosts: webservers
+  gather_facts: yes  # Should use true/false not yes/no
+  
+  # Error: Variables at wrong indentation level
+  vars:
+  web_port: 80  # Wrong indentation
+  app_name: myapp
+  
+  tasks:
+    # Error: Using command instead of module
+    - name: Install package with command
+      command: apt-get install nginx  # Should use apt module
+      
+    # Error: Task without name
+    - debug:
+        msg: "This task has no name"
+    
+    # Error: Using shell without pipefail
+    - name: Shell task without pipefail
+      shell: cat /etc/hosts | grep localhost  # Needs pipefail
+      
+    # Error: Changed_when not set for command/shell
+    - name: Command without changed_when
+      command: /usr/bin/check_status.sh
+      # Missing changed_when or creates/removes
+    
+    # Error: Deprecated module
+    - name: Using deprecated module
+      include: tasks.yml  # Should use include_tasks or import_tasks
+    
+    # Error: Using raw without good reason
+    - name: Unnecessary use of raw
+      raw: echo "Hello World"  # Should use debug or command
+    
+    # Error: Permissions as strings instead of octal
+    - name: File with wrong permission format
+      file:
+        path: /tmp/testfile
+        mode: "644"  # Should be 0644 or '0644'
+        state: touch
+    
+    # Error: become without become_user
+    - name: Task with become but no user
+      become: yes  # Should use true, and specify become_user
+      command: /usr/bin/sensitive_command
+    
+    # Error: Using sudo instead of become
+    - name: Using deprecated sudo
+      sudo: yes  # Deprecated, use become
+      command: /usr/bin/admin_command
+    
+    # Error: Hardcoded password
+    - name: Task with hardcoded password
+      user:
+        name: testuser
+        password: "password123"  # Plain text password!
+    
+    # Error: ignore_errors without reason
+    - name: Task ignoring errors
+      command: /usr/bin/might_fail
+      ignore_errors: yes  # Should use true, and document why
+    
+    # Error: Using bare variables
+    - name: Using bare variable
+      debug:
+        msg: "{{ item }}"
+      with_items: mylist  # Should be "{{ mylist }}"
+    
+    # Error: register variable name not snake_case
+    - name: Register with bad variable name
+      command: /usr/bin/get_status
+      register: myResult  # Should be my_result
+    
+    # Error: Using always_run instead of check_mode
+    - name: Deprecated always_run
+      command: /usr/bin/check
+      always_run: yes  # Deprecated, use check_mode: no
+    
+    # Error: no_log not set for sensitive data
+    - name: Task with sensitive data
+      uri:
+        url: "https://api.example.com"
+        headers:
+          Authorization: "Bearer secret-token"  # Should have no_log: true
+    
+    # Error: Package without state
+    - name: Package task without state
+      package:
+        name: nginx
+        # Missing state: present
+    
+    # Error: Service without state
+    - name: Service task issues
+      service:
+        name: nginx
+        enabled: yes  # Should use true
+        # Missing state
+    
+    # Error: Git without version
+    - name: Git clone without version
+      git:
+        repo: https://github.com/example/repo.git
+        dest: /opt/repo
+        # Missing version (branch, tag, or commit)
+    
+    # Error: Template without backup
+    - name: Template without backup
+      template:
+        src: template.j2
+        dest: /etc/config.conf
+        # Consider backup: true for important files
+    
+    # Error: Copy with content and src
+    - name: Copy with both content and src
+      copy:
+        src: file.txt
+        content: "File content"  # Can't have both
+        dest: /tmp/file.txt
+    
+    # Error: Handler called incorrectly
+    - name: Task notifying non-existent handler
+      command: /usr/bin/trigger
+      notify: nonexistent handler
+    
+    # Error: Loop using deprecated with_
+    - name: Using deprecated with_items
+      debug:
+        msg: "{{ item }}"
+      with_items:  # Should use loop
+        - item1
+        - item2
+    
+    # Error: Comparison to literal true/false
+    - name: Bad conditional
+      debug:
+        msg: "Variable is true"
+      when: myvar == True  # Should be: when: myvar
+    
+    # Error: Jinja2 in when
+    - name: Jinja2 templating in when
+      debug:
+        msg: "Condition met"
+      when: "{{ ansible_os_family }} == 'Debian'"  # Don't use {{ }} in when
+    
+    # Error: Complex one-liner
+    - name: Complex task in one line
+      shell: cd /tmp && tar -xzf archive.tar.gz && cd extracted && ./install.sh  # Should be multiple tasks
+    
+    # Error: Missing tags
+    - name: Task without tags
+      debug:
+        msg: "Should have tags"
+      # tags: [configuration, debug]
+    
+    # Error: Using pause in production
+    - name: Pause in playbook
+      pause:
+        seconds: 10  # Usually not wanted in production
+    
+    # Error: Local_action instead of delegate_to
+    - name: Using local_action
+      local_action: command /usr/bin/local_command  # Use delegate_to: localhost
+    
+    # Error: Serial not set for rolling updates
+    - name: Update task without serial
+      service:
+        name: app
+        state: restarted
+      # Should consider serial for rolling updates
+    
+    # Error: Assert without fail message
+    - name: Assert without message
+      assert:
+        that:
+          - ansible_os_family == "Debian"
+        # Missing fail_msg and success_msg
+    
+    # Error: File lookup without error handling
+    - name: File lookup without fallback
+      debug:
+        msg: "{{ lookup('file', '/nonexistent/file') }}"  # Might fail
+    
+    # Error: set_fact with poor variable name
+    - name: Set fact with bad name
+      set_fact:
+        x: "value"  # Non-descriptive variable name
+    
+    # Error: Using meta incorrectly
+    - name: Meta task issues
+      meta: refresh_inventory
+      # when: condition  # Meta tasks don't support when
+
+  # Error: Handlers section issues
+  handlers:
+    # Error: Handler without name
+    - service:
+        name: nginx
+        state: restarted
+    
+    # Error: Handler with same name as task
+    - name: test  # Duplicate name
+      service:
+        name: apache2
+        state: restarted
+
+# Error: Another play with issues
+- name: Second problematic play
+  hosts: databases
+  remote_user: root  # Using root directly
+  
+  # Error: Pre-tasks without proper naming
+  pre_tasks:
+    - shell: echo "Starting"  # No name
+  
+  # Error: Roles with deprecated format
+  roles:
+    - common  # Should use full format with name: key
+    - { role: mysql, sudo: yes }  # Using deprecated sudo
+  
+  # Error: Post-tasks issues
+  post_tasks:
+    - name: Cleanup task
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_fileglob:  # Deprecated, use loop with fileglob lookup
+        - /tmp/*.tmp
+
+# Error: Play with bad variable precedence
+- name: Variable precedence issues
+  hosts: all
+  vars:
+    my_var: "play"
+  vars_files:
+    - vars.yml  # Might override my_var unexpectedly
+  tasks:
+    - name: Task with variable override
+      debug:
+        msg: "{{ my_var }}"
+      vars:
+        my_var: "task"  # Overriding at task level
+
+# Error: Import/Include issues
+- name: Import issues
+  hosts: all
+  tasks:
+    - name: Static import with condition
+      import_tasks: tasks.yml
+      when: condition  # import_tasks doesn't support when
+    
+    - name: Include with undefined variable
+      include_tasks: "{{ undefined_var }}.yml"  # Variable might not exist
+
+# Error: Async without poll
+- name: Async issues  
+  hosts: all
+  tasks:
+    - name: Async task without poll
+      command: /usr/bin/long_running_command
+      async: 3600
+      # Missing poll: 0
+
+# Error: Delegation issues
+- name: Delegation problems
+  hosts: webservers
+  tasks:
+    - name: Delegated task with become
+      command: /usr/bin/command
+      delegate_to: localhost
+      become: yes  # Become on delegated host can be problematic
+
+# Error: Facts gathering issues
+- name: Facts issues
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Using facts without gathering
+      debug:
+        msg: "OS is {{ ansible_os_family }}"  # Facts not gathered
+
+# Error: Block without proper error handling
+- name: Block issues
+  hosts: all
+  tasks:
+    - block:
+        - name: Task that might fail
+          command: /usr/bin/risky_command
+      # Missing rescue and always sections
+
+# Error: Vault usage issues
+- name: Vault problems
+  hosts: all
+  vars:
+    password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66616C73652073656372657421  # Fake vault data
+  tasks:
+    - name: Using vaulted variable
+      debug:
+        msg: "{{ password }}"  # Should have no_log: true
+
+# Error: Environment variables
+- name: Environment issues
+  hosts: all
+  environment:
+    PATH: /usr/bin  # Overriding PATH completely
+  tasks:
+    - name: Command with bad environment
+      command: custom_command  # Might not work with limited PATH
+
+# Error: Serial percentage issues
+- name: Serial problems
+  hosts: webservers
+  serial: "10%"  # Should consider absolute number for small groups
+  tasks:
+    - name: Restart service
+      service:
+        name: app
+        state: restarted
+
+# Error: Strategy issues
+- name: Strategy problems
+  hosts: all
+  strategy: free  # Might cause race conditions
+  tasks:
+    - name: Task one
+      command: /usr/bin/step1
+    - name: Task two depends on one
+      command: /usr/bin/step2  # Might run before step1 in free strategy
+
+# vim: ft=yaml.ansible

@@ -1,0 +1,245 @@
+---
+# =============================================================================
+# YAML Test File with Intentional Errors
+# Tests for yamllint
+# =============================================================================
+
+# Error: No document start (---) at beginning (already have it, but for reference)
+
+# Error: Line too long (default max is 80)
+very_long_key: This is an extremely long line that exceeds the typical 80 character limit that yamllint enforces by default and should be split
+
+# Error: Trailing spaces  
+key_with_trailing_spaces: value    
+
+# Error: Wrong indentation (not multiple of 2)
+wrong_indent:
+  correct: value
+   wrong: value  # 3 spaces instead of 2
+    also_wrong: value  # 4 spaces at wrong level
+
+# Error: Inconsistent indentation
+mixed_indent:
+  child1: value
+    child2: value  # Should be at same level as child1
+
+# Error: Tabs instead of spaces
+tabbed:
+	child: value  # Tab character
+
+# Error: No space after colon
+key:value  # Missing space
+another : value  # Space before colon
+
+# Error: Too many spaces after colon
+key:     value  # Too many spaces
+
+# Error: Bracket spacing
+list1: [1,2,3]  # No space after comma
+list2: [ 1, 2, 3 ]  # Spaces inside brackets
+dict1: {key:value}  # No spaces
+dict2: { key: value }  # Spaces inside braces
+
+# Error: Empty value
+empty_value:
+another_empty:   # Just spaces
+
+# Error: Duplicate keys
+duplicate: first
+duplicate: second  # Duplicate key
+
+# Error: Comments without space
+key: value#comment  # No space before #
+#comment without space after hash
+
+# Error: Comment indentation
+key: value
+  # Comment with wrong indentation
+    # Another badly indented comment
+
+# Error: Multiple blank lines
+
+
+# Too many blank lines above
+
+# Error: No newline at end of file (will add at end)
+
+# Error: Quoted when not needed
+unnecessary_quotes: "simple"
+more_quotes: 'another'
+
+# Error: Missing quotes when needed
+needs_quotes: yes  # Should be "yes" or true
+another: no  # Should be "no" or false
+version: 3.10  # Might be interpreted as 3.1
+
+# Error: Inconsistent quotes
+mixed_quotes:
+  - "double"
+  - 'single'
+  - "double again"
+
+# Error: Non-printable characters
+# (Can't actually put them in, but yamllint checks for them)
+
+# Error: Octal values
+permissions: 0755  # Octal notation might cause issues
+
+# Error: Truthy values inconsistency
+truthy_values:
+  - yes
+  - Yes
+  - YES
+  - true
+  - True
+  - on
+  - On
+
+# Error: Document end without document start
+key: value
+...  # Document end without corresponding ---
+
+# Error: Multiple documents without proper separation
+---
+first_doc: value
+---  # Should have blank line before
+second_doc: value
+
+# Error: Colons in values without quotes
+url: http://example.com:8080  # Colon in value might need quotes
+time: 10:30:45  # Colons in time
+
+# Error: Float values
+float_values:
+  - .5  # Missing leading zero
+  - 1.  # Missing trailing digits
+  - 1.0e2  # Scientific notation
+
+# Error: Merge key problems
+defaults: &defaults
+  setting1: value1
+  setting2: value2
+
+merged:
+  <<: *defaults
+  setting1: override  # Overriding merged key
+  <<: *defaults  # Duplicate merge
+
+# Error: Anchor/alias problems
+anchor: &anchor_name value
+alias_before_anchor: *undefined_anchor
+redefined_anchor: &anchor_name different  # Redefining anchor
+
+# Error: List indentation
+list_items:
+  - item1
+   - item2  # Wrong indentation
+ - item3  # Wrong indentation
+  - 
+    nested: value  # Complex nesting
+
+# Error: Inline lists/dicts spanning multiple lines
+inline_list: [1, 2,
+  3, 4]  # Should not span lines
+
+inline_dict: {key1: value1,
+  key2: value2}  # Should not span lines
+
+# Error: Flow sequence problems
+flow_problems:
+  - [1, 2, 3,]  # Trailing comma
+  - [,1, 2, 3]  # Leading comma
+  - [1,, 2, 3]  # Double comma
+
+# Error: Indentation in multiline strings
+multiline_string: |
+  This is fine
+   But this is indented wrong
+  Back to normal
+
+literal_string: >
+  Folded scalars
+   should maintain
+  consistent indentation
+
+# Error: Special characters without quotes
+special_chars:
+  - @symbol
+  - #hash  # Looks like comment
+  - !exclamation
+  - &ampersand  # Looks like anchor
+  - *asterisk  # Looks like alias
+  - [bracket]
+  - {brace}
+  - |pipe  # Looks like literal
+  - >greater  # Looks like folded
+  - :colon  # Has special meaning
+  - "properly quoted: @#!&*"
+
+# Error: Key too long (if max key length is enforced)
+this_is_an_extremely_long_key_name_that_exceeds_reasonable_length_limits: value
+
+# Error: Line break in quoted string
+quoted_with_break: "This is
+  broken"  # Line break in quoted string
+
+# Error: Wrong null representation
+null_values:
+  - null
+  - Null
+  - NULL
+  - ~
+  - ""  # Empty string, not null
+
+# Error: Numeric keys without quotes
+123: numeric key
+456.789: float key
+
+# Error: Complex mapping key
+? complex
+  key
+: complex value
+
+# Error: Indented sequence as mapping value
+mapping:
+  key:
+    - item1  # Should be more indented
+    - item2
+
+# Error: Comments in wrong places
+key: value # comment
+  # Wrongly indented comment
+# Comment with no context
+  another: value # inline comment
+
+# Error: No space after dash in lists
+-item1  # No space
+- item2
+-  item3  # Extra space
+
+# Error: Inconsistent empty values
+empty1:
+empty2: ""
+empty3: null
+empty4: ~
+empty5: 
+
+# Error: YAML directive issues
+%YAML 1.2  # Should be at very beginning
+---
+content: value
+
+# Error: Reserved indicators used incorrectly
+reserved: @base  # @ is reserved
+another: `backtick`  # ` is reserved
+
+# Error: Multiple spaces in plain scalars
+plain:   value   with   multiple   spaces
+
+# Error: Mapping values without space after colon
+compact:{key:value}  # No spaces
+
+# Error: Windows line endings (can't show but yamllint checks)
+# This file might have mixed line endings
+
+# Error: File doesn't end with newline

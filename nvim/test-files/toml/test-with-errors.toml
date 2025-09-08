@@ -1,0 +1,206 @@
+# =============================================================================
+# TOML Test File with Intentional Errors
+# Tests for taplo formatter/linter
+# =============================================================================
+
+# Error: Inconsistent indentation (tabs vs spaces)
+[package]
+name = "test-package"
+	version = "1.0.0"  # Tab indentation
+  authors = ["Test Author"]  # Space indentation
+
+# Error: Missing quotes around strings that need them
+[strings]
+unquoted = this should be quoted
+special_chars = string with special @#$ chars
+multiword = hello world  # Needs quotes
+
+# Error: Invalid key names
+[keys]
+key with spaces = "invalid"  # Spaces in key name
+123-starts-with-number = "invalid"
+key.with.dots = "should use quotes or brackets"
+
+# Error: Trailing comma in array
+[arrays]
+trailing_comma = [1, 2, 3,]  # Trailing comma not allowed
+mixed_types = [1, "two", 3.0, true]  # Mixed types (might be intentional but often an error)
+multiline_wrong = [
+  1, 2, 3
+  4, 5, 6  # Missing comma
+]
+
+# Error: Invalid date/time formats
+[dates]
+invalid_date = 2024-1-1  # Should be 2024-01-01
+invalid_time = 12:30  # Missing seconds
+invalid_datetime = 2024-01-01 12:30:45  # Missing T separator
+bad_offset = 2024-01-01T12:30:45+1  # Invalid offset format
+
+# Error: Duplicate keys
+[duplicates]
+key = "first"
+key = "second"  # Duplicate key
+
+# Error: Invalid boolean values
+[booleans]
+bool1 = True  # Should be lowercase true
+bool2 = TRUE  # Should be lowercase
+bool3 = yes  # Not a valid boolean
+bool4 = 1  # Number, not boolean
+
+# Error: Invalid numbers
+[numbers]
+leading_zero = 0123  # Octal not supported in TOML
+underscore_wrong = 1_000_  # Trailing underscore
+double_underscore = 1__000  # Double underscore
+hex_wrong = 0xGGG  # Invalid hex
+infinity_lower = inf  # Should be uppercase inf
+nan_lower = nan  # Should be uppercase
+
+# Error: Inline table formatting issues
+[inline]
+inline_table = {key1="value1",key2="value2"}  # Missing spaces
+multiline_inline = {  # Inline tables can't be multiline
+  key1 = "value1",
+  key2 = "value2"
+}
+
+# Error: Array of tables issues
+[[products]]
+name = "Product 1"
+[[products]]  # Missing newline between array items
+name = "Product 2"
+
+# Error: Dotted keys issues
+[dotted]
+site."google.com" = true  # Mixed dotted and quoted
+physical.color = "blue"
+physical.shape = "round"
+physical.color = "red"  # Redefining key
+
+# Error: Table already defined
+[table1]
+key = "value"
+[table1]  # Redefining table
+other = "value"
+
+# Error: String issues
+[strings_errors]
+basic_with_newline = "Line 1
+Line 2"  # Newline in basic string
+escape_invalid = "Invalid escape \q"
+unfinished = "This string is not closed
+literal_with_escape = 'This won\'t work'  # No escapes in literal strings
+
+# Error: Multiline string issues
+[multiline_strings]
+basic_wrong_quotes = """This should end with three quotes""  # Only two quotes
+literal_wrong = '''
+  Indentation
+    Issues'''  # Inconsistent indentation
+trailing_backslash = """\
+   This has wrong backslash usage \
+"""
+
+# Error: Comments in wrong places
+key = "value" # Comment is fine here
+[section] # Comment here is fine
+key = # Comment before value is wrong
+"value"
+
+# Error: Unicode issues
+[unicode]
+invalid_escape = "\u12G5"  # Invalid unicode escape
+partial_escape = "\u123"  # Incomplete unicode
+
+# Error: Float issues
+[floats]
+missing_decimal = 1.  # Missing fractional part
+missing_whole = .5  # Missing whole part
+multiple_dots = 1.2.3  # Multiple dots
+
+# Error: Whitespace issues
+[   whitespace   ]  # Too much whitespace
+key="value"  # No spaces around equals
+key2  =  "value"  # Inconsistent spacing
+
+# Error: Invalid escape sequences in keys
+["invalid\escape"] 
+value = "test"
+
+# Error: Using undefined values
+[references]
+base = undefined_value  # Reference to undefined value
+copy = ${undefined_var}  # Wrong syntax for references
+
+# Error: Array with trailing elements
+[array_errors]
+arr = [
+  1,
+  2,
+  3
+  ,  # Trailing comma on separate line
+]
+
+# Error: Mixed indentation in nested tables
+[parent]
+  [parent.child]  # Inconsistent indentation
+    key = "value"
+[parent.child2]  # Back to no indentation
+
+# Error: Invalid table array syntax
+[array]]  # Extra bracket
+[[array]  # Missing bracket
+[[[array]]]  # Too many brackets
+
+# Error: Bare keys with invalid characters
+[bare_keys]
+key-with-dash = "allowed"
+key_with_underscore = "allowed"
+key.with.dot = "not allowed without quotes"
+key$with$special = "not allowed"
+
+# Error: Integer overflow
+[overflow]
+int64_max = 9223372036854775808  # Exceeds i64 max
+int64_min = -9223372036854775809  # Below i64 min
+
+# Error: Invalid array syntax
+[invalid_arrays]
+no_comma = [1 2 3]  # Missing commas
+mixed_separators = [1, 2; 3]  # Wrong separator
+nested_wrong = [[1, 2] [3, 4]]  # Missing comma between arrays
+
+# Error: Control characters
+[control]
+null_char = "null"  # Contains null character
+tab_in_string = "tab	here"  # Tab in basic string
+
+# Error: Table defined after use
+[forward.reference]
+key = "value"
+[forward]  # Parent defined after child
+parent_key = "value"
+
+# Error: Heterogeneous arrays (TOML 1.0)
+[heterogeneous]
+mixed = [
+  {name = "foo"},
+  {name = "bar", age = 30}  # Different keys in array of tables
+]
+
+# Error: Comments without space
+[comments]
+key = "value"#No space before comment
+#No space after hash
+key2 = "value"
+
+# Error: Windows line endings mixed with Unix
+[line_endings]
+key1 = "unix"
+key2 = "windows"  # If file has mixed line endings
+
+# Error: File doesn't end with newline
+[final]
+last_key = "value"

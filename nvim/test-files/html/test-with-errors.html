@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>  <!-- Should be lowercase 'html' -->
+<HTML lang="EN">  <!-- Should be lowercase, lang should be 'en' -->
+<HEAD>  <!-- Should be lowercase -->
+  <META charset="utf-8">  <!-- Should be lowercase -->
+  <TITLE></TITLE>  <!-- Empty title -->
+  <meta description="Wrong attribute">  <!-- Should be name="description" -->
+  <meta name="viewport">  <!-- Missing content attribute -->
+  <link rel="stylesheet">  <!-- Missing href -->
+  <script></script>  <!-- Empty script tag -->
+  <style></style>  <!-- Empty style tag -->
+  <base>  <!-- Missing href -->
+</HEAD>
+<BODY>  <!-- Should be lowercase -->
+
+<!-- Error: Missing alt attribute on images -->
+<img src="image.jpg">
+<img src="another.jpg" alt="">  <!-- Empty alt -->
+<img src="decorative.jpg" alt="image">  <!-- Generic alt text -->
+
+<!-- Error: Invalid nesting -->
+<p>Paragraph with <div>div inside</div></p>  <!-- div can't be inside p -->
+<span><div>Block in inline</div></span>  <!-- Block element in inline -->
+<a href="#"><a href="#">Nested links</a></a>  <!-- Links can't be nested -->
+
+<!-- Error: Deprecated elements -->
+<center>Centered text</center>
+<font color="red">Red text</font>
+<marquee>Scrolling text</marquee>
+<blink>Blinking text</blink>
+<big>Big text</big>
+<strike>Strikethrough</strike>
+
+<!-- Error: Deprecated attributes -->
+<div align="center">Centered div</div>
+<table width="100%" cellpadding="10" cellspacing="0">
+  <tr>
+    <td bgcolor="#fff">Cell</td>
+  </tr>
+</table>
+<body bgcolor="white" text="black">  <!-- Duplicate body tag -->
+
+<!-- Error: Invalid attributes -->
+<div id="">Empty ID</div>
+<div id="my id">ID with space</div>
+<div id="123">ID starting with number</div>
+<div id="id1" id="id2">Duplicate ID attribute</div>
+<div class="">Empty class</div>
+<span role="">Empty role</span>
+
+<!-- Error: Missing required attributes -->
+<form>  <!-- Missing action -->
+  <input>  <!-- Missing type and name -->
+  <input type="text">  <!-- Missing name -->
+  <textarea></textarea>  <!-- Missing name -->
+  <select></select>  <!-- Missing name, empty select -->
+  <button>Button</button>  <!-- Missing type -->
+  <label>Label without for</label>
+  <label for="nonexistent">Label for non-existent ID</label>
+</form>
+
+<!-- Error: Invalid form structure -->
+<input type="submit">  <!-- Submit button outside form -->
+<label><input type="checkbox"> <span>Checkbox</span></label>  <!-- Multiple elements in label -->
+
+<!-- Error: Table structure errors -->
+<table>
+  <td>Cell without row</td>  <!-- td outside tr -->
+  <tr>
+    <th>Header</th>
+    <td>Data</td>
+    <td colspan="3">Colspan too large</td>
+  </tr>
+  <tbody>  <!-- tbody before thead -->
+    <tr><td>Body cell</td></tr>
+  </tbody>
+  <thead>
+    <tr><td>Should be th</td></tr>  <!-- td in thead -->
+  </thead>
+</table>
+
+<!-- Error: List structure errors -->
+<ul>
+  <div>Not a list item</div>  <!-- Only li allowed in ul -->
+  Text directly in list  <!-- Text node not allowed -->
+  <li>Valid item</li>
+</ul>
+<ol>
+  <p>Paragraph in list</p>  <!-- Invalid child -->
+</ol>
+<dl>
+  <div>Invalid in dl</div>  <!-- Only dt/dd allowed -->
+  <dt>Term without description</dt>
+  <dd>Description without term</dd>
+</dl>
+
+<!-- Error: Heading hierarchy -->
+<h3>H3 before H1</h3>
+<h1>H1 Title</h1>
+<h4>Skipped H2 and H3</h4>
+<h1>Multiple H1s</h1>
+
+<!-- Error: Missing lang attribute on html (already above) -->
+
+<!-- Error: Incorrect ARIA usage -->
+<div role="button" onclick="alert('clicked')">Not keyboard accessible</div>
+<span role="heading">Missing aria-level</span>
+<div aria-label="">Empty aria-label</div>
+<div aria-labelledby="nonexistent">References non-existent ID</div>
+<div aria-hidden="true"><button>Hidden but interactive</button></div>
+<div role="presentation"><a href="#">Link with presentation role</a></div>
+
+<!-- Error: Duplicate IDs -->
+<div id="duplicate">First</div>
+<div id="duplicate">Second</div>
+
+<!-- Error: Invalid boolean attributes -->
+<input type="checkbox" checked="false">  <!-- Should be checked or omitted -->
+<button disabled="true">Button</button>  <!-- Should be disabled or omitted -->
+<input required="required">  <!-- Should be just required -->
+
+<!-- Error: Incorrect content model -->
+<address>
+  <h1>Heading in address</h1>  <!-- address can't contain headings -->
+</address>
+
+<!-- Error: Missing doctype (already at top) -->
+
+<!-- Error: Character encoding issues -->
+<meta charset="UTF-8">  <!-- Duplicate charset -->
+
+<!-- Error: Inline event handlers -->
+<button onclick="doSomething()">Click</button>
+<input onchange="validate()">
+<body onload="init()">  <!-- Another duplicate body -->
+
+<!-- Error: Inline styles -->
+<div style="color: red; background: blue;">Inline styles</div>
+<span style="font-size: 20px;">More inline styles</span>
+
+<!-- Error: Protocol-relative URLs (deprecated) -->
+<script src="//example.com/script.js"></script>
+<link href="//example.com/style.css" rel="stylesheet">
+
+<!-- Error: Missing quotes around attributes -->
+<div class=no-quotes id=no-quotes-id></div>
+<img src=image.jpg alt=text>
+
+<!-- Error: Mixed quotes -->
+<div class="mixed' data-value='mixed"></div>
+
+<!-- Error: Invalid HTML5 input types usage -->
+<input type="email">  <!-- Missing name -->
+<input type="url" value="not-a-url">  <!-- Invalid URL -->
+<input type="number" min="10" max="5">  <!-- min > max -->
+<input type="date" value="invalid-date">
+
+<!-- Error: Inaccessible form elements -->
+<input type="text" placeholder="Name">  <!-- Using placeholder as label -->
+<input type="submit" value="">  <!-- Empty submit button -->
+
+<!-- Error: Invalid meta tags -->
+<meta name="">  <!-- Empty name -->
+<meta property="">  <!-- Empty property -->
+<meta name="keywords" content="keyword1 keyword2">  <!-- Deprecated -->
+
+<!-- Error: Script/style placement -->
+<body>
+  <script src="script.js"></script>  <!-- Should be at end of body -->
+  <style>body { color: red; }</style>  <!-- Style in body -->
+</body>
+
+<!-- Error: Invalid custom elements -->
+<custom-element></custom-element>  <!-- No hyphen -->
+<-invalid-start></invalid-start>  <!-- Starts with hyphen -->
+
+<!-- Error: SVG errors -->
+<svg>
+  <invalid-element></invalid-element>  <!-- Invalid SVG element -->
+  <circle></circle>  <!-- Missing required attributes -->
+</svg>
+
+<!-- Error: iframe issues -->
+<iframe src="page.html"></iframe>  <!-- Missing title -->
+<iframe title="" src="page.html"></iframe>  <!-- Empty title -->
+
+<!-- Error: Link issues -->
+<a href="#">Click here</a>  <!-- Non-descriptive link text -->
+<a href="">Empty href</a>
+<a>Link without href</a>
+<a href="javascript:void(0)">JavaScript URL</a>
+
+<!-- Error: Media elements -->
+<video></video>  <!-- No source -->
+<audio></audio>  <!-- No source -->
+<video src="video.mp4"></video>  <!-- No controls, no captions -->
+
+<!-- Error: Empty elements that shouldn't be -->
+<p></p>
+<div></div>
+<span></span>
+<article></article>
+<section></section>
+
+<!-- Error: Obsolete HTML4 attributes -->
+<table summary="Table summary">  <!-- Obsolete -->
+  <tr>
+    <td abbr="Abbreviation">Cell</td>  <!-- Obsolete -->
+  </tr>
+</table>
+
+<!-- Error: White space issues -->
+<div  class="double-space"></div>
+<span	class="tab-character"></span>
+
+<!-- Error: Unclosed tags -->
+<div>Unclosed div
+<p>Unclosed paragraph
+<span>Unclosed span
+
+<!-- Error: Comments issues -->
+<!--- Too many dashes --->
+<!-- Nested <!-- comments --> -->
+<!--> Wrong comment start -->
+
+<!-- Error: Special characters not escaped -->
+<p>Less than < and greater than > symbols</p>
+<p>Ampersand & not escaped</p>
+
+<!-- Error: Invalid data attributes -->
+<div data-="">Empty data attribute</div>
+<div data-uppercase-Value="bad">Uppercase in data attribute</div>
+
+<!-- Error: Multiple root elements after body -->
+</body>
+<div>After body</div>
+</html>
+<div>After html</div>
+
+<!-- Missing closing tags -->
+<!-- Missing </body> -->
+<!-- Missing </html> -->

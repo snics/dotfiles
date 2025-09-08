@@ -11,10 +11,18 @@ return {
     local diagnostics = null_ls.builtins.diagnostics
     local code_actions = null_ls.builtins.code_actions
     local hover = null_ls.builtins.hover
+    local completion = null_ls.builtins.completion
+    
+    -- Additional sources from none-ls-extras
+    local require_eslint = require("none-ls.diagnostics.eslint_d")
+    local require_eslint_actions = require("none-ls.code_actions.eslint_d")
     
     null_ls.setup({
       -- Sources define what tools none-ls will use
       sources = {
+        -- ================================================================================
+        -- FORMATTERS
+        -- ================================================================================
         
         -- Lua formatter (essential for Neovim config)
         formatting.stylua.with({
@@ -28,8 +36,212 @@ return {
             "AutoPreferDouble",
           },
         }),
-       
+        
+        -- Prettier Daemon - Fast formatter for HTML/CSS/JS/TS/JSON/MD/YAML etc.
+        formatting.prettierd.with({
+          -- Will use .prettierrc if it exists in project
+          env = {
+            PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("~/.config/nvim/.prettierrc.json"),
+          },
+          filetypes = {
+            "javascript", 
+            "javascriptreact", 
+            "typescript", 
+            "typescriptreact",
+            "vue",
+            "css", 
+            "scss",
+            "less", 
+            "html",
+            "json",
+            "jsonc", 
+            "yaml", 
+            "markdown",
+            "markdown.mdx",
+            "graphql", 
+            "handlebars",
+          },
+        }),
+        
+        -- Shell formatter - bash/sh/zsh
+        formatting.shfmt.with({
+          extra_args = { "-i", "2", "-ci" }, -- 2 spaces indent, indent case statements
+        }),
+        
+        -- TOML formatter
+        formatting.taplo,
+        
+        -- YAML formatter
+        formatting.yamlfmt,
+        
+        -- SQL formatter (via sqlfluff)
+        formatting.sqlfluff.with({
+          extra_args = function(params)
+            -- Try to detect SQL dialect from filename or project
+            local dialect = "postgres" -- default
+            if params.bufname:match("mysql") then
+              dialect = "mysql"
+            elseif params.bufname:match("sqlite") then
+              dialect = "sqlite"
+            end
+            return { "--dialect", dialect }
+          end,
+        }),
+        
+        -- Terraform formatter (native terraform fmt via null-ls)
+        formatting.terraform_fmt.with({
+          filetypes = { "terraform", "tf", "terraform-vars", "hcl" },
+        }),
+        
+        -- ================================================================================
+        -- LINTERS / DIAGNOSTICS  
+        -- ================================================================================
+        
+        -- ESLint Daemon - JavaScript/TypeScript linter (from none-ls-extras)
+        require_eslint.with({
+          condition = function(utils)
+            -- Only enable if ESLint config exists in the project
+            return utils.root_has_file({
+              ".eslintrc",
+              ".eslintrc.js",
+              ".eslintrc.cjs",
+              ".eslintrc.yaml",
+              ".eslintrc.yml",
+              ".eslintrc.json",
+              "eslint.config.js",
+              "eslint.config.mjs",
+              "eslint.config.cjs",
+            })
+          end,
+        }),
+        
+        -- Shell linter - detects common shell script issues
+        diagnostics.shellcheck,
+        
+        -- YAML linter
+        diagnostics.yamllint.with({
+          extra_args = { "-d", "relaxed" }, -- Use relaxed ruleset
+        }),
+        
+        -- Markdown linter (using markdownlint-cli2)
+        diagnostics.markdownlint_cli2.with({
+          args = { "$FILENAME" },
+        }),
+        
+        -- HTML linter (markuplint)
+        diagnostics.markuplint,
+        
+        -- CSS/SCSS/Less linter
+        diagnostics.stylelint,
+        
+        -- Lua linter
+        diagnostics.selene,
+        
+        -- SQL linter (via sqlfluff)
+        diagnostics.sqlfluff.with({
+          extra_args = function(params)
+            -- Try to detect SQL dialect from filename or project
+            local dialect = "postgres" -- default
+            if params.bufname:match("mysql") then
+              dialect = "mysql"
+            elseif params.bufname:match("sqlite") then
+              dialect = "sqlite"
+            end
+            return { "--dialect", dialect }
+          end,
+        }),
+        
+        -- Ansible linter (only in Ansible projects)
+        diagnostics.ansiblelint.with({
+          condition = function(utils)
+            return utils.root_has_file({ "ansible.cfg", "playbook.yml", "site.yml", "roles" })
+          end,
+        }),
+        
+        -- GitHub Actions linter
+        diagnostics.actionlint,
+        
+        -- Dockerfile linter
+        diagnostics.hadolint.with({
+          filetypes = { "dockerfile" },
+          -- Will auto-detect Dockerfile, Containerfile, *.Dockerfile
+        }),
+        
+        -- Terraform linter (only in Terraform projects)
+        diagnostics.tflint.with({
+          condition = function(utils)
+            return utils.root_has_file({ "*.tf", "*.tfvars", ".terraform" })
+          end,
+        }),
+        
+        -- Security scanners
+        diagnostics.semgrep.with({
+          extra_args = { "--config", "auto" }, -- Use automatic ruleset detection
+        }),
+        
+        diagnostics.trivy.with({
+          args = {
+            "fs",
+            "--scanners",
+            "vuln,secret,misconfig",
+            "--format",
+            "json",
+            "--quiet",
+            "$DIRNAME",
+          },
+        }),
+        
+        -- ================================================================================
+        -- CODE ACTIONS
+        -- ================================================================================
+        
+        -- ESLint code actions (from none-ls-extras)
+        require_eslint_actions.with({
+          condition = function(utils)
+            -- Only enable if ESLint config exists in the project
+            return utils.root_has_file({
+              ".eslintrc",
+              ".eslintrc.js",
+              ".eslintrc.cjs",
+              ".eslintrc.yaml",
+              ".eslintrc.yml",
+              ".eslintrc.json",
+              "eslint.config.js",
+              "eslint.config.mjs",
+              "eslint.config.cjs",
+            })
+          end,
+        }),
+        
+        -- Shell script code actions
+        code_actions.shellcheck,
+        
+        -- ================================================================================
+        -- HOVER
+        -- ================================================================================
+        
+        -- Dictionary hover for word definitions
         hover.dictionary,
+        
+        -- ================================================================================
+        -- GO TOOLS (TODO: Enable later)
+        -- ================================================================================
+        -- formatting.gofumpt,          -- Stricter Go formatter
+        -- formatting.goimports,         -- Go import formatter
+        -- formatting.golines,           -- Go line wrapper
+        -- diagnostics.golangci_lint,   -- Go meta-linter
+        
+        -- ================================================================================
+        -- BIOME (TODO: Enable later - JS/TS/JSON/HTML/CSS all-in-one)
+        -- ================================================================================
+        -- formatting.biome,            -- Fast formatter
+        -- diagnostics.biome,           -- Fast linter
+        
+        -- ================================================================================
+        -- TOOLS NOT AVAILABLE IN NONE-LS (installed via Mason but used differently)
+        -- ================================================================================
+        -- kube-linter     -- Kubernetes/Helm linter (use via external command/integration)
+        -- trufflehog      -- Secret scanner (use via pre-commit hooks or CI)
       },
       on_attach = function(client, bufnr)
         -- Format on save
@@ -49,8 +261,10 @@ return {
                 bufnr = bufnr,
                 timeout_ms = 2000,  -- 2 second timeout
                 filter = function(c)
-                  -- Only use null-ls for formatting
-                  return c.name == "null-ls"
+                  -- Use null-ls for formatting, but allow certain LSPs as fallback
+                  return c.name == "null-ls" 
+                    or c.name == "rust_analyzer"  -- Rust has excellent built-in formatting
+                    or c.name == "gopls"           -- Go fmt is standard
                 end,
               })
             end,
@@ -65,7 +279,10 @@ return {
           vim.lsp.buf.format({
             timeout_ms = 2000,
             filter = function(c)
-              return c.name == "null-ls"
+              -- Use null-ls for formatting, but allow certain LSPs as fallback
+              return c.name == "null-ls" 
+                or c.name == "rust_analyzer"  -- Rust has excellent built-in formatting
+                or c.name == "gopls"           -- Go fmt is standard
             end,
           })
         end, vim.tbl_extend("force", opts, { desc = "Format file or range" }))

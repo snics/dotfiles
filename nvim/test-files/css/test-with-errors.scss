@@ -1,0 +1,325 @@
+// =============================================================================
+// SCSS Test File with Intentional Errors
+// Tests for stylelint with SCSS syntax
+// =============================================================================
+
+// Error: Invalid variable names
+$InvalidVariable: red;  // Should be kebab-case
+$-start-with-dash: blue;  // Invalid start
+$1-start-with-number: green;  // Can't start with number
+
+// Error: Undefined variable
+.undefined-var {
+  color: $undefined-color;
+}
+
+// Error: Nested too deeply
+.level1 {
+  .level2 {
+    .level3 {
+      .level4 {
+        .level5 {
+          .level6 {
+            color: red;  // Too deeply nested
+          }
+        }
+      }
+    }
+  }
+}
+
+// Error: Using ID selectors in nesting
+#header {
+  #nav {
+    #menu {
+      color: blue;  // Multiple IDs
+    }
+  }
+}
+
+// Error: Parent selector abuse
+.button {
+  &-primary {
+    &-large {
+      &-disabled {
+        &:hover {
+          &::after {
+            content: '';  // Too complex
+          }
+        }
+      }
+    }
+  }
+}
+
+// Error: Mixin without parameters parentheses
+@mixin invalid-mixin {  // Should have ()
+  color: red;
+}
+
+// Error: Function without @return
+@function calculate($value) {
+  $result: $value * 2;
+  // Missing @return
+}
+
+// Error: Invalid @extend
+.base {
+  color: red;
+}
+
+.extended {
+  @extend .nonexistent;  // Class doesn't exist
+  @extend %placeholder;  // Placeholder doesn't exist
+}
+
+// Error: Math without units
+.math-errors {
+  width: 100 + 20;  // Missing units
+  height: 100px + 20;  // Inconsistent units
+  margin: 10px * 10px;  // Can't multiply units
+}
+
+// Error: Division deprecation
+.division {
+  width: 100px / 2;  // Should use math.div()
+  height: (100 / 2) + px;  // Wrong unit concatenation
+}
+
+// Error: Color function errors
+.color-errors {
+  color: lighten(blue, 150%);  // Over 100%
+  background: darken(#fff, -20%);  // Negative percentage
+  border-color: adjust-hue(red, 400deg);  // Over 360
+}
+
+// Error: List function errors
+$list: (1, 2, 3);
+.list-errors {
+  content: nth($list, 0);  // Index starts at 1
+  padding: index($list, 5);  // Out of bounds
+}
+
+// Error: Map errors
+$map: (
+  primary: blue,
+  secondary: red
+);
+.map-errors {
+  color: map-get($map, tertiary);  // Key doesn't exist
+  background: $map[invalid];  // Invalid access syntax
+}
+
+// Error: @if without condition
+@if {  // Missing condition
+  .conditional {
+    color: red;
+  }
+}
+
+// Error: @for loop errors
+@for $i from 1 to {  // Missing end value
+  .item-#{$i} {
+    width: $i * 10px;
+  }
+}
+
+// Error: @each without list
+@each $item {  // Missing 'in list'
+  .#{$item} {
+    display: block;
+  }
+}
+
+// Error: @while infinite loop risk
+$count: 0;
+@while $count > -1 {  // Always true
+  $count: $count + 1;
+  // Infinite loop
+}
+
+// Error: Placeholder selector never extended
+%unused-placeholder {
+  color: red;
+  padding: 10px;
+}
+
+// Error: Interpolation errors
+.interpolation {
+  property-#{name}: value;  // Variable not defined
+  width: #{100}px;  // Unnecessary interpolation
+}
+
+// Error: Import issues
+@import "file.css";  // Importing CSS in SCSS
+@import url("http://example.com/style.css");  // External import
+
+// Error: Charset not first
+@import 'variables';
+@charset "UTF-8";  // Should be first
+
+// Error: Multiple @charset
+@charset "UTF-8";
+@charset "ISO-8859-1";  // Only one allowed
+
+// Error: Global variables in local scope
+.scope {
+  $global-var: red !global;  // Should avoid !global
+  color: $global-var;
+}
+
+// Error: Using deprecated features
+.deprecated {
+  @include box-shadow(1px 1px 1px black);  // Assuming deprecated mixin
+  /deep/ .nested {  // Deprecated deep selector
+    color: red;
+  }
+}
+
+// Error: Mixin content without @content
+@mixin no-content {
+  color: red;
+}
+.use-content {
+  @include no-content {
+    background: blue;  // Content provided but mixin doesn't use @content
+  }
+}
+
+// Error: Function and mixin name collision
+@function duplicate-name() {
+  @return red;
+}
+@mixin duplicate-name() {  // Same name as function
+  color: blue;
+}
+
+// Error: Variable shadowing
+$color: red;
+.shadow {
+  $color: blue;  // Shadows outer variable
+  .nested {
+    $color: green;  // Another shadow
+    color: $color;
+  }
+}
+
+// Error: Using CSS variables incorrectly
+.css-vars {
+  --primary: $scss-var;  // Can't use SCSS vars in CSS vars
+  color: var(--primary, $fallback);  // Can't use SCSS as fallback
+}
+
+// Error: @use and @import mixed (Sass modules)
+@use 'sass:math';
+@import 'old-style';  // Mixing old and new syntax
+
+// Error: Selector combinators spacing
+.spacing-errors {
+  &>child {  // Missing spaces around >
+    color: red;
+  }
+  &+sibling {  // Missing spaces around +
+    color: blue;
+  }
+  &~general {  // Missing spaces around ~
+    color: green;
+  }
+}
+
+// Error: Property order (if enforced)
+.property-order {
+  padding: 10px;
+  display: block;  // Display should come first
+  margin: 20px;
+  position: relative;  // Position should be early
+}
+
+// Error: Magic numbers
+.magic-numbers {
+  width: 437px;  // Arbitrary number
+  height: 23.7px;  // Another magic number
+  margin-top: 17px;  // Should use variables
+}
+
+// Error: Hex color case inconsistency
+.hex-case {
+  color: #FFF;
+  background: #aabbcc;  // Inconsistent case
+  border-color: #ABC;
+}
+
+// Error: Empty comment blocks
+/**/
+//
+/* 
+ */
+
+// Error: TODO comments (might be flagged)
+// TODO: Fix this later
+// FIXME: This is broken
+// HACK: Temporary solution
+
+// Error: BEM naming violations (if enforced)
+.block__element__element {  // Double element
+  color: red;
+}
+.block--modifier--modifier {  // Double modifier
+  color: blue;
+}
+
+// Error: Media query issues
+@media (width: 768px) {  // Should use min/max-width
+  .exact {
+    width: 100%;
+  }
+}
+
+@media (max-width: $breakpoint) {  // Can't use variables directly
+  .variable-media {
+    width: 100%;
+  }
+}
+
+// Error: Keyframes errors
+@keyframes {  // Missing name
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes validName {
+  0 {  // Missing %
+    opacity: 0;
+  }
+  hundred {  // Should be 100%
+    opacity: 1;
+  }
+}
+
+// Error: Grid template areas
+.grid-template {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer";  // Inconsistent columns
+}
+
+// Error: Custom property fallback chains
+.custom-fallback {
+  color: var(--primary, var(--secondary, var(--tertiary, var(--quaternary, red))));  // Too deep
+}
+
+// Error: Calc in SCSS math
+.calc-scss {
+  width: calc(#{$var + 10px});  // Mixing calc and SCSS math
+  height: calc(100% - #{$margin * 2});  // Complex mixing
+}
+
+// Error: Missing semicolon in nested rule
+.nested-semicolon {
+  .child {
+    color: red
+    background: blue  // Missing semicolon
+  }
+}
