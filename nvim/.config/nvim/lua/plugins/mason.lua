@@ -49,15 +49,9 @@ return {
         "mdx_analyzer",                      -- MDX (Markdown + JSX/TSX); *.mdx
         "sqlls",                             -- SQL Language Server; *.sql
         "tailwindcss",                       -- Tailwind IntelliSense (Klassen in HTML/JS/TS/JSX/TSX)
-        "taplo",                             -- TOML (Taplo); *.toml (z. B. Cargo.toml)
         "terraformls",                       -- Terraform (HCL); *.tf, *.tfvars
         "ts_ls",                             -- TypeScript/JavaScript/React; *.ts, *.tsx, *.js, *.jsx
         "yamlls",                            -- YAML (inkl. K8s/KYAML via Schemas); *.yml, *.yaml
-        
-        -- Additional LSPs for enhanced support
-        "eslint", -- ESLint Language Server für JS/TS Linting (mit none-ls)
-        "biome", -- Biome (moderne Alternative zu ESLint/Prettier, mit none-ls)
-
         -- TODO: add pkl-ls and tofu-ls after mason_lspconfig supports it.
       },
       -- Disable auto enable. This will be done by the lspconfig plugin.
@@ -70,7 +64,6 @@ return {
     mason_tool_installer.setup({
       ensure_installed = {
         -- Security & Secret Scanning
-        "gitleaks", -- Secret-Scanner (API-Keys, Tokens) in Repo/FS; alle Sprachen; pre-commit/CI
         "semgrep", -- SAST Multi-Lang (JS/TS/Go/Python/…); Framework-Regeln (React, Node); CI/pre-commit
         "trivy", -- Vulnerability/Misconfig/Secrets Scanner: Container, FS, IaC (Terraform/K8s/Dockerfile/Helm), SBOM
         "trufflehog", -- Secret-Scanner mit Online-Verifikation; Git/GitHub/FS; pre-commit/CI
@@ -80,7 +73,6 @@ return {
         "ansible-lint", -- Ansible YAML Linter/Best Practices; Dateien: ansible/**/*.yml (Playbooks, Rollen)
         "eslint_d", -- ESLint Daemon (schneller als eslint); für none-ls JS/TS Linting
         "hadolint", -- Dockerfile-Linter (auch Inline-Bash via ShellCheck); Dateien: Dockerfile*
-        "jsonlint", -- JSON Linter; für none-ls; Dateien: *.json
         "kube-linter", -- Kubernetes/Helm Manifest-Linter (Best Practices); Dateien: k8s/*.yaml, charts/**; IaC
         "markdownlint-cli2", -- Markdown/MDX Lint (erweiterte Version); Dateien: *.md, *.mdx (Regelbar per .markdownlint.json)
         "markuplint", -- HTML Linter (Semantik/Barrierefreiheit/Attr-Checks); Dateien: *.html
@@ -89,7 +81,6 @@ return {
         "sqlfluff", -- SQL Linter/Formatter (Dialekte, auch Jinja); Dateien: *.sql
         "stylelint", -- CSS/Sass/Less Linter; Dateien: *.css/*.scss; auch Tailwind-Regeln möglich
         "tflint", -- Terraform Linter (HCL); Dateien: *.tf; Terraform & OpenTofu
-        "tfsec", -- Terraform Security Scanner (für none-ls); Dateien: *.tf
         "yamllint", -- YAML Linter (Syntax/Schema-frei); Dateien: *.yml/*.yaml
 
         -- Go-specific Tools
@@ -105,10 +96,6 @@ return {
         "stylua", -- Lua Formatter; Dateien: *.lua
         "taplo", -- TOML Lint/Format; Dateien: *.toml (z. B. taplo.toml, Cargo.toml)
         "yamlfmt", -- YAML Formatter; Dateien: *.yml/*.yaml
-
-        -- Utilities
-        "jq", -- JSON processor
-        "yq", -- YAML processor
       },
     })
   end,
