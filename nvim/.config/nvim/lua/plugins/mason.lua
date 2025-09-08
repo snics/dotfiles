@@ -55,8 +55,8 @@ return {
         "yamlls",                            -- YAML (inkl. K8s/KYAML via Schemas); *.yml, *.yaml
         
         -- Additional LSPs for enhanced support
-        "eslint",                            -- ESLint Language Server für JS/TS Linting (mit none-ls)
-        "biome",                             -- Biome (moderne Alternative zu ESLint/Prettier, mit none-ls)
+        "eslint", -- ESLint Language Server für JS/TS Linting (mit none-ls)
+        "biome", -- Biome (moderne Alternative zu ESLint/Prettier, mit none-ls)
 
         -- TODO: add pkl-ls and tofu-ls after mason_lspconfig supports it.
       },
@@ -70,41 +70,45 @@ return {
     mason_tool_installer.setup({
       ensure_installed = {
         -- Security & Secret Scanning
-        "gitleaks",          -- Secret-Scanner (API-Keys, Tokens) in Repo/FS; alle Sprachen; pre-commit/CI
-        "semgrep",           -- SAST Multi-Lang (JS/TS/Go/Python/…); Framework-Regeln (React, Node); CI/pre-commit
-        "trivy",             -- Vulnerability/Misconfig/Secrets Scanner: Container, FS, IaC (Terraform/K8s/Dockerfile/Helm), SBOM
-        "trufflehog",        -- Secret-Scanner mit Online-Verifikation; Git/GitHub/FS; pre-commit/CI
+        "gitleaks", -- Secret-Scanner (API-Keys, Tokens) in Repo/FS; alle Sprachen; pre-commit/CI
+        "semgrep", -- SAST Multi-Lang (JS/TS/Go/Python/…); Framework-Regeln (React, Node); CI/pre-commit
+        "trivy", -- Vulnerability/Misconfig/Secrets Scanner: Container, FS, IaC (Terraform/K8s/Dockerfile/Helm), SBOM
+        "trufflehog", -- Secret-Scanner mit Online-Verifikation; Git/GitHub/FS; pre-commit/CI
 
-        -- Linting Tools
-        "actionlint",        -- Linter für GitHub Actions; Dateien: .github/workflows/*.yml; CI-Guard
-        "ansible-lint",      -- Ansible YAML Linter/Best Practices; Dateien: ansible/**/*.yml (Playbooks, Rollen)
-        "hadolint",          -- Dockerfile-Linter (auch Inline-Bash via ShellCheck); Dateien: Dockerfile*
-        "kube-linter",       -- Kubernetes/Helm Manifest-Linter (Best Practices); Dateien: k8s/*.yaml, charts/**; IaC
-        "markdownlint-cli2", -- Markdown/MDX Lint; Dateien: *.md, *.mdx (Regelbar per .markdownlint.json)
-        "markuplint",        -- HTML Linter (Semantik/Barrierefreiheit/Attr-Checks); Dateien: *.html
-        "shellcheck",        -- Shell Linter; Dateien: *.sh, bash/zsh; auch in Dockerfiles
-        "sqlfluff",          -- SQL Linter/Formatter (Dialekte, auch Jinja); Dateien: *.sql
-        "stylelint",         -- CSS/Sass/Less Linter; Dateien: *.css/*.scss; auch Tailwind-Regeln möglich
-        "tflint",            -- Terraform Linter (HCL); Dateien: *.tf; Terraform & OpenTofu
-        "yamllint",          -- YAML Linter (Syntax/Schema-frei); Dateien: *.yml/*.yaml
+        -- Linting Tools (used by none-ls)
+        "actionlint", -- Linter für GitHub Actions; Dateien: .github/workflows/*.yml; CI-Guard
+        "ansible-lint", -- Ansible YAML Linter/Best Practices; Dateien: ansible/**/*.yml (Playbooks, Rollen)
+        "eslint_d", -- ESLint Daemon (schneller als eslint); für none-ls JS/TS Linting
+        "hadolint", -- Dockerfile-Linter (auch Inline-Bash via ShellCheck); Dateien: Dockerfile*
+        "jsonlint", -- JSON Linter; für none-ls; Dateien: *.json
+        "kube-linter", -- Kubernetes/Helm Manifest-Linter (Best Practices); Dateien: k8s/*.yaml, charts/**; IaC
+        "markdownlint-cli2", -- Markdown/MDX Lint (erweiterte Version); Dateien: *.md, *.mdx (Regelbar per .markdownlint.json)
+        "markuplint", -- HTML Linter (Semantik/Barrierefreiheit/Attr-Checks); Dateien: *.html
+        "selene", -- Lua Linter (für none-ls); Dateien: *.lua; benötigt selene.toml
+        "shellcheck", -- Shell Linter; Dateien: *.sh, bash/zsh; auch in Dockerfiles
+        "sqlfluff", -- SQL Linter/Formatter (Dialekte, auch Jinja); Dateien: *.sql
+        "stylelint", -- CSS/Sass/Less Linter; Dateien: *.css/*.scss; auch Tailwind-Regeln möglich
+        "tflint", -- Terraform Linter (HCL); Dateien: *.tf; Terraform & OpenTofu
+        "tfsec", -- Terraform Security Scanner (für none-ls); Dateien: *.tf
+        "yamllint", -- YAML Linter (Syntax/Schema-frei); Dateien: *.yml/*.yaml
 
         -- Go-specific Tools
-        "golangci-lint",     -- Go Meta-Linter (viele Regeln/Tools gebündelt); Dateien: *.go; Projekte: Go
-        "gofumpt",           -- Go Formatter (strenger gofmt); Dateien: *.go
-        "golines",           -- Go Zeilenumbruch/Reflow; Dateien: *.go (ergänzt gofumpt)
+        "golangci-lint", -- Go Meta-Linter (viele Regeln/Tools gebündelt); Dateien: *.go; Projekte: Go
+        "gofumpt", -- Go Formatter (strenger gofmt); Dateien: *.go
+        "goimports", -- Go Import Formatter (für none-ls); Dateien: *.go
+        "golines", -- Go Zeilenumbruch/Reflow; Dateien: *.go (ergänzt gofumpt)
 
-        -- Formatters
-        "biome",             -- JS/TS/JSON/HTML/CSS: Lint+Format+LSP in einem; Frameworks: React, Deno, Bun, Node
-        "prettierd",         -- Prettier als Daemon (schnell); Dateien: HTML/CSS/JS/TS/JSON/MD/etc
-        "shfmt",             -- Shell Formatter; Dateien: *.sh (bash/zsh/sh)
-        "stylua",            -- Lua Formatter; Dateien: *.lua
-        "taplo",             -- TOML Lint/Format; Dateien: *.toml (z. B. taplo.toml, Cargo.toml)
-        "yamlfmt",           -- YAML Formatter; Dateien: *.yml/*.yaml
-        "yamlfix",           -- YAML Formatter (struktur-bewusst, Sortierung/Normalisierung)
+        -- Formatters (used by none-ls and standalone)
+        "biome", -- JS/TS/JSON/HTML/CSS: Lint+Format+LSP in einem; Frameworks: React, Deno, Bun, Node
+        "prettierd", -- Prettier als Daemon (schnell); Dateien: HTML/CSS/JS/TS/JSON/MD/etc
+        "shfmt", -- Shell Formatter; Dateien: *.sh (bash/zsh/sh)
+        "stylua", -- Lua Formatter; Dateien: *.lua
+        "taplo", -- TOML Lint/Format; Dateien: *.toml (z. B. taplo.toml, Cargo.toml)
+        "yamlfmt", -- YAML Formatter; Dateien: *.yml/*.yaml
 
-        -- Legacy/Utilities (keeping existing)
-        "jq",                -- JSON processor
-        "yq",                -- YAML processor
+        -- Utilities
+        "jq", -- JSON processor
+        "yq", -- YAML processor
       },
     })
   end,
