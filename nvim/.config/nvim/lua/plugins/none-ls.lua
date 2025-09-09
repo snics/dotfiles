@@ -13,6 +13,10 @@ return {
     local code_actions = null_ls.builtins.code_actions
     local hover = null_ls.builtins.hover
     local completion = null_ls.builtins.completion
+
+    -- Custom sources from config.none-ls
+    local my_formatting = require("config.none-ls.formatting")
+    local my_diagnostics = require("config.none-ls.diagnostics")
     
     -- Additional sources from none-ls-extras
     local require_eslint = require("none-ls.diagnostics.eslint_d")
@@ -22,9 +26,8 @@ return {
     local shellcheck_diagnostics = require("none-ls-shellcheck.diagnostics")
     local shellcheck_code_actions = require("none-ls-shellcheck.code_actions")
     
-    null_ls.setup({
-      -- Sources define what tools none-ls will use
-      sources = {
+    -- Build the complete sources list
+    local sources = {
         -- ================================================================================
         -- FORMATTERS
         -- ================================================================================
@@ -68,11 +71,12 @@ return {
         formatting.shfmt.with({
           extra_args = { "-i", "2", "-ci" }, -- 2 spaces indent, indent case statements
         }),
+
+        -- ZSH formatter
+        formatting.zsh,
         
         -- TOML formatter
-        -- NOTE: taplo is not available as a built-in in none-ls
-        -- Consider using external tool or different formatter
-        -- formatting.taplo,
+        my_formatting.taplo,
         
         -- YAML formatter
         formatting.yamlfmt,
@@ -187,6 +191,7 @@ return {
         --     return utils.root_has_file({ "*.tf", "*.tfvars", ".terraform" })
         --   end,
         -- }),
+        my_diagnostics.tflint,
         
         -- Security scanners
         diagnostics.semgrep.with({
@@ -247,7 +252,11 @@ return {
         -- ================================================================================
         -- kube-linter     -- Kubernetes/Helm linter (use via external command/integration)
         -- trufflehog      -- Secret scanner (use via pre-commit hooks or CI)
-      },
+      }
+
+    -- Setup none-ls with our sources
+    null_ls.setup({
+      sources = sources,
       on_attach = function(client, bufnr)
         -- Format on save
         if client.supports_method("textDocument/formatting") then
