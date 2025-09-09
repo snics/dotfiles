@@ -17,10 +17,7 @@ return {
     -- Custom sources from config.none-ls
     local my_formatting = require("config.none-ls.formatting")
     local my_diagnostics = require("config.none-ls.diagnostics")
-    
-    -- Additional sources from none-ls-extras
-    local require_eslint = require("none-ls.diagnostics.eslint_d")
-    local require_eslint_actions = require("none-ls.code_actions.eslint_d")
+    local my_code_actions = require("config.none-ls.code_actions")
     
     -- Additional sources from none-ls-shellcheck
     local shellcheck_diagnostics = require("none-ls-shellcheck.diagnostics")
@@ -45,35 +42,15 @@ return {
           },
         }),
         
-        -- Prettier Daemon - Fast formatter for HTML/CSS/JS/TS/JSON/MD/YAML etc.
-        formatting.prettierd.with({
-          filetypes = {
-            "javascript", 
-            "javascriptreact", 
-            "typescript", 
-            "typescriptreact",
-            "vue",
-            "css", 
-            "scss",
-            "less", 
-            "html",
-            "json",
-            "jsonc", 
-            "yaml", 
-            "markdown",
-            "markdown.mdx",
-            "graphql", 
-            "handlebars",
-          },
-        }),
+        -- Smart formatter selection (Biome/Deno/PrettierD)
+        my_formatting.biome,
+        my_formatting.deno_fmt,
+        my_formatting.prettierd,
         
         -- Shell formatter - bash/sh/zsh
         formatting.shfmt.with({
           extra_args = { "-i", "2", "-ci" }, -- 2 spaces indent, indent case statements
         }),
-
-        -- ZSH formatter
-        formatting.zsh,
         
         -- TOML formatter
         my_formatting.taplo,
@@ -104,23 +81,11 @@ return {
         -- LINTERS / DIAGNOSTICS  
         -- ================================================================================
         
-        -- ESLint Daemon - JavaScript/TypeScript linter (from none-ls-extras)
-        require_eslint.with({
-          condition = function(utils)
-            -- Only enable if ESLint config exists in the project
-            return utils.root_has_file({
-              ".eslintrc",
-              ".eslintrc.js",
-              ".eslintrc.cjs",
-              ".eslintrc.yaml",
-              ".eslintrc.yml",
-              ".eslintrc.json",
-              "eslint.config.js",
-              "eslint.config.mjs",
-              "eslint.config.cjs",
-            })
-          end,
-        }),
+        -- Smart linter selection (Biome/Deno/OXLint/ESLint)
+        my_diagnostics.biome,
+        my_diagnostics.deno_lint,
+        my_diagnostics.oxlint,
+        my_diagnostics.eslint,
         
         -- Shell linter - detects common shell script issues
         -- Using none-ls-shellcheck plugin since it was removed from core
@@ -194,9 +159,10 @@ return {
         my_diagnostics.tflint,
         
         -- Security scanners
-        diagnostics.semgrep.with({
-          extra_args = { "--config", "auto" }, -- Use automatic ruleset detection
-        }),
+        -- Temporarily disabled due to Python deprecation warnings
+        -- diagnostics.semgrep.with({
+        --   extra_args = { "--config", "auto" }, -- Use automatic ruleset detection
+        -- }),
         
         diagnostics.trivy,
         
@@ -204,23 +170,8 @@ return {
         -- CODE ACTIONS
         -- ================================================================================
         
-        -- ESLint code actions (from none-ls-extras)
-        require_eslint_actions.with({
-          condition = function(utils)
-            -- Only enable if ESLint config exists in the project
-            return utils.root_has_file({
-              ".eslintrc",
-              ".eslintrc.js",
-              ".eslintrc.cjs",
-              ".eslintrc.yaml",
-              ".eslintrc.yml",
-              ".eslintrc.json",
-              "eslint.config.js",
-              "eslint.config.mjs",
-              "eslint.config.cjs",
-            })
-          end,
-        }),
+        -- Smart code actions selection (loaded from separate files)
+        my_code_actions.eslint,
         
         -- Shell script code actions
         -- Using none-ls-shellcheck plugin since it was removed from core
@@ -242,10 +193,14 @@ return {
         -- diagnostics.golangci_lint,   -- Go meta-linter
         
         -- ================================================================================
-        -- BIOME (TODO: Enable later - JS/TS/JSON/HTML/CSS all-in-one)
+        -- SMART TOOL SELECTION NOTES
         -- ================================================================================
-        -- formatting.biome,            -- Fast formatter
-        -- diagnostics.biome,           -- Fast linter
+        -- The following tools are now automatically selected based on project config:
+        -- 1. Deno projects: deno_fmt + deno_lint (if deno.json exists)
+        -- 2. Biome projects: biome formatter + linter (if biome.json exists)
+        -- 3. OXLint projects: oxlint linter (if oxlint.json exists)
+        -- 4. ESLint projects: prettierd + eslint (if .eslintrc exists)
+        -- 5. Default: prettierd + eslint (if no specific config found)
         
         -- ================================================================================
         -- TOOLS NOT AVAILABLE IN NONE-LS (installed via Mason but used differently)

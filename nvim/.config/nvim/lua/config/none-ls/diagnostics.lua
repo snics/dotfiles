@@ -3,7 +3,7 @@
 -- ==============================================================================
 -- All custom diagnostic/linting sources organized in one module
 -- Usage: local my_diagnostics = require("config.none-ls.diagnostics")
---        then use: my_diagnostics.tflint, my_diagnostics.hadolint, etc.
+--        then use: my_diagnostics.tflint, my_diagnostics.biome, etc.
 -- ==============================================================================
 
 local M = {}
@@ -15,11 +15,15 @@ local M = {}
 -- Custom TFLint integration (your own implementation)
 M.tflint = require("config.none-ls.diagnostics.tflint")
 
--- Custom Hadolint integration (your own implementation) 
--- M.hadolint = require("config.none-ls.diagnostics.hadolint")
+-- ==============================================================================
+-- SMART LINTER SELECTION (loaded from separate files)
+-- ==============================================================================
 
--- Add more custom diagnostics here as you create them
--- M.kubelinter = require("config.none-ls.diagnostics.kubelinter")
--- M.custom_linter = require("config.none-ls.diagnostics.custom_linter")
+-- Load individual linter configurations from separate files
+M.biome = require("config.none-ls.diagnostics.biome")
+M.deno_lint = require("config.none-ls.diagnostics.deno_lint")
+M.oxlint = require("config.none-ls.diagnostics.oxlint")
+M.eslint = require("config.none-ls.diagnostics.eslint")
+
 
 return M

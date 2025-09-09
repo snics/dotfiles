@@ -64,18 +64,19 @@ return {
     mason_tool_installer.setup({
       ensure_installed = {
         -- Security & Secret Scanning
-        "semgrep", -- SAST Multi-Lang (JS/TS/Go/Python/…); Framework-Regeln (React, Node); CI/pre-commit
         "trivy", -- Vulnerability/Misconfig/Secrets Scanner: Container, FS, IaC (Terraform/K8s/Dockerfile/Helm), SBOM
         "trufflehog", -- Secret-Scanner mit Online-Verifikation; Git/GitHub/FS; pre-commit/CI
 
         -- Linting Tools (used by none-ls)
         "actionlint", -- Linter für GitHub Actions; Dateien: .github/workflows/*.yml; CI-Guard
         "ansible-lint", -- Ansible YAML Linter/Best Practices; Dateien: ansible/**/*.yml (Playbooks, Rollen)
+        "biome", -- All-in-one JS/TS/JSON/HTML/CSS Linter+Formatter; Dateien: *.js, *.ts, *.json, *.html, *.css; Konfiguration: biome.json
         "eslint_d", -- ESLint Daemon (schneller als eslint); für none-ls JS/TS Linting
         "hadolint", -- Dockerfile-Linter (auch Inline-Bash via ShellCheck); Dateien: Dockerfile*
         "kube-linter", -- Kubernetes/Helm Manifest-Linter (Best Practices); Dateien: k8s/*.yaml, charts/**; IaC
         "markdownlint-cli2", -- Markdown/MDX Lint (erweiterte Version); Dateien: *.md, *.mdx (Regelbar per .markdownlint.json)
         "markuplint", -- HTML Linter (Semantik/Barrierefreiheit/Attr-Checks); Dateien: *.html
+        "oxlint", -- Fast Rust-based JS/TS Linter; Dateien: *.js, *.ts, *.jsx, *.tsx; Konfiguration: oxlint.json
         "selene", -- Lua Linter (für none-ls); Dateien: *.lua; benötigt selene.toml
         "shellcheck", -- Shell Linter; Dateien: *.sh, bash/zsh; auch in Dockerfiles
         "sqlfluff", -- SQL Linter/Formatter (Dialekte, auch Jinja); Dateien: *.sql
@@ -90,7 +91,7 @@ return {
         "golines", -- Go Zeilenumbruch/Reflow; Dateien: *.go (ergänzt gofumpt)
 
         -- Formatters (used by none-ls and standalone)
-        "biome", -- JS/TS/JSON/HTML/CSS: Lint+Format+LSP in einem; Frameworks: React, Deno, Bun, Node
+        -- Biome is also a formatter
         "prettierd", -- Prettier als Daemon (schnell); Dateien: HTML/CSS/JS/TS/JSON/MD/etc
         "shfmt", -- Shell Formatter; Dateien: *.sh (bash/zsh/sh)
         "stylua", -- Lua Formatter; Dateien: *.lua

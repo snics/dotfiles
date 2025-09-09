@@ -3,10 +3,17 @@
 -- ==============================================================================
 -- All custom code action sources organized in one module
 -- Usage: local my_code_actions = require("config.none-ls.code_actions")
---        then use: my_code_actions.custom_action, etc.
+--        then use: my_code_actions.eslint, etc.
 -- ==============================================================================
 
 local M = {}
+
+-- ==============================================================================
+-- SMART CODE ACTIONS SELECTION (loaded from separate files)
+-- ==============================================================================
+
+-- Load individual code action configurations from separate files
+M.eslint = require("config.none-ls.code_actions.eslint")
 
 -- ==============================================================================
 -- CUSTOM CODE ACTIONS SOURCES
