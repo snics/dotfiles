@@ -89,8 +89,14 @@ return {
         -- Go-specific Tools
         "golangci-lint", -- Go Meta-Linter (viele Regeln/Tools gebündelt); Dateien: *.go; Projekte: Go
         "gofumpt", -- Go Formatter (strenger gofmt); Dateien: *.go
-        "goimports", -- Go Import Formatter (für none-ls); Dateien: *.go
+        "goimports-reviser", -- Go Import Formatter (für none-ls); Dateien: *.go
         "golines", -- Go Zeilenumbruch/Reflow; Dateien: *.go (ergänzt gofumpt)
+        
+        -- Go Tools for gopher.nvim plugin
+        "gomodifytags", -- Add/Remove struct tags; für gopher.nvim
+        "impl", -- Generate interface implementations; für gopher.nvim
+        "gotests", -- Generate Go tests; für gopher.nvim
+        "iferr", -- Generate if err != nil blocks; für gopher.nvim
 
         -- Formatters (used by none-ls and standalone)
         -- Biome is also a formatter

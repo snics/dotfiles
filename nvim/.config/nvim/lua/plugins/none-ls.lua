@@ -23,11 +23,103 @@ return {
     local shellcheck_diagnostics = require("none-ls-shellcheck.diagnostics")
     local shellcheck_code_actions = require("none-ls-shellcheck.code_actions")
     
-    -- Build the complete sources list
+    -- Build the complete sources list organized by language (alphabetically)
     local sources = {
-        -- ================================================================================
-        -- FORMATTERS
-        -- ================================================================================
+        -- Ansible
+        
+        -- Ansible linter (only in Ansible projects)
+        diagnostics.ansiblelint.with({
+          condition = function(utils)
+            return utils.root_has_file({ "ansible.cfg", "playbook.yml", "site.yml", "roles" })
+          end,
+        }),
+        
+        -- CSS/SCSS/LESS
+        
+        -- CSS/SCSS/Less linter
+        diagnostics.stylelint,
+        
+        -- Docker
+        
+        -- Dockerfile linter
+        diagnostics.hadolint.with({
+          filetypes = { "dockerfile" },
+          -- Force hadolint to run on any file that looks like a Dockerfile
+          runtime_condition = function(params)
+            -- Run on any file that contains "Dockerfile" in the name
+            return params.bufname:match("Dockerfile") ~= nil
+              or params.bufname:match("dockerfile") ~= nil
+              or params.bufname:match("Containerfile") ~= nil
+              or vim.bo.filetype == "dockerfile"
+          end,
+        }),
+        
+        -- GitHub Actions
+        
+        -- GitHub Actions linter
+        diagnostics.actionlint,
+        
+        -- Go
+        
+        -- Go formatters
+        formatting.gofumpt.with({
+          filetypes = { "go" },
+        }),
+        
+        formatting.goimports_reviser.with({
+          filetypes = { "go" },
+          extra_args = {
+            "-rm-unused", -- Remove unused imports
+            "-set-alias", -- Set alias for long import names
+            "-format",    -- Format imports
+          },
+        }),
+        
+        formatting.golines.with({
+          filetypes = { "go" },
+          extra_args = {
+            "--max-len", "100", -- Maximum line length
+            "--tab-len", "4",   -- Tab length
+            "--reformat-tags",  -- Reformat struct tags
+          },
+        }),
+        
+        -- Go linter (comprehensive meta-linter)
+        diagnostics.golangci_lint.with({
+          filetypes = { "go" },
+          condition = function(utils)
+            -- Only run in Go projects
+            return utils.root_has_file({ "go.mod", "go.work", "main.go" })
+          end,
+        }),
+        
+        -- HTML
+        
+        -- HTML linter (markuplint)
+        diagnostics.markuplint,
+        
+        -- JavaScript/TypeScript (Smart Selection)
+        
+        -- Smart formatter selection (Biome/Deno/PrettierD)
+        my_formatting.biome,
+        my_formatting.deno_fmt,
+        my_formatting.prettierd,
+        
+        -- Smart linter selection (Biome/Deno/OXLint/ESLint)
+        my_diagnostics.biome,
+        my_diagnostics.deno_lint,
+        my_diagnostics.oxlint,
+        my_diagnostics.eslint,
+        
+        -- Smart code actions selection (loaded from separate files)
+        my_code_actions.eslint,
+        
+        -- Kubernetes/Helm
+        
+        -- Kubernetes/Helm linter (only in K8s projects)
+        my_diagnostics.kube_linter,
+        
+        -- Lua
         
         -- Lua formatter (essential for Neovim config)
         formatting.stylua.with({
@@ -42,21 +134,40 @@ return {
           },
         }),
         
-        -- Smart formatter selection (Biome/Deno/PrettierD)
-        my_formatting.biome,
-        my_formatting.deno_fmt,
-        my_formatting.prettierd,
+        -- Lua linter
+        diagnostics.selene,
+        
+        -- Markdown
+        
+        -- Markdown linter (using markdownlint-cli2)
+        diagnostics.markdownlint_cli2.with({
+          args = { "$FILENAME" },
+        }),
+        
+        -- Security
+        
+        -- Security scanners
+        diagnostics.trivy,
+        
+        -- Secret scanner (only in git repositories)
+        my_diagnostics.trufflehog,
+        
+        -- Shell Scripts
         
         -- Shell formatter - bash/sh/zsh
         formatting.shfmt.with({
           extra_args = { "-i", "2", "-ci" }, -- 2 spaces indent, indent case statements
         }),
         
-        -- TOML formatter
-        my_formatting.taplo,
+        -- Shell linter - detects common shell script issues
+        -- Using none-ls-shellcheck plugin since it was removed from core
+        shellcheck_diagnostics,
         
-        -- YAML formatter
-        formatting.yamlfmt,
+        -- Shell script code actions
+        -- Using none-ls-shellcheck plugin since it was removed from core
+        shellcheck_code_actions,
+        
+        -- SQL
         
         -- SQL formatter (via sqlfluff)
         formatting.sqlfluff.with({
@@ -72,44 +183,6 @@ return {
           end,
         }),
         
-        -- Terraform formatter (native terraform fmt via null-ls)
-        formatting.terraform_fmt.with({
-          filetypes = { "terraform", "tf", "terraform-vars", "hcl" },
-        }),
-        
-        -- ================================================================================
-        -- LINTERS / DIAGNOSTICS  
-        -- ================================================================================
-        
-        -- Smart linter selection (Biome/Deno/OXLint/ESLint)
-        my_diagnostics.biome,
-        my_diagnostics.deno_lint,
-        my_diagnostics.oxlint,
-        my_diagnostics.eslint,
-        
-        -- Shell linter - detects common shell script issues
-        -- Using none-ls-shellcheck plugin since it was removed from core
-        shellcheck_diagnostics,
-        
-        -- YAML linter
-        diagnostics.yamllint.with({
-          extra_args = { "-d", "relaxed" }, -- Use relaxed ruleset
-        }),
-        
-        -- Markdown linter (using markdownlint-cli2)
-        diagnostics.markdownlint_cli2.with({
-          args = { "$FILENAME" },
-        }),
-        
-        -- HTML linter (markuplint)
-        diagnostics.markuplint,
-        
-        -- CSS/SCSS/Less linter
-        diagnostics.stylelint,
-        
-        -- Lua linter
-        diagnostics.selene,
-        
         -- SQL linter (via sqlfluff)
         diagnostics.sqlfluff.with({
           extra_args = function(params)
@@ -124,66 +197,35 @@ return {
           end,
         }),
         
-        -- Ansible linter (only in Ansible projects)
-        diagnostics.ansiblelint.with({
-          condition = function(utils)
-            return utils.root_has_file({ "ansible.cfg", "playbook.yml", "site.yml", "roles" })
-          end,
-        }),
+        -- Terraform
         
-        -- GitHub Actions linter
-        diagnostics.actionlint,
-        
-        -- Dockerfile linter
-        diagnostics.hadolint.with({
-          filetypes = { "dockerfile" },
-          -- Force hadolint to run on any file that looks like a Dockerfile
-          runtime_condition = function(params)
-            -- Run on any file that contains "Dockerfile" in the name
-            return params.bufname:match("Dockerfile") ~= nil
-              or params.bufname:match("dockerfile") ~= nil
-              or params.bufname:match("Containerfile") ~= nil
-              or vim.bo.filetype == "dockerfile"
-          end,
+        -- Terraform formatter (native terraform fmt via null-ls)
+        formatting.terraform_fmt.with({
+          filetypes = { "terraform", "tf", "terraform-vars", "hcl" },
         }),
         
         -- Terraform linter
         my_diagnostics.tflint,
         
-        -- Security scanners
-        diagnostics.trivy,
+        -- TOML
         
-        -- Kubernetes/Helm linter (only in K8s projects)
-        my_diagnostics.kube_linter,
+        -- TOML formatter
+        my_formatting.taplo,
         
-        -- Secret scanner (only in git repositories)
-        my_diagnostics.trufflehog,
+        -- YAML
         
-        -- ================================================================================
-        -- CODE ACTIONS
-        -- ================================================================================
+        -- YAML formatter
+        formatting.yamlfmt,
         
-        -- Smart code actions selection (loaded from separate files)
-        my_code_actions.eslint,
+        -- YAML linter
+        diagnostics.yamllint.with({
+          extra_args = { "-d", "relaxed" }, -- Use relaxed ruleset
+        }),
         
-        -- Shell script code actions
-        -- Using none-ls-shellcheck plugin since it was removed from core
-        shellcheck_code_actions,
-        
-        -- ================================================================================
-        -- HOVER
-        -- ================================================================================
+        -- General Utilities
         
         -- Dictionary hover for word definitions
         hover.dictionary,
-        
-        -- ================================================================================
-        -- GO TOOLS (TODO: Enable later)
-        -- ================================================================================
-        -- formatting.gofumpt,          -- Stricter Go formatter
-        -- formatting.goimports,         -- Go import formatter
-        -- formatting.golines,           -- Go line wrapper
-        -- diagnostics.golangci_lint,   -- Go meta-linter
         
         -- ================================================================================
         -- SMART TOOL SELECTION NOTES
