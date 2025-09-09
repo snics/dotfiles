@@ -25,5 +25,13 @@ M.deno_lint = require("config.none-ls.diagnostics.deno_lint")
 M.oxlint = require("config.none-ls.diagnostics.oxlint")
 M.eslint = require("config.none-ls.diagnostics.eslint")
 
+-- ==============================================================================
+-- SECURITY & INFRASTRUCTURE TOOLS
+-- ==============================================================================
+
+-- Security and infrastructure scanning tools
+M.kube_linter = require("config.none-ls.diagnostics.kube_linter")
+M.trufflehog = require("config.none-ls.diagnostics.trufflehog")
+
 
 return M

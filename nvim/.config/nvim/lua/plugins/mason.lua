@@ -83,6 +83,8 @@ return {
         "stylelint", -- CSS/Sass/Less Linter; Dateien: *.css/*.scss; auch Tailwind-Regeln möglich
         "tflint", -- Terraform Linter (HCL); Dateien: *.tf; Terraform & OpenTofu
         "yamllint", -- YAML Linter (Syntax/Schema-frei); Dateien: *.yml/*.yaml
+        "kube-linter", -- Kubernetes/Helm Linter; Dateien: *.yaml/*.yml (K8s manifests)
+        "trufflehog", -- Secret Scanner; Dateien: alle (Sicherheits-Scan)
 
         -- Go-specific Tools
         "golangci-lint", -- Go Meta-Linter (viele Regeln/Tools gebündelt); Dateien: *.go; Projekte: Go

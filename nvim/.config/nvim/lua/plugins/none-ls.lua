@@ -147,24 +147,17 @@ return {
           end,
         }),
         
-        -- Terraform linter (only in Terraform projects)
-        -- NOTE: tflint is not available as a built-in in none-ls
-        -- You can use terraform-ls for diagnostics or run tflint externally
-        -- TODO: Consider using tflint as an external command source
-        -- diagnostics.tflint.with({
-        --   condition = function(utils)
-        --     return utils.root_has_file({ "*.tf", "*.tfvars", ".terraform" })
-        --   end,
-        -- }),
+        -- Terraform linter
         my_diagnostics.tflint,
         
         -- Security scanners
-        -- Temporarily disabled due to Python deprecation warnings
-        -- diagnostics.semgrep.with({
-        --   extra_args = { "--config", "auto" }, -- Use automatic ruleset detection
-        -- }),
-        
         diagnostics.trivy,
+        
+        -- Kubernetes/Helm linter (only in K8s projects)
+        my_diagnostics.kube_linter,
+        
+        -- Secret scanner (only in git repositories)
+        my_diagnostics.trufflehog,
         
         -- ================================================================================
         -- CODE ACTIONS
@@ -201,12 +194,6 @@ return {
         -- 3. OXLint projects: oxlint linter (if oxlint.json exists)
         -- 4. ESLint projects: prettierd + eslint (if .eslintrc exists)
         -- 5. Default: prettierd + eslint (if no specific config found)
-        
-        -- ================================================================================
-        -- TOOLS NOT AVAILABLE IN NONE-LS (installed via Mason but used differently)
-        -- ================================================================================
-        -- kube-linter     -- Kubernetes/Helm linter (use via external command/integration)
-        -- trufflehog      -- Secret scanner (use via pre-commit hooks or CI)
       }
 
     -- Setup none-ls with our sources
@@ -260,6 +247,86 @@ return {
         vim.keymap.set("n", "K", vim.lsp.buf.hover, 
           vim.tbl_extend("force", opts, { desc = "Show hover documentation" })
         )
+        
+        -- ================================================================================
+        -- NONE-LS SPECIFIC KEYMAPS
+        -- ================================================================================
+        
+        -- Toggle none-ls diagnostics
+        vim.keymap.set("n", "<leader>ld", function()
+          vim.diagnostic.toggle()
+        end, vim.tbl_extend("force", opts, { desc = "Toggle diagnostics" }))
+        
+        -- Show diagnostics in floating window
+        vim.keymap.set("n", "<leader>lD", vim.diagnostic.open_float, 
+          vim.tbl_extend("force", opts, { desc = "Show diagnostics in float" })
+        )
+        
+        -- Go to next/previous diagnostic
+        vim.keymap.set("n", "]d", vim.diagnostic.goto_next, 
+          vim.tbl_extend("force", opts, { desc = "Go to next diagnostic" })
+        )
+        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, 
+          vim.tbl_extend("force", opts, { desc = "Go to previous diagnostic" })
+        )
+        
+        -- Show code actions
+        vim.keymap.set({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, 
+          vim.tbl_extend("force", opts, { desc = "Code actions" })
+        )
+        
+        -- Rename symbol (if supported)
+        vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, 
+          vim.tbl_extend("force", opts, { desc = "Rename symbol" })
+        )
+        
+        -- ================================================================================
+        -- FORMATTING KEYMAPS
+        -- ================================================================================
+        
+        -- Format current line
+        vim.keymap.set("n", "<leader>fl", function()
+          vim.lsp.buf.format({
+            range = { start = { vim.fn.line("."), 0 }, ["end"] = { vim.fn.line("."), vim.fn.col("$") } },
+            timeout_ms = 2000,
+            filter = function(c)
+              return c.name == "null-ls" or c.name == "rust_analyzer" or c.name == "gopls"
+            end,
+          })
+        end, vim.tbl_extend("force", opts, { desc = "Format current line" }))
+        
+        -- Format selection in visual mode
+        vim.keymap.set("v", "<leader>f", function()
+          vim.lsp.buf.format({
+            range = { start = vim.fn.getpos("v"), ["end"] = vim.fn.getpos(".") },
+            timeout_ms = 2000,
+            filter = function(c)
+              return c.name == "null-ls" or c.name == "rust_analyzer" or c.name == "gopls"
+            end,
+          })
+        end, vim.tbl_extend("force", opts, { desc = "Format selection" }))
+        
+        -- ================================================================================
+        -- DIAGNOSTIC MANAGEMENT
+        -- ================================================================================
+        
+        -- Set diagnostic level
+        vim.keymap.set("n", "<leader>le", function()
+          vim.diagnostic.config({ virtual_text = { severity = vim.diagnostic.severity.ERROR } })
+        end, vim.tbl_extend("force", opts, { desc = "Show only errors" }))
+        
+        vim.keymap.set("n", "<leader>lw", function()
+          vim.diagnostic.config({ virtual_text = { severity = vim.diagnostic.severity.WARN } })
+        end, vim.tbl_extend("force", opts, { desc = "Show warnings and errors" }))
+        
+        vim.keymap.set("n", "<leader>li", function()
+          vim.diagnostic.config({ virtual_text = { severity = vim.diagnostic.severity.INFO } })
+        end, vim.tbl_extend("force", opts, { desc = "Show all diagnostics" }))
+        
+        -- Clear diagnostics
+        vim.keymap.set("n", "<leader>lc", function()
+          vim.diagnostic.clear()
+        end, vim.tbl_extend("force", opts, { desc = "Clear diagnostics" }))
       end,
       
       -- Debounce diagnostics to avoid too frequent updates

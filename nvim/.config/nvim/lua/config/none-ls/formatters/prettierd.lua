@@ -8,26 +8,20 @@ local formatting = null_ls.builtins.formatting
 
 return formatting.prettierd.with({
   condition = function(utils)
-    -- Only enable if Prettier config exists and no Biome/Deno config
+    -- Use prettierd as fallback when no other formatters are available
     local has_biome = utils.root_has_file({
       "biome.json", "biome.jsonc", ".biome.json", ".biome.jsonc"
     })
     local has_deno = utils.root_has_file({
       "deno.json", "deno.jsonc", ".deno.json", ".deno.jsonc"
     })
-    local has_prettier = utils.root_has_file({
-      ".prettierrc",
-      ".prettierrc.json",
-      ".prettierrc.js",
-      ".prettierrc.cjs",
-      ".prettierrc.yaml",
-      ".prettierrc.yml",
-      "prettier.config.js",
-      "prettier.config.cjs",
-      "prettier.config.mjs",
+    local has_oxlint = utils.root_has_file({
+      "oxlint.json", ".oxlint.json", "oxlint.toml", ".oxlint.toml"
     })
     
-    return has_prettier and not has_biome and not has_deno
+    -- Enable as fallback when no other formatters are configured
+    -- prettierd is installed via Mason, so we can assume it's available
+    return not has_biome and not has_deno and not has_oxlint
   end,
   filetypes = {
     "javascript",

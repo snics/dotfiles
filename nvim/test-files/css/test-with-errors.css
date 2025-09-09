@@ -26,7 +26,14 @@
 
 /* Error: Invalid values */
 .invalid-values {
-  width: 10;  /* Missing unit */
+  width:     10;  /* Missing unit */
+  
+
+
+
+
+
+
   height: 20pixels;  /* Invalid unit */
   margin: 10px 20;  /* Inconsistent units */
   z-index: 9999999999;  /* Too large */

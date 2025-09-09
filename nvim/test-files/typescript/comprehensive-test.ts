@@ -256,7 +256,7 @@ class UserServiceImpl implements UserService {
   async updateUser(id: number, updates: Partial<User>): Promise<UserEntity> {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new Error('User not found');
+throw new Error('User not found');
     }
     // Update logic would go here
     return await this.userRepository.update(user);
