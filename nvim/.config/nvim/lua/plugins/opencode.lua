@@ -26,7 +26,7 @@ return {
     { '<leader>od', function() require('opencode').prompt("Add documentation for @cursor") end, desc = "Document code at cursor", },
   },
   config = function(_, opts)
-    require('opencode').setup(opts)
+    vim.g.opencode_opts = opts
     
     -- Optional: Listen for opencode events for custom automation
     vim.api.nvim_create_autocmd("User", {
