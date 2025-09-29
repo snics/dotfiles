@@ -3,42 +3,52 @@ return {
          priority = 1000,
          lazy = false,
 
-         ---@type snacks.Config
-         opts = {
-           bigfile = { enabled = true },
-           dashboard = {
-               preset = {
-                  header = [[____            _   ___         _
-         / __ \___ _   __/ | / (_)___    (_)___ ______
-        / / / / _ \ | / /  |/ / / __ \  / / __ `/ ___/
-       / /_/ /  __/ |/ / /|  / / / / / / / /_/ (__  )
-     /_____/\___/|___/_/ |_/_/_/ /_/_/ /\__,_/____/
-                     /___/
-                  ]]
-               },
-               sections = {
-                   { section = "header" },
-                   { section = "keys", gap = 1, padding = 1 },
-                   { section = "startup" },
+        ---@type snacks.Config
+        opts = {
+          bigfile = { enabled = true },
+          dashboard = {
+              preset = {
+                 header = [[____            _   ___         _
+        / __ \___ _   __/ | / (_)___    (_)___ ______
+       / / / / _ \ | / /  |/ / / __ \  / / __ `/ ___/
+      / /_/ /  __/ |/ / /|  / / / / / / / /_/ (__  )
+    /_____/\___/|___/_/ |_/_/_/ /_/_/ /\__,_/____/
+                    /___/
+                 ]]
+              },
+              sections = {
+                  { section = "header" },
+                  { section = "keys", gap = 1, padding = 1 },
+                  { section = "startup" },
 
-               },
-           },
-           explorer = { enabled = true },
-           indent = {
-             enabled = true,
-             char = "┊",
-           },
-           input = { enabled = true },
-           notifier = {
-             enabled = true,
-             timeout = 3000,
-           },
-           picker = { enabled = true },
-           quickfile = { enabled = true },
-           scope = {
-             enabled = true,
-             char = "┊",
-           },
+              },
+          },
+          explorer = { 
+            enabled = true,
+            hidden = false,
+            ignored = true,
+          },
+          indent = {
+            enabled = true,
+            indent = {
+              char = "┊",
+            },
+            scope = {
+              enabled = true,
+              char = "┊",
+            },
+          },
+          input = { enabled = true },
+          notifier = {
+            enabled = true,
+            timeout = 3000,
+          },
+          picker = { 
+            enabled = true,
+            hidden = true,
+            ignored = true,
+          },
+          quickfile = { enabled = true },
            scroll = { enabled = true },
            statuscolumn = { enabled = true },
            words = { enabled = true },
