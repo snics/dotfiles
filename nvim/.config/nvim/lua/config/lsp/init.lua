@@ -8,7 +8,6 @@ M.capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Setup all LSP servers
 function M.setup()
-  local lspconfig = require("lspconfig")
   local mason_lspconfig = require("mason-lspconfig")
   
   -- Get all installed LSP servers from mason-lspconfig
@@ -19,15 +18,20 @@ function M.setup()
     -- Try to load server-specific configuration if it exists
     local ok, server_module = pcall(require, "config.lsp.servers." .. server_name)
     
-    if ok and server_module.setup then
-      -- Server has custom configuration, use it
-      server_module.setup(lspconfig, M.capabilities)
+    if ok and server_module.config then
+      -- Server has custom configuration, apply it using vim.lsp.config
+      vim.lsp.config(server_name, vim.tbl_extend('force', server_module.config, {
+        capabilities = M.capabilities,
+      }))
     else
       -- No custom config found, use default configuration
-      lspconfig[server_name].setup({
+      vim.lsp.config(server_name, {
         capabilities = M.capabilities,
       })
     end
+    
+    -- Enable the LSP server using the new API
+    vim.lsp.enable(server_name)
   end
 end
 

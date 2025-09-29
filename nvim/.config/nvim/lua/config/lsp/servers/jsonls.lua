@@ -2,10 +2,9 @@
 
 local M = {}
 
-function M.setup(lspconfig, capabilities)
-  lspconfig.jsonls.setup({
-    capabilities = capabilities,
-    settings = {
+-- Export configuration table (for vim.lsp.config)
+M.config = {
+  settings = {
       json = {
         -- Schema configuration
         schemas = require('schemastore').json.schemas(),
@@ -38,13 +37,12 @@ function M.setup(lspconfig, capabilities)
         trace = { server = 'off' }, -- Options: 'off', 'messages', 'verbose'
       },
     },
-    -- File type associations
-    filetypes = { 
-      "json", 
-      "jsonc", -- JSON with comments
-      "json5"  -- JSON5 format
-    },
-  })
-end
+  -- File type associations
+  filetypes = { 
+    "json", 
+    "jsonc", -- JSON with comments
+    "json5"  -- JSON5 format
+  },
+}
 
 return M

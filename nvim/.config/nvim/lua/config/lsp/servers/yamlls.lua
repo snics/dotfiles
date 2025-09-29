@@ -2,10 +2,9 @@
 
 local M = {}
 
-function M.setup(lspconfig, capabilities)
-  lspconfig.yamlls.setup({
-    capabilities = capabilities,
-    settings = {
+-- Export configuration table (for vim.lsp.config)
+M.config = {
+  settings = {
       yaml = {
         schemaStore = {
           -- Disable built-in schemaStore support since we use SchemaStore.nvim
@@ -101,25 +100,24 @@ function M.setup(lspconfig, capabilities)
         -- Kubernetes support now handled by kubernetes.nvim plugin
       }
     },
-    -- Improved file type detection
-    filetypes = { 
-      "yaml", 
-      "yml", 
-      "yaml.docker-compose",
-      "yaml.gitlab",
-      "yaml.ansible"
-    },
-    -- Root directory detection
-    root_dir = require("lspconfig/util").root_pattern(
-      ".git",
-      "docker-compose.yml",
-      "docker-compose.yaml",
-      "Chart.yaml",
-      "values.yaml",
-      "ansible.cfg",
-      ".gitlab-ci.yml"
-    ),
-  })
-end
+  -- Improved file type detection
+  filetypes = { 
+    "yaml", 
+    "yml", 
+    "yaml.docker-compose",
+    "yaml.gitlab",
+    "yaml.ansible"
+  },
+  -- Root directory detection
+  root_dir = vim.fs.root(0, {
+    ".git",
+    "docker-compose.yml",
+    "docker-compose.yaml",
+    "Chart.yaml",
+    "values.yaml",
+    "ansible.cfg",
+    ".gitlab-ci.yml"
+  }),
+}
 
 return M

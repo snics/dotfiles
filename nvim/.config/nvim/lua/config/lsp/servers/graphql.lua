@@ -2,11 +2,9 @@
 
 local M = {}
 
-function M.setup(lspconfig, capabilities)
-  lspconfig.graphql.setup({
-    capabilities = capabilities,
-    filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-  })
-end
+-- Export configuration table (for vim.lsp.config)
+M.config = {
+  filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+}
 
 return M
