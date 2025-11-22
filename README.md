@@ -342,9 +342,31 @@ Suggestions and improvements are [welcome](https://github.com/snics/dotfiles/iss
 If you'd like to contribute:
 1. Fork this repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+3. Commit your changes using emojis (`git commit -m '✨ Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+### Commit Conventions
+
+This project uses emojis in commit messages for better readability:
+
+- ✨ New feature or major addition
+- 📝 Documentation updates
+- 🔧 Configuration changes
+- ♻️ Refactoring or code cleanup
+- 🐛 Bug fixes
+- 🔥 Removing code or files
+- 🎨 Styling or UI improvements
+- ⚡ Performance improvements
+- 🚀 Deployment or release changes
+
+### Recent Contributions
+
+- 📝 Update license to MIT (Nov 2024)
+- ♻️ Remove PHP and Kotlin from setup (Nov 2024)
+- ✨ Add Non-Profit and Workshop folders to project structure (Nov 2024)
+- 📝 Restructure README with improved organization (Nov 2024)
+- ✨ Create planning system with backlog and roadmap (Nov 2024)
 
 ## 📄 License
 
