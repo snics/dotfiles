@@ -138,13 +138,14 @@ defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-ty
 dockutil --no-restart --add "/Applications/Superhuman.app"
 dockutil --no-restart --add "/Applications/Notion Calendar.app"
 dockutil --no-restart --add "/Applications/Notion.app"
-dockutil --no-restart --add "/Applications/Franz.app"
-dockutil --no-restart --add "/Applications/Cliq.app"
+dockutil --no-restart --add "/Applications/Slack.app"
 
 # Add space to System configuration
 defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
 
-dockutil --no-restart --add "/Applications/Zed.app"
+dockutil --no-restart --add "/Applications/Obsidian.app"
+dockutil --no-restart --add "/Applications/Readwise.app"
+dockutil --no-restart --add "/Applications/Reader.app"
 dockutil --no-restart --add "/Applications/Ghostty.app"
 dockutil --no-restart --add "/Applications/GitKraken.app"
 

@@ -15,10 +15,11 @@ _mkdock () {
         "/Applications/Superhuman.app"
         "/Applications/Notion Calendar.app"
         "/Applications/Notion.app"
-        "/Applications/Franz.app"
-        "/Applications/Cliq.app"
+        "/Applications/Slack.app"
         " "  # Add space
-        "/Applications/Zed.app"
+        "/Applications/Obsidian.app"
+        "/Applications/Readwise.app"
+        "/Applications/Reader.app"
         "/Applications/Ghostty.app"
         "/Applications/GitKraken.app"
         " "  # Add space
