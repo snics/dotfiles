@@ -45,12 +45,32 @@ then
 	echo -e "\\n";
 fi
 
+# Scope for Non-Profit organizations.
+if [ ! -d "$HOME/Projects/Non-Profit" ]
+then
+	read -p "Do you work on non-profit organization projects? (y/n) " -n 1;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+      mkdir -p "$HOME/Projects/Non-Profit"
+  fi;
+	echo -e "\\n";
+fi
+
 # Scope for Talks/Meetups/Lecturer work.
 if [ ! -d "$HOME/Projects/Talks" ]
 then
 	read -p "Are you a lecturer or a speaker? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p "$HOME/Projects/Talks"
+  fi;
+	echo -e "\\n";
+fi
+
+# Scope for Workshop materials.
+if [ ! -d "$HOME/Projects/Workshop" ]
+then
+	read -p "Do you conduct workshops or training sessions? (y/n) " -n 1;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+      mkdir -p "$HOME/Projects/Workshop"
   fi;
 	echo -e "\\n";
 fi
