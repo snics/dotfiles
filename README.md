@@ -2,168 +2,366 @@
 
 ![macOS.png](docs/macOS.png)
 
-Welcome to my world. This is an advanced developed macOS setup.
+Welcome to my world. This is an advanced macOS development setup optimized for modern software development.
 
-This setup works perfectly for JavaScript developers and Software
-Architects who works with macOS.
+This setup works perfectly for developers and software architects who work with macOS. If this particular setup doesn't work for you, please feel free to borrow some ideas from it. Pull requests, comments, requests, and any other contributions are welcome!
 
-If this particular setup doesn't work for you, please feel free to
-borrow some ideas from it. Pull requests, comments, requests and any
-other contributions are welcome.
+## 📋 Contents
 
-## Contents
+- [✨ Features](#-features)
+- [📦 What's Included](#-whats-included)
+- [🚀 Quick Start](#-quick-start)
+- [📁 Project Structure](#-project-structure)
+- [⚙️ Configuration Details](#️-configuration-details)
+- [🔄 Updates & Maintenance](#-updates--maintenance)
+- [📝 Planning & Roadmap](#-planning--roadmap)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [👤 Author](#-author)
+- [🙏 Acknowledgments](#-acknowledgments)
 
-- [Initial Setup and Installation](#initial-setup-and-installation)
-- [Update Installation modules](#update-installation-modules)
-- [Vim and Neovim Setup](#vim-and-neovim-setup)
-- [More about my deployment folder structure](#my-deployment-folder-structure)
-- [Alfred 4 Setup](#vim-and-neovim-setup)
-- [Setup ~/.secrets](#setup-secrets)
+## ✨ Features
 
-## Supports
+- 🎨 Beautiful terminal setup with Ghostty and tmux
+- 🔧 Comprehensive ZSH configuration with custom themes
+- 📦 Automated installation and setup process
+- 🎯 Version management with asdf
+- 🎨 Catppuccin Mocha theme across all tools
+- 📊 Advanced system monitoring with btop and k9s
+- 🚀 Git workflow optimization with lazygit
+- 🔐 Secure secrets management
+- 📁 Organized project folder structure
 
-- [Homebrew](https://brew.sh/index_de)
-- [Docker](https://www.docker.com/)
-- [Node.js](https://nodejs.org/en/)
-- [Git](https://git-scm.com/)
-- [Mackup](https://github.com/lra/mackup)
-- [Vim](https://www.vim.org/) and [NeoVim](https://neovim.io/)
-- [Oh-My-ZSH](https://github.com/ohmyzsh/ohmyzsh) or rather ZSH
-- Deployment folder structure
-- Mac Apps
-  - [iTerm](https://www.iterm2.com/)
-  - [Alfred 4](https://www.alfredapp.com/)
+## 📦 What's Included
 
-## Initial Setup and Installation
+### Core Tools
+- 🍺 [Homebrew](https://brew.sh/) - Package manager for macOS with comprehensive Brewfile
+  - 270+ packages, casks, and Mac App Store apps
+  - Organized with taps for specialized tools
+  - Automated installation and updates
+- 🐚 [ZSH](https://www.zsh.org/) - Advanced shell configuration
+  - Custom aliases and functions
+  - Catppuccin Mocha syntax highlighting
+  - Integration with bat, eza, and fzf
+  - Optimized completion system
+- 📝 [Neovim](https://neovim.io/) - Modern text editor configuration
+  - Extensible plugin setup
+  - Custom keybindings and workflows
+  - Integrated with terminal tools
+- 🔀 [Git](https://git-scm.com/) - Version control with custom configurations
+  - Catppuccin theme integration
+  - Git Delta for beautiful diffs
+  - Git LFS support
+  - GitHub CLI (gh) and GitLab CLI (glab)
+- 🔧 [asdf](https://asdf-vm.com/) - Universal version manager
+  - Node.js, Deno, Python, Rust
+  - Kubernetes tools (kubectl, helm)
+  - Unified version management
+- 🐳 [Docker](https://www.docker.com/) - Container management
+  - Docker Compose integration
+  - Lazydocker for easy management
+  - Container security tools (Trivy, Dockle)
+- 🦭 [Podman](https://podman.io/) - Daemonless container engine
+  - Drop-in replacement for Docker
+  - Rootless containers
+  - Podman Compose for Docker Compose compatibility
+  - Podman Desktop for GUI management
 
-**Warning:** If you want to give these dotfiles a try, you should first
-fork this repository, review the code, and remove things you don’t want
-or need. Don’t blindly use my settings unless you know what theory do.
-Use at your own risk!
+### Terminal & CLI Tools
+- 👻 [Ghostty](https://ghostty.org/) - Modern, fast terminal emulator
+  - GPU-accelerated rendering
+  - Catppuccin Mocha theme support
+- 🖥️ [tmux](https://github.com/tmux/tmux) - Terminal multiplexer
+  - Custom keybindings and workflows
+  - Plugin manager integration
+  - Catppuccin theme configuration
+  - Session management with sesh
+- 🦇 [bat](https://github.com/sharkdp/bat) - Enhanced cat with syntax highlighting
+  - Git integration
+  - Custom themes
+- 🌳 [eza](https://github.com/eza-community/eza) - Modern, colorful ls replacement
+  - File type icons
+  - Git status integration
+- 🔍 [fzf](https://github.com/junegunn/fzf) - Fuzzy finder for command-line
+  - ZSH integration
+  - File and history search
+- 📊 [btop](https://github.com/aristocratos/btop) - Beautiful resource monitor
+  - CPU, memory, disk, network stats
+  - Process management
+  - Catppuccin Mocha theme
+- 🎮 [k9s](https://k9scli.io/) - Kubernetes CLI manager
+  - Real-time cluster monitoring
+  - Pod and container management
+  - Log viewing and resource editing
+- 🦎 [lazygit](https://github.com/jesseduffield/lazygit) - Simple terminal UI for git
+  - Visual git workflow
+  - 14 Catppuccin color variants included
+  - Interactive staging and commits
+- 🐳 [lazydocker](https://github.com/jesseduffield/lazydocker) - Simple Docker/container TUI
+  - Container and image management
+  - Real-time stats and logs
+- 🚀 [starship](https://starship.rs/) - Minimal, fast, customizable shell prompt
+  - Cross-shell compatibility
+  - Rich status information
+- 🔎 [ripgrep](https://github.com/BurntSushi/ripgrep) - Ultra-fast recursive search tool
+- 🔍 [fd](https://github.com/sharkdp/fd) - Fast, user-friendly alternative to find
+- 🌐 [glow](https://github.com/charmbracelet/glow) - Render markdown in the terminal
+- 📚 [tldr](https://tldr.sh/) - Simplified, practical man pages
+- 🗑️ [trash](https://hasseg.org/trash/) - Move files to macOS Trash from CLI
+- 🔄 [zoxide](https://github.com/ajeetdsouza/zoxide) - Smarter cd command
+- 🎯 [direnv](https://direnv.net/) - Environment switcher for the shell
 
-You can install the repository by executing the command in terminal:
+### Development Tools & Languages
+- 🔧 [asdf](https://asdf-vm.com/) - Universal version manager (see Core Tools)
+  - Manages multiple language runtimes
+  - Plugin-based architecture
+  - Configured plugins: Node.js, Deno, Python, Rust, kubectl, helm
+- 📦 [Node.js](https://nodejs.org/) - JavaScript runtime
+  - Managed via asdf
+  - npm, yarn, and pnpm support
+- 🦕 [Deno](https://deno.land/) - Secure JavaScript/TypeScript runtime
+- 🦀 [Rust](https://www.rust-lang.org/) - Systems programming language
+  - Rustup toolchain manager
+  - Cargo package manager
+- 🐹 [Go](https://golang.org/) - Go programming language
+  - gopls language server
+  - delve debugger
+  - gox for cross-compilation
+- 🐍 [Python](https://www.python.org/) - Python 3.11+
+  - Managed via asdf and Homebrew
+- ⚡ [Swift](https://swift.org/) - Apple's programming language
+
+### Kubernetes & DevOps Tools
+- ☸️ [kubectl](https://kubernetes.io/) - Kubernetes command-line tool
+  - Cluster management and deployment
+- 📦 [Helm](https://helm.sh/) - Kubernetes package manager
+- 🔍 [k9s](https://k9scli.io/) - Kubernetes CLI manager (see Terminal Tools)
+- 🚢 [kind](https://kind.sigs.k8s.io/) - Kubernetes in Docker
+- 🎯 [minikube](https://minikube.sigs.k8s.io/) - Local Kubernetes
+- 🧊 [kubectx](https://github.com/ahmetb/kubectx) - Fast context/namespace switching
+- 🔒 [kubeseal](https://github.com/bitnami-labs/sealed-secrets) - Sealed Secrets
+- 🔎 [kubescape](https://github.com/kubescape/kubescape) - Security posture management
+- 🕵️ [kubeshark](https://kubeshark.co/) - API traffic viewer
+- 🐋 [Docker](https://www.docker.com/) - Container platform
+- 🦭 [Podman](https://podman.io/) - Daemonless container engine
+- 🌌 [OrbStack](https://orbstack.dev/) - Fast, lightweight containers & VMs for macOS
+- 🔧 [Terraform](https://www.terraform.io/) - Infrastructure as Code
+- 🏗️ [OpenTofu](https://opentofu.org/) - Open-source Terraform alternative
+  - Drop-in replacement for Terraform
+  - Community-driven infrastructure as code
+- 📜 [Ansible](https://www.ansible.com/) - Automation and configuration management
+- 🔒 [Trivy](https://github.com/aquasecurity/trivy) - Container security scanner
+- 🐶 [Dockle](https://github.com/goodwithtech/dockle) - Container image linter
+- 🔍 [Dive](https://github.com/wagoodman/dive) - Docker image exploration tool
+  - Layer content analysis
+  - Image size optimization
+- 📋 [Hadolint](https://github.com/hadolint/hadolint) - Dockerfile linter
+  - Best practice validation
+  - Inline bash checking
+- 📦 [Skopeo](https://github.com/containers/skopeo) - Container image operations tool
+  - Image copying and inspection
+  - Registry management
+
+### Productivity & Apps
+- 💾 [Mackup](https://github.com/lra/mackup) - Application settings backup and sync
+- 📓 [Obsidian](https://obsidian.md/) - Powerful knowledge base
+  - Markdown-based note-taking
+  - Configuration included in dotfiles
+- 🔐 [1Password](https://1password.com/) - Password manager
+  - CLI integration included
+- 🎨 [Cursor](https://www.cursor.com/) - AI-powered code editor
+- 🌐 [Arc Browser](https://arc.net/) - Modern, feature-rich browser
+- 💬 [Raycast](https://www.raycast.com/) - Extendable launcher and productivity tool
+- 📊 [Linear](https://linear.app/) - Project management for software teams
+- 💼 [Notion](https://www.notion.so/) - All-in-one workspace
+- 📅 [Notion Calendar](https://www.notion.so/calendar) - Calendar integration
+- 🎬 [CleanShot](https://cleanshot.com/) - Advanced screenshot and recording tool
+
+### Additional Tools & Utilities
+The [`brew/Brewfile`](brew/Brewfile) contains 270+ additional packages including:
+- 🔒 Security tools (nmap, hydra, wireshark, gpg)
+- 🎥 Media tools (ffmpeg, imagemagick, obs)
+- 🗂️ File utilities (p7zip, unarchiver, tree)
+- 🌐 Network tools (wget, curl, ssh)
+- 📝 Documentation tools (pandoc, texlive)
+- ⌨️ Custom keyboard firmware (QMK, Vial)
+- And many more specialized tools...
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- macOS (tested on latest versions)
+- Command Line Tools for Xcode
+- Internet connection
+
+### Installation
+
+**⚠️ Warning:** If you want to give these dotfiles a try, you should first fork this repository, review the code, and remove things you don't want or need. Don't blindly use my settings unless you know what they do. Use at your own risk!
+
+#### Step 1: Clone and Pre-install
+
+Run this command in your terminal to download and prepare the dotfiles:
 
 ```bash
 sh -c "`curl -fsSL https://raw.githubusercontent.com/snics/dotfiles/master/pre-install.sh`"
 ```
 
-To run the install wizards please run the command in console:
+#### Step 2: Run Installation Wizard
+
+To run the install wizard, execute:
 
 ```bash
 sh ~/.dotfiles/install.sh
 ```
 
-## Update Installation modules
+The wizard will guide you through the installation process and let you choose which components to install.
 
-An update installation Apps and modules is thankfully simple I have created an alias for it with which you can update everything. You just have to enter `update in terminal and everything will be updated``
+## 📁 Project Structure
 
-## Vim and NeoVim Setup
+This dotfiles repository uses the following structure:
+
+```
+~/.dotfiles/
+├── _install/          # Installation scripts for individual tools
+├── asdf/              # asdf version manager configuration
+├── brew/              # Homebrew bundle file
+├── docs/              # Documentation and screenshots
+├── ghostty/           # Ghostty terminal configuration
+├── git/               # Git configuration and themes
+├── k9s/               # Kubernetes CLI configuration
+├── lazygit/           # Lazygit themes and settings
+├── macOS/             # macOS-specific settings and scripts
+├── nvim/              # Neovim configuration
+├── obsidian/          # Obsidian settings
+├── planning/          # Project planning and roadmap
+├── tmux/              # tmux configuration and plugins
+├── zsh/               # ZSH configuration, themes, and functions
+├── install.sh         # Main installation script
+└── pre-install.sh     # Pre-installation setup
+```
+
+### My Development Folder Structure
+
+I use a well-organized folder structure for all development work. The installation wizard can optionally create this structure for you:
+
+```bash
+~/Projects/           # Root folder for all development
+├── GitHub/           # GitHub repositories
+├── GitLab/           # GitLab repositories
+├── Scripts/          # Automation scripts and utilities
+├── Tools/            # Tools and utilities in development
+├── Learning/         # Learning projects and experiments
+├── Clients/          # Client projects (optional)
+├── Startups/         # Startup projects (optional)
+├── Non-Profit/       # Non-profit organization projects (optional)
+├── Talks/            # Presentations and talk materials (optional)
+├── Workshop/         # Workshop materials and projects (optional)
+└── Throwaway/        # Temporary projects and experiments
+```
+
+## ⚙️ Configuration Details
+
+### Neovim Setup
 
 ![terminal.gif](docs/terminal.gif)
 
-vim and neovim should just work once the correct plugins are installed.
-To install the plugins, you will need to open Neovim with following
-command:
+Neovim should work out of the box once the correct plugins are installed. To install the plugins, open Neovim with:
 
+```bash
+nvim +PlugInstall
 ```
-➜ nvim +PlugInstall
-```
-
-### Example of how Vim and NeoVim looks
 
 ![NeoVim.png](docs/NeoVim.png)
 
-## My deployment folder structure
+### Setup ~/.secrets
 
-This is my development folder structure, which you can also use. If you
-have any ideas or suggestions for improvement, feel free to submit a
-pull request!
-
-The structure will be created by Install Wizard if you want to. I use
-the folder structure as follows:
-
-```bash
-. ~/Projects    # Root folder for all development files
-└── GitHub    # All the stuff that's on GitHub is in here.
-└── GitLab    # All the artwork on GitLab is in here.
-└── Scripts   # I store scripts here that automate things or make my life easier every now and then.
-└── Tools     # Here I save tools and tips that I am currently working on.
-└── Learning  # My place to learn and try out new programming languages and things ;-)
-└── Clients   # This is where all orders from customers come in. (You will be asked if you want this too!)
-└── Startups  # This is the root order for all startups where I have shares and development tasks.
-└── Talks     # Here are Project/Source Code or the Talks themselves from Talks/Meetup or from my work as a private lecturer
-└── Throwaway # There's just things I want to look at, like from Github.
-
-6 directory, 0 files
-```
-
-## Alfred 4 Setup
-
-I have also provided my general Alfred 4 settings. You can find them
-under directory `~/.dotfiles/alfred` there is a file with the name
-`Alfred.alfredpreferences`. You have to import this file into Alfred,
-more details can be found at
-https://www.alfredapp.com/help/advanced/sync/
-
-But here is a small step by step description:
-
-1. Open folder with command `open ~/.dotfiles/alfred`.
-2. Open Alfred 4 settings.
-3. Go to Advanced.
-4. Press button `Set preferences folder...`.
-
-![alfred_set_preferences_folder](docs/alfred_set_preferences_folder.png)
-
-5. Select ~/.dotfiles/alfred directory.
-6. Press set.
-7. Restart Alfred 4.
-
-## Setup ~/.secrets
-
-In the file `~/.secrets` all secrets are set using a bash command. In
-the `.secrets.example` inside the root directory of this project you can
-find examples of what I set with this file. Please replace or add
-commends to the file, after that you can create the file with the
-command:
+For sensitive information like API keys and tokens, create a `~/.secrets` file. An example template is provided:
 
 ```bash
 cp -f ~/.dotfiles/.secrets.example ~/.secrets
 ```
 
-## TODOs:
+Edit the file and add your secrets:
 
-- [ ] Remove custom helm settings and add asdf as default.
-- [ ] Remove NVM settings and add asdf as default.
-- [ ] Add settings for tmux.
-- [ ] Add settings for Visual Studio Code.
-- [ ] Add settings for Github Cloud IDEA.
-- [ ] Add full list of Mac Apps.
-- [ ] Add full list of all Vim and NeoVim shortcut.
+```bash
+vim ~/.secrets
+```
 
-## Feedback
+The `.secrets` file is sourced by ZSH and should contain bash-compatible environment variable exports.
 
-Suggestions/improvements
-[welcome](https://github.com/snics/dotfiles/issues)!
+### Customizing the Setup
 
-## Author
+Each configuration directory contains settings for its respective tool. Feel free to customize:
 
-| [![twitter/NicoSwiatecki](http://gravatar.com/avatar/23a38342df4d30085f1bbe71058cc89b?s=70)](http://twitter.com/NicoSwiatecki "Follow @NicoSwiatecki on Twitter") |
-| :---------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|                                                              [Nico Swiatecki](https://swiatecki.io/)                                                              |
+- **ZSH**: Edit files in `zsh/settings/`
+- **Git**: Modify `git/catppuccin.gitconfig`
+- **tmux**: Adjust `tmux/.config/tmux/tmux.conf`
+- **Ghostty**: Configure `ghostty/` settings
 
-## Thanks to…
+## 🔄 Updates & Maintenance
 
-- [Mathias’s dotfiles](https://github.com/mathiasbynens/dotfiles) - Good Settings for macOS.
-- [Nicknisi dotfiles](https://github.com/nicknisi/dotfiles) - Good settings for NeoVim.
-- [Alfred Snippets - Git Commit Messages](https://github.com/apertureless/alfred-git-snippets) - I used for the default Alfred settings.
-- [Homebrew and Cask for Alfred](https://github.com/fniephaus/alfred-homebrew) - I used for the default Alfred settings.
-- [Image Optimization for Alfred](http://www.packal.org/workflow/image-optimization) - I used for the default Alfred settings.
-- [Resize Image for Alfred](http://www.packal.org/workflow/resize-image) - I used for the default Alfred settings.
-- [Caniuse for Alfred](https://github.com/willfarrell/alfred-caniuse-workflow) - I used for the default Alfred settings.
-- [Font Awesome Workflow for Alfred](https://github.com/willfarrell/alfred-caniuse-workflow) - I used for the default Alfred settings.
-- [Github Alfred Workflow](https://github.com/willfarrell/alfred-github-workflow) - I used for the default Alfred settings.
-- [IP Alfred Workflow](http://www.packal.org/workflow/whats-my-ip) - I used for the default Alfred settings.
-- [Faker Alfred Workflow](http://www.packal.org/workflow/alfred-faker) - I used for the default Alfred settings.
-- [Copy URL Alfred Workflow](https://github.com/fallroot/copy-url-for-alfred) - I used for the default Alfred settings.
-- [JetBrains Open project Alfred Workflow](https://github.com/bchatard/alfred-jetbrains) - I used for the default Alfred settings.
-- [Spotify mini player Alfred Workflow](http://alfred-spotify-mini-player.com) - I used for the default Alfred settings.
+Updating your installed applications and tools is simple! I've created a convenient alias that updates everything at once:
+
+```bash
+update
+```
+
+This command will:
+- Update Homebrew and all installed packages
+- Update ZSH plugins
+- Update asdf plugins and tool versions
+- Perform system maintenance tasks
+
+You can find the implementation in `zsh/settings/functions/update.zsh`.
+
+## 📝 Planning & Roadmap
+
+I maintain a structured planning system for future improvements and features. Check out the [`planning/`](planning/) directory for:
+
+- **Roadmap**: High-level plans and timeline
+- **Backlog**: Ideas and future enhancements
+- **In Progress**: Currently working on features
+
+Feel free to suggest new features or improvements by opening an issue!
+
+### What's Next
+
+Some planned improvements include:
+- Further automation of the installation process
+- Additional tool integrations
+- Enhanced documentation
+- More themes and customization options
+
+See the full roadmap in [`planning/roadmap.md`](planning/roadmap.md) for details.
+
+## 🤝 Contributing
+
+Suggestions and improvements are [welcome](https://github.com/snics/dotfiles/issues)!
+
+If you'd like to contribute:
+1. Fork this repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Feel free to use, modify, and share these dotfiles as you wish!
+
+## 👤 Author
+
+| [![LinkedIn/NicoSwiatecki](http://gravatar.com/avatar/23a38342df4d30085f1bbe71058cc89b?s=70)](https://www.linkedin.com/in/nico-swiatecki/ "Connect with Nico Swiatecki on LinkedIn") |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                    **Nico Swiatecki**                                                                     |
+
+## 🙏 Acknowledgments
+
+This dotfiles repository was inspired by and borrows ideas from many amazing developers:
+
+### Dotfiles Inspiration
+- [Mathias Bynens' dotfiles](https://github.com/mathiasbynens/dotfiles) - Excellent macOS settings
+- [Nick Nisi's dotfiles](https://github.com/nicknisi/dotfiles) - Great Neovim configuration
