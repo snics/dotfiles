@@ -239,7 +239,6 @@ cask "quicklookase" # Quick Look plugin for Adobe Swatch Exchange (.ase) files. 
 cask "rapidapi" # RapidAPI Client for macOS. [RapidAPI](https://rapidapi.com/)
 cask "raycast" # Blazing fast, totally extendable launcher. [Raycast](https://www.raycast.com/)
 cask "reader" # reader, a read-later app [Readwise](https://readwise.io/read)
-cask "readwise-ibooks" # Import highlights from Apple Books to Readwise. [Readwise iBooks](https://readwise.io/ibooks)
 cask "remnote" # A note-taking and knowledge management app. [RemNote](https://remnote.com/)
 cask "screen-studio" # Screen recording and streaming software. [Screen Studio](https://screen.studio/)
 cask "sipgate" # SIP client for making and receiving calls. [Sipgate](https://www.sipgate.com/)

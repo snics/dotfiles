@@ -18,7 +18,6 @@ _mkdock () {
         "/Applications/Slack.app"
         " "  # Add space
         "/Applications/Obsidian.app"
-        "/Applications/Readwise.app"
         "/Applications/Reader.app"
         "/Applications/Ghostty.app"
         "/Applications/GitKraken.app"
