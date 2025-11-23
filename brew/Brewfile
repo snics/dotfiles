@@ -264,5 +264,4 @@ mas "Final Cut Pro", id: 424389933 # Professional video editing software. [Final
 mas "HP Smart", id: 1474276998 # Manage your HP printer. [HP Smart](https://apps.apple.com/us/app/hp-smart/id1474276998)
 mas "Logic Pro", id: 634148309 # Professional music production software. [Logic Pro](https://apps.apple.com/us/app/logic-pro/id634148309)
 mas "Medis", id: 1063631769 # Redis database management tool. [Medis](https://apps.apple.com/us/app/medis/id1063631769)
-mas "Todoist", id: 585829637 # Task manager and to-do list application. [Todoist](https://todoist.com/)
 mas "Xcode", id: 497799835 # Apple's IDE for macOS. [Xcode](https://developer.apple.com/xcode/)
