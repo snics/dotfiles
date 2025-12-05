@@ -1,0 +1,53 @@
+{
+  "onOpenPreferNewPane": true,
+  "alwaysNewPaneForSymbols": false,
+  "useActivePaneForSymbolsOnMobile": false,
+  "symbolsInLineOrder": true,
+  "editorListCommand": "edt ",
+  "symbolListCommand": "@",
+  "workspaceListCommand": "+",
+  "headingsListCommand": "#",
+  "starredListCommand": "'",
+  "commandListCommand": ">",
+  "relatedItemsListCommand": "~",
+  "strictHeadingsOnly": false,
+  "searchAllHeadings": true,
+  "excludeViewTypes": [
+    "empty"
+  ],
+  "referenceViews": [
+    "backlink",
+    "localgraph",
+    "outgoing-link",
+    "outline"
+  ],
+  "limit": 50,
+  "includeSidePanelViewTypes": [
+    "backlink",
+    "image",
+    "markdown",
+    "pdf"
+  ],
+  "enabledSymbolTypes": {},
+  "selectNearestHeading": true,
+  "excludeFolders": [],
+  "excludeLinkSubTypes": 0,
+  "excludeRelatedFolders": [
+    "00-Inbox"
+  ],
+  "excludeOpenRelatedFiles": false,
+  "excludeObsidianIgnoredFiles": false,
+  "shouldSearchHeadings": false,
+  "shouldSearchFilenames": true,
+  "shouldSearchBookmarks": true,
+  "shouldSearchRecentFiles": true,
+  "pathDisplayFormat": "FolderPathFilenameOptional",
+  "hidePathIfRoot": true,
+  "enabledRelatedItems": [
+    "relatedItemsLinkedFile",
+    "relatedItemsBacklinks",
+    "relatedItemsFile"
+  ],
+  "showOptionalIndicators": true
+}
+

@@ -1,0 +1,15 @@
+{
+  "accentColor": "#89b4fa",
+  "theme": "obsidian",
+  "cssTheme": "Catppuccin",
+  "baseFontSize": 16,
+  "baseFontSizeAction": true,
+  "enabledCssSnippets": [],
+  "interfaceFontFamily": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  "textFontFamily": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  "monospaceFontFamily": "JetBrains Mono, 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New', monospace",
+  "translucency": false,
+  "nativeMenus": true,
+  "showViewHeader": true
+}
+

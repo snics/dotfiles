@@ -43,6 +43,11 @@ function doIt() {
         source ./_install/nvim.sh
     fi;
 
+    read -p "Do you want to setup Obsidian for Second Brain / PARA methodology? (y/n) " -n 1;
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        source ./_install/obsidian.sh
+    fi;
+
     read -p "Do you want to have my Development/Project folder structure? (y/n) " -n 1;
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         source ./macOS/project-folder-structure.sh
