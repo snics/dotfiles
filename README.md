@@ -166,7 +166,9 @@ This setup works perfectly for developers and software architects who work with 
 - 💾 [Mackup](https://github.com/lra/mackup) - Application settings backup and sync
 - 📓 [Obsidian](https://obsidian.md/) - Powerful knowledge base
   - Markdown-based note-taking
-  - Configuration included in dotfiles
+  - Second Brain / PARA methodology
+  - iCloud sync for macOS and iOS
+  - Full configuration automation (in progress)
 - 🔐 [1Password](https://1password.com/) - Password manager
   - CLI integration included
 - 🎨 [Cursor](https://www.cursor.com/) - AI-powered code editor
@@ -328,12 +330,13 @@ Feel free to suggest new features or improvements by opening an issue!
 ### What's Next
 
 Some planned improvements include:
+- **Obsidian Second Brain Setup** - Complete automation with templates, plugins, and PARA methodology
 - Further automation of the installation process
 - Additional tool integrations
 - Enhanced documentation
 - More themes and customization options
 
-See the full roadmap in [`planning/roadmap.md`](planning/roadmap.md) for details.
+See the full roadmap in [`planning/backlog.md`](planning/backlog.md) for details.
 
 ## 🤝 Contributing
 

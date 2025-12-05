@@ -25,7 +25,20 @@ _No items currently in progress_
 
 ## 📋 To Do
 
-- [ ]
+### Obsidian Second Brain Setup
+- [ ] 🔧 **obsidian** - Create core configuration files (app.json, appearance.json) → [Details](ideas/obsidian-second-brain.md) · [📁 Files](../obsidian)
+- [ ] 🔧 **obsidian** - Configure community plugins (dataview, templater, calendar, etc.) → [Details](ideas/obsidian-second-brain.md)
+- [ ] 🎨 **obsidian** - Integrate Catppuccin Mocha theme → [Details](ideas/obsidian-second-brain.md)
+- [ ] 📝 **obsidian** - Create note templates (Daily, Project, Meeting, etc.) → [Details](ideas/obsidian-second-brain.md) · [📁 Files](../obsidian/templates)
+- [ ] 📁 **obsidian** - Create PARA folder structure templates → [Details](ideas/obsidian-second-brain.md)
+- [ ] 🤖 **obsidian** - Build installation script for automated setup → [Details](ideas/obsidian-second-brain.md) · [📄 Script](../_install/obsidian.sh)
+- [ ] 🛠️ **zsh** - Add backup-obsidian function for config export → [Details](ideas/obsidian-second-brain.md) · [📁 Files](../zsh/settings/functions)
+- [ ] 🔧 **install** - Integrate Obsidian setup into main install wizard → [Details](ideas/obsidian-second-brain.md) · [📄 File](../install.sh)
+- [ ] 📝 **obsidian** - Create comprehensive README for Obsidian setup → [Details](ideas/obsidian-second-brain.md)
+- [ ] 📝 **docs** - Update main README with Obsidian configuration section → [Details](ideas/obsidian-second-brain.md) · [📄 File](../README.md)
+- [ ] 🧪 **obsidian** - Test installation on fresh macOS system → [Details](ideas/obsidian-second-brain.md)
+- [ ] 🧪 **obsidian** - Verify iCloud sync with iOS device → [Details](ideas/obsidian-second-brain.md)
+
 ---
 
 ## ✅ Recently Completed
@@ -38,4 +51,4 @@ Move finished tasks here with completion date:
 
 ---
 
-**Last Updated:** November 22, 2024
+**Last Updated:** December 5, 2025
