@@ -25,6 +25,13 @@ _No items currently in progress_
 
 ## 📋 To Do
 
+### CRD Wizard Integration
+- [ ] 📦 **kubectl** - Install crd-wizard via krew plugin manager → [Details](ideas/crd-wizard-integration.md)
+- [ ] 🔧 **k9s** - Create plugins.yaml with three modes (TUI, TUI+AI, Web UI) → [Details](ideas/crd-wizard-integration.md) · [📁 Files](../k9s)
+- [ ] 🔐 **secrets** - Add OPENROUTER_API_KEY to .secrets.example → [Details](ideas/crd-wizard-integration.md)
+- [ ] 📝 **docs** - Update README.md with crd-wizard in Kubernetes section → [Details](ideas/crd-wizard-integration.md) · [📄 File](../README.md)
+- [ ] 🧪 **k9s** - Test all three plugin modes (Shift-W, Shift-A, Shift-B) → [Details](ideas/crd-wizard-integration.md)
+
 ### Obsidian Second Brain Setup
 - [ ] 🔧 **obsidian** - Create core configuration files (app.json, appearance.json) → [Details](ideas/obsidian-second-brain.md) · [📁 Files](../obsidian)
 - [ ] 🔧 **obsidian** - Configure community plugins (dataview, templater, calendar, etc.) → [Details](ideas/obsidian-second-brain.md)
@@ -51,4 +58,4 @@ Move finished tasks here with completion date:
 
 ---
 
-**Last Updated:** December 5, 2025
+**Last Updated:** December 23, 2025
