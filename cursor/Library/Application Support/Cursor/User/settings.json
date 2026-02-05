@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json.schemastore.org/vs-code-settings-v2.json",
+  "window.commandCenter": true,
+  "workbench.iconTheme": "catppuccin-macchiato",
+  "workbench.colorTheme": "Catppuccin Macchiato",
+  "workbench.editor.tabCloseButton": "left",
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.showIcons": true,
+  "editor.tabSize": 4,
+  "editor.renderWhitespace": "all",
+  "editor.accessibilitySupport": "on",
+  "editor.fontFamily": "MesloLGS Nerd Font Mono, JetBrains Mono, Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 14,
+  "editor.fontVariations": false,
+  "editor.suggestSelection": "first",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.minimap.enabled": false,
+  "workbench.editor.tabActionLocation": "left",
+  "git.autofetch": true,
+  "redhat.telemetry.enabled": true,
+  "terminal.explorerKind": "both",
+  "terminal.external.osxExec": "Ghostty.app",
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "makefile.configureOnOpen": true,
+  "cursor.cpp.disabledLanguages": [
+    "markdown",
+    "plaintext"
+  ]
+}
