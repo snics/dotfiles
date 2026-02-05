@@ -48,6 +48,30 @@ function doIt() {
         source ./_install/obsidian.sh
     fi;
 
+    read -p "Do you want to use OpenCode config (opencode.json, themes)? (y/n) " -n 1;
+    echo "";
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        source ./_install/opencode.sh
+    fi;
+
+    read -p "Do you want to use Cursor config (settings, keybindings, mcp.json)? (y/n) " -n 1;
+    echo "";
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        source ./_install/cursor.sh
+    fi;
+
+    read -p "Do you want to use Claude CLI config (settings.json)? (y/n) " -n 1;
+    echo "";
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        source ./_install/claude.sh
+    fi;
+
+    read -p "Do you want to use Zed config (settings.json)? (y/n) " -n 1;
+    echo "";
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        source ./_install/zed.sh
+    fi;
+
     read -p "Do you want to have my Development/Project folder structure? (y/n) " -n 1;
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         source ./macOS/project-folder-structure.sh
