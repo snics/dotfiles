@@ -1,0 +1,7 @@
+{
+  "$schema": "https://zed.dev/schema/settings.json",
+  "theme": "Catppuccin Macchiato",
+  "icon_theme": "Catppuccin Macchiato",
+  "ui_font_size": 16,
+  "buffer_font_size": 16
+}

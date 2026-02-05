@@ -1,0 +1,4 @@
+# Stow ignore file for Zed
+# These files/folders stay in dotfiles but won't be symlinked
+
+README.md
