@@ -1,23 +1,23 @@
 # Skills CLI Integration
 
-> Agent Skills für Cursor, Claude Code und andere AI-Tools in den Dotfiles verwalten
+> Manage Agent Skills for Cursor, Claude Code and other AI tools in the dotfiles
 
-## 🎯 Goal
+## Goal
 
-Eine deklarative Verwaltung von AI Agent Skills (von skills.sh) in den Dotfiles ermöglichen, sodass Skills zentral definiert und auf alle AI-Tools (Cursor, Claude Code, etc.) synchronisiert werden können.
+Enable declarative management of AI Agent Skills (from skills.sh) in the dotfiles, so that skills can be centrally defined and synchronized to all AI tools (Cursor, Claude Code, etc.).
 
-## 📋 Requirements
+## Requirements
 
-- Deklarative Konfiguration (ähnlich Brewfile)
-- Zentrale Verwaltung eigener/custom Skills
-- Synchronisation zu mehreren AI-Tools (Cursor, Claude, Gemini, etc.)
-- Integration in bestehendes Dotfiles-Setup mit Stow
+- Declarative configuration (similar to Brewfile)
+- Central management of custom skills
+- Synchronization to multiple AI tools (Cursor, Claude, Gemini, etc.)
+- Integration with existing dotfiles setup using Stow
 
-## 💡 Implementation Ideas
+## Implementation Ideas
 
-### Option A: `@dhruvwill/skills-cli` (empfohlen)
+### Option A: `@dhruvwill/skills-cli` (recommended)
 
-Nutzt eine `~/.skills/config.json` als deklarative Konfiguration:
+Uses a `~/.skills/config.json` as declarative configuration:
 
 ```json
 {
@@ -32,69 +32,69 @@ Nutzt eine `~/.skills/config.json` als deklarative Konfiguration:
 }
 ```
 
-**Vorteile:**
-- Echte deklarative Config (`config.json`)
-- Multi-Source (GitHub, GitLab, Local)
-- Multi-Target Sync
-- `skills sync` / `skills update` Befehle
+**Pros:**
+- True declarative config (`config.json`)
+- Multi-source (GitHub, GitLab, Local)
+- Multi-target sync
+- `skills sync` / `skills update` commands
 
-**Nachteile:**
-- Braucht Bun Runtime (nicht Node/npx)
-- Relativ neues Projekt (6 Stars)
+**Cons:**
+- Requires Bun runtime (not Node/npx)
+- Relatively new project (6 stars)
 
-### Option B: Offizielle `npx skills` CLI
+### Option B: Official `npx skills` CLI
 
-Direkte Befehle im Installationsskript:
+Direct commands in the installation script:
 
 ```bash
 npx skills add vercel-labs/agent-skills --skill frontend-design -g -y
 npx skills add ./custom -g --all -y
 ```
 
-**Vorteile:**
-- Offizielle CLI von Vercel Labs
-- Kein zusätzliches Tool nötig
+**Pros:**
+- Official CLI from Vercel Labs
+- No additional tool required
 
-**Nachteile:**
-- Kein deklaratives Config-Format
-- Befehle müssen im Script stehen
+**Cons:**
+- No declarative config format
+- Commands must be in the script
 
-### Vorgeschlagene Struktur
+### Proposed Structure
 
 ```
 skills/
   .skills/
-    config.json           # Deklarative Konfiguration (Option A)
-    store/                # Zentraler Store für eigene Skills
+    config.json           # Declarative configuration (Option A)
+    store/                # Central store for custom skills
       my-custom-skill/
         SKILL.md
   README.md
 
 _install/
-  skills.sh               # Installation + Sync
+  skills.sh               # Installation + sync
 ```
 
-### Offene Fragen
+### Open Questions
 
-- [ ] Ist `@dhruvwill/skills-cli` stabil genug für Production?
-- [ ] Bun als Dependency akzeptabel? (könnte ins Brewfile)
-- [ ] Wie verhält sich das mit bestehenden `~/.cursor/skills-cursor/` (built-in)?
-- [ ] Symlink vs Copy - was macht die CLI genau?
+- [ ] Is `@dhruvwill/skills-cli` stable enough for production?
+- [ ] Is Bun as a dependency acceptable? (could add to Brewfile)
+- [ ] How does this behave with existing `~/.cursor/skills-cursor/` (built-in)?
+- [ ] Symlink vs copy - what exactly does the CLI do?
 
-## 📦 Dependencies
+## Dependencies
 
-- **Option A:** Bun Runtime (`brew install oven-sh/bun/bun`)
-- **Option B:** Node.js (bereits vorhanden)
-- Git (für Remote Sources)
+- **Option A:** Bun runtime (`brew install oven-sh/bun/bun`)
+- **Option B:** Node.js (already present)
+- Git (for remote sources)
 
-## 🔗 Related
+## Related
 
 - https://skills.sh/ - Agent Skills Directory
-- https://github.com/vercel-labs/skills - Offizielle CLI
-- https://github.com/dhruvwill/skills-cli - Alternative CLI mit config.json
-- https://dhruvwill.github.io/skills-cli/ - Dokumentation
+- https://github.com/vercel-labs/skills - Official CLI
+- https://github.com/dhruvwill/skills-cli - Alternative CLI with config.json
+- https://dhruvwill.github.io/skills-cli/ - Documentation
 
-### Unterstützte AI-Tools
+### Supported AI Tools
 
 | Tool | Global Path |
 |------|-------------|
@@ -104,22 +104,22 @@ _install/
 | OpenCode | `~/.config/opencode/skills/` |
 | GitHub Copilot | `~/.copilot/skills/` |
 
-## 📝 Notes
+## Notes
 
-- Skills sind wiederverwendbare Fähigkeiten für AI Agents (SKILL.md Dateien)
-- Die offizielle CLI unterstützt Symlink-basierte Installation (empfohlen)
-- Eigene Skills können lokal erstellt und dann synchronisiert werden
-- `~/.cursor/skills-cursor/` ist reserviert für Cursor's built-in Skills (nicht anfassen!)
+- Skills are reusable capabilities for AI agents (SKILL.md files)
+- The official CLI supports symlink-based installation (recommended)
+- Custom skills can be created locally and then synchronized
+- `~/.cursor/skills-cursor/` is reserved for Cursor's built-in skills (don't touch!)
 
-## ✅ Done Criteria
+## Done Criteria
 
-- [ ] CLI-Tool evaluiert und entschieden
-- [ ] Dotfiles-Struktur angelegt (`skills/`)
-- [ ] Config-Datei erstellt (je nach gewähltem Ansatz)
-- [ ] Installationsskript `_install/skills.sh` erstellt
-- [ ] In `install.sh` integriert
-- [ ] README.md für Skills-Modul geschrieben
-- [ ] Getestet auf frischem System
+- [ ] CLI tool evaluated and decided
+- [ ] Dotfiles structure created (`skills/`)
+- [ ] Config file created (depending on chosen approach)
+- [ ] Installation script `_install/skills.sh` created
+- [ ] Integrated into `install.sh`
+- [ ] README.md for skills module written
+- [ ] Tested on fresh system
 
 ---
 

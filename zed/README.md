@@ -1,30 +1,30 @@
 # Zed Config
 
-Zentrale Zed-Editor-Konfiguration für die Dotfiles.
+Central Zed editor configuration for the dotfiles.
 
-## Struktur
+## Structure
 
 ```
 zed/
   .config/zed/
-    settings.json     # Einstellungen (mit $schema)
-    keymap.json       # Tastaturkürzel
-    tasks.json        # Globale Tasks
-    snippets/         # Code Snippets
-      snippets.json   # Globale Snippets
+    settings.json     # Settings (with $schema)
+    keymap.json       # Keyboard shortcuts
+    tasks.json        # Global tasks
+    snippets/         # Code snippets
+      snippets.json   # Global snippets
 ```
 
 ## Installation
 
 ```bash
-# Über install.sh oder manuell:
+# Via install.sh or manually:
 cd ~/.dotfiles && stow zed
 ```
 
-## Dateien öffnen in Zed
+## Opening Files in Zed
 
-| Datei | Shortcut | Command Palette |
-|-------|----------|-----------------|
+| File | Shortcut | Command Palette |
+|------|----------|-----------------|
 | settings.json | `Cmd+,` | `zed: open settings` |
 | keymap.json | `Cmd+K Cmd+S` | `zed: open keymap` |
 | tasks.json | - | `zed: open tasks` |
@@ -36,15 +36,15 @@ cd ~/.dotfiles && stow zed
 
 Schema: `https://zed.dev/schema/settings.json`
 
-Alle Einstellungen: https://zed.dev/docs/reference/all-settings
+All settings: https://zed.dev/docs/reference/all-settings
 
 ---
 
 ## keymap.json
 
-Dokumentation: https://zed.dev/docs/key-bindings
+Documentation: https://zed.dev/docs/key-bindings
 
-### Struktur
+### Structure
 
 ```json
 [
@@ -59,21 +59,21 @@ Dokumentation: https://zed.dev/docs/key-bindings
 
 ### Contexts
 
-| Context | Beschreibung |
-|---------|--------------|
-| `Editor` | Im Text-Editor |
-| `Workspace` | Allgemein |
-| `Terminal` | Im Terminal |
-| `ProjectPanel` | Datei-Baum |
-| `Pane` | Editor Pane |
+| Context | Description |
+|---------|-------------|
+| `Editor` | In text editor |
+| `Workspace` | General |
+| `Terminal` | In terminal |
+| `ProjectPanel` | File tree |
+| `Pane` | Editor pane |
 
 ### Key Syntax
 
 - Modifiers: `cmd`, `ctrl`, `alt`, `shift`
-- Kombinieren: `cmd-shift-p`
-- Sequenzen: `cmd-k cmd-s`
+- Combining: `cmd-shift-p`
+- Sequences: `cmd-k cmd-s`
 
-### Beispiele
+### Examples
 
 ```json
 [
@@ -98,9 +98,9 @@ Dokumentation: https://zed.dev/docs/key-bindings
 
 ## tasks.json
 
-Dokumentation: https://zed.dev/docs/tasks
+Documentation: https://zed.dev/docs/tasks
 
-### Struktur
+### Structure
 
 ```json
 [
@@ -115,28 +115,28 @@ Dokumentation: https://zed.dev/docs/tasks
 
 ### Properties
 
-| Property | Beschreibung |
-|----------|--------------|
-| `label` | Anzeigename (required) |
-| `command` | Shell-Befehl (required) |
-| `args` | Argument-Array |
-| `cwd` | Arbeitsverzeichnis |
-| `env` | Environment-Variablen |
+| Property | Description |
+|----------|-------------|
+| `label` | Display name (required) |
+| `command` | Shell command (required) |
+| `args` | Argument array |
+| `cwd` | Working directory |
+| `env` | Environment variables |
 | `reveal` | `always` / `never` |
 | `hide` | `always` / `never` / `on_success` |
 
-### Variablen
+### Variables
 
-| Variable | Beschreibung |
-|----------|--------------|
-| `$ZED_WORKTREE_ROOT` | Projekt-Root |
-| `$ZED_FILE` | Aktuelle Datei |
-| `$ZED_FILENAME` | Dateiname |
-| `$ZED_DIRNAME` | Verzeichnis |
-| `$ZED_STEM` | Dateiname ohne Extension |
-| `$ZED_SELECTED_TEXT` | Markierter Text |
+| Variable | Description |
+|----------|-------------|
+| `$ZED_WORKTREE_ROOT` | Project root |
+| `$ZED_FILE` | Current file |
+| `$ZED_FILENAME` | Filename |
+| `$ZED_DIRNAME` | Directory |
+| `$ZED_STEM` | Filename without extension |
+| `$ZED_SELECTED_TEXT` | Selected text |
 
-### Beispiele
+### Examples
 
 ```json
 [
@@ -166,12 +166,12 @@ Dokumentation: https://zed.dev/docs/tasks
 
 ## snippets/
 
-Dokumentation: https://zed.dev/docs/snippets
+Documentation: https://zed.dev/docs/snippets
 
-### Struktur
+### Structure
 
-Erstelle sprachspezifische Dateien:
-- `snippets.json` - Global (alle Sprachen)
+Create language-specific files:
+- `snippets.json` - Global (all languages)
 - `javascript.json`, `typescript.json`
 - `python.json`, `rust.json`, `go.json`
 - `html.json`, `css.json`, `markdown.json`
@@ -183,41 +183,41 @@ Erstelle sprachspezifische Dateien:
   "Snippet Name": {
     "prefix": "trigger",
     "body": "expanded text",
-    "description": "Beschreibung"
+    "description": "Description"
   }
 }
 ```
 
 ### Placeholders
 
-| Syntax | Beschreibung |
-|--------|--------------|
-| `$1`, `$2` | Tab-Stops |
-| `${1:default}` | Mit Default-Wert |
-| `${1\|a,b,c\|}` | Mit Auswahl |
-| `$0` | Finale Cursor-Position |
-| `$TM_FILENAME` | Dateiname |
-| `$CLIPBOARD` | Clipboard-Inhalt |
-| `$CURRENT_YEAR` | Aktuelles Jahr |
+| Syntax | Description |
+|--------|-------------|
+| `$1`, `$2` | Tab stops |
+| `${1:default}` | With default value |
+| `${1\|a,b,c\|}` | With choices |
+| `$0` | Final cursor position |
+| `$TM_FILENAME` | Filename |
+| `$CLIPBOARD` | Clipboard content |
+| `$CURRENT_YEAR` | Current year |
 
-### Beispiele
+### Examples
 
 ```json
 {
   "Console Log": {
     "prefix": "cl",
     "body": "console.log('$1:', $1);$0",
-    "description": "Console log mit Label"
+    "description": "Console log with label"
   },
   "TODO": {
     "prefix": "todo",
     "body": "// TODO: $1$0",
-    "description": "TODO Kommentar"
+    "description": "TODO comment"
   },
   "Insert Date": {
     "prefix": "date",
     "body": "$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
-    "description": "Aktuelles Datum"
+    "description": "Current date"
   }
 }
 ```
@@ -226,9 +226,9 @@ Erstelle sprachspezifische Dateien:
 
 ## Extensions
 
-Extensions werden in `~/Library/Application Support/Zed/extensions/` gespeichert.
+Extensions are stored in `~/Library/Application Support/Zed/extensions/`.
 
-Auto-Install in settings.json:
+Auto-install in settings.json:
 
 ```json
 {
