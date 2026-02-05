@@ -1,45 +1,34 @@
-_mkdock () {
+_mkdock() {
     # Start spinner
     revolver --style 'dots3' start "💻 Configuring dock..."
 
-    # Entfernt alle Einträge aus dem Dock
+    # Load central app list
+    source ~/.dotfiles/macOS/dock-apps.sh
+
+    # Clear dock
     dockutil --no-restart --remove all &> /dev/null
 
-    apps=(
-        "/System/Applications/System Settings.app"
-        "/Applications/Spotify.app"
-        " "  # Add space
-        "/Applications/Google Chrome.app"
-        "/Applications/Arc.app"
-        " "  # Add space
-        "/Applications/Superhuman.app"
-        "/Applications/Notion Calendar.app"
-        "/Applications/Notion.app"
-        "/Applications/Slack.app"
-        " "  # Add space
-        "/Applications/Obsidian.app"
-        "/Applications/Reader.app"
-        "/Applications/Ghostty.app"
-        "/Applications/GitKraken.app"
-        " "  # Add space
-    )
-
-    for app in "${apps[@]}"; do
-        if [[ "$app" == " " ]]; then
-            # Add space to System configuration
+    # Add apps
+    for app in "${DOCK_APPS[@]}"; do
+        if [[ "$app" == "SPACER" ]]; then
             defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}' &> /dev/null
         else
-            # Add app to the dock
-            dockutil --add "$app" &> /dev/null
+            dockutil --no-restart --add "$app" &> /dev/null
         fi
     done
 
-    # Add folders to the dock
-    dockutil --add '~/Projects' --view list --display folder --sort name --replacing 'Projects' --allhomes &> /dev/null
-    dockutil --add '~/Downloads' --view list --display folder --sort dateadded --replacing 'Downloads' --allhomes &> /dev/null
-    dockutil --add '/Applications' --view grid --display folder --sort name --replacing 'Applications' --allhomes &> /dev/null
+    # Add folders
+    for folder in "${DOCK_FOLDERS[@]}"; do
+        # Split by | using zsh parameter expansion
+        local parts=("${(@s:|:)folder}")
+        local folder_path="${parts[1]}"
+        local folder_view="${parts[2]}"
+        local folder_display="${parts[3]}"
+        local folder_sort="${parts[4]}"
+        dockutil --no-restart --add "$folder_path" --view "$folder_view" --display "$folder_display" --sort "$folder_sort" --replacing "${folder_path:t}" --allhomes &> /dev/null
+    done
 
-    # Restart the dock
+    # Restart dock
     killall Dock
 
     # Stop spinner

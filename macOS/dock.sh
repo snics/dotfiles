@@ -115,45 +115,29 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 # Add Apps to Dock                                                            #
 ###############################################################################
 
+# Load central app list
+source "$(dirname "${BASH_SOURCE[0]}")/dock-apps.sh"
 
-# Warning:
-# Double quotes Whenever you use $HOME in the path
-# Single quotes for the rest of the applications
-
+# Create Projects folder if it doesn't exist
 [ ! -d "$HOME/Projects" ] && mkdir "$HOME/Projects"
 
+# Clear dock
 dockutil --no-restart --remove all
-dockutil --no-restart --add '/System/Applications/System Settings.app'
-dockutil --no-restart --add '/Applications/Spotify.app'
 
-# Add space to System configuration
-defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
+# Add apps
+for app in "${DOCK_APPS[@]}"; do
+    if [[ "$app" == "SPACER" ]]; then
+        defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
+    else
+        dockutil --no-restart --add "$app"
+    fi
+done
 
-dockutil --no-restart --add '/Applications/Google Chrome.app'
-dockutil --no-restart --add '/Applications/Arc.app'
-
-# Add space to System configuration
-defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
-
-dockutil --no-restart --add "/Applications/Superhuman.app"
-dockutil --no-restart --add "/Applications/Notion Calendar.app"
-dockutil --no-restart --add "/Applications/Notion.app"
-dockutil --no-restart --add "/Applications/Slack.app"
-
-# Add space to System configuration
-defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
-
-dockutil --no-restart --add "/Applications/Obsidian.app"
-dockutil --no-restart --add "/Applications/Reader.app"
-dockutil --no-restart --add "/Applications/Ghostty.app"
-dockutil --no-restart --add "/Applications/GitKraken.app"
-
-# Add space to System configuration
-defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type='spacer-tile';}'
-
-dockutil --no-restart --add '~/Projects' --view list --display folder --sort name  --allhomes
-dockutil --no-restart --add '~/Downloads' --view list --display folder --sort dateadded --allhomes
-dockutil --add '/Applications' --view grid --display folder --sort name --allhomes
+# Add folders
+for folder in "${DOCK_FOLDERS[@]}"; do
+    IFS='|' read -r path view display sort <<< "$folder"
+    dockutil --add "$path" --view "$view" --display "$display" --sort "$sort" --allhomes
+done
 
 echo ""
 echo "Dock setup done!"
