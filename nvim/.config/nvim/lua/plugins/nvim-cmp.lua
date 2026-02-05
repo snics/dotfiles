@@ -295,6 +295,28 @@ return {
       },
     })
 
+    -- Spell check: Auto-download missing spell files
+    local spell_dir = vim.fn.stdpath("config") .. "/spell"
+    local spell_files = {
+      { name = "de.utf-8.spl", url = "https://ftp.nluug.nl/pub/vim/runtime/spell/de.utf-8.spl" },
+      { name = "de.utf-8.sug", url = "https://ftp.nluug.nl/pub/vim/runtime/spell/de.utf-8.sug" },
+    }
+
+    -- Ensure spell directory exists and download missing files
+    vim.fn.mkdir(spell_dir, "p")
+    for _, file in ipairs(spell_files) do
+      local path = spell_dir .. "/" .. file.name
+      if vim.fn.filereadable(path) == 0 then
+        vim.notify("Downloading " .. file.name .. "...", vim.log.levels.INFO)
+        vim.fn.system({ "curl", "-fsSL", "-o", path, file.url })
+        if vim.v.shell_error == 0 then
+          vim.notify("Downloaded " .. file.name, vim.log.levels.INFO)
+        else
+          vim.notify("Failed to download " .. file.name, vim.log.levels.ERROR)
+        end
+      end
+    end
+
     -- Spell check: Configure for German and English
     vim.opt.spell = false -- Manual activation only
     vim.opt.spelllang = { "de", "en" }
@@ -305,7 +327,7 @@ return {
       pattern = { "gitcommit", "markdown", "text", "txt" },
       callback = function()
         vim.opt_local.spell = true
-        vim.opt_local.spelllang = { "de_de", "en_us" } -- Specific locales
+        vim.opt_local.spelllang = { "de", "en" }
       end,
     })
 

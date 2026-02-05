@@ -45,8 +45,12 @@ return {
           },
           picker = { 
             enabled = true,
-            hidden = true,
-            ignored = true,
+            sources = {
+              files = {
+                hidden = true,
+                ignored = true,
+              },
+            },
           },
           quickfile = { enabled = true },
            scroll = { enabled = true },
