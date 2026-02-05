@@ -144,18 +144,16 @@ gui:
 # Config relating to git
 git:
   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Custom_Pagers.md
-  paging:
-    # Value of the --color arg in the git diff command. Some pagers want this to be set to 'always' and some want it set to 'never'
-    colorArg: always
-    # e.g.
-    # diff-so-fancy
-    # delta --dark --paging=never
-    # ydiff -p cat -s --wrap --width={{columnWidth}}
-    pager: ""
-    # If true, Lazygit will use whatever pager is specified in `$GIT_PAGER`, `$PAGER`, or your *git config*. If the pager ends with something like ` | less` we will strip that part out, because less doesn't play nice with our rendering approach. If the custom pager uses less under the hood, that will also break rendering (hence the `--paging=never` flag for the `delta` pager).
-    useConfig: false
-    # e.g. 'difft --color=always'
-    externalDiffCommand: ""
+  pagers:
+    - # Value of the --color arg in the git diff command. Some pagers want this to be set to 'always' and some want it set to 'never'
+      colorArg: always
+      # e.g.
+      # diff-so-fancy
+      # delta --dark --paging=never
+      # ydiff -p cat -s --wrap --width={{columnWidth}}
+      pager: ""
+      # e.g. 'difft --color=always'
+      externalDiffCommand: ""
   # Config relating to committing
   commit:
     # If true, pass '--signoff' flag when committing
@@ -265,20 +263,6 @@ os:
   open: 'open {{filename}}'
   # Command for opening a link. Should contain "{{link}}".
   openLink: ""
-  # EditCommand is the command for editing a file.
-  # Deprecated: use Edit instead. Note that semantics are different:
-  # EditCommand is just the command itself, whereas Edit contains a
-  # "{{filename}}" variable.
-  editCommand: ""
-  # EditCommandTemplate is the command template for editing a file
-  # Deprecated: use EditAtLine instead.
-  editCommandTemplate: ""
-  # OpenCommand is the command for opening a file
-  # Deprecated: use Open instead.
-  openCommand: ""
-  # OpenLinkCommand is the command for opening a link
-  # Deprecated: use OpenLink instead.
-  openLinkCommand: ""
   # CopyToClipboardCmd is the command for copying to clipboard.
   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#custom-command-for-copying-to-and-pasting-from-clipboard
   copyToClipboardCmd: ""
@@ -393,7 +377,7 @@ keybinding:
     viewResetOptions: D
     fetch: f
     toggleTreeView: '`'
-    openMergeTool: M
+    openMergeOptions: M
     openStatusFilter: <c-b>
     copyFileInfoToClipboard: "y"
   branches:
