@@ -130,7 +130,7 @@ return {
         { "<leader>hB", desc = "Toggle line blame", icon = "" }, -- add icon to toggle line blame
         { "<leader>hd", desc = "Diff this", icon = "" }, -- add icon to diff this
         { "<leader>hD", desc = "Diff this ~", icon = "" }, -- add icon to diff this ~
-        
+
         -- YAML Tools
         { "<leader>y", group = "YAML Tools", icon = "󰈙" },
         { "<leader>yv", desc = "Show YAML path and value", icon = "󰈙" },
@@ -146,29 +146,29 @@ return {
         { "<C-space>", desc = "Expand selection", icon = "󰒅", mode = "v" },
         { "<C-s>", desc = "Expand selection to scope", icon = "󰒓", mode = "v" },
         { "<C-backspace>", desc = "Shrink selection", icon = "󰒆", mode = "v" },
-        
+
         -- 📝 Treesitter Textobjects - Functions & Classes
         { "af", desc = "Select around function", icon = "󰊕", mode = { "o", "x" } },
         { "if", desc = "Select inside function", icon = "󰊕", mode = { "o", "x" } },
         { "ac", desc = "Select around class", icon = "󰌗", mode = { "o", "x" } },
         { "ic", desc = "Select inside class", icon = "󰌗", mode = { "o", "x" } },
-        
+
         -- 📝 Treesitter Textobjects - Parameters & Arguments
         { "aa", desc = "Select around argument", icon = "󰏪", mode = { "o", "x" } },
         { "ia", desc = "Select inside argument", icon = "󰏪", mode = { "o", "x" } },
-        
+
         -- 📝 Treesitter Textobjects - Control Flow
         { "ai", desc = "Select around conditional", icon = "󰕷", mode = { "o", "x" } },
         { "ii", desc = "Select inside conditional", icon = "󰕷", mode = { "o", "x" } },
         { "al", desc = "Select around loop", icon = "󰑓", mode = { "o", "x" } },
         { "il", desc = "Select inside loop", icon = "󰑓", mode = { "o", "x" } },
-        
+
         -- 📝 Treesitter Textobjects - Blocks & Calls
         { "ab", desc = "Select around block", icon = "󰅩", mode = { "o", "x" } },
         { "ib", desc = "Select inside block", icon = "󰅩", mode = { "o", "x" } },
         { "aC", desc = "Select around call", icon = "󰘧", mode = { "o", "x" } },
         { "iC", desc = "Select inside call", icon = "󰘧", mode = { "o", "x" } },
-        
+
         -- 🗂️ Treesitter Textobjects - YAML (Kubernetes/Helm)
         { "as", desc = "Select around assignment (key: value)", icon = "󰈙", mode = { "o", "x" } }, -- Source: treesitter.lua
         { "is", desc = "Select inside assignment (value only)", icon = "󰈙", mode = { "o", "x" } }, -- Source: treesitter.lua
@@ -178,7 +178,7 @@ return {
         { "at", desc = "Select around comment", icon = "󰨱", mode = { "o", "x" } }, -- Source: treesitter.lua
         { "it", desc = "Select inside comment", icon = "󰨱", mode = { "o", "x" } }, -- Source: treesitter.lua
         { "aS", desc = "Select around YAML statement", icon = "󰈙", mode = { "o", "x" } }, -- Source: treesitter.lua
-        
+
         -- 🧭 Treesitter Navigation - Next
         { "]m", desc = "Next function start", icon = "󰊕" },
         { "]M", desc = "Next function end", icon = "󰊕" },
@@ -188,7 +188,7 @@ return {
         { "]I", desc = "Next conditional end", icon = "󰕷" },
         { "]l", desc = "Next loop start", icon = "󰑓" },
         { "]L", desc = "Next loop end", icon = "󰑓" },
-        
+
         -- 🧭 Treesitter Navigation - Previous
         { "[m", desc = "Previous function start", icon = "󰊕" },
         { "[M", desc = "Previous function end", icon = "󰊕" },
@@ -198,7 +198,7 @@ return {
         { "[I", desc = "Previous conditional end", icon = "󰕷" },
         { "[l", desc = "Previous loop start", icon = "󰑓" },
         { "[L", desc = "Previous loop end", icon = "󰑓" },
-        
+
         -- 🔄 Treesitter Swapping
         { "<leader>a", desc = "Swap parameter with next", icon = "󰓡" },
         { "<leader>A", desc = "Swap parameter with previous", icon = "󰓡" },
@@ -248,6 +248,20 @@ return {
         -- 🚀 Smart Tab Navigation (nvim-cmp + LuaSnip)
         { "<Tab>", desc = "Smart Tab: Next completion/Jump snippet/Trigger", mode = "i", icon = "⭐" },
         { "<S-Tab>", desc = "Smart S-Tab: Prev completion/Jump back", mode = "i", icon = "⭐" },
+
+        -- 🧪 Testing (neotest)
+        { "<leader>T", group = "Tests", icon = "󰙨" },
+        { "<leader>Tt", desc = "Run nearest test", icon = "󰙨" },
+        { "<leader>Tf", desc = "Run file tests", icon = "󰙨" },
+        { "<leader>Ta", desc = "Run all tests", icon = "󰙨" },
+        { "<leader>Ts", desc = "Toggle test summary", icon = "󰙨" },
+        { "<leader>To", desc = "Show test output", icon = "󰙨" },
+        { "<leader>Tp", desc = "Toggle output panel", icon = "󰙨" },
+        { "<leader>Td", desc = "Debug nearest test", icon = "󰙨" },
+        { "<leader>TS", desc = "Stop running tests", icon = "󰙨" },
+        { "<leader>Tl", desc = "Re-run last test", icon = "󰙨" },
+        { "]T", desc = "Next failed test", icon = "󰙨" },
+        { "[T", desc = "Prev failed test", icon = "󰙨" },
 
     })
   end,

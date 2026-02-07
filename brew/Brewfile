@@ -26,6 +26,7 @@ brew "uv" # Fast Python package and project manager (für serena/screencap MCP).
 brew "awscli" # Official Amazon AWS command-line interface. [AWS CLI](https://aws.amazon.com/cli/)
 brew "bash" # GNU Bourne-Again SHell, a command language interpreter. [Bash](https://www.gnu.org/software/bash/)
 brew "bat" # A cat clone with syntax highlighting and Git integration. [Bat](https://github.com/sharkdp/bat)
+brew "bats-core" # Bash Automated Testing System. [Bats-core](https://github.com/bats-core/bats-core)
 brew "bfg" # BFG Repo-Cleaner: Remove large files or passwords from Git history. [BFG Repo-Cleaner](https://rtyley.github.io/bfg-repo-cleaner/)
 brew "binutils" # GNU binary tools for native development. [Binutils](https://www.gnu.org/software/binutils/)
 brew "numpy" # Fundamental package for scientific computing with Python. [Numpy](https://numpy.org/)
