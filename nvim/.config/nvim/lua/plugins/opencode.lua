@@ -1,8 +1,7 @@
 return {
   'NickvanDyke/opencode.nvim',
   dependencies = {
-    -- Snacks.nvim is already configured in your setup with input enabled
-    { 'folke/snacks.nvim', opts = { input = { enabled = true } } },
+    'folke/snacks.nvim', -- input = { enabled = true } is configured in snacks.lua
   },
   ---@type opencode.Opts
   opts = {
@@ -19,7 +18,7 @@ return {
     { '<S-C-u>', function() require('opencode').command('messages_half_page_up') end, desc = 'Scroll messages up', },
     { '<S-C-d>', function() require('opencode').command('messages_half_page_down') end, desc = 'Scroll messages down', },
     { '<leader>op', function() require('opencode').select_prompt() end, desc = 'Select prompt', mode = { 'n', 'v', }, },
-    
+
     -- Custom prompt examples
     { '<leader>oe', function() require('opencode').prompt("Explain @cursor and its context") end, desc = "Explain code near cursor", },
     { '<leader>or', function() require('opencode').prompt("Review @selection for potential improvements") end, desc = "Review selected code", mode = "v", },
@@ -27,7 +26,7 @@ return {
   },
   config = function(_, opts)
     vim.g.opencode_opts = opts
-    
+
     -- Optional: Listen for opencode events for custom automation
     vim.api.nvim_create_autocmd("User", {
       pattern = "OpencodeEvent",
