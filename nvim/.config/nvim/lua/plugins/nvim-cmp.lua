@@ -2,13 +2,13 @@
 return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
-  
+
   -- Dependencies grouped by functionality for clarity
   dependencies = {
     -- Core LSP integration - provides the main completion data
     "hrsh7th/cmp-nvim-lsp", -- LSP capabilities for cmp
     "hrsh7th/cmp-nvim-lsp-signature-help", -- Function signature help
-    
+
     -- Snippet system - enables code templates and expansions
     "saadparwaiz1/cmp_luasnip", -- LuaSnip integration
     "rafamadriz/friendly-snippets", -- Pre-built snippets for common languages
@@ -17,34 +17,34 @@ return {
       version = "v2.*",
       build = "make install_jsregexp", -- Required for advanced snippet features
     },
-    
+
     -- Essential completion sources
     "hrsh7th/cmp-buffer", -- Words from current buffer
     "hrsh7th/cmp-path", -- File system paths
     "hrsh7th/cmp-cmdline", -- Command line completion
-    
+
     -- Context-aware sources - only activate in specific situations
     "petertriho/cmp-git", -- Git commit types and branches
     "f3fora/cmp-spell", -- Spell checking suggestions
     "hrsh7th/cmp-emoji", -- Emoji completion
-    
+
     -- Visual enhancements
     "onsails/lspkind.nvim", -- Icons for completion items
     "roobert/tailwindcss-colorizer-cmp.nvim", -- Tailwind color previews in completion
-    
+
     -- AI-powered completion
     "Exafunction/windsurf.nvim", -- Codeium/Windsurf AI suggestions
-    
+
     -- TODO: Language-specific completions that will be added later
     -- "Saecki/crates.nvim", -- Rust: Cargo.toml dependencies
     -- "ray-x/go.nvim", -- Go development enhancements
   },
-  
+
   config = function()
     local cmp = require("cmp")
     local luasnip = require("luasnip")
     local lspkind = require("lspkind")
-    
+
     -- Setup Tailwind CMP colorizer
     require("tailwindcss-colorizer-cmp").setup({
       color_square_width = 2,
@@ -65,7 +65,7 @@ return {
     })
 
     -- Helper functions for smart completion behavior
-    
+
     -- Check if cursor has text before it (prevents completion in empty space)
     local function has_words_before()
       local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -92,7 +92,7 @@ return {
     end
 
     -- Smart filtering functions: Control when different sources should be active
-    
+
     -- AI completion: Always available except when virtual text is showing
     local function codeium_filter()
       return not vim.g.windsurf_virtual_text_enabled
@@ -107,8 +107,8 @@ return {
     local function git_filter()
       local bufname = vim.api.nvim_buf_get_name(0)
       local filetype = vim.bo.filetype
-      return filetype == "gitcommit" 
-        or filetype == "gitrebase" 
+      return filetype == "gitcommit"
+        or filetype == "gitrebase"
         or filetype == "gitconfig"
         or bufname:match("COMMIT_EDITMSG")
         or bufname:match("MERGE_MSG")
@@ -118,9 +118,9 @@ return {
     -- Text-focused completion: Enable in documentation and comments
     local function text_and_comment_filter()
       local filetype = vim.bo.filetype
-      return filetype == "gitcommit" 
-        or filetype == "markdown" 
-        or filetype == "text" 
+      return filetype == "gitcommit"
+        or filetype == "markdown"
+        or filetype == "text"
         or filetype == "txt"
         or is_in_comment()
     end
@@ -142,7 +142,7 @@ return {
         end
         return true
       end,
-      
+
       -- Visual styling: Rounded borders for modern look
       window = {
         completion = cmp.config.window.bordered({
@@ -154,14 +154,14 @@ return {
           winhighlight = "Normal:Pmenu,FloatBorder:VertSplit,CursorLine:PmenuSel,Search:None",
         }),
       },
-      
+
       -- Snippet expansion integration
       snippet = {
         expand = function(args)
           luasnip.lsp_expand(args.body)
         end,
       },
-      
+
       -- Key mappings with intelligent Tab behavior
       mapping = cmp.mapping.preset.insert({
         ["<C-k>"] = cmp.mapping.select_prev_item(),
@@ -196,9 +196,10 @@ return {
           end
         end, { "i", "s" }),
       }),
-      
+
       -- Completion sources with smart filtering
       sources = cmp.config.sources({
+        { name = "lazydev", group_index = 0 }, -- Neovim Lua API (lazydev.nvim)
         { name = "codeium", group_index = 2, entry_filter = codeium_filter }, -- AI suggestions
         { name = "nvim_lsp", entry_filter = non_comment_filter }, -- Language server
         { name = "nvim_lsp_signature_help" }, -- Function signatures (always active)
@@ -216,13 +217,13 @@ return {
         format = function(entry, vim_item)
           -- First apply Tailwind colorizer
           local tailwind_item = require("tailwindcss-colorizer-cmp").formatter(entry, vim_item)
-          
+
           -- Then apply lspkind formatting
           local formatted = lspkind.cmp_format({
             mode = "symbol_text", -- Icon + text mode
             maxwidth = 50,
             ellipsis_char = "...",
-            symbol_map = { 
+            symbol_map = {
               Codeium = "󰘦", -- AI brain icon
               git = "󰊢",     -- Git branch
               spell = "󰓆",   -- Spell check
@@ -237,7 +238,7 @@ return {
               return vim_item
             end,
           })(entry, tailwind_item)
-          
+
           return formatted
         end,
       },
@@ -321,7 +322,7 @@ return {
     vim.opt.spell = false -- Manual activation only
     vim.opt.spelllang = { "de", "en" }
     vim.opt.spellsuggest = "best,3" -- Show top 3 suggestions
-    
+
     -- Auto-enable spell check in text-heavy file types
     vim.api.nvim_create_autocmd("FileType", {
       pattern = { "gitcommit", "markdown", "text", "txt" },
@@ -336,7 +337,7 @@ return {
       mapping = cmp.mapping.preset.cmdline(),
       sources = { { name = "buffer" } },
     })
-    
+
     cmp.setup.cmdline(":", { -- Command mode
       mapping = cmp.mapping.preset.cmdline(),
       sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
