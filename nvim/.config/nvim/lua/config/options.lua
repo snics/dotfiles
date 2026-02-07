@@ -1,4 +1,4 @@
-vim.cmd("let g:netrw_liststyle = 3") -- netrw list style
+vim.g.netrw_liststyle = 3 -- netrw list style
 
 local opt = vim.opt -- to set options
 
