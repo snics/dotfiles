@@ -145,7 +145,6 @@ return {
       disabled_ft = {}
     })
 
-    -- Disable default virtual text to prevent conflicts
-    vim.diagnostic.config({ virtual_text = false })
+    -- virtual_text = false is configured centrally in lspconfig.lua
   end,
 }

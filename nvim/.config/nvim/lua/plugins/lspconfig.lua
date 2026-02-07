@@ -26,9 +26,14 @@ return {
       end,
     })
 
-    -- Configure diagnostic signs using the new API
+    -- ========================================================================
+    -- DIAGNOSTIC CONFIGURATION (Single Source of Truth)
+    -- All diagnostic display settings are centralized here.
+    -- Do NOT add vim.diagnostic.config() calls in other plugin files.
+    -- Referenced by: tiny-inline-diagnostic.lua, none-ls.lua
+    -- ========================================================================
     vim.diagnostic.config({
-      -- Disable virtual text to prevent conflicts with tiny-inline-diagnostic
+      -- Disable default virtual text -- tiny-inline-diagnostic handles this
       virtual_text = false,
       signs = {
         text = {
