@@ -1,54 +1,60 @@
 return {
-  "neovim/nvim-lspconfig",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = {
-    "hrsh7th/cmp-nvim-lsp",
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
-    { "antosha417/nvim-lsp-file-operations", config = true },
-    { "folke/lazydev.nvim", opts = {} },
-  },
-  config = function()
-    local keymap = vim.keymap
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+        "hrsh7th/cmp-nvim-lsp",
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+        { "folke/lazydev.nvim", opts = {} },
+    },
+    config = function()
+        local keymap = vim.keymap
 
-    vim.api.nvim_create_autocmd("LspAttach", {
-      group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-      callback = function(ev)
-        -- LSP Keybinds
-        keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration", buffer = ev.buf, silent = true })
-        keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "See available code actions", buffer = ev.buf, silent = true })
-        keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Smart rename", buffer = ev.buf, silent = true })
-        keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Show line diagnostics", buffer = ev.buf, silent = true })
-        keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic", buffer = ev.buf, silent = true })
-        keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic", buffer = ev.buf, silent = true })
-        keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show documentation for what is under cursor", buffer = ev.buf, silent = true })
-        keymap.set("n", "<leader>rs", ":LspRestart<CR>", { desc = "Restart LSP", buffer = ev.buf, silent = true })
-      end,
-    })
+        vim.api.nvim_create_autocmd("LspAttach", {
+            group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+            callback = function(ev)
+                -- LSP Keybinds
+                keymap.set("n", "gD", vim.lsp.buf.declaration,
+                    { desc = "Go to declaration", buffer = ev.buf, silent = true })
+                keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action,
+                    { desc = "See available code actions", buffer = ev.buf, silent = true })
+                keymap.set("n", "<leader>rn", vim.lsp.buf.rename,
+                    { desc = "Smart rename", buffer = ev.buf, silent = true })
+                keymap.set("n", "<leader>d", vim.diagnostic.open_float,
+                    { desc = "Show line diagnostics", buffer = ev.buf, silent = true })
+                keymap.set("n", "[d", vim.diagnostic.goto_prev,
+                    { desc = "Go to previous diagnostic", buffer = ev.buf, silent = true })
+                keymap.set("n", "]d", vim.diagnostic.goto_next,
+                    { desc = "Go to next diagnostic", buffer = ev.buf, silent = true })
+                keymap.set("n", "K", vim.lsp.buf.hover,
+                    { desc = "Show documentation for what is under cursor", buffer = ev.buf, silent = true })
+                keymap.set("n", "<leader>rs", ":LspRestart<CR>", { desc = "Restart LSP", buffer = ev.buf, silent = true })
+            end,
+        })
 
-    -- ========================================================================
-    -- DIAGNOSTIC CONFIGURATION (Single Source of Truth)
-    -- All diagnostic display settings are centralized here.
-    -- Do NOT add vim.diagnostic.config() calls in other plugin files.
-    -- Referenced by: tiny-inline-diagnostic.lua, none-ls.lua
-    -- ========================================================================
-    vim.diagnostic.config({
-      -- Disable default virtual text -- tiny-inline-diagnostic handles this
-      virtual_text = false,
-      signs = {
-        text = {
-          [vim.diagnostic.severity.ERROR] = "󰅚 ", -- Error icon (cross/X)
-          [vim.diagnostic.severity.WARN] = "󰀪 ",  -- Warning icon (triangle with exclamation)
-          [vim.diagnostic.severity.HINT] = "󰌶 ",  -- Hint icon (lightbulb)
-          [vim.diagnostic.severity.INFO] = "󰋽 ",  -- Info icon (info circle)
-        }
-      },
-      -- Update diagnostics on insert leave for better UX
-      update_in_insert = false,
-      -- Show diagnostics in insert mode (tiny-inline-diagnostic handles this)
-      underline = true,
-      -- Severity sort order for diagnostics
-      severity_sort = true,
-    })
-  end,
+        -- ========================================================================
+        -- DIAGNOSTIC CONFIGURATION (Single Source of Truth)
+        -- All diagnostic display settings are centralized here.
+        -- Do NOT add vim.diagnostic.config() calls in other plugin files.
+        -- Referenced by: tiny-inline-diagnostic.lua, none-ls.lua
+        -- ========================================================================
+        vim.diagnostic.config({
+            -- Disable default virtual text -- tiny-inline-diagnostic handles this
+            virtual_text = false,
+            signs = {
+                text = {
+                    [vim.diagnostic.severity.ERROR] = "󰅚 ", -- Error icon (cross/X)
+                    [vim.diagnostic.severity.WARN] = "󰀪 ", -- Warning icon (triangle with exclamation)
+                    [vim.diagnostic.severity.HINT] = "󰌶 ", -- Hint icon (lightbulb)
+                    [vim.diagnostic.severity.INFO] = "󰋽 ", -- Info icon (info circle)
+                }
+            },
+            -- Update diagnostics on insert leave for better UX
+            update_in_insert = false,
+            -- Show diagnostics in insert mode (tiny-inline-diagnostic handles this)
+            underline = true,
+            -- Severity sort order for diagnostics
+            severity_sort = true,
+        })
+    end,
 }
