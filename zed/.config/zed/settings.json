@@ -1,7 +1,344 @@
 {
-  "$schema": "https://zed.dev/schema/settings.json",
+  "$schema": "zed://schemas/settings",
+
+  // =====================================================================
+  // Theme
+  // =====================================================================
   "theme": "Catppuccin Macchiato",
   "icon_theme": "Catppuccin Macchiato",
-  "ui_font_size": 16,
-  "buffer_font_size": 16,
+
+  // =====================================================================
+  // Fonts
+  // =====================================================================
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_size": 15,
+  "buffer_font_features": {
+    "calt": true, // (default)
+    "liga": true,
+  },
+  "buffer_line_height": "comfortable",
+  "ui_font_family": "JetBrainsMono Nerd Font",
+  "ui_font_size": 15,
+  "ui_font_features": {
+    "calt": true, // (default)
+  },
+  "agent_ui_font_size": 16,
+  "agent_buffer_font_size": 14,
+
+  // =====================================================================
+  // Editor
+  // =====================================================================
+  "show_whitespaces": "all",
+  "colorize_brackets": true,
+  "jsx_tag_auto_close": { "enabled": true }, // (default)
+  "auto_signature_help": true,
+  "show_signature_help_after_edits": true,
+  "semantic_tokens": "combined",
+
+  // Inlay Hints
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true, // (default)
+    "show_parameter_hints": true, // (default)
+    "show_value_hints": true, // (default)
+    "show_other_hints": true, // (default)
+    "show_background": false, // (default)
+    "edit_debounce_ms": 700, // (default)
+    "scroll_debounce_ms": 50, // (default)
+  },
+
+  // Inline Diagnostics
+  "diagnostics": {
+    "inline": {
+      "enabled": true,
+    },
+  },
+
+  // Indent Guides
+  "indent_guides": {
+    "enabled": true, // (default)
+    "line_width": 1, // (default)
+    "active_line_width": 2,
+    "coloring": "indent_aware",
+    "background_coloring": "indent_aware",
+  },
+
+  // Edit Predictions — Zeta
+  "features": {
+    "edit_prediction_provider": "zed",
+  },
+
+  // =====================================================================
+  // UI Panels
+  // =====================================================================
+
+  // Tabs
+  "tabs": {
+    "git_status": true, // (default)
+    "file_icons": true, // (default)
+    "show_close_button": "hover", // (default)
+    "activate_on_close": "last_used",
+    "show_diagnostics": true, // (default)
+  },
+
+  // Minimap — deaktiviert (Vim-Navigation reicht)
+  "minimap": {
+    "show": "never",
+  },
+
+  // Scrollbar
+  "scrollbar": {
+    "show": "auto", // (default)
+    "cursors": true, // (default)
+    "git_diff": true, // (default)
+    "search_results": true, // (default)
+    "selected_text": true, // (default)
+    "selected_symbol": true, // (default)
+    "diagnostics": true, // (default)
+  },
+
+  // Gutter
+  "gutter": {
+    "line_numbers": true, // (default)
+    "runnables": true, // (default)
+    "breakpoints": true, // (default)
+    "folds": true, // (default)
+    "min_line_number_digits": 2,
+  },
+
+  // Project Panel
+  "project_panel": {
+    "starts_open": false,
+    "auto_fold_dirs": true, // (default)
+    "bold_folder_labels": true, // (default)
+    "hide_gitignore": false, // (default)
+    "hide_hidden": false, // (default)
+    "hide_root": false, // (default)
+    "auto_open": false,
+  },
+
+  // =====================================================================
+  // Vim Mode
+  // =====================================================================
+  "vim_mode": true,
+  "vim": {
+    "default_mode": "normal", // (default)
+    "use_system_clipboard": "always",
+    "use_smartcase_find": true,
+    "toggle_relative_line_numbers": true,
+    "highlight_on_yank_duration": 200,
+    "cursor_shape": {
+      "normal": "block", // (default)
+      "insert": "bar", // (default)
+      "visual": "block", // (default)
+      "replace": "underline", // (default)
+    },
+  },
+  "use_smartcase_search": true,
+
+  // Which-Key Popup (wie which-key.nvim)
+  "which_key": {
+    "enabled": true,
+    "delay_ms": 300,
+  },
+
+  // =====================================================================
+  // Terminal
+  // =====================================================================
+  "terminal": {
+    "font_size": 15,
+    "option_as_meta": true,
+    "line_height": "comfortable",
+    "working_directory": "current_project_directory",
+    "alternate_scroll": "on", // (default)
+    "copy_on_select": false, // (default)
+    "toolbar": { "breadcrumbs": true }, // (default)
+    "detect_venv": {
+      "on": {
+        "directories": [".venv", "venv"], // (default)
+        "activate_script": "default", // (default)
+      },
+    },
+    "max_scroll_history_lines": 10000, // (default)
+  },
+
+  // =====================================================================
+  // AI Agent — OpenRouter
+  // =====================================================================
+  "agent": {
+    "inline_assistant_model": {
+      "provider": "openrouter",
+      "model": "google/gemini-2.5-flash:free",
+    },
+    "default_model": {
+      "provider": "openrouter",
+      "model": "anthropic/claude-sonnet-4.5",
+    },
+    "favorite_models": [
+      // Anthropic
+      { "provider": "openrouter", "model": "anthropic/claude-opus-4.6" },
+      { "provider": "openrouter", "model": "anthropic/claude-sonnet-4.5" },
+      { "provider": "openrouter", "model": "anthropic/claude-haiku-4.5" },
+      // Google
+      { "provider": "openrouter", "model": "google/gemini-3-pro-preview" },
+      { "provider": "openrouter", "model": "google/gemini-2.5-flash:free" },
+      // Andere
+      { "provider": "openrouter", "model": "moonshotai/kimi-k2.5" },
+      { "provider": "openrouter", "model": "qwen/qwen3-coder:free" },
+    ],
+  },
+
+  // OpenRouter — verfuegbare Modelle
+  "language_models": {
+    "open_router": {
+      "available_models": [
+        // =============================================================
+        // Anthropic
+        // =============================================================
+        {
+          "name": "anthropic/claude-opus-4.6",
+          "display_name": "Claude Opus 4.6",
+          "max_tokens": 1000000,
+          "max_output_tokens": 128000,
+        },
+        {
+          "name": "anthropic/claude-sonnet-4.5",
+          "display_name": "Claude Sonnet 4.5",
+          "max_tokens": 1000000,
+          "max_output_tokens": 64000,
+        },
+        {
+          "name": "anthropic/claude-haiku-4.5",
+          "display_name": "Claude Haiku 4.5",
+          "max_tokens": 200000,
+          "max_output_tokens": 64000,
+        },
+        // =============================================================
+        // OpenAI
+        // =============================================================
+        {
+          "name": "openai/gpt-5.2-codex",
+          "display_name": "GPT-5.2 Codex",
+          "max_tokens": 400000,
+          "max_output_tokens": 128000,
+        },
+        {
+          "name": "openai/gpt-5-codex",
+          "display_name": "GPT-5 Codex",
+          "max_tokens": 400000,
+          "max_output_tokens": 128000,
+        },
+        {
+          "name": "openai/o4-mini",
+          "display_name": "o4 Mini",
+          "max_tokens": 200000,
+          "max_output_tokens": 100000,
+        },
+        // =============================================================
+        // Google
+        // =============================================================
+        {
+          "name": "google/gemini-3-pro-preview",
+          "display_name": "Gemini 3 Pro Preview",
+          "max_tokens": 1048576,
+          "max_output_tokens": 65535,
+        },
+        {
+          "name": "google/gemini-3-flash-preview",
+          "display_name": "Gemini 3 Flash Preview",
+          "max_tokens": 1048576,
+          "max_output_tokens": 65535,
+        },
+        {
+          "name": "google/gemini-2.5-flash",
+          "display_name": "Gemini 2.5 Flash",
+          "max_tokens": 1048576,
+          "max_output_tokens": 65535,
+        },
+        {
+          "name": "google/gemini-2.5-flash-lite",
+          "display_name": "Gemini 2.5 Flash Lite",
+          "max_tokens": 1048576,
+          "max_output_tokens": 65535,
+        },
+        // =============================================================
+        // Andere (Paid)
+        // =============================================================
+        {
+          "name": "moonshotai/kimi-k2.5",
+          "display_name": "Kimi K2.5",
+          "max_tokens": 262144,
+          "max_output_tokens": 65535,
+        },
+        {
+          "name": "deepseek/deepseek-v3.2",
+          "display_name": "DeepSeek V3.2",
+          "max_tokens": 164000,
+          "max_output_tokens": 65535,
+        },
+        // =============================================================
+        // Free — ":free" = OpenRouter Free Tier
+        // Falls Free-Tier endet, auf Paid-ID ohne ":free" wechseln
+        // =============================================================
+        {
+          "name": "qwen/qwen3-coder:free",
+          "display_name": "Qwen3 Coder (free)",
+          "max_tokens": 262000,
+          "max_output_tokens": 262000,
+        },
+        {
+          "name": "openai/gpt-oss-120b:free",
+          "display_name": "GPT-OSS 120B (free)",
+          "max_tokens": 131072,
+          "max_output_tokens": 131072,
+        },
+        {
+          "name": "google/gemini-2.5-flash:free",
+          "display_name": "Gemini 2.5 Flash (free)",
+          "max_tokens": 1048576,
+          "max_output_tokens": 65535,
+        },
+      ],
+    },
+  },
+
+  // =====================================================================
+  // MCP Context Servers
+  // =====================================================================
+  "context_servers": {
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}",
+      },
+    },
+    "grep_app": {
+      "url": "https://mcp.grep.app",
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "ide",
+      ],
+      "env": {},
+    },
+  },
+
+  // =====================================================================
+  // System
+  // =====================================================================
+  "auto_update": true, // (default)
+  "load_direnv": "shell_hook",
+  "auto_install_extensions": {},
+
+  // Telemetrie
+  "telemetry": {
+    "diagnostics": true, // (default) — Crash-Reports
+    "metrics": false, // Nutzungsstatistiken aus
+  },
 }
