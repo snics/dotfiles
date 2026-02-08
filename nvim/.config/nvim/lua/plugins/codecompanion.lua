@@ -67,7 +67,7 @@ return {
                         },
                         schema = {
                             model = {
-                                default = "anthropic/claude-sonnet-4",
+                                default = "google/gemini-2.5-flash",
                             },
                         },
                     })
@@ -79,10 +79,10 @@ return {
                     adapter = "claude_code",
                 },
                 inline = {
-                    adapter = "anthropic",
+                    adapter = "openrouter",
                 },
                 cmd = {
-                    adapter = "anthropic",
+                    adapter = "openrouter",
                 },
             },
 
