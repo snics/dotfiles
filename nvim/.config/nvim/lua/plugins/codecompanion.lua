@@ -90,7 +90,9 @@ return {
                     })
                 end,
                 openrouter = function()
-                    return require("codecompanion.adapters").extend("openai_compatible", {
+                    return require("codecompanion.adapters").resolve("openai_compatible", {
+                        name = "openrouter",
+                        formatted_name = "OpenRouter",
                         env = {
                             url = "https://openrouter.ai/api/v1",
                             api_key = "OPENROUTER_API_KEY",
