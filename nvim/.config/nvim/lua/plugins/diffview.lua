@@ -9,6 +9,7 @@ return {
     },
     opts = {
         enhanced_diff_hl = true,
+        show_help_hints = false,
         view = {
             default = { layout = "diff2_horizontal" },
             merge_tool = { layout = "diff3_mixed" },
