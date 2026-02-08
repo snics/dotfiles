@@ -7,28 +7,43 @@ Zentrale Claude CLI-Konfiguration für die Dotfiles.
 ```
 claude/
   .claude/
-    settings.json    # Claude CLI-Einstellungen
+    settings.json    # Plugins (symlinked via stow)
+  mcp-servers.json   # MCP-Server-Config (gemergt via jq)
 ```
 
-## Konfigurationsort
+## Konfigurationsorte
 
-Die Claude CLI liest ihre Konfiguration aus `~/.claude/settings.json`.
+Claude Code nutzt zwei Config-Dateien:
+
+| Datei | Inhalt | Management |
+|-------|--------|------------|
+| `~/.claude/settings.json` | Plugins | Symlink via `stow claude` |
+| `~/.claude.json` | MCP-Server, Theme, Editor-Mode + Runtime-State | MCP-Server werden via `jq` gemergt |
+
+> **Warum kein Symlink für `~/.claude.json`?** Die Datei enthält Runtime-State
+> (Session-Stats, OAuth, Caches), der sich bei jedem Start ändert und nicht ins Repo gehört.
 
 ## Installation
 
 - Über `install.sh`: Bei der Frage „Do you want to use Claude CLI config?" mit `y` antworten.
-- Manuell: `stow claude` aus `~/.dotfiles` ausführen.
+- Manuell: `stow claude && source _install/claude.sh` aus `~/.dotfiles` ausführen.
 
-## Konfiguration
+## Plugins
 
-Die `settings.json` Datei enthält alle Einstellungen für die Claude CLI. Du kannst diese Datei direkt bearbeiten oder die Konfiguration über die CLI mit `/config` setzen.
+Die `settings.json` aktiviert Plugins aus dem Claude-Marketplace:
 
-### Typische Einstellungen
+- `clangd-lsp` — C/C++ Language Server
+- `typescript-lsp` — TypeScript/JavaScript Language Server
+- `ralph-loop` — Autonomer AI-Entwicklungs-Loop
+- `claude-mem` — Persistenter Cross-Session-Speicher
 
-- `model`: Standard-Modell (z.B. `claude-3-5-sonnet-20241022`)
-- `agent`: Standard-Agent
-- `apiKey`: API-Key (sollte über Umgebungsvariable gesetzt werden, nicht in der Config)
-- Weitere Einstellungen siehe [Claude CLI Dokumentation](https://docs.anthropic.com/en/docs/claude-code/cli-reference)
+## MCP-Server
+
+Die `mcp-servers.json` definiert globale MCP-Server, die beim Install in `~/.claude.json` gemergt werden:
+
+- **serena** — Semantische Code-Analyse via LSP (stdio/uvx)
+- **grep** — Code-Suche via [grep.app](https://grep.app) (http)
+- **context7** — Aktuelle Library-Dokumentation (http, benötigt `CONTEXT7_API_KEY`)
 
 ## Secrets
 
