@@ -32,6 +32,13 @@ _No items currently in progress_
 - [ ] 📝 **docs** - Update README.md with crd-wizard in Kubernetes section → [Details](ideas/crd-wizard-integration.md) · [📄 File](../README.md)
 - [ ] 🧪 **k9s** - Test all three plugin modes (Shift-W, Shift-A, Shift-B) → [Details](ideas/crd-wizard-integration.md)
 
+### Secret Management
+- [ ] 🔐 **secrets** - Research & Entscheidung: Keychain vs 1Password vs pass vs Doppler → [Details](ideas/secret-management.md)
+- [ ] 🔧 **secrets** - `~/.secrets` auf verschluesselten Store umstellen → [Details](ideas/secret-management.md) · [📄 File](../.secrets.example)
+- [ ] 🔧 **zsh** - Helper-Aliases/Functions fuer Secret-Management → [Details](ideas/secret-management.md) · [📁 Files](../zsh/settings)
+- [ ] 📝 **docs** - README und .secrets.example mit Setup-Anleitung aktualisieren → [Details](ideas/secret-management.md)
+- [ ] 🧪 **secrets** - Testen: Alle AI-Keys laden korrekt in Claude Code, Cursor, Terminal → [Details](ideas/secret-management.md)
+
 ### Obsidian Second Brain Setup
 - [ ] 🔧 **obsidian** - Create core configuration files (app.json, appearance.json) → [Details](ideas/obsidian-second-brain.md) · [📁 Files](../obsidian)
 - [ ] 🔧 **obsidian** - Configure community plugins (dataview, templater, calendar, etc.) → [Details](ideas/obsidian-second-brain.md)
