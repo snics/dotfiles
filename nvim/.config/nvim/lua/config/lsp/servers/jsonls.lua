@@ -1,48 +1,19 @@
--- JSON Language Server Configuration
+-- jsonls — JSON Language Server
+-- filetypes (json, jsonc) are auto-configured by lspconfig
+--
+-- Default settings that don't need explicit config:
+--   format.enable = true, format.keepLines = false, colorDecorators.enable = true,
+--   maxItemsComputed = 5000, schemaDownload.enable = true, trace.server = "off"
 
 local M = {}
 
--- Export configuration table (for vim.lsp.config)
 M.config = {
-  settings = {
-      json = {
-        -- Schema configuration
-        schemas = require('schemastore').json.schemas(),
-        validate = { enable = true },
-        
-        -- Formatting options
-        format = { 
-          enable = true,
-          keepLines = false,
+    settings = {
+        json = {
+            schemas = require("schemastore").json.schemas(),
+            validate = { enable = true },
         },
-        
-        -- Visual enhancements
-        colorDecorators = { enable = true }, -- Show color previews for color values
-        
-        -- Performance settings
-        maxItemsComputed = 5000, -- Limit computed properties for large files
-        
-        -- Schema download control
-        schemaDownload = { enable = true }, -- Auto-download missing schemas
-        
-        -- Completion settings
-        completion = {
-          triggerCharacters = { '"', ':' },
-        },
-        
-        -- Hover information
-        hover = { enable = true },
-        
-        -- Trace settings (for debugging)
-        trace = { server = 'off' }, -- Options: 'off', 'messages', 'verbose'
-      },
     },
-  -- File type associations
-  filetypes = { 
-    "json", 
-    "jsonc", -- JSON with comments
-    "json5"  -- JSON5 format
-  },
 }
 
 return M

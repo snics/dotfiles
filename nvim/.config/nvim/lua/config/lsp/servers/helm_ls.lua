@@ -1,18 +1,17 @@
--- Helm Language Server Configuration
+-- helm-ls — Helm Chart Language Server
+-- filetypes and root_dir are auto-configured by lspconfig
+-- yamlls.path must be set explicitly (no auto-detection)
 
 local M = {}
 
--- Export configuration table (for vim.lsp.config)
 M.config = {
-  settings = {
-    ['helm-ls'] = {
-      yamlls = {
-        path = "yaml-language-server",
-      },
+    settings = {
+        ["helm-ls"] = {
+            yamlls = {
+                path = "yaml-language-server",
+            },
+        },
     },
-  },
-  filetypes = { "helm" },
-  root_dir = vim.fs.root(0, {"Chart.yaml", "Chart.yml"}),
 }
 
 return M

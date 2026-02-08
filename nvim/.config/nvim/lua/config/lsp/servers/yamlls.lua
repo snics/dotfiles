@@ -1,23 +1,21 @@
--- YAML Language Server Configuration with Kubernetes support
+-- yamlls — YAML Language Server with Kubernetes support
+-- Managed by yaml-companion.nvim (see lsp/init.lua externally_managed)
+-- SchemaStore.nvim provides standard schemas, kubernetes.nvim adds CRD schemas
 
 local M = {}
 
--- Export configuration table (for vim.lsp.config)
 M.config = {
     settings = {
         yaml = {
             schemaStore = {
-                -- Disable built-in schemaStore support since we use SchemaStore.nvim
-                enable = false,
-                -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-                url = "",
+                enable = false, -- disabled: we use SchemaStore.nvim instead
+                url = "",       -- avoid TypeError when schemaStore is disabled
             },
             schemas = (function()
-                -- SchemaStore.nvim for all standard schemas
-                local schemas = require('schemastore').yaml.schemas()
+                local schemas = require("schemastore").yaml.schemas()
 
                 -- kubernetes.nvim: adds cluster-specific schemas (incl. CRDs)
-                local k8s_ok, kubernetes = pcall(require, 'kubernetes')
+                local k8s_ok, kubernetes = pcall(require, "kubernetes")
                 if k8s_ok then
                     local schema_path = kubernetes.yamlls_schema()
                     if schema_path then
@@ -25,30 +23,20 @@ M.config = {
                     end
                 end
 
-                -- Note: K8s content-based detection is handled by yaml-companion.nvim
-                -- No filename-pattern fallback needed anymore.
+                -- K8s content-based detection is handled by yaml-companion.nvim
                 return schemas
             end)(),
-            format = {
-                enable = true,
-                singleQuote = false,
-                bracketSpacing = true,
-            },
-            validate = true,
-            completion = true,
-            hover = true,
-            -- Kubernetes support now handled by kubernetes.nvim plugin
-        }
+            format = { enable = true },
+            -- validate, completion, hover all default to true
+        },
     },
-    -- Improved file type detection
     filetypes = {
         "yaml",
         "yml",
         "yaml.docker-compose",
         "yaml.gitlab",
-        "yaml.ansible"
+        "yaml.ansible",
     },
-    -- Root directory detection
     root_dir = vim.fs.root(0, {
         ".git",
         "docker-compose.yml",
@@ -56,7 +44,7 @@ M.config = {
         "Chart.yaml",
         "values.yaml",
         "ansible.cfg",
-        ".gitlab-ci.yml"
+        ".gitlab-ci.yml",
     }),
 }
 
