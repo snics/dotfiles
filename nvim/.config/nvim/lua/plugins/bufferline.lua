@@ -8,7 +8,7 @@ return {
             mode = "tabs",
             separator_style = "thick",
             always_show_bufferline = false,
-            auto_toggle_bufferline = true,
+            diagnostics = "nvim_lsp",
         },
     },
     config = function(_, opts)
