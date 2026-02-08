@@ -45,12 +45,26 @@ return {
                 codex = function()
                     return require("codecompanion.adapters").resolve("codex")
                 end,
-                -- HTTP API (for inline edits — ACP doesn't support inline)
+                -- HTTP APIs (for inline edits — ACP doesn't support inline)
                 anthropic = function()
                     return require("codecompanion.adapters").resolve("anthropic", {
                         schema = {
                             model = {
                                 default = "claude-sonnet-4-5-20250929",
+                            },
+                        },
+                    })
+                end,
+                openrouter = function()
+                    return require("codecompanion.adapters").extend("openai_compatible", {
+                        env = {
+                            url = "https://openrouter.ai/api/v1",
+                            api_key = "OPENROUTER_API_KEY",
+                            chat_url = "/chat/completions",
+                        },
+                        schema = {
+                            model = {
+                                default = "anthropic/claude-sonnet-4",
                             },
                         },
                     })
