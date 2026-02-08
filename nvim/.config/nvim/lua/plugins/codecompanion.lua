@@ -33,8 +33,8 @@ return {
             -- Adapters: Claude Code (ACP), OpenCode (ACP), Anthropic API (HTTP)
             adapters = {
                 -- ACP agents (stateful, CLI-based)
-                -- ACP requires dedicated binaries: claude-code-acp (Desktop App),
-                -- codex-acp (not yet shipped). Only opencode, gemini, kimi work via CLI.
+                -- claude-code-acp: npm i -g @zed-industries/claude-code-acp
+                -- codex-acp: not yet shipped, codex adapter won't work
                 claude_code = function()
                     return require("codecompanion.adapters").resolve("claude_code")
                 end,
@@ -100,7 +100,7 @@ return {
 
             strategies = {
                 chat = {
-                    adapter = "opencode",
+                    adapter = "claude_code",
                 },
                 inline = {
                     adapter = "openrouter",
