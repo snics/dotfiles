@@ -113,6 +113,9 @@ return {
             { "<leader>dq", desc = "Quit debug", icon = "󰅗" },
             { "<leader>du", desc = "Toggle UI", icon = "󰍉" },
             { "<leader>de", desc = "Eval", icon = "󰘧", mode = { "n", "v" } },
+            { "<leader>dP", desc = "Toggle Profiler", icon = "󰈸" },
+            { "<leader>dO", desc = "Toggle Profiler Highlights", icon = "󰸱" },
+            { "<leader>dS", desc = "Profiler Scratch Buffer", icon = "󰟃" },
 
             ---------------------------------------------------------------
             -- FIND — <leader>f (Snacks picker)
@@ -140,6 +143,10 @@ return {
             { "<leader>gd", desc = "Diff", icon = "󰦓" },
             { "<leader>gf", desc = "Log file", icon = "󰈙" },
             { "<leader>gB", desc = "Git Browse", icon = "󰖟", mode = { "n", "v" } },
+            { "<leader>gi", desc = "GitHub Issues (open)", icon = "󰌷" },
+            { "<leader>gI", desc = "GitHub Issues (all)", icon = "󰌷" },
+            { "<leader>gp", desc = "GitHub PRs (open)", icon = "󰘬" },
+            { "<leader>gP", desc = "GitHub PRs (all)", icon = "󰘬" },
             -- Hunks subgroup — <leader>gh*
             { "<leader>ghs", desc = "Stage hunk", icon = "󰐕", mode = { "n", "v" } },
             { "<leader>ghr", desc = "Reset hunk", icon = "󰜺", mode = { "n", "v" } },

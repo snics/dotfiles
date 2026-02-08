@@ -51,7 +51,7 @@ Complete tree of all keybindings. Mode shown on the right when not normal mode o
 ├── 󰚩 a  AI
 │   ├── a   Toggle chat
 │   ├── A   New chat
-│   ├── p   Action palette                        n,v
+│   ├── p   Action palette                         n,v
 │   ├── i   Inline edit                            n,v
 │   ├── e   Explain code                             v
 │   ├── f   Fix code                                 v
@@ -88,7 +88,10 @@ Complete tree of all keybindings. Mode shown on the right when not normal mode o
 │   ├── s   Scopes
 │   ├── q   Quit debug
 │   ├── u   Toggle UI
-│   └── e   Eval                                   n,v
+│   ├── e   Eval                                   n,v
+│   ├── P   Toggle Profiler
+│   ├── O   Toggle Profiler Highlights
+│   └── S   Profiler Scratch Buffer
 │
 ├── 󰈞 f  Find
 │   ├── f   Find files
@@ -111,6 +114,10 @@ Complete tree of all keybindings. Mode shown on the right when not normal mode o
 │   ├── d   Diff
 │   ├── f   Log file
 │   ├── B   Git Browse                             n,v
+│   ├── i   GitHub Issues (open)
+│   ├── I   GitHub Issues (all)
+│   ├── p   GitHub PRs (open)
+│   ├── P   GitHub PRs (all)
 │   ├── 󰊢 h  Hunks
 │   │   ├── s   Stage hunk                         n,v
 │   │   ├── r   Reset hunk                         n,v
@@ -139,7 +146,7 @@ Complete tree of all keybindings. Mode shown on the right when not normal mode o
 │   ├── i   Show none-ls info
 │   └── s   Restart LSP
 │
-├──  m  Markdown                               ft=md
+├──  m  Markdown                                  ft=md
 │   ├── p   Toggle browser preview
 │   └── r   Toggle render-markdown
 │
@@ -589,7 +596,7 @@ LSP-powered code operations. These work in any language with an LSP server.
 
 ### 2.5 Debug — `<leader>d`
 
-Debug Adapter Protocol (DAP) — interactive debugger.
+Debug Adapter Protocol (DAP) — interactive debugger + Lua profiler.
 
 | Key | Action | Example use case |
 |-----|--------|------------------|
@@ -605,8 +612,12 @@ Debug Adapter Protocol (DAP) — interactive debugger.
 | `<leader>dq` | Quit | Stop debug session and close UI |
 | `<leader>du` | Toggle UI | Show/hide debug UI panels |
 | `<leader>de` | Eval (n,v) | Evaluate expression or selected code |
+| `<leader>dP` | Toggle Profiler | Start/stop Lua profiler (Snacks) |
+| `<leader>dO` | Toggle Profiler Highlights | Show/hide hotspot badges in source |
+| `<leader>dS` | Profiler Scratch Buffer | Interactive picker options editor |
 
 **Also:** `<F5>` Continue, `<F10>` Step Over, `<F11>` Step Into, `<F12>` Step Out.
+**Startup profiling:** Run `PROF=1 nvim` to profile startup and open results automatically.
 
 ### 2.6 Find — `<leader>f`
 
@@ -641,6 +652,12 @@ Everything Git: status, branches, blame, hunks, and diffview.
 | `<leader>gd` | n | Diff | See all changed hunks |
 | `<leader>gf` | n | Log file | History of current file |
 | `<leader>gB` | n,v | Git Browse | Open file on GitHub/GitLab |
+| `<leader>gi` | n | GitHub Issues (open) | Browse open issues in picker |
+| `<leader>gI` | n | GitHub Issues (all) | Browse all issues (incl. closed) |
+| `<leader>gp` | n | GitHub PRs (open) | Browse open pull requests |
+| `<leader>gP` | n | GitHub PRs (all) | Browse all PRs (incl. merged/closed) |
+
+**Requires:** `gh` CLI installed and authenticated (`gh auth login`).
 
 **Hunks subgroup — `<leader>gh` (3 keystrokes):**
 

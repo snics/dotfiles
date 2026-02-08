@@ -1,17 +1,17 @@
 -- Swiss-army knife plugin with many modules (dashboard, picker, explorer, etc.).
 --
--- Available modules (enabled/disabled individually):
+-- Enabled modules (setup/opts):
 --   bigfile, dashboard, explorer, indent, input, notifier, picker, quickfile,
---   scroll, statuscolumn, words, zen, scratch, debug, terminal, lazygit,
---   gitbrowse, bufdelete, rename, toggle, dim, animate, profiler, image,
---   layout, win, scope, gh
+--   scroll, statuscolumn, words, image
+--
+-- On-demand modules (keys/init, no setup needed):
+--   zen, scratch, debug, terminal, lazygit, gitbrowse, bufdelete, rename,
+--   toggle, dim, animate, profiler, gh
 --
 -- Not used but available:
---   scope     — treesitter-aware text objects (ii/ai) and jump to scope edges ([i/]i)
---   animate   — global animation settings (fps, easing) — used implicitly by scroll/indent/dim
---   image     — terminal image rendering
---   profiler  — startup profiling (PROF=1 nvim)
---   gh        — GitHub CLI integration (issues, PRs)
+--   scope     — treesitter-aware text objects (ii/ai) — conflicts with treesitter-textobjects
+--   keymap    — enhanced vim.keymap.set with ft/lsp awareness — LspAttach autocmd is sufficient
+--   layout    — programmatic window layouts
 return {
     "folke/snacks.nvim",
     priority = 1000,
@@ -42,6 +42,7 @@ return {
             hidden = true,   -- default: true — show hidden files (consistent with picker)
             ignored = false, -- default: false — hide .gitignored files
         },
+        image = { enabled = true },
         indent = {
             enabled = true,
             indent = {
@@ -50,6 +51,9 @@ return {
             scope = {
                 enabled = true,
                 char = "┊",
+            },
+            animate = {
+                easing = "outQuad", -- default: "linear" — smoother scope highlight transitions
             },
         },
         input = { enabled = true },
@@ -149,11 +153,20 @@ return {
         -- LSP
         { "gd",         function() Snacks.picker.lsp_definitions() end,                                        desc = "Goto Definition" },
         { "gD",         function() Snacks.picker.lsp_declarations() end,                                       desc = "Goto Declaration" },
-        { "gr",         function() Snacks.picker.lsp_references() end,                                         nowait = true,                     desc = "References" },
+        { "gr",         function() Snacks.picker.lsp_references() end,                                         nowait = true,                      desc = "References" },
         { "gI",         function() Snacks.picker.lsp_implementations() end,                                    desc = "Goto Implementation" },
         { "gy",         function() Snacks.picker.lsp_type_definitions() end,                                   desc = "Goto T[y]pe Definition" },
         { "<leader>ss", function() Snacks.picker.lsp_symbols() end,                                            desc = "LSP Symbols" },
         { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end,                                  desc = "LSP Workspace Symbols" },
+        -- GitHub (gh CLI integration)
+        { "<leader>gi", function() Snacks.picker.gh_issue() end,                                               desc = "GitHub Issues (open)" },
+        { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end,                              desc = "GitHub Issues (all)" },
+        { "<leader>gp", function() Snacks.picker.gh_pr() end,                                                  desc = "GitHub PRs (open)" },
+        { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end,                                 desc = "GitHub PRs (all)" },
+        -- Profiler
+        { "<leader>dP", function() Snacks.profiler.toggle() end,                                               desc = "Toggle Profiler" },
+        { "<leader>dO", function() Snacks.profiler.highlight() end,                                            desc = "Toggle Profiler Highlights" },
+        { "<leader>dS", function() Snacks.profiler.scratch() end,                                              desc = "Profiler Scratch Buffer" },
         -- Other
         { "<leader>z",  function() Snacks.zen() end,                                                           desc = "Toggle Zen Mode" },
         { "<leader>Z",  function() Snacks.zen.zoom() end,                                                      desc = "Toggle Zoom" },
@@ -163,13 +176,13 @@ return {
         { "<leader>bd", function() Snacks.bufdelete() end,                                                     desc = "Delete Buffer" },
         { "<leader>bo", function() Snacks.bufdelete.other() end,                                               desc = "Delete Other Buffers" },
         { "<leader>cR", function() Snacks.rename.rename_file() end,                                            desc = "Rename File" },
-        { "<leader>gB", function() Snacks.gitbrowse() end,                                                     desc = "Git Browse",               mode = { "n", "v" } },
+        { "<leader>gB", function() Snacks.gitbrowse() end,                                                     desc = "Git Browse",                mode = { "n", "v" } },
         { "<leader>gg", function() Snacks.lazygit() end,                                                       desc = "Lazygit" },
         { "<leader>un", function() Snacks.notifier.hide() end,                                                 desc = "Dismiss All Notifications" },
         { "<c-/>",      function() Snacks.terminal() end,                                                      desc = "Toggle Terminal" },
         { "<c-_>",      function() Snacks.terminal() end,                                                      desc = "which_key_ignore" },
-        { "]]",         function() Snacks.words.jump(vim.v.count1) end,                                        desc = "Next Reference",           mode = { "n", "t" } },
-        { "[[",         function() Snacks.words.jump(-vim.v.count1) end,                                       desc = "Prev Reference",           mode = { "n", "t" } },
+        { "]]",         function() Snacks.words.jump(vim.v.count1) end,                                        desc = "Next Reference",            mode = { "n", "t" } },
+        { "[[",         function() Snacks.words.jump(-vim.v.count1) end,                                       desc = "Prev Reference",            mode = { "n", "t" } },
         {
             "<leader>N",
             desc = "Neovim News",
@@ -215,6 +228,7 @@ return {
                     "<leader>ub")
                 Snacks.toggle.inlay_hints():map("<leader>uh")
                 Snacks.toggle.indent():map("<leader>ug")
+                Snacks.toggle.animate():map("<leader>ua")
                 Snacks.toggle.dim():map("<leader>uD")
             end,
         })
