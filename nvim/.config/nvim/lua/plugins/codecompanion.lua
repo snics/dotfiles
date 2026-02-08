@@ -68,6 +68,20 @@ return {
                         schema = {
                             model = {
                                 default = "google/gemini-2.5-flash",
+                                choices = {
+                                    -- Free models
+                                    ["google/gemini-2.5-flash"] = { formatted_name = "Gemini 2.5 Flash (free)" },
+                                    ["google/gemini-2.5-pro"] = { formatted_name = "Gemini 2.5 Pro (free)" },
+                                    ["mistralai/mistral-small-3.1-24b-instruct:free"] = { formatted_name = "Mistral Small 3.1 (free)" },
+                                    ["meta-llama/llama-4-scout:free"] = { formatted_name = "Llama 4 Scout (free)" },
+                                    ["meta-llama/llama-4-maverick:free"] = { formatted_name = "Llama 4 Maverick (free)" },
+                                    ["qwen/qwen3-235b-a22b:free"] = { formatted_name = "Qwen3 235B (free)" },
+                                    -- Paid models (for when you want quality)
+                                    ["anthropic/claude-sonnet-4"] = { formatted_name = "Claude Sonnet 4" },
+                                    ["anthropic/claude-sonnet-4.5"] = { formatted_name = "Claude Sonnet 4.5" },
+                                    ["openai/gpt-4.1"] = { formatted_name = "GPT-4.1" },
+                                    ["google/gemini-2.5-pro-preview"] = { formatted_name = "Gemini 2.5 Pro Preview" },
+                                },
                             },
                         },
                     })
