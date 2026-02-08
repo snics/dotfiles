@@ -56,8 +56,48 @@ return {
             end
         end
 
+        -- OpenRouter adapter config (openai_compatible base)
+        local openrouter_config = function()
+            local base = require("codecompanion.adapters.http.openai_compatible")
+            return vim.tbl_deep_extend("force", {}, base, {
+                name = "openrouter",
+                formatted_name = "OpenRouter",
+                env = {
+                    url = "https://openrouter.ai/api/v1",
+                    api_key = "OPENROUTER_API_KEY",
+                    chat_url = "/chat/completions",
+                },
+                schema = {
+                    model = {
+                        default = "google/gemini-2.5-flash",
+                        choices = {
+                            -- Free models
+                            ["google/gemini-2.5-flash"] = { formatted_name = "Gemini 2.5 Flash (free)" },
+                            ["google/gemini-2.5-pro"] = { formatted_name = "Gemini 2.5 Pro (free)" },
+                            ["deepseek/deepseek-v3.2-20251201"] = { formatted_name = "DeepSeek V3.2 (free)" },
+                            ["openai/gpt-oss-120b"] = { formatted_name = "GPT-OSS 120B (free)" },
+                            ["meta-llama/llama-4-scout:free"] = { formatted_name = "Llama 4 Scout (free)" },
+                            ["meta-llama/llama-4-maverick:free"] = { formatted_name = "Llama 4 Maverick (free)" },
+                            ["qwen/qwen3-235b-a22b:free"] = { formatted_name = "Qwen3 235B (free)" },
+                            ["mistralai/mistral-small-3.1-24b-instruct:free"] = { formatted_name = "Mistral Small 3.1 (free)" },
+                            ["moonshotai/kimi-k2.5-0127"] = { formatted_name = "Kimi K2.5 (free)" },
+                            -- Paid — budget
+                            ["deepseek/deepseek-v3.2"] = { formatted_name = "DeepSeek V3.2 ($0.25/M)" },
+                            ["google/gemini-3-flash-preview"] = { formatted_name = "Gemini 3 Flash Preview ($0.50/M)" },
+                            -- Paid — mid
+                            ["openai/gpt-5.2-codex"] = { formatted_name = "GPT-5.2 Codex ($1.75/M)" },
+                            ["google/gemini-3-pro-preview"] = { formatted_name = "Gemini 3 Pro Preview ($2/M)" },
+                            -- Paid — frontier
+                            ["anthropic/claude-sonnet-4.5"] = { formatted_name = "Claude Sonnet 4.5 ($3/M)" },
+                            ["anthropic/claude-opus-4.6"] = { formatted_name = "Claude Opus 4.6 ($5/M)" },
+                            ["openai/gpt-5.2"] = { formatted_name = "GPT-5.2 ($2/M)" },
+                        },
+                    },
+                },
+            })
+        end
+
         require("codecompanion").setup({
-            -- Adapters: Claude Code (ACP), OpenCode (ACP), Anthropic API (HTTP)
             adapters = {
                 -- ACP agents (stateful, CLI-based)
                 claude_code = function()
@@ -89,44 +129,7 @@ return {
                         },
                     })
                 end,
-                openrouter = function()
-                    return require("codecompanion.adapters").resolve("openai_compatible", {
-                        name = "openrouter",
-                        formatted_name = "OpenRouter",
-                        env = {
-                            url = "https://openrouter.ai/api/v1",
-                            api_key = "OPENROUTER_API_KEY",
-                            chat_url = "/chat/completions",
-                        },
-                        schema = {
-                            model = {
-                                default = "google/gemini-2.5-flash",
-                                choices = {
-                                    -- Free models
-                                    ["google/gemini-2.5-flash"] = { formatted_name = "Gemini 2.5 Flash (free)" },
-                                    ["google/gemini-2.5-pro"] = { formatted_name = "Gemini 2.5 Pro (free)" },
-                                    ["deepseek/deepseek-v3.2-20251201"] = { formatted_name = "DeepSeek V3.2 (free)" },
-                                    ["openai/gpt-oss-120b"] = { formatted_name = "GPT-OSS 120B (free)" },
-                                    ["meta-llama/llama-4-scout:free"] = { formatted_name = "Llama 4 Scout (free)" },
-                                    ["meta-llama/llama-4-maverick:free"] = { formatted_name = "Llama 4 Maverick (free)" },
-                                    ["qwen/qwen3-235b-a22b:free"] = { formatted_name = "Qwen3 235B (free)" },
-                                    ["mistralai/mistral-small-3.1-24b-instruct:free"] = { formatted_name = "Mistral Small 3.1 (free)" },
-                                    ["moonshotai/kimi-k2.5-0127"] = { formatted_name = "Kimi K2.5 (free)" },
-                                    -- Paid — budget
-                                    ["deepseek/deepseek-v3.2"] = { formatted_name = "DeepSeek V3.2 ($0.25/M)" },
-                                    ["google/gemini-3-flash-preview"] = { formatted_name = "Gemini 3 Flash Preview ($0.50/M)" },
-                                    -- Paid — mid
-                                    ["openai/gpt-5.2-codex"] = { formatted_name = "GPT-5.2 Codex ($1.75/M)" },
-                                    ["google/gemini-3-pro-preview"] = { formatted_name = "Gemini 3 Pro Preview ($2/M)" },
-                                    -- Paid — frontier
-                                    ["anthropic/claude-sonnet-4.5"] = { formatted_name = "Claude Sonnet 4.5 ($3/M)" },
-                                    ["anthropic/claude-opus-4.6"] = { formatted_name = "Claude Opus 4.6 ($5/M)" },
-                                    ["openai/gpt-5.2"] = { formatted_name = "GPT-5.2 ($2/M)" },
-                                },
-                            },
-                        },
-                    })
-                end,
+                openrouter = openrouter_config,
             },
 
             strategies = {
