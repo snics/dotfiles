@@ -34,7 +34,7 @@ return {
             adapters = {
                 -- ACP agents (stateful, CLI-based)
                 -- claude-code-acp: npm i -g @zed-industries/claude-code-acp
-                -- codex-acp: not yet shipped, codex adapter won't work
+                -- codex-acp: npm i -g @zed-industries/codex-acp
                 claude_code = function()
                     return require("codecompanion.adapters").resolve("claude_code")
                 end,
