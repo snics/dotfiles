@@ -1,3 +1,12 @@
+-- TODO: Known issues to fix:
+-- 1. OpenRouter adapter: inline/cmd strategy fails with "adapter not found" or nil error
+--    - extend("openai_compatible") doesn't register in config.adapters.http
+--    - Inline strategy resolves adapter by string name, can't find custom adapters
+--    - See: https://github.com/olimorris/codecompanion.nvim/discussions/1013
+--    - Workaround: switch inline/cmd to "anthropic" (requires ANTHROPIC_API_KEY)
+-- 2. claude-code-acp: auth error 401 (needs ANTHROPIC_API_KEY, no OAuth reuse from claude CLI)
+-- 3. codex-acp: same pattern, needs OPENAI_API_KEY
+-- 4. Model choices in OpenRouter: not testable until adapter resolution works
 return {
     "olimorris/codecompanion.nvim",
     dependencies = {
