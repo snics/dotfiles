@@ -33,13 +33,10 @@ return {
             -- Adapters: Claude Code (ACP), OpenCode (ACP), Anthropic API (HTTP)
             adapters = {
                 -- ACP agents (stateful, CLI-based)
+                -- ACP requires dedicated binaries: claude-code-acp (Desktop App),
+                -- codex-acp (not yet shipped). Only opencode, gemini, kimi work via CLI.
                 claude_code = function()
-                    return require("codecompanion.adapters").resolve("claude_code", {
-                        commands = {
-                            default = { "claude", "acp" },
-                            yolo = { "claude", "acp", "--yolo" },
-                        },
-                    })
+                    return require("codecompanion.adapters").resolve("claude_code")
                 end,
                 opencode = function()
                     return require("codecompanion.adapters").resolve("opencode")
@@ -48,7 +45,6 @@ return {
                     return require("codecompanion.adapters").resolve("gemini_cli")
                 end,
                 codex = function()
-                    -- requires 'brew install --cask codex' (provides codex-acp binary)
                     return require("codecompanion.adapters").resolve("codex")
                 end,
                 kimi_cli = function()
@@ -104,7 +100,7 @@ return {
 
             strategies = {
                 chat = {
-                    adapter = "claude_code",
+                    adapter = "opencode",
                 },
                 inline = {
                     adapter = "openrouter",
