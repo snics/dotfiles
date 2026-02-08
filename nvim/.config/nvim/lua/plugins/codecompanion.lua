@@ -162,5 +162,8 @@ return {
                 },
             },
         })
+
+        -- Register openrouter in the HTTP adapter registry so resolve() can find it
+        require("codecompanion.config").adapters.http.openrouter = openrouter_config
     end,
 }
