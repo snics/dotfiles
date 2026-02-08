@@ -39,6 +39,12 @@ return {
                 opencode = function()
                     return require("codecompanion.adapters").resolve("opencode")
                 end,
+                gemini_cli = function()
+                    return require("codecompanion.adapters").resolve("gemini_cli")
+                end,
+                codex = function()
+                    return require("codecompanion.adapters").resolve("codex")
+                end,
                 -- HTTP API (for inline edits — ACP doesn't support inline)
                 anthropic = function()
                     return require("codecompanion.adapters").resolve("anthropic", {
