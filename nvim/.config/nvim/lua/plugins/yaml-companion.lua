@@ -6,8 +6,10 @@ return {
         "b0o/schemastore.nvim",
     },
     keys = {
-        { "<leader>ys", "<cmd>YAMLSchemaSelect<cr>", desc = "Select YAML schema",       ft = "yaml" },
-        { "<leader>yS", "<cmd>YAMLSchemaView<cr>",   desc = "View current YAML schema", ft = "yaml" },
+        { "<leader>ys", "<cmd>YamlBrowseDatreeSchemas<cr>", desc = "Browse YAML schemas (Datree)", ft = "yaml" },
+        { "<leader>yc", "<cmd>YamlBrowseClusterCRDs<cr>",   desc = "Browse cluster CRD schemas",   ft = "yaml" },
+        { "<leader>ym", "<cmd>YamlAddCRDModelines<cr>",     desc = "Add CRD schema modelines",     ft = "yaml" },
+        { "<leader>yK", "<cmd>YamlKeys<cr>",                desc = "YAML keys to quickfix",        ft = "yaml" },
     },
     config = function()
         -- Load existing yamlls server configuration
@@ -20,6 +22,12 @@ return {
                 kubernetes = { enabled = true },
                 cloud_init = { enabled = true },
             },
+
+            -- YAML key navigation via :YamlKeys
+            keys = { enabled = true },
+
+            -- Cluster CRD browsing via :YamlBrowseClusterCRDs / :YamlFetchClusterCRD
+            cluster_crds = { enabled = true },
 
             -- Merge our existing yamlls settings
             lspconfig = vim.tbl_deep_extend("force", yamlls_config, {
