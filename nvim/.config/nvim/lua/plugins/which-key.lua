@@ -200,8 +200,8 @@ return {
             { "[L", desc = "Previous loop end", icon = "󰑓" },
 
             -- 🔄 Treesitter Swapping
-            { "<leader>a", desc = "Swap parameter with next", icon = "󰓡" },
-            { "<leader>A", desc = "Swap parameter with previous", icon = "󰓡" },
+            { "]a", desc = "Swap parameter with next", icon = "󰓡" },
+            { "[a", desc = "Swap parameter with previous", icon = "󰓡" },
 
             -- 💬 Comment.nvim
             { "gc", group = "Comment", icon = "💬" },
@@ -221,17 +221,17 @@ return {
             { "<c-s>", desc = "Toggle Flash Search", icon = "⚡", mode = "c" },
 
             -- 🤖 CodeCompanion AI
-            { "<leader>o", group = "AI (CodeCompanion)", icon = "🤖" },
-            { "<leader>oa", desc = "Toggle AI chat", icon = "💬" },
-            { "<leader>oA", desc = "New AI chat", icon = "🆕" },
-            { "<leader>op", desc = "AI action palette", icon = "📝", mode = { "n", "v" } },
-            { "<leader>oi", desc = "AI inline edit", icon = "✏️", mode = { "n", "v" } },
-            { "<leader>oe", desc = "AI explain code", icon = "💡", mode = "v" },
-            { "<leader>of", desc = "AI fix code", icon = "🔧", mode = "v" },
-            { "<leader>ot", desc = "AI generate tests", icon = "🧪", mode = "v" },
-            { "<leader>or", desc = "AI review code", icon = "🔍", mode = "v" },
-            { "<leader>od", desc = "AI document code", icon = "📚" },
-            { "<leader>oc", desc = "AI commit message", icon = "📋" },
+            { "<leader>a", group = "AI (CodeCompanion)", icon = "🤖" },
+            { "<leader>aa", desc = "Toggle AI chat", icon = "💬" },
+            { "<leader>aA", desc = "New AI chat", icon = "🆕" },
+            { "<leader>ap", desc = "AI action palette", icon = "📝", mode = { "n", "v" } },
+            { "<leader>ai", desc = "AI inline edit", icon = "✏️", mode = { "n", "v" } },
+            { "<leader>ae", desc = "AI explain code", icon = "💡", mode = "v" },
+            { "<leader>af", desc = "AI fix code", icon = "🔧", mode = "v" },
+            { "<leader>at", desc = "AI generate tests", icon = "🧪", mode = "v" },
+            { "<leader>ar", desc = "AI review code", icon = "🔍", mode = "v" },
+            { "<leader>ad", desc = "AI document code", icon = "📚" },
+            { "<leader>ac", desc = "AI commit message", icon = "📋" },
 
             -- Windsurf (Codeium)
             { "<leader>w", group = "Windsurf", icon = "󰘦" },
