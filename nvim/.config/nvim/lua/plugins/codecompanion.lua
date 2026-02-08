@@ -34,7 +34,12 @@ return {
             adapters = {
                 -- ACP agents (stateful, CLI-based)
                 claude_code = function()
-                    return require("codecompanion.adapters").resolve("claude_code")
+                    return require("codecompanion.adapters").resolve("claude_code", {
+                        commands = {
+                            default = { "claude", "acp" },
+                            yolo = { "claude", "acp", "--yolo" },
+                        },
+                    })
                 end,
                 opencode = function()
                     return require("codecompanion.adapters").resolve("opencode")
