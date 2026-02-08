@@ -18,8 +18,9 @@ return {
                     { desc = "Go to declaration", buffer = ev.buf, silent = true })
                 keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action,
                     { desc = "See available code actions", buffer = ev.buf, silent = true })
-                keymap.set("n", "<leader>rn", vim.lsp.buf.rename,
-                    { desc = "Smart rename", buffer = ev.buf, silent = true })
+                keymap.set("n", "<leader>rn", function()
+                    return ":IncRename " .. vim.fn.expand("<cword>")
+                end, { desc = "Smart rename", buffer = ev.buf, silent = true, expr = true })
                 keymap.set("n", "<leader>d", vim.diagnostic.open_float,
                     { desc = "Show line diagnostics", buffer = ev.buf, silent = true })
                 keymap.set("n", "[d", vim.diagnostic.goto_prev,
