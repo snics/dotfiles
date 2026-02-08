@@ -2,8 +2,13 @@ return {
     "Saecki/crates.nvim",
     event = "BufRead Cargo.toml",
     opts = {
-        completion = {
-            cmp = { enabled = true },
+        -- In-process LSP server (replaces deprecated completion.cmp and null_ls)
+        -- Provides: completion, hover (K), code actions (upgrade, git source, etc.)
+        lsp = {
+            enabled = true,    -- default: false
+            actions = true,    -- default: false — code actions (upgrade crate, open docs, etc.)
+            completion = true, -- default: false — version/feature completion via LSP
+            hover = true,      -- default: false — crate info on K
         },
     },
     keys = {
