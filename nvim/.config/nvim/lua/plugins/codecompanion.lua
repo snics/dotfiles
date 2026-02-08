@@ -29,14 +29,41 @@ return {
         { "<leader>ac", "<cmd>CodeCompanion /commit<cr>",                                             desc = "AI commit message",        mode = "n" },
     },
     config = function()
+        --- Ensure an npm package is installed, auto-install if missing
+        ---@param bin string Binary name to check
+        ---@param pkg string npm package to install
+        local function ensure_npm(bin, pkg)
+            if vim.fn.executable(bin) == 1 then
+                return
+            end
+            vim.notify("CodeCompanion: installing " .. pkg .. "...", vim.log.levels.INFO)
+            local result = vim.fn.system("npm install -g " .. pkg .. " 2>&1")
+            if vim.v.shell_error ~= 0 then
+                vim.notify("CodeCompanion: failed to install " .. pkg .. "\n" .. result, vim.log.levels.ERROR)
+            else
+                vim.notify("CodeCompanion: " .. pkg .. " installed", vim.log.levels.INFO)
+            end
+        end
+
+        --- ACP setup handler that auto-installs npm binaries
+        ---@param bin string Binary name
+        ---@param pkg string npm package name
+        ---@return fun(self: table): boolean
+        local function acp_setup(bin, pkg)
+            return function(self)
+                ensure_npm(bin, pkg)
+                return vim.fn.executable(bin) == 1
+            end
+        end
+
         require("codecompanion").setup({
             -- Adapters: Claude Code (ACP), OpenCode (ACP), Anthropic API (HTTP)
             adapters = {
                 -- ACP agents (stateful, CLI-based)
-                -- claude-code-acp: npm i -g @zed-industries/claude-code-acp
-                -- codex-acp: npm i -g @zed-industries/codex-acp
                 claude_code = function()
-                    return require("codecompanion.adapters").resolve("claude_code")
+                    return require("codecompanion.adapters").resolve("claude_code", {
+                        handlers = { setup = acp_setup("claude-code-acp", "@zed-industries/claude-code-acp") },
+                    })
                 end,
                 opencode = function()
                     return require("codecompanion.adapters").resolve("opencode")
@@ -45,7 +72,9 @@ return {
                     return require("codecompanion.adapters").resolve("gemini_cli")
                 end,
                 codex = function()
-                    return require("codecompanion.adapters").resolve("codex")
+                    return require("codecompanion.adapters").resolve("codex", {
+                        handlers = { setup = acp_setup("codex-acp", "@zed-industries/codex-acp") },
+                    })
                 end,
                 kimi_cli = function()
                     return require("codecompanion.adapters").resolve("kimi_cli")
