@@ -34,30 +34,24 @@ return {
                 require("neotest-jest"),
                 require("neotest-bun"),
             },
-            -- Status signs in the sign column
+            -- Custom icons (defaults: ✓, ✘, ◐, ⊘, ?)
             icons = {
                 failed = "✖",
                 passed = "✔",
                 running = "⟳",
                 skipped = "○",
-                unknown = "?",
+                unknown = "?", -- default
             },
-            -- Show test status in diagnostics
             status = {
-                enabled = true,
-                virtual_text = true,
-                signs = true,
+                virtual_text = true, -- default: false — show test results as virtual text
+                -- enabled = true,              -- default
+                -- signs = true,                -- default
             },
-            -- Floating output window settings
             output = {
-                enabled = true,
-                open_on_run = false,
+                open_on_run = false, -- default: "short" — don't auto-open output window
+                -- enabled = true,              -- default
             },
-            -- Summary panel settings
-            summary = {
-                animated = true,
-                expand_errors = true,
-            },
+            -- summary: animated and expand_errors are defaults, no overrides needed
         })
     end,
 }

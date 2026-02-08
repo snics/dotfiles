@@ -1,3 +1,5 @@
+-- LSP configuration: keymaps on attach + diagnostic display settings.
+-- Server setup is handled in config/lsp.lua (called from mason.lua).
 return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
@@ -8,28 +10,25 @@ return {
         { "folke/lazydev.nvim", opts = {} },
     },
     config = function()
-        local keymap = vim.keymap
-
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(ev)
-                -- LSP Keybinds
-                keymap.set("n", "gD", vim.lsp.buf.declaration,
-                    { desc = "Go to declaration", buffer = ev.buf, silent = true })
-                keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action,
-                    { desc = "See available code actions", buffer = ev.buf, silent = true })
-                keymap.set("n", "<leader>rn", function()
+                local function map(mode, l, r, desc)
+                    vim.keymap.set(mode, l, r, { desc = desc, buffer = ev.buf, silent = true })
+                end
+
+                map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+                map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code actions")
+                map("n", "K", vim.lsp.buf.hover, "Hover documentation")
+                map("n", "<leader>d", vim.diagnostic.open_float, "Line diagnostics")
+                map("n", "[d", vim.diagnostic.goto_prev, "Prev diagnostic")
+                map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+                map("n", "<leader>rs", "<cmd>LspRestart<CR>", "Restart LSP")
+
+                -- IncRename integration (expr keymap)
+                vim.keymap.set("n", "<leader>rn", function()
                     return ":IncRename " .. vim.fn.expand("<cword>")
                 end, { desc = "Smart rename", buffer = ev.buf, silent = true, expr = true })
-                keymap.set("n", "<leader>d", vim.diagnostic.open_float,
-                    { desc = "Show line diagnostics", buffer = ev.buf, silent = true })
-                keymap.set("n", "[d", vim.diagnostic.goto_prev,
-                    { desc = "Go to previous diagnostic", buffer = ev.buf, silent = true })
-                keymap.set("n", "]d", vim.diagnostic.goto_next,
-                    { desc = "Go to next diagnostic", buffer = ev.buf, silent = true })
-                keymap.set("n", "K", vim.lsp.buf.hover,
-                    { desc = "Show documentation for what is under cursor", buffer = ev.buf, silent = true })
-                keymap.set("n", "<leader>rs", ":LspRestart<CR>", { desc = "Restart LSP", buffer = ev.buf, silent = true })
             end,
         })
 
@@ -40,22 +39,18 @@ return {
         -- Referenced by: tiny-inline-diagnostic.lua, none-ls.lua
         -- ========================================================================
         vim.diagnostic.config({
-            -- Disable default virtual text -- tiny-inline-diagnostic handles this
-            virtual_text = false,
+            virtual_text = false, -- default: true — disabled, tiny-inline-diagnostic handles this
             signs = {
                 text = {
-                    [vim.diagnostic.severity.ERROR] = "󰅚 ", -- Error icon (cross/X)
-                    [vim.diagnostic.severity.WARN] = "󰀪 ", -- Warning icon (triangle with exclamation)
-                    [vim.diagnostic.severity.HINT] = "󰌶 ", -- Hint icon (lightbulb)
-                    [vim.diagnostic.severity.INFO] = "󰋽 ", -- Info icon (info circle)
-                }
+                    [vim.diagnostic.severity.ERROR] = "󰅚 ",
+                    [vim.diagnostic.severity.WARN] = "󰀪 ",
+                    [vim.diagnostic.severity.HINT] = "󰌶 ",
+                    [vim.diagnostic.severity.INFO] = "󰋽 ",
+                },
             },
-            -- Update diagnostics on insert leave for better UX
-            update_in_insert = false,
-            -- Show diagnostics in insert mode (tiny-inline-diagnostic handles this)
-            underline = true,
-            -- Severity sort order for diagnostics
-            severity_sort = true,
+            update_in_insert = false, -- default: false
+            underline = true,         -- default: true
+            severity_sort = true,     -- default: false — show errors above warnings
         })
     end,
 }
