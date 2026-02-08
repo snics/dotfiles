@@ -1,3 +1,4 @@
+-- Note: unmaintained since June 2024, but still works well.
 return {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
@@ -8,11 +9,10 @@ return {
         { "<leader>gx", "<cmd>DiffviewClose<CR>",         desc = "Close diff view" },
     },
     opts = {
-        enhanced_diff_hl = true,
-        show_help_hints = false,
+        enhanced_diff_hl = true,                     -- default: false — better word-level diff highlighting
+        show_help_hints = false,                     -- default: true — hide hint bar at bottom
         view = {
-            default = { layout = "diff2_horizontal" },
-            merge_tool = { layout = "diff3_mixed" },
+            merge_tool = { layout = "diff3_mixed" }, -- default: "diff3_horizontal" — 2 top + 1 bottom
         },
     },
 }
