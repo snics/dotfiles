@@ -22,6 +22,432 @@ Leader key: `<Space>`
 
 ---
 
+## Visual Keymap Tree
+
+Complete tree of all keybindings. Mode shown on the right when not normal mode only.
+
+### Leader Key Tree — `<Space>`
+
+```
+<Space> ·································· which-key popup
+│
+├── Instant Actions (no submenu)
+│   ├── w   󰆓  Save file
+│   ├── W   󰗼  Save and close
+│   ├── e   󰙅  File Explorer
+│   ├── n   󰂚  Notification History
+│   ├── N   󰎟  Neovim News
+│   ├── z   󰅺  Zen Mode
+│   ├── Z   󰁌  Zoom
+│   ├── .   󰟃  Scratch Buffer
+│   ├── S   󰟃  Select Scratch Buffer
+│   ├── ␣   󰈞  Smart Find Files
+│   ├── ,   󰈔  Buffers
+│   ├── /   󰑑  Grep
+│   ├── :   󰘳  Command History
+│   ├── +   󰐕  Increment number
+│   └── -   󰍴  Decrement number
+│
+├── 󰚩 a  AI
+│   ├── a   Toggle chat
+│   ├── A   New chat
+│   ├── p   Action palette                        n,v
+│   ├── i   Inline edit                            n,v
+│   ├── e   Explain code                             v
+│   ├── f   Fix code                                 v
+│   ├── t   Generate tests                           v
+│   ├── r   Review code                              v
+│   ├── d   Document code
+│   ├── c   Commit message
+│   ├── v   Toggle virtual text
+│   ├── V   Virtual text ON
+│   └── x   Virtual text OFF
+│
+├── 󰈔 b  Buffer
+│   ├── d   Delete buffer
+│   ├── o   Delete other buffers
+│   └── p   Pick buffer
+│
+├── 󰌵 c  Code
+│   ├── a   Code actions                           n,v
+│   ├── r   Rename symbol
+│   ├── R   Rename file
+│   ├── d   Line diagnostics
+│   ├── D   Toggle diagnostics
+│   └── f   Format file/range                      n,v
+│
+├── 󰃤 d  Debug
+│   ├── b   Toggle breakpoint
+│   ├── B   Conditional breakpoint
+│   ├── c   Continue
+│   ├── r   Open REPL
+│   ├── l   Run last
+│   ├── h   Hover variables
+│   ├── p   Preview
+│   ├── f   Frames
+│   ├── s   Scopes
+│   ├── q   Quit debug
+│   ├── u   Toggle UI
+│   └── e   Eval                                   n,v
+│
+├── 󰈞 f  Find
+│   ├── f   Find files
+│   ├── g   Git files
+│   ├── r   Recent files
+│   ├── s   Find string (grep)
+│   ├── w   Find word under cursor
+│   ├── c   Config files
+│   ├── b   Buffers
+│   ├── p   Projects
+│   └── t   Todos
+│
+├──  g  Git
+│   ├── g   Lazygit
+│   ├── b   Branches
+│   ├── l   Log
+│   ├── L   Log (current line)
+│   ├── s   Status
+│   ├── S   Stash
+│   ├── d   Diff
+│   ├── f   Log file
+│   ├── B   Git Browse                             n,v
+│   ├── 󰊢 h  Hunks
+│   │   ├── s   Stage hunk                         n,v
+│   │   ├── r   Reset hunk                         n,v
+│   │   ├── S   Stage buffer
+│   │   ├── R   Reset buffer
+│   │   ├── u   Undo stage
+│   │   ├── p   Preview hunk
+│   │   ├── i   Preview inline
+│   │   ├── b   Blame line
+│   │   ├── B   Toggle blame
+│   │   ├── d   Diff this
+│   │   ├── D   Diff this ~
+│   │   ├── q   Hunks to quickfix
+│   │   └── Q   All hunks to quickfix
+│   └── 󰦓 v  Diffview
+│       ├── v   Open diffview
+│       ├── x   Close diffview
+│       ├── h   File history
+│       └── H   Branch history
+│
+├── 󰒕 l  LSP/Lint
+│   ├── d   Toggle diagnostics
+│   ├── D   Diagnostics float
+│   ├── c   Clear diagnostics
+│   ├── l   Open none-ls log
+│   ├── i   Show none-ls info
+│   └── s   Restart LSP
+│
+├──  m  Markdown                               ft=md
+│   ├── p   Toggle browser preview
+│   └── r   Toggle render-markdown
+│
+├── 󰗼 q  Quit
+│   ├── q   Close buffer
+│   └── Q   Force close (discard changes)
+│
+├── 󰣪 r  Refactor
+│   ├── r   Select refactor                        n,x
+│   ├── e   Extract Function                         x
+│   ├── f   Extract Function To File                 x
+│   ├── v   Extract Variable                         x
+│   ├── i   Inline Variable                        n,x
+│   ├── I   Inline Function
+│   ├── b   Extract Block
+│   │   └── f   Extract Block To File
+│   ├── p   Debug Print Variable                   n,x
+│   ├── P   Debug Printf
+│   └── c   Debug Cleanup
+│
+├── 󰍉 s  Search
+│   ├── b   Buffer Lines
+│   ├── B   Grep Open Buffers
+│   ├── g   Grep
+│   ├── w   Grep word/selection                    n,x
+│   ├── r   Search & Replace
+│   ├── R   Search & Replace (file)
+│   ├── "   Registers
+│   ├── /   Search History
+│   ├── a   Autocmds
+│   ├── c   Command History
+│   ├── C   Commands
+│   ├── d   Diagnostics
+│   ├── D   Buffer Diagnostics
+│   ├── h   Help Pages
+│   ├── H   Highlights
+│   ├── i   Icons
+│   ├── j   Jumps
+│   ├── k   Keymaps
+│   ├── l   Location List
+│   ├── m   Marks
+│   ├── M   Man Pages
+│   ├── p   Plugin Spec
+│   ├── P   Resume last picker
+│   ├── q   Quickfix List
+│   ├── s   LSP Symbols
+│   ├── S   LSP Workspace Symbols
+│   ├── t   Todo Comments
+│   ├── T   Todo/Fix/Fixme
+│   └── u   Undo History
+│
+├── 󰙨 t  Test
+│   ├── t   Run nearest test
+│   ├── f   Run file tests
+│   ├── a   Run all tests
+│   ├── s   Toggle summary
+│   ├── o   Show output
+│   ├── p   Output panel
+│   ├── d   Debug test
+│   ├── S   Stop
+│   └── l   Re-run last
+│
+├── 󰓩 ⇥  Tabs
+│   ├── ⇥   Open new tab
+│   ├── x   Close tab  (also: d)
+│   ├── ]   Next tab   (also: n)
+│   ├── [   Prev tab   (also: p)
+│   └── f   Buffer to new tab
+│
+├── 󰙵 u  UI Toggles
+│   ├── s   Toggle spelling
+│   ├── w   Toggle word wrap
+│   ├── L   Toggle relative numbers
+│   ├── l   Toggle line numbers
+│   ├── d   Toggle dim inactive
+│   ├── c   Toggle conceal
+│   ├── T   Toggle treesitter highlight
+│   ├── b   Toggle dark/light background
+│   ├── h   Toggle inlay hints
+│   ├── g   Toggle indent guides
+│   ├── D   Toggle diagnostics
+│   ├── n   Dismiss notifications
+│   ├── C   Colorschemes (picker)
+│   ├── x   Toggle treesitter context
+│   ├── H   Toggle colorizer
+│   └── a   Toggle animations
+│
+├── 󰆓 w  Save + Session
+│   │       w alone = Save (:w)
+│   ├── r   Restore session
+│   ├── s   Save session
+│   ├── d   Delete session
+│   └── f   Find sessions
+│
+├── 󰔫 x  Trouble
+│   ├── w   Workspace diagnostics
+│   ├── d   Document diagnostics
+│   ├── q   Quickfix list
+│   ├── l   Location list
+│   ├── t   Todos
+│   ├── s   Symbols outline
+│   └── L   LSP references panel
+│
+├──  y  YAML/K8s                               ft=yaml
+│   ├── v   Show path + value
+│   ├── y   Yank path + value
+│   ├── k   Yank key
+│   ├── V   Yank value
+│   ├── q   Quickfix (paths)
+│   ├── h   Remove highlight
+│   ├── p   Path picker
+│   ├── s   Select schema
+│   ├── S   Show current schema
+│   ├── d   Browse Datree CRDs
+│   ├── c   Browse cluster CRDs
+│   ├── m   Add CRD modelines
+│   ├── Q   Keys to quickfix
+│   └── K   Regenerate K8s schema
+│
+├── 󰅺 z  Zen Mode                                 instant
+└── 󰁌 Z  Zoom                                     instant
+```
+
+### Language-Specific Trees (only visible in matching filetype)
+
+```
+<Space> G   Go                                    ft=go
+├── 󰓹 t  Tags
+│   ├── j   Add json tags
+│   ├── y   Add yaml tags
+│   ├── x   Add xml tags
+│   ├── r   Remove tags
+│   ├── a   Generate test (func)
+│   ├── A   Generate test (all)
+│   └── e   Generate test (exported)
+├── 󰏗 m  Module
+│   ├── t   go mod tidy
+│   ├── i   go mod init
+│   └── g   go mod get
+├── 󰐊 i  Generate
+│   ├── i   Implement interface
+│   └── e   Generate if err
+├── c   Doc comment
+├── g   go generate
+└── G   go generate (file)
+
+<Space> R   Rust                                  ft=rust
+├── e   Expand macro
+├── c   Open Cargo.toml
+├── p   Parent module
+├── d   Render diagnostic
+├── r   Runnables
+├── D   Debuggables
+├── j   Join lines
+├── a   Code action
+└──  c  Crates                                ft=toml
+    ├── u   Upgrade all crates
+    ├── i   Crate info
+    ├── v   Crate versions
+    ├── f   Crate features
+    └── d   Crate dependencies
+```
+
+### Non-Leader Trees
+
+```
+g ····························· Goto / LSP
+├── d   Go to definition
+├── D   Go to declaration
+├── r   Find references
+├── I   Go to implementation
+├── y   Go to type definition
+├── 󰆉 c  Comment
+│   ├── c   Toggle line comment
+│   ├── o   Add comment below
+│   ├── O   Add comment above
+│   └── A   Add comment at end of line
+└── bc  Toggle block comment
+
+K ····························· Hover documentation
+
+] ····························· Next
+├── d   Next diagnostic
+├── h   Next git hunk
+├── t   Next TODO comment
+├── T   Next failed test
+├── b   Next buffer
+├── q   Next quickfix
+├── e   Next error
+├── w   Next warning
+├── m   Next function start
+├── M   Next function end
+├── c   Next class start
+├── C   Next class end
+├── i   Next conditional start
+├── I   Next conditional end
+├── l   Next loop start
+├── L   Next loop end
+├── a   Swap parameter next
+└── ]   Next word reference
+
+[ ····························· Previous
+├── d   Previous diagnostic
+├── h   Previous git hunk
+├── t   Previous TODO comment
+├── T   Previous failed test
+├── b   Previous buffer
+├── q   Previous quickfix
+├── e   Previous error
+├── w   Previous warning
+├── x   Jump to context
+├── m   Previous function start
+├── M   Previous function end
+├── c   Previous class start
+├── C   Previous class end
+├── i   Previous conditional start
+├── I   Previous conditional end
+├── l   Previous loop start
+├── L   Previous loop end
+├── a   Swap parameter prev
+└── [   Previous word reference
+
+z ····························· Folds / View
+├── R   Open all folds
+├── M   Close all folds
+├── r   Open one fold level
+├── m   Close one fold level
+├── K   Peek fold preview
+├── t   Cursor to top (smooth)
+├── z   Cursor to center (smooth)
+└── b   Cursor to bottom (smooth)
+
+s ····························· Flash jump                n,x,o
+S ····························· Flash treesitter           n,x,o
+```
+
+### Text Object Tree
+
+```
+Operators: d (delete) · c (change) · y (yank) · v (select)
+
+a ····························· Around                    o,x
+├── f   Function
+├── c   Class
+├── a   Parameter
+├── i   Conditional
+├── l   Loop
+├── b   Block
+├── C   Function call
+├── s   Assignment (key+value)
+├── k   Assignment key (left)
+├── v   Assignment value (right)
+├── n   Number
+├── t   Comment
+└── S   Statement
+
+i ····························· Inside                    o,x
+├── f   Function
+├── c   Class
+├── a   Parameter
+├── i   Conditional
+├── l   Loop
+├── b   Block
+├── C   Function call
+├── s   Assignment (value only)
+├── t   Comment
+└── h   Git hunk
+```
+
+### Control Keys
+
+```
+Ctrl
+├── h/j/k/l   Window navigation                   n,t
+├── ↑/↓/←/→   Window resize
+├── u / d      Half-page up/down (smooth)
+├── b / f      Full page up/down (smooth)
+├── y / e      Line up/down (smooth)
+├── s          Save file                           i,n,v,s
+├── /          Toggle terminal                     n,t
+├── p / n      Yank history prev/next
+├── Enter      Start/expand selection              n,v
+├── Backspace  Shrink selection                      v
+└── s          Toggle Flash search                   c
+
+Alt
+├── j / k      Move line(s) down/up                n,i,v
+├── ] / [      Next/prev Windsurf suggestion         i
+└── c          Clear Windsurf suggestion              i
+
+F-keys
+├── F5         Debug: Start/Continue
+├── F10        Debug: Step Over
+├── F11        Debug: Step Into
+└── F12        Debug: Step Out
+
+Insert Mode
+├── jj / jk    Exit insert mode
+├── , . ;      Self + undo breakpoint
+├── Tab        Smart: completion → snippet → trigger
+├── S-Tab      Smart: prev completion → jump back
+├── C-b / C-f  Scroll completion docs
+├── C-e        Close completion menu
+└── C-l        Accept Windsurf completion
+```
+
+---
+
 ## 1. Quick Reference Card
 
 The keys you'll use every day. Print this page or keep it open as a tab.
