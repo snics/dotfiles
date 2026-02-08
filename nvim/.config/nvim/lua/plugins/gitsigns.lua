@@ -21,34 +21,34 @@ return {
             end, "Prev Hunk")
 
             -- Stage / Reset
-            map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")
-            map("n", "<leader>hr", gs.reset_hunk, "Reset hunk")
-            map("v", "<leader>hs", function()
+            map("n", "<leader>ghs", gs.stage_hunk, "Stage hunk")
+            map("n", "<leader>ghr", gs.reset_hunk, "Reset hunk")
+            map("v", "<leader>ghs", function()
                 gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
             end, "Stage hunk")
-            map("v", "<leader>hr", function()
+            map("v", "<leader>ghr", function()
                 gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
             end, "Reset hunk")
 
-            map("n", "<leader>hS", gs.stage_buffer, "Stage buffer")
-            map("n", "<leader>hR", gs.reset_buffer, "Reset buffer")
-            map("n", "<leader>hu", gs.reset_buffer_index, "Unstage buffer")
+            map("n", "<leader>ghS", gs.stage_buffer, "Stage buffer")
+            map("n", "<leader>ghR", gs.reset_buffer, "Reset buffer")
+            map("n", "<leader>ghu", gs.reset_buffer_index, "Unstage buffer")
 
             -- Preview
-            map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
-            map("n", "<leader>hi", gs.preview_hunk_inline, "Preview hunk inline")
+            map("n", "<leader>ghp", gs.preview_hunk, "Preview hunk")
+            map("n", "<leader>ghi", gs.preview_hunk_inline, "Preview hunk inline")
 
             -- Blame
-            map("n", "<leader>hb", function() gs.blame_line({ full = true }) end, "Blame line")
-            map("n", "<leader>hB", gs.toggle_current_line_blame, "Toggle line blame")
+            map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame line")
+            map("n", "<leader>ghB", gs.toggle_current_line_blame, "Toggle line blame")
 
             -- Diff
-            map("n", "<leader>hd", gs.diffthis, "Diff this")
-            map("n", "<leader>hD", function() gs.diffthis("~") end, "Diff this ~")
+            map("n", "<leader>ghd", gs.diffthis, "Diff this")
+            map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff this ~")
 
             -- Quickfix
-            map("n", "<leader>hq", gs.setqflist, "Hunks to quickfix")
-            map("n", "<leader>hQ", function() gs.setqflist("all") end, "All hunks to quickfix")
+            map("n", "<leader>ghq", gs.setqflist, "Hunks to quickfix")
+            map("n", "<leader>ghQ", function() gs.setqflist("all") end, "All hunks to quickfix")
 
             -- Text object: ih = inner hunk (use with operators: dih, yih, vih)
             map({ "o", "x" }, "ih", gs.select_hunk, "Select hunk")

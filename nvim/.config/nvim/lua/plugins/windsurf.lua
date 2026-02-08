@@ -7,13 +7,13 @@ return {
     config = function()
         require("codeium").setup({
             virtual_text = {
-                enabled = true,           -- default: false — enable virtual text infrastructure
+                enabled = true,                   -- default: false — enable virtual text infrastructure
                 default_filetype_enabled = false, -- default: true — we control via toggle commands below
                 key_bindings = {
-                    accept = "<C-l>",     -- default: <Tab>
-                    accept_word = "<C-Right>", -- default: false (not bound)
-                    accept_line = "<C-Down>", -- default: false (not bound)
-                    clear = "<M-c>",      -- default: false (not bound)
+                    accept = "<C-l>",             -- default: <Tab>
+                    accept_word = "<C-Right>",    -- default: false (not bound)
+                    accept_line = "<C-Down>",     -- default: false (not bound)
+                    clear = "<M-c>",              -- default: false (not bound)
                     -- next = "<M-]>",              -- default: <M-]> (same)
                     -- prev = "<M-[>",              -- default: <M-[> (same)
                 },
@@ -23,9 +23,9 @@ return {
                 paths = {
                     ".git", ".hg", ".svn", ".bzr", "_FOSSIL_",
                     "package.json",
-                    "Cargo.toml", -- added (not in defaults)
-                    "go.mod", -- added (not in defaults)
-                    "pyproject.toml", -- added (not in defaults)
+                    "Cargo.toml",       -- added (not in defaults)
+                    "go.mod",           -- added (not in defaults)
+                    "pyproject.toml",   -- added (not in defaults)
                     "requirements.txt", -- added (not in defaults)
                 },
             },
@@ -86,10 +86,10 @@ return {
         end, {})
 
         -- Keymaps
-        vim.keymap.set("n", "<leader>wv", "<cmd>WindsurfVirtualTextToggle<CR>",
-            { desc = "Windsurf: Toggle virtual text" })
-        vim.keymap.set("n", "<leader>wV", "<cmd>WindsurfVirtualTextOn<CR>", { desc = "Windsurf: Virtual text ON" })
-        vim.keymap.set("n", "<leader>wx", "<cmd>WindsurfVirtualTextOff<CR>", { desc = "Windsurf: Virtual text OFF" })
+        vim.keymap.set("n", "<leader>av", "<cmd>WindsurfVirtualTextToggle<CR>",
+            { desc = "Toggle virtual text" })
+        vim.keymap.set("n", "<leader>aV", "<cmd>WindsurfVirtualTextOn<CR>", { desc = "Virtual text ON" })
+        vim.keymap.set("n", "<leader>ax", "<cmd>WindsurfVirtualTextOff<CR>", { desc = "Virtual text OFF" })
 
         -- Initialize OFF
         _windsurf_apply_vt_autocmds()

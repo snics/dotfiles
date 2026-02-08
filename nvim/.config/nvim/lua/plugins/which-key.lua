@@ -3,182 +3,382 @@ return {
     event = "VeryLazy",
     dependencies = "nvim-tree/nvim-web-devicons",
     init = function()
-        vim.o.timeout = true   -- required for which-key to work
-        vim.o.timeoutlen = 500 -- default: 1000 — time in ms to wait for a mapped sequence
+        vim.o.timeout = true
+        vim.o.timeoutlen = 500
     end,
     opts = {
-        preset = "modern", -- default: "classic" — available: "classic", "modern", "helix"
+        preset = "modern",
     },
     config = function(_, opts)
         require("which-key").setup(opts)
-        -- nvim-web-devicons.setup() is handled by nvim-web-devicons itself (lazy.nvim auto-loads it)
 
         local wk = require("which-key")
         wk.add({
-            -- General
-            { "jj", desc = "Exit insert mode", icon = "󰉿", mode = "i" },
-            { "<Esc>", desc = "Clear highlights", icon = "󰌑" },
 
-            -- Smooth Scroll (Snacks)
-            { "<C-u>", desc = "Smooth half-page up", icon = "󰒭" }, -- Source: snacks.lua - Snacks.scroll
-            { "<C-d>", desc = "Smooth half-page down", icon = "󰒮" }, -- Source: snacks.lua - Snacks.scroll
-            { "<C-b>", desc = "Smooth page up", icon = "󰁌" }, -- Source: snacks.lua - Snacks.scroll
-            { "<C-f>", desc = "Smooth page down", icon = "󰁎" }, -- Source: snacks.lua - Snacks.scroll
-            { "<C-y>", desc = "Smooth line up", icon = "󰁝" }, -- Source: snacks.lua - Snacks.scroll
-            { "<C-e>", desc = "Smooth line down", icon = "󰁅" }, -- Source: snacks.lua - Snacks.scroll
-            { "zt", desc = "Scroll cursor to top", icon = "󰁌" }, -- Source: snacks.lua - Snacks.scroll
-            { "zz", desc = "Scroll cursor to center", icon = "󰁍" }, -- Source: snacks.lua - Snacks.scroll
-            { "zb", desc = "Scroll cursor to bottom", icon = "󰁎" }, -- Source: snacks.lua - Snacks.scroll
+            ---------------------------------------------------------------
+            -- LEADER GROUPS (top-level which-key popup entries)
+            ---------------------------------------------------------------
+            { "<leader>a", group = "AI", icon = "󰚩" },
+            { "<leader>b", group = "Buffer", icon = "󰈔" },
+            { "<leader>c", group = "Code", icon = "󰌵" },
+            { "<leader>d", group = "Debug", icon = "󰃤" },
+            { "<leader>f", group = "Find", icon = "󰈞" },
+            { "<leader>g", group = "Git", icon = { cat = "filetype", name = "git" } },
+            { "<leader>G", group = "Go", icon = { cat = "filetype", name = "go" } },
+            { "<leader>l", group = "LSP/Lint", icon = "󰒕" },
+            { "<leader>m", group = "Markdown", icon = { cat = "filetype", name = "markdown" } },
+            { "<leader>q", group = "Quit", icon = "󰗼" },
+            { "<leader>r", group = "Refactor", icon = "󰣪" },
+            { "<leader>R", group = "Rust", icon = { cat = "filetype", name = "rust" } },
+            { "<leader>s", group = "Search", icon = "󰍉" },
+            { "<leader>t", group = "Test", icon = "󰙨" },
+            { "<leader><Tab>", group = "Tabs", icon = "󰓩" },
+            { "<leader>u", group = "UI", icon = "󰙵" },
+            -- NOTE: <leader>w is an instant action (Save), not a group.
+            -- Session subkeys (<leader>wr/ws/wd/wf) appear automatically as which-key discovers them.
+            { "<leader>x", group = "Trouble", icon = "󰔫" },
+            { "<leader>y", group = "YAML/K8s", icon = { cat = "filetype", name = "yaml" } },
 
-            -- Closing
-            { "<leader>qq", desc = "Close buffers", icon = "󰩈", mode = "n" },
-            { "<leader>QQ", desc = "Close force buffer", icon = "󰩈", mode = "n" },
+            -- Subgroups
+            { "<leader>gh", group = "Hunks", icon = "󰊢" },
+            { "<leader>gv", group = "Diffview", icon = "󰦓" },
+            { "<leader>Gt", group = "Tags", icon = "󰓹" },
+            { "<leader>Gm", group = "Go Mod", icon = "󰏗" },
+            { "<leader>Gi", group = "Generate", icon = "󰐊" },
+            { "<leader>Rc", group = "Crates", icon = { cat = "filetype", name = "toml" } },
 
-            -- Save
-            { "<leader>ss", desc = "Save buffer", icon = "󰈸", mode = "n" },
-            { "<leader>SS", desc = "Save buffer and close", icon = "󰈸", mode = "n" },
+            ---------------------------------------------------------------
+            -- INSTANT ACTIONS (no submenu)
+            ---------------------------------------------------------------
+            { "<leader>w", desc = "Save file", icon = "󰆓" },
+            { "<leader>W", desc = "Save and close", icon = "󰗼" },
+            { "<leader>e", desc = "File Explorer", icon = "󰙅" },
+            { "<leader>n", desc = "Notification History", icon = "󰂚" },
+            { "<leader>N", desc = "Neovim News", icon = "󰎟" },
+            { "<leader>z", desc = "Zen Mode", icon = "󰅺" },
+            { "<leader>Z", desc = "Zoom", icon = "󰁌" },
+            { "<leader>.", desc = "Scratch Buffer", icon = "󰟃" },
+            { "<leader>S", desc = "Select Scratch Buffer", icon = "󰟃" },
+            { "<leader>+", desc = "Increment number", icon = "󰐕" },
+            { "<leader>-", desc = "Decrement number", icon = "󰍴" },
 
-            -- Increment/decrement numbers
-            { "<leader>+", icon = "" }, -- add icon to decrement number
-            { "<leader>-", icon = "" }, -- add icon to decrement number
+            ---------------------------------------------------------------
+            -- AI — <leader>a (CodeCompanion + Windsurf)
+            ---------------------------------------------------------------
+            -- CodeCompanion
+            { "<leader>aa", desc = "Toggle chat", icon = "󰭹" },
+            { "<leader>aA", desc = "New chat", icon = "󰻞" },
+            { "<leader>ap", desc = "Action palette", icon = "󰏪", mode = { "n", "v" } },
+            { "<leader>ai", desc = "Inline edit", icon = "󰏫", mode = { "n", "v" } },
+            { "<leader>ae", desc = "Explain code", icon = "󰋼", mode = "v" },
+            { "<leader>af", desc = "Fix code", icon = "󰁨", mode = "v" },
+            { "<leader>at", desc = "Generate tests", icon = "󰙨", mode = "v" },
+            { "<leader>ar", desc = "Review code", icon = "󰯂", mode = "v" },
+            { "<leader>ad", desc = "Document code", icon = "󰈙" },
+            { "<leader>ac", desc = "Commit message", icon = { cat = "filetype", name = "git" } },
+            -- Windsurf/Codeium (completions)
+            { "<leader>av", desc = "Toggle virtual text", icon = "󰄛" },
+            { "<leader>aV", desc = "Virtual text ON", icon = "󰄛" },
+            { "<leader>ax", desc = "Virtual text OFF", icon = "󰄛" },
 
-            -- LSP Config
-            { "gR", desc = "Show LSP references", icon = "󰁨" },
-            { "gD", desc = "Go to declaration", icon = "󰁨" },
-            { "gd", desc = "Show LSP definitions", icon = "󰁨" },
-            { "gi", desc = "Show LSP implementations", icon = "󰁨" },
-            { "gt", desc = "Show LSP type definitions", icon = "󰁨" },
-            { "<leader>ca", desc = "See available code actions", icon = "󰁨" },
-            { "<leader>rn", desc = "Smart rename", icon = "󰁨" },
-            { "<leader>D", desc = "Show buffer diagnostics", icon = "󰁨" },
-            { "<leader>d", desc = "Show line diagnostics", icon = "󰁨" },
-            { "[d", desc = "Go to previous diagnostic", icon = "󰁨" },
-            { "]d", desc = "Go to next diagnostic", icon = "󰁨" },
-            { "K", desc = "Show documentation for what is under cursor", icon = "󰁨" },
-            { "<leader>rs", desc = "Restart LSP", icon = "󰁨" },
+            ---------------------------------------------------------------
+            -- BUFFER — <leader>b
+            ---------------------------------------------------------------
+            { "<leader>bd", desc = "Delete buffer", icon = "󰅖" },
+            { "<leader>bo", desc = "Delete other buffers", icon = "󰱝" },
+            { "<leader>bp", desc = "Pick buffer", icon = "󰈔" },
 
-            -- Search/Snacks (CHANGED: was Window management)
-            { "<leader>s", group = "Search", icon = "" }, -- group for window management
-            { "<leader>sv", icon = "" }, -- add icon to split window vertically
-            { "<leader>sh", icon = "" }, -- add icon to split windwo horizontally
-            { "<leader>se", icon = "󰖮" }, -- add icon to make splits equal size
-            { "<leader>sx", icon = "" }, -- add icon to close current split
+            ---------------------------------------------------------------
+            -- CODE — <leader>c (LSP operations)
+            ---------------------------------------------------------------
+            { "<leader>ca", desc = "Code actions", icon = "󰌵", mode = { "n", "v" } },
+            { "<leader>cr", desc = "Rename symbol", icon = "󰑕" },
+            { "<leader>cR", desc = "Rename file", icon = "󰑫" },
+            { "<leader>cd", desc = "Line diagnostics", icon = "󱖫" },
+            { "<leader>cD", desc = "Toggle diagnostics", icon = "󰔫" },
+            { "<leader>cf", desc = "Format file", icon = "󰉢", mode = { "n", "v" } },
 
-            -- Tap management
-            { "<leader>t", group = "Tab management", icon = "󰓩" }, -- group for tab management
-            { "<leader>to", icon = "󰝜" }, -- add icon to open new tab
-            { "<leader>tx", icon = "󰭌" }, -- add icon to close current tab
-            { "<leader>tn", icon = "󰒭" }, -- add icon to go to next tab
-            { "<leader>tp", icon = "󰒮" }, -- add icon to go to previous tab
-            { "<leader>tf", icon = "󰓪" }, -- add icon to move current buffer to new tab
+            ---------------------------------------------------------------
+            -- DEBUG — <leader>d (DAP)
+            ---------------------------------------------------------------
+            { "<leader>db", desc = "Toggle breakpoint", icon = "󰃤" },
+            { "<leader>dB", desc = "Conditional breakpoint", icon = "󰯯" },
+            { "<leader>dc", desc = "Continue", icon = "󰐊" },
+            { "<leader>dr", desc = "Open REPL", icon = "󰞷" },
+            { "<leader>dl", desc = "Run last", icon = "󰑮" },
+            { "<leader>dh", desc = "Hover variables", icon = "󰂠" },
+            { "<leader>dp", desc = "Preview", icon = "󰁌" },
+            { "<leader>df", desc = "Frames", icon = "󰜎" },
+            { "<leader>ds", desc = "Scopes", icon = "󰙅" },
+            { "<leader>dq", desc = "Quit debug", icon = "󰅗" },
+            { "<leader>du", desc = "Toggle UI", icon = "󰍉" },
+            { "<leader>de", desc = "Eval", icon = "󰘧", mode = { "n", "v" } },
 
-            -- Snacks File Explorer
-            { "<leader>e", desc = "Toggle Explorer", icon = "" }, -- group for file explorer
+            ---------------------------------------------------------------
+            -- FIND — <leader>f (Snacks picker)
+            ---------------------------------------------------------------
+            { "<leader>ff", desc = "Find files", icon = "󰈞" },
+            { "<leader>fg", desc = "Git files", icon = { cat = "filetype", name = "git" } },
+            { "<leader>fr", desc = "Recent files", icon = "󰋚" },
+            { "<leader>fs", desc = "Find string (grep)", icon = "󰑑" },
+            { "<leader>fw", desc = "Find word under cursor", icon = "󱎸" },
+            { "<leader>fc", desc = "Config files", icon = "󰒓" },
+            { "<leader>fb", desc = "Buffers", icon = "󰈔" },
+            { "<leader>fp", desc = "Projects", icon = "󰉋" },
+            { "<leader>ft", desc = "Todos", icon = "󰄲" },
 
-            -- Find (Snacks picker)
-            { "<leader>f", group = "Find", icon = "" }, -- group for find operations
-            { "<leader>ff", icon = "󰈞", desc = "Find files" }, -- Snacks picker
-            { "<leader>fr", icon = "󰈞", desc = "Find recent files" }, -- Snacks picker
-            { "<leader>fs", icon = "", desc = "Find string in current working directory" }, -- Snacks grep
-            { "<leader>fc", icon = "", desc = "Find string under cursor in current working directory" }, -- Snacks grep_word
-            { "<leader>ft", icon = "", desc = "Find all todos" }, -- Trouble todo
+            ---------------------------------------------------------------
+            -- GIT — <leader>g (Snacks + Gitsigns + Diffview)
+            ---------------------------------------------------------------
+            -- Top-level
+            { "<leader>gg", desc = "Lazygit", icon = { cat = "filetype", name = "git" } },
+            { "<leader>gb", desc = "Branches", icon = "󰘬" },
+            { "<leader>gl", desc = "Log", icon = "󰜘" },
+            { "<leader>gL", desc = "Log (current line)", icon = "󰷐" },
+            { "<leader>gs", desc = "Status", icon = "󱖫" },
+            { "<leader>gS", desc = "Stash", icon = "󰆓" },
+            { "<leader>gd", desc = "Diff", icon = "󰦓" },
+            { "<leader>gf", desc = "Log file", icon = "󰈙" },
+            { "<leader>gB", desc = "Git Browse", icon = "󰖟", mode = { "n", "v" } },
+            -- Hunks subgroup — <leader>gh*
+            { "<leader>ghs", desc = "Stage hunk", icon = "󰐕", mode = { "n", "v" } },
+            { "<leader>ghr", desc = "Reset hunk", icon = "󰜺", mode = { "n", "v" } },
+            { "<leader>ghS", desc = "Stage buffer", icon = "󰐗" },
+            { "<leader>ghR", desc = "Reset buffer", icon = "󰦛" },
+            { "<leader>ghu", desc = "Undo stage", icon = "󰕌" },
+            { "<leader>ghp", desc = "Preview hunk", icon = "󰁌" },
+            { "<leader>ghi", desc = "Preview inline", icon = "󰏪" },
+            { "<leader>ghb", desc = "Blame line", icon = "󰍷" },
+            { "<leader>ghB", desc = "Toggle blame", icon = "󰍶" },
+            { "<leader>ghd", desc = "Diff this", icon = "󰦓" },
+            { "<leader>ghD", desc = "Diff this ~", icon = "󰕚" },
+            { "<leader>ghq", desc = "Hunks to quickfix", icon = "󰁨" },
+            { "<leader>ghQ", desc = "All hunks to quickfix", icon = "󰁩" },
+            -- Diffview subgroup — <leader>gv*
+            { "<leader>gvv", desc = "Open diffview", icon = "󰦓" },
+            { "<leader>gvx", desc = "Close diffview", icon = "󰅖" },
+            { "<leader>gvh", desc = "File history", icon = "󰋚" },
+            { "<leader>gvH", desc = "Branch history", icon = "󰜘" },
 
-            -- Auto session
-            { "<leader>w", group = "Auto session", icon = "" }, -- group for auto session
-            { "<leader>ws", icon = "", desc = "Save session for auto session root dir" }, -- add icon to save session for auto session root dir
-            { "<leader>wr", icon = "", desc = "Restore session for current working directory" }, -- add icon to restore session for current working directory
+            ---------------------------------------------------------------
+            -- LSP/LINT — <leader>l
+            ---------------------------------------------------------------
+            { "<leader>ld", desc = "Toggle diagnostics", icon = "󰔫" },
+            { "<leader>lD", desc = "Diagnostics float", icon = "󱖫" },
+            { "<leader>lc", desc = "Clear diagnostics", icon = "󰅖" },
+            { "<leader>ll", desc = "Open none-ls log", icon = "󰌱" },
+            { "<leader>li", desc = "Show none-ls info", icon = "󰋽" },
+            { "<leader>ls", desc = "Restart LSP", icon = "󰑓" },
 
-            -- Trouble
-            { "<leader>x", group = "Trouble", icon = "" }, -- group for trouble
-            { "<leader>xd", icon = "󱪘", desc = "Open trouble document diagnostics" }, -- add icon to open trouble document diagnostics
-            { "<leader>xq", icon = "󰁨", desc = "Open trouble quickfix list" }, -- add icon to open trouble quickfix list
-            { "<leader>xl", icon = "", desc = "Open trouble location list" }, -- add icon to open trouble location list
-            { "<leader>xt", icon = "", desc = "Open todos in trouble" }, -- add icon to open todos in trouble
+            ---------------------------------------------------------------
+            -- MARKDOWN — <leader>m (ft=markdown)
+            ---------------------------------------------------------------
+            { "<leader>mp", desc = "Toggle browser preview", icon = "󰖟" },
+            { "<leader>mr", desc = "Toggle render-markdown", icon = { cat = "filetype", name = "markdown" } },
 
-            -- Linting
-            { "<leader>l", group = "Linting", icon = "" }, -- group for linting
-            { "<leader>ll", icon = "", desc = "Trigger linting for current file" }, -- add icon to trigger linting for current file
+            ---------------------------------------------------------------
+            -- QUIT — <leader>q
+            ---------------------------------------------------------------
+            { "<leader>qq", desc = "Close buffer", icon = "󰩈" },
+            { "<leader>QQ", desc = "Force close buffer", icon = "󰩈" },
 
-            -- Formatting
-            { "<leader>p", group = "Formatting", icon = "󰁨" }, -- group for formatting
-            { "<leader>pf", icon = "󰁨", desc = "Format current file", }, -- add icon to format file or range (in visual mode)
-            { "<leader>pf", icon = "󰁨", desc = "Format current selection", mode = "v" }, -- add icon to format file or range (in visual mode)
-            { "<leader>pa", icon = "󰁨", desc = "Format all files in the current directory" }, -- add icon to format all files in the current directory
+            ---------------------------------------------------------------
+            -- REFACTOR — <leader>r (refactoring.nvim)
+            ---------------------------------------------------------------
+            { "<leader>rr", desc = "Select refactor", icon = "󰣪", mode = { "n", "x" } },
+            { "<leader>re", desc = "Extract Function", icon = "󰊕", mode = "x" },
+            { "<leader>rf", desc = "Extract Function To File", icon = "󰈔", mode = "x" },
+            { "<leader>rv", desc = "Extract Variable", icon = "󰀫", mode = "x" },
+            { "<leader>ri", desc = "Inline Variable", icon = "󰌒", mode = { "n", "x" } },
+            { "<leader>rI", desc = "Inline Function", icon = "󰌑", mode = { "n", "x" } },
+            { "<leader>rb", desc = "Extract Block", icon = "󰅩" },
+            { "<leader>rbf", desc = "Extract Block To File", icon = "󰅪" },
+            { "<leader>rp", desc = "Debug Print Variable", icon = "󰆍", mode = { "n", "x" } },
+            { "<leader>rP", desc = "Debug Printf", icon = "󰆏" },
+            { "<leader>rc", desc = "Debug Cleanup", icon = "󰃢" },
 
-            -- Visual Mode Indentation
-            { "<", desc = "Unindent selection", icon = "󰁨", mode = "v" }, -- unindent and keep visual mode
-            { ">", desc = "Indent selection", icon = "󰁨", mode = "v" }, -- indent and keep visual mode
-            { "<leader><", desc = "Unindent selection", icon = "󰁨", mode = "v" }, -- unindent with leader and keep visual mode
-            { "<leader>>", desc = "Indent selection", icon = "󰁨", mode = "v" }, -- indent with leader and keep visual mode
+            ---------------------------------------------------------------
+            -- SEARCH — <leader>s (Snacks picker + grug-far)
+            ---------------------------------------------------------------
+            { "<leader>sb", desc = "Buffer Lines", icon = "󰍉" },
+            { "<leader>sB", desc = "Grep Open Buffers", icon = "󰈔" },
+            { "<leader>sg", desc = "Grep", icon = "󰑑" },
+            { "<leader>sw", desc = "Grep word/selection", icon = "󱎸", mode = { "n", "x" } },
+            { "<leader>sr", desc = "Search & Replace", icon = "󰛔" },
+            { "<leader>sR", desc = "Search & Replace (file)", icon = "󰈔" },
+            { "<leader>s\"", desc = "Registers", icon = "󰅍" },
+            { "<leader>s/", desc = "Search History", icon = "󰋚" },
+            { "<leader>sa", desc = "Autocmds", icon = "󰃤" },
+            { "<leader>sc", desc = "Command History", icon = "󰘳" },
+            { "<leader>sC", desc = "Commands", icon = "󰘲" },
+            { "<leader>sd", desc = "Diagnostics", icon = "󰒡" },
+            { "<leader>sD", desc = "Buffer Diagnostics", icon = "󱖫" },
+            { "<leader>sh", desc = "Help Pages", icon = "󰋖" },
+            { "<leader>sH", desc = "Highlights", icon = "󰸱" },
+            { "<leader>si", desc = "Icons", icon = "󰥶" },
+            { "<leader>sj", desc = "Jumps", icon = "󰁔" },
+            { "<leader>sk", desc = "Keymaps", icon = "󰌌" },
+            { "<leader>sl", desc = "Location List", icon = "󰍒" },
+            { "<leader>sm", desc = "Marks", icon = "󰃀" },
+            { "<leader>sM", desc = "Man Pages", icon = "󰗚" },
+            { "<leader>sp", desc = "Plugin Spec", icon = "󰏗" },
+            { "<leader>sq", desc = "Quickfix List", icon = "󰁨" },
+            { "<leader>ss", desc = "LSP Symbols", icon = "󰅪" },
+            { "<leader>sS", desc = "LSP Workspace Symbols", icon = "󰅩" },
+            { "<leader>st", desc = "Todo Comments", icon = "󰄲" },
+            { "<leader>sT", desc = "Todo/Fix/Fixme", icon = "󰄱" },
+            { "<leader>su", desc = "Undo History", icon = "󰕌" },
 
-            -- Git
-            { "<leader>G", group = "Git", icon = "󰊢" }, -- group for git
-            { "<leader>Go", icon = "", desc = "Open lazy git" }, -- add icon to lazy git
+            ---------------------------------------------------------------
+            -- TEST — <leader>t (neotest)
+            ---------------------------------------------------------------
+            { "<leader>tt", desc = "Run nearest test", icon = "󰐊" },
+            { "<leader>tf", desc = "Run file tests", icon = "󰈙" },
+            { "<leader>ta", desc = "Run all tests", icon = "󰑮" },
+            { "<leader>ts", desc = "Toggle test summary", icon = "󰈈" },
+            { "<leader>to", desc = "Show test output", icon = "󰆍" },
+            { "<leader>tp", desc = "Toggle output panel", icon = "󰁌" },
+            { "<leader>td", desc = "Debug nearest test", icon = "󰃤" },
+            { "<leader>tS", desc = "Stop running tests", icon = "󰅖" },
+            { "<leader>tl", desc = "Re-run last test", icon = "󰑓" },
 
-            -- Gitsigns hunk
-            { "<leader>h", group = "Git [H]unk", icon = "" }, -- group for gitsigns
-            { "<leader>hs", desc = "Stage hunk", icon = "" }, -- add icon to stage hunk
-            { "<leader>hs", desc = "Stage hunk", icon = "", mode = "v" }, -- add icon to stage hunk in visual mode
-            { "<leader>hr", desc = "Reset hunk", icon = "" }, -- add icon to reset hunk
-            { "<leader>hr", desc = "Reset hunk", icon = "", mode = "v" }, -- add icon to reset hunk in visual mode
-            { "<leader>hS", desc = "Stage buffer", icon = "" }, -- add icon to stage buffer
-            { "<leader>hR", desc = "Reset buffer", icon = "" }, -- add icon to reset buffer
-            { "<leader>hu", desc = "Undo stage hunk", icon = "" }, -- add icon to undo stage hunk
-            { "<leader>hp", desc = "Preview hunk", icon = "" }, -- add icon to preview hunk
-            { "<leader>hb", desc = "Blame line", icon = "" }, -- add icon to blame line
-            { "<leader>hB", desc = "Toggle line blame", icon = "" }, -- add icon to toggle line blame
-            { "<leader>hd", desc = "Diff this", icon = "" }, -- add icon to diff this
-            { "<leader>hD", desc = "Diff this ~", icon = "" }, -- add icon to diff this ~
+            ---------------------------------------------------------------
+            -- TABS — <leader><Tab>
+            ---------------------------------------------------------------
+            { "<leader><Tab><Tab>", desc = "Open new tab", icon = "󰐕" },
+            { "<leader><Tab>x", desc = "Close tab", icon = "󰅖" },
+            { "<leader><Tab>d", desc = "Close tab", icon = "󰅖" },
+            { "<leader><Tab>]", desc = "Next tab", icon = "󰒭" },
+            { "<leader><Tab>n", desc = "Next tab", icon = "󰒭" },
+            { "<leader><Tab>[", desc = "Previous tab", icon = "󰒮" },
+            { "<leader><Tab>p", desc = "Previous tab", icon = "󰒮" },
+            { "<leader><Tab>f", desc = "Buffer to new tab", icon = "󰈔" },
 
-            -- YAML Tools
-            { "<leader>y", group = "YAML Tools", icon = "󰈙" },
-            { "<leader>yv", desc = "Show YAML path and value", icon = "󰈙" },
-            { "<leader>yy", desc = "Yank YAML path and value", icon = "󰅌" },
-            { "<leader>yk", desc = "Yank YAML key", icon = "󰌌" },
-            { "<leader>yV", desc = "Yank YAML value", icon = "󰅌" },
-            { "<leader>yq", desc = "YAML quickfix", icon = "󰎟" },
-            { "<leader>yh", desc = "Remove YAML highlight", icon = "󰸱" },
-            { "<leader>ys", desc = "YAML Snacks picker", icon = "󰍉" },
+            ---------------------------------------------------------------
+            -- UI TOGGLES — <leader>u
+            ---------------------------------------------------------------
+            { "<leader>uH", desc = "Toggle colorizer", icon = "󰙵" },
+            { "<leader>ua", desc = "Toggle animations", icon = "󰙵" },
 
-            -- 🚀 Treesitter Textobjects & Incremental Selection
-            { "<C-space>", desc = "Start/Expand selection", icon = "󰒅", mode = "n" },
-            { "<C-space>", desc = "Expand selection", icon = "󰒅", mode = "v" },
-            { "<C-s>", desc = "Expand selection to scope", icon = "󰒓", mode = "v" },
-            { "<C-backspace>", desc = "Shrink selection", icon = "󰒆", mode = "v" },
+            ---------------------------------------------------------------
+            -- SAVE + SESSION — <leader>w
+            ---------------------------------------------------------------
+            { "<leader>wr", desc = "Restore session", icon = "󰁯" },
+            { "<leader>ws", desc = "Save session", icon = "󰆓" },
+            { "<leader>wd", desc = "Delete session", icon = "󰆴" },
+            { "<leader>wf", desc = "Find sessions", icon = "󰱼" },
 
-            -- 📝 Treesitter Textobjects - Functions & Classes
-            { "af", desc = "Select around function", icon = "󰊕", mode = { "o", "x" } },
-            { "if", desc = "Select inside function", icon = "󰊕", mode = { "o", "x" } },
-            { "ac", desc = "Select around class", icon = "󰌗", mode = { "o", "x" } },
-            { "ic", desc = "Select inside class", icon = "󰌗", mode = { "o", "x" } },
+            ---------------------------------------------------------------
+            -- TROUBLE — <leader>x
+            ---------------------------------------------------------------
+            { "<leader>xw", desc = "Workspace diagnostics", icon = "󰅩" },
+            { "<leader>xd", desc = "Document diagnostics", icon = "󰈙" },
+            { "<leader>xq", desc = "Quickfix list", icon = "󰁨" },
+            { "<leader>xl", desc = "Location list", icon = "󰍒" },
+            { "<leader>xt", desc = "Todos", icon = "󰄲" },
+            { "<leader>xs", desc = "Symbols outline", icon = "󰅪" },
+            { "<leader>xL", desc = "LSP references panel", icon = "󰌹" },
 
-            -- 📝 Treesitter Textobjects - Parameters & Arguments
-            { "aa", desc = "Select around argument", icon = "󰏪", mode = { "o", "x" } },
-            { "ia", desc = "Select inside argument", icon = "󰏪", mode = { "o", "x" } },
+            ---------------------------------------------------------------
+            -- YAML/K8s — <leader>y (ft=yaml)
+            ---------------------------------------------------------------
+            { "<leader>yv", desc = "Show path + value", icon = "󰐕" },
+            { "<leader>yy", desc = "Yank path + value", icon = "󰆏" },
+            { "<leader>yk", desc = "Yank key", icon = "󰌌" },
+            { "<leader>yV", desc = "Yank value", icon = "󰅌" },
+            { "<leader>yq", desc = "Quickfix (paths)", icon = "󰁨" },
+            { "<leader>yh", desc = "Remove highlight", icon = "󰸱" },
+            { "<leader>yp", desc = "Path picker (Snacks)", icon = "󰈞" },
+            { "<leader>ys", desc = "Select schema", icon = "󰦨" },
+            { "<leader>yS", desc = "Show current schema", icon = "󰋽" },
+            { "<leader>yd", desc = "Browse Datree CRDs", icon = "󱃾" },
+            { "<leader>yc", desc = "Browse cluster CRDs", icon = "󰡨" },
+            { "<leader>ym", desc = "Add CRD modelines", icon = "󰏗" },
+            { "<leader>yQ", desc = "Keys to quickfix", icon = "󰁩" },
+            { "<leader>yK", desc = "Regenerate K8s schema", icon = "󱃾" },
 
-            -- 📝 Treesitter Textobjects - Control Flow
-            { "ai", desc = "Select around conditional", icon = "󰕷", mode = { "o", "x" } },
-            { "ii", desc = "Select inside conditional", icon = "󰕷", mode = { "o", "x" } },
-            { "al", desc = "Select around loop", icon = "󰑓", mode = { "o", "x" } },
-            { "il", desc = "Select inside loop", icon = "󰑓", mode = { "o", "x" } },
+            ---------------------------------------------------------------
+            -- LANGUAGE: GO — <leader>G (ft=go only)
+            ---------------------------------------------------------------
+            { "<leader>Gtj", desc = "Add json tags", icon = { cat = "extension", name = "json" } },
+            { "<leader>Gty", desc = "Add yaml tags", icon = { cat = "extension", name = "yaml" } },
+            { "<leader>Gtx", desc = "Add xml tags", icon = { cat = "extension", name = "xml" } },
+            { "<leader>Gtr", desc = "Remove tags", icon = "󰅖" },
+            { "<leader>Gta", desc = "Generate test (func)", icon = "󰙨" },
+            { "<leader>GtA", desc = "Generate test (all)", icon = "󰑮" },
+            { "<leader>Gte", desc = "Generate test (exported)", icon = "󰈔" },
+            { "<leader>Gmt", desc = "go mod tidy", icon = "󰃢" },
+            { "<leader>Gmi", desc = "go mod init", icon = "󰐕" },
+            { "<leader>Gmg", desc = "go mod get", icon = "󰇚" },
+            { "<leader>Gii", desc = "Implement interface", icon = "󰌗" },
+            { "<leader>Gie", desc = "Generate if err", icon = "󱖫" },
+            { "<leader>Gc", desc = "Doc comment", icon = "󰆉" },
+            { "<leader>Gg", desc = "go generate", icon = "󰐊" },
+            { "<leader>GG", desc = "go generate (file)", icon = "󰈙" },
 
-            -- 📝 Treesitter Textobjects - Blocks & Calls
-            { "ab", desc = "Select around block", icon = "󰅩", mode = { "o", "x" } },
-            { "ib", desc = "Select inside block", icon = "󰅩", mode = { "o", "x" } },
-            { "aC", desc = "Select around call", icon = "󰘧", mode = { "o", "x" } },
-            { "iC", desc = "Select inside call", icon = "󰘧", mode = { "o", "x" } },
+            ---------------------------------------------------------------
+            -- LANGUAGE: RUST — <leader>R (ft=rust only)
+            ---------------------------------------------------------------
+            { "<leader>Re", desc = "Expand macro", icon = "󰁌" },
+            { "<leader>Rp", desc = "Parent module", icon = "󰁝" },
+            { "<leader>Rd", desc = "Render diagnostic", icon = "󱖫" },
+            { "<leader>Rr", desc = "Runnables", icon = "󰐊" },
+            { "<leader>RD", desc = "Debuggables", icon = "󰃤" },
+            { "<leader>Rj", desc = "Join lines", icon = "󰗈" },
+            { "<leader>Ra", desc = "Code action", icon = "󰌵" },
+            -- Crates (ft=toml)
+            { "<leader>Rcu", desc = "Upgrade all crates", icon = "󰁝" },
+            { "<leader>Rci", desc = "Crate info", icon = "󰋽" },
+            { "<leader>Rcv", desc = "Crate versions", icon = "󰜘" },
+            { "<leader>Rcf", desc = "Crate features", icon = "󰐕" },
+            { "<leader>Rcd", desc = "Crate dependencies", icon = "󰌗" },
 
-            -- 🗂️ Treesitter Textobjects - YAML (Kubernetes/Helm)
-            { "as", desc = "Select around assignment (key: value)", icon = "󰈙", mode = { "o", "x" } }, -- Source: treesitter.lua
-            { "is", desc = "Select inside assignment (value only)", icon = "󰈙", mode = { "o", "x" } }, -- Source: treesitter.lua
-            { "ak", desc = "Select assignment key (left side)", icon = "󰌌", mode = { "o", "x" } }, -- Source: treesitter.lua
-            { "av", desc = "Select assignment value (right side)", icon = "󰅌", mode = { "o", "x" } }, -- Source: treesitter.lua
-            { "an", desc = "Select around number", icon = "󰩥", mode = { "o", "x" } }, -- Source: treesitter.lua
-            { "at", desc = "Select around comment", icon = "󰨱", mode = { "o", "x" } }, -- Source: treesitter.lua
-            { "it", desc = "Select inside comment", icon = "󰨱", mode = { "o", "x" } }, -- Source: treesitter.lua
-            { "aS", desc = "Select around YAML statement", icon = "󰈙", mode = { "o", "x" } }, -- Source: treesitter.lua
+            ---------------------------------------------------------------
+            -- NON-LEADER GROUPS (enhance native Vim prefix popups)
+            ---------------------------------------------------------------
+            { "g", group = "Goto/LSP", icon = "󰈮" },
+            { "]", group = "Next", icon = "󰒭" },
+            { "[", group = "Previous", icon = "󰒮" },
+            { "z", group = "Folds/View", icon = "󰅃" },
+            { "a", group = "Around", icon = "󰅩", mode = { "o", "x" } },
+            { "i", group = "Inside", icon = "󰅪", mode = { "o", "x" } },
 
-            -- 🧭 Treesitter Navigation - Next
+            ---------------------------------------------------------------
+            -- NON-LEADER: LSP Navigation (g prefix)
+            ---------------------------------------------------------------
+            { "gd", desc = "Go to definition", icon = "󰈮" },
+            { "gD", desc = "Go to declaration", icon = "󰊕" },
+            { "gr", desc = "Find references", icon = "󰌹" },
+            { "gI", desc = "Go to implementation", icon = "󰌗" },
+            { "gy", desc = "Go to type definition", icon = "󰊄" },
+            { "K", desc = "Hover documentation", icon = "󰋽" },
+
+            ---------------------------------------------------------------
+            -- NON-LEADER: Bracket Navigation
+            ---------------------------------------------------------------
+            { "[d", desc = "Previous diagnostic", icon = "󱖫" },
+            { "]d", desc = "Next diagnostic", icon = "󱖫" },
+            { "[h", desc = "Previous hunk", icon = "󰊢" },
+            { "]h", desc = "Next hunk", icon = "󰊢" },
+            { "[t", desc = "Previous todo", icon = "󰄲" },
+            { "]t", desc = "Next todo", icon = "󰄲" },
+            { "[T", desc = "Previous failed test", icon = "󰙨" },
+            { "]T", desc = "Next failed test", icon = "󰙨" },
+            { "[b", desc = "Previous buffer", icon = "󰈔" },
+            { "]b", desc = "Next buffer", icon = "󰈔" },
+            { "[q", desc = "Previous quickfix", icon = "󰁨" },
+            { "]q", desc = "Next quickfix", icon = "󰁨" },
+            { "[e", desc = "Previous error", icon = "󰅙" },
+            { "]e", desc = "Next error", icon = "󰅙" },
+            { "[w", desc = "Previous warning", icon = "󰀦" },
+            { "]w", desc = "Next warning", icon = "󰀦" },
+            { "[x", desc = "Jump to context", icon = "󰅩" },
+            { "]]", desc = "Next reference", icon = "󰌹" },
+            { "[[", desc = "Previous reference", icon = "󰌹" },
+
+            ---------------------------------------------------------------
+            -- NON-LEADER: Treesitter Navigation
+            ---------------------------------------------------------------
             { "]m", desc = "Next function start", icon = "󰊕" },
             { "]M", desc = "Next function end", icon = "󰊕" },
             { "]c", desc = "Next class start", icon = "󰌗" },
@@ -187,8 +387,6 @@ return {
             { "]I", desc = "Next conditional end", icon = "󰕷" },
             { "]l", desc = "Next loop start", icon = "󰑓" },
             { "]L", desc = "Next loop end", icon = "󰑓" },
-
-            -- 🧭 Treesitter Navigation - Previous
             { "[m", desc = "Previous function start", icon = "󰊕" },
             { "[M", desc = "Previous function end", icon = "󰊕" },
             { "[c", desc = "Previous class start", icon = "󰌗" },
@@ -198,68 +396,138 @@ return {
             { "[l", desc = "Previous loop start", icon = "󰑓" },
             { "[L", desc = "Previous loop end", icon = "󰑓" },
 
-            -- 🔄 Treesitter Swapping
+            ---------------------------------------------------------------
+            -- NON-LEADER: Treesitter Swap
+            ---------------------------------------------------------------
             { "]a", desc = "Swap parameter with next", icon = "󰓡" },
             { "[a", desc = "Swap parameter with previous", icon = "󰓡" },
 
-            -- 💬 Comment.nvim
-            { "gc", group = "Comment", icon = "💬" },
-            { "gcc", desc = "Toggle line comment", icon = "💬" },
-            { "gbc", desc = "Toggle block comment", icon = "💬" },
-            { "gco", desc = "Add comment below", icon = "💬" },
-            { "gcO", desc = "Add comment above", icon = "💬" },
-            { "gcA", desc = "Add comment at end of line", icon = "💬" },
-            { "gc", desc = "Line comment operator", icon = "💬", mode = "v" },
-            { "gb", desc = "Block comment operator", icon = "💬", mode = "v" },
+            ---------------------------------------------------------------
+            -- NON-LEADER: Treesitter Text Objects
+            ---------------------------------------------------------------
+            { "af", desc = "Around function", icon = "󰊕", mode = { "o", "x" } },
+            { "if", desc = "Inside function", icon = "󰊕", mode = { "o", "x" } },
+            { "ac", desc = "Around class", icon = "󰌗", mode = { "o", "x" } },
+            { "ic", desc = "Inside class", icon = "󰌗", mode = { "o", "x" } },
+            { "aa", desc = "Around argument", icon = "󰏪", mode = { "o", "x" } },
+            { "ia", desc = "Inside argument", icon = "󰏪", mode = { "o", "x" } },
+            { "ai", desc = "Around conditional", icon = "󰕷", mode = { "o", "x" } },
+            { "ii", desc = "Inside conditional", icon = "󰕷", mode = { "o", "x" } },
+            { "al", desc = "Around loop", icon = "󰑓", mode = { "o", "x" } },
+            { "il", desc = "Inside loop", icon = "󰑓", mode = { "o", "x" } },
+            { "ab", desc = "Around block", icon = "󰅩", mode = { "o", "x" } },
+            { "ib", desc = "Inside block", icon = "󰅩", mode = { "o", "x" } },
+            { "aC", desc = "Around call", icon = "󰘧", mode = { "o", "x" } },
+            { "iC", desc = "Inside call", icon = "󰘧", mode = { "o", "x" } },
+            { "as", desc = "Around assignment", icon = "󰈙", mode = { "o", "x" } },
+            { "is", desc = "Inside assignment (value)", icon = "󰈙", mode = { "o", "x" } },
+            { "ak", desc = "Assignment key (left)", icon = "󰌌", mode = { "o", "x" } },
+            { "av", desc = "Assignment value (right)", icon = "󰅌", mode = { "o", "x" } },
+            { "an", desc = "Around number", icon = "󰩥", mode = { "o", "x" } },
+            { "at", desc = "Around comment", icon = "󰨱", mode = { "o", "x" } },
+            { "it", desc = "Inside comment", icon = "󰨱", mode = { "o", "x" } },
+            { "aS", desc = "Around statement", icon = "󰈙", mode = { "o", "x" } },
+            { "ih", desc = "Inside hunk", icon = "󰊢", mode = { "o", "x" } },
 
-            -- ⚡ Flash Navigation
+            ---------------------------------------------------------------
+            -- NON-LEADER: Treesitter Incremental Selection
+            ---------------------------------------------------------------
+            { "<C-Enter>", desc = "Start/Expand selection", icon = "󰒅", mode = { "n", "v" } },
+            { "<C-Backspace>", desc = "Shrink selection", icon = "󰒆", mode = "v" },
+
+            ---------------------------------------------------------------
+            -- NON-LEADER: Flash Navigation
+            ---------------------------------------------------------------
             { "s", desc = "Flash Jump", icon = "⚡", mode = { "n", "x", "o" } },
             { "S", desc = "Flash Treesitter", icon = "⚡", mode = { "n", "x", "o" } },
             { "r", desc = "Remote Flash", icon = "⚡", mode = "o" },
             { "R", desc = "Treesitter Search", icon = "⚡", mode = { "o", "x" } },
-            { "<c-s>", desc = "Toggle Flash Search", icon = "⚡", mode = "c" },
+            { "<C-s>", desc = "Toggle Flash Search", icon = "⚡", mode = "c" },
 
-            -- 🤖 CodeCompanion AI
-            { "<leader>a", group = "AI (CodeCompanion)", icon = "🤖" },
-            { "<leader>aa", desc = "Toggle AI chat", icon = "💬" },
-            { "<leader>aA", desc = "New AI chat", icon = "🆕" },
-            { "<leader>ap", desc = "AI action palette", icon = "📝", mode = { "n", "v" } },
-            { "<leader>ai", desc = "AI inline edit", icon = "✏️", mode = { "n", "v" } },
-            { "<leader>ae", desc = "AI explain code", icon = "💡", mode = "v" },
-            { "<leader>af", desc = "AI fix code", icon = "🔧", mode = "v" },
-            { "<leader>at", desc = "AI generate tests", icon = "🧪", mode = "v" },
-            { "<leader>ar", desc = "AI review code", icon = "🔍", mode = "v" },
-            { "<leader>ad", desc = "AI document code", icon = "📚" },
-            { "<leader>ac", desc = "AI commit message", icon = "📋" },
+            ---------------------------------------------------------------
+            -- NON-LEADER: Comment.nvim
+            ---------------------------------------------------------------
+            { "gc", group = "Comment", icon = "󰆉" },
+            { "gcc", desc = "Toggle line comment", icon = "󰆉" },
+            { "gbc", desc = "Toggle block comment", icon = "󰆉" },
+            { "gco", desc = "Add comment below", icon = "󰆉" },
+            { "gcO", desc = "Add comment above", icon = "󰆉" },
+            { "gcA", desc = "Add comment at end of line", icon = "󰆉" },
+            { "gc", desc = "Line comment selection", icon = "󰆉", mode = "v" },
+            { "gb", desc = "Block comment selection", icon = "󰆉", mode = "v" },
 
-            -- Windsurf (Codeium)
-            { "<leader>w", group = "Windsurf", icon = "󰘦" },
-            { "<leader>wv", desc = "Toggle Windsurf virtual text", icon = "" },
-            { "<leader>wV", desc = "Windsurf virtual text ON", icon = "" },
-            { "<leader>wx", desc = "Windsurf virtual text OFF", icon = "" },
-            -- Inline suggestions (insert mode)
-            { "<C-l>", desc = "Windsurf: accept", mode = "i", icon = "" },
-            { "<M-]>", desc = "Windsurf: next suggestion", mode = "i", icon = "" },
-            { "<M-[>", desc = "Windsurf: prev suggestion", mode = "i", icon = "" },
-            { "<M-c>", desc = "Windsurf: clear suggestion", mode = "i", icon = "" },
+            ---------------------------------------------------------------
+            -- NON-LEADER: Folds (ufo.nvim)
+            ---------------------------------------------------------------
+            { "zR", desc = "Open all folds", icon = "󰅀" },
+            { "zM", desc = "Close all folds", icon = "󰅃" },
+            { "zr", desc = "Open one fold level", icon = "󰅂" },
+            { "zm", desc = "Close one fold level", icon = "󰅁" },
+            { "zK", desc = "Peek fold preview", icon = "󰁌" },
 
-            -- 🚀 Smart Tab Navigation (nvim-cmp + LuaSnip)
-            { "<Tab>", desc = "Smart Tab: Next completion/Jump snippet/Trigger", mode = "i", icon = "⭐" },
-            { "<S-Tab>", desc = "Smart S-Tab: Prev completion/Jump back", mode = "i", icon = "⭐" },
+            ---------------------------------------------------------------
+            -- NON-LEADER: Smooth Scroll (Snacks)
+            ---------------------------------------------------------------
+            { "<C-u>", desc = "Half-page up (smooth)", icon = "󰒭" },
+            { "<C-d>", desc = "Half-page down (smooth)", icon = "󰒮" },
+            { "<C-b>", desc = "Page up (smooth)", icon = "󰁌" },
+            { "<C-f>", desc = "Page down (smooth)", icon = "󰁎" },
+            { "<C-y>", desc = "Line up (smooth)", icon = "󰁝" },
+            { "<C-e>", desc = "Line down (smooth)", icon = "󰁅" },
+            { "zt", desc = "Cursor to top (smooth)", icon = "󰁌" },
+            { "zz", desc = "Cursor to center (smooth)", icon = "󰁍" },
+            { "zb", desc = "Cursor to bottom (smooth)", icon = "󰁎" },
 
-            -- 🧪 Testing (neotest)
-            { "<leader>T", group = "Tests", icon = "󰙨" },
-            { "<leader>Tt", desc = "Run nearest test", icon = "󰙨" },
-            { "<leader>Tf", desc = "Run file tests", icon = "󰙨" },
-            { "<leader>Ta", desc = "Run all tests", icon = "󰙨" },
-            { "<leader>Ts", desc = "Toggle test summary", icon = "󰙨" },
-            { "<leader>To", desc = "Show test output", icon = "󰙨" },
-            { "<leader>Tp", desc = "Toggle output panel", icon = "󰙨" },
-            { "<leader>Td", desc = "Debug nearest test", icon = "󰙨" },
-            { "<leader>TS", desc = "Stop running tests", icon = "󰙨" },
-            { "<leader>Tl", desc = "Re-run last test", icon = "󰙨" },
-            { "]T", desc = "Next failed test", icon = "󰙨" },
-            { "[T", desc = "Prev failed test", icon = "󰙨" },
+            ---------------------------------------------------------------
+            -- NON-LEADER: Window Navigation & Resize
+            ---------------------------------------------------------------
+            { "<C-h>", desc = "Go to left window", icon = "󰁍" },
+            { "<C-j>", desc = "Go to lower window", icon = "󰁅" },
+            { "<C-k>", desc = "Go to upper window", icon = "󰁝" },
+            { "<C-l>", desc = "Go to right window", icon = "󰁔" },
+            { "<C-Up>", desc = "Increase window height", icon = "󰞙" },
+            { "<C-Down>", desc = "Decrease window height", icon = "󰞒" },
+            { "<C-Left>", desc = "Decrease window width", icon = "󰞗" },
+            { "<C-Right>", desc = "Increase window width", icon = "󰞘" },
+
+            ---------------------------------------------------------------
+            -- NON-LEADER: Line Movement
+            ---------------------------------------------------------------
+            { "<A-j>", desc = "Move line(s) down", icon = "󰜮", mode = { "n", "i", "v" } },
+            { "<A-k>", desc = "Move line(s) up", icon = "󰜷", mode = { "n", "i", "v" } },
+
+            ---------------------------------------------------------------
+            -- NON-LEADER: Misc
+            ---------------------------------------------------------------
+            { "jj", desc = "Exit insert mode", icon = "󰉿", mode = "i" },
+            { "jk", desc = "Exit insert mode", icon = "󰉿", mode = "i" },
+            { "<Esc>", desc = "Clear search highlights", icon = "󰌑" },
+            { "<C-s>", desc = "Save file", icon = "󰆓", mode = { "i", "n", "x", "s" } },
+            { "<C-/>", desc = "Toggle terminal", icon = "󰆍" },
+            { "<", desc = "Unindent selection", icon = "󰉵", mode = "v" },
+            { ">", desc = "Indent selection", icon = "󰉶", mode = "v" },
+
+            ---------------------------------------------------------------
+            -- NON-LEADER: Debug F-keys
+            ---------------------------------------------------------------
+            { "<F5>", desc = "Debug: Start/Continue", icon = "󰐊" },
+            { "<F10>", desc = "Debug: Step Over", icon = "󰆹" },
+            { "<F11>", desc = "Debug: Step Into", icon = "󰆸" },
+            { "<F12>", desc = "Debug: Step Out", icon = "󰆺" },
+
+            ---------------------------------------------------------------
+            -- INSERT MODE: Windsurf suggestions
+            ---------------------------------------------------------------
+            { "<C-l>", desc = "Accept completion", icon = "󰄛", mode = "i" },
+            { "<M-]>", desc = "Next suggestion", icon = "󰄛", mode = "i" },
+            { "<M-[>", desc = "Previous suggestion", icon = "󰄛", mode = "i" },
+            { "<M-c>", desc = "Clear suggestion", icon = "󰄛", mode = "i" },
+
+            ---------------------------------------------------------------
+            -- INSERT MODE: nvim-cmp + LuaSnip
+            ---------------------------------------------------------------
+            { "<Tab>", desc = "Smart Tab: completion/snippet/trigger", icon = "⭐", mode = "i" },
+            { "<S-Tab>", desc = "Smart S-Tab: prev/jump back", icon = "⭐", mode = "i" },
 
         })
     end,

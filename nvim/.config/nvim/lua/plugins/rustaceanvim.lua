@@ -43,14 +43,14 @@ return {
                         vim.keymap.set(mode, l, r, { desc = desc, buffer = bufnr, silent = true })
                     end
                     -- Rust-specific keymaps (via :RustLsp command)
-                    map("n", "<leader>re", function() vim.cmd.RustLsp("expandMacro") end, "Expand macro")
-                    map("n", "<leader>rc", function() vim.cmd.RustLsp("openCargo") end, "Open Cargo.toml")
-                    map("n", "<leader>rp", function() vim.cmd.RustLsp("parentModule") end, "Parent module")
-                    map("n", "<leader>rd", function() vim.cmd.RustLsp("renderDiagnostic") end, "Render diagnostic")
-                    map("n", "<leader>rr", function() vim.cmd.RustLsp("runnables") end, "Runnables")
-                    map("n", "<leader>rD", function() vim.cmd.RustLsp("debuggables") end, "Debuggables")
-                    map("n", "<leader>rj", function() vim.cmd.RustLsp("joinLines") end, "Join lines")
-                    map("n", "<leader>ra", function() vim.cmd.RustLsp("codeAction") end, "Rust code action")
+                    map("n", "<leader>Re", function() vim.cmd.RustLsp("expandMacro") end, "Expand macro")
+                    map("n", "<leader>Rc", function() vim.cmd.RustLsp("openCargo") end, "Open Cargo.toml")
+                    map("n", "<leader>Rp", function() vim.cmd.RustLsp("parentModule") end, "Parent module")
+                    map("n", "<leader>Rd", function() vim.cmd.RustLsp("renderDiagnostic") end, "Render diagnostic")
+                    map("n", "<leader>Rr", function() vim.cmd.RustLsp("runnables") end, "Runnables")
+                    map("n", "<leader>RD", function() vim.cmd.RustLsp("debuggables") end, "Debuggables")
+                    map("n", "<leader>Rj", function() vim.cmd.RustLsp("joinLines") end, "Join lines")
+                    map("n", "<leader>Ra", function() vim.cmd.RustLsp("codeAction") end, "Rust code action")
                 end,
             },
             -- DAP integration (auto-detects codelldb from mason if available)

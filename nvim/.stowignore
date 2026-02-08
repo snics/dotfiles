@@ -1,6 +1,9 @@
 # Ignore test files directory
 test-files/
 
+# Ignore documentation files (reference only, not symlinked)
+KEYMAPPING.md
+
 # Ignore other development/testing files if needed
 # *.test.*
 # *.spec.*

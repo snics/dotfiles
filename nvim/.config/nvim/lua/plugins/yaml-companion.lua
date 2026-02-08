@@ -31,7 +31,7 @@ return {
         { "<leader>yc", "<cmd>YamlBrowseClusterCRDs<cr>",   desc = "Browse cluster CRD schemas", ft = "yaml" },
         { "<leader>ym", "<cmd>YamlAddCRDModelines<cr>",     desc = "Add CRD schema modelines",   ft = "yaml" },
         -- Key navigation
-        { "<leader>yK", "<cmd>YamlKeys<cr>",                desc = "YAML keys to quickfix",      ft = "yaml" },
+        { "<leader>yQ", "<cmd>YamlKeys<cr>",                desc = "YAML keys to quickfix",      ft = "yaml" },
     },
     config = function()
         local yamlls_config = require("config.lsp.servers.yamlls").config

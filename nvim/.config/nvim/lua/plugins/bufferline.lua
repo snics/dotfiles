@@ -3,6 +3,9 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     version = "*",
     event = "VeryLazy",
+    keys = {
+        { "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Pick buffer" },
+    },
     opts = {
         options = {
             mode = "tabs",                  -- default: "buffers" — show tabs instead of buffers

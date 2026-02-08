@@ -23,12 +23,12 @@ return {
         dashboard = {
             preset = {
                 header = [[____            _   ___         _
-        / __ \___ _   __/ | / (_)___    (_)___ ______
-       / / / / _ \ | / /  |/ / / __ \  / / __ `/ ___/
-      / /_/ /  __/ |/ / /|  / / / / / / / /_/ (__  )
-    /_____/\___/|___/_/ |_/_/_/ /_/_/ /\__,_/____/
-                    /___/
-                 ]]
+         / __ \___ _   __/ | / (_)___    (_)___  _____
+        / / / / _ \ | / /  |/ / / __ \  / / __ `/ ___/
+       / /_/ /  __/ |/ / /|  / / / / / / / /_/ (__  )
+     /_____/\___/|___/_/ |_/_/_/ /_/_/ /\__,_/____/
+                     /___/
+                  ]]
             },
             sections = {
                 { section = "header" },
@@ -126,7 +126,7 @@ return {
         { "<leader>sM",      function() Snacks.picker.man() end,                                                    desc = "Man Pages" },
         { "<leader>sp",      function() Snacks.picker.lazy() end,                                                   desc = "Search for Plugin Spec" },
         { "<leader>sq",      function() Snacks.picker.qflist() end,                                                 desc = "Quickfix List" },
-        { "<leader>sR",      function() Snacks.picker.resume() end,                                                 desc = "Resume" },
+        { "<leader>sP",      function() Snacks.picker.resume() end,                                                 desc = "Resume" },
         { "<leader>su",      function() Snacks.picker.undo() end,                                                   desc = "Undo History" },
         { "<leader>st",      function() Snacks.picker.todo_comments() end,                                          desc = "Todo Comments" },
         { "<leader>sT",      function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Todo/Fix/Fixme" },
@@ -146,6 +146,7 @@ return {
         { "<leader>S",       function() Snacks.scratch.select() end,                                                desc = "Select Scratch Buffer" },
         { "<leader>n",       function() Snacks.notifier.show_history() end,                                         desc = "Notification History" },
         { "<leader>bd",      function() Snacks.bufdelete() end,                                                     desc = "Delete Buffer" },
+        { "<leader>bo",      function() Snacks.bufdelete.other() end,                                               desc = "Delete Other Buffers" },
         { "<leader>cR",      function() Snacks.rename.rename_file() end,                                            desc = "Rename File" },
         { "<leader>gB",      function() Snacks.gitbrowse() end,                                                     desc = "Git Browse",                              mode = { "n", "v" } },
         { "<leader>gg",      function() Snacks.lazygit() end,                                                       desc = "Lazygit" },

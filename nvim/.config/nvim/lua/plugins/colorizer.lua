@@ -6,6 +6,9 @@
 return {
     "catgoose/nvim-colorizer.lua",
     event = "BufReadPre",
+    keys = {
+        { "<leader>uH", "<cmd>ColorizerToggle<cr>", desc = "Toggle colorizer" },
+    },
     opts = {
         user_default_options = {
             css = true,              -- default: false — enable all CSS color features

@@ -22,7 +22,7 @@ return {
     "nvimtools/none-ls.nvim",
     dependencies = {
         "nvim-lua/plenary.nvim",
-        "nvimtools/none-ls-extras.nvim", -- Additional sources like eslint_d
+        "nvimtools/none-ls-extras.nvim",  -- Additional sources like eslint_d
         "gbprod/none-ls-shellcheck.nvim", -- Shellcheck diagnostics and code actions
     },
     event = { "BufReadPre", "BufNewFile" },
@@ -89,7 +89,7 @@ return {
                 extra_args = {
                     "-rm-unused", -- Remove unused imports
                     "-set-alias", -- Set alias for long import names
-                    "-format", -- Format imports
+                    "-format",    -- Format imports
                 },
             }),
 
@@ -97,8 +97,8 @@ return {
                 filetypes = { "go" },
                 extra_args = {
                     "--max-len", "100", -- Maximum line length
-                    "--tab-len", "4", -- Tab length
-                    "--reformat-tags", -- Reformat struct tags
+                    "--tab-len", "4",   -- Tab length
+                    "--reformat-tags",  -- Reformat struct tags
                 },
             }),
 
@@ -281,7 +281,7 @@ return {
                                     -- Use null-ls for formatting, but allow certain LSPs as fallback
                                     return c.name == "null-ls"
                                         or c.name == "rust_analyzer" -- Rust has excellent built-in formatting
-                                        or c.name == "gopls" -- Go fmt is standard
+                                        or c.name == "gopls"         -- Go fmt is standard
                                 end,
                             })
                         end,
@@ -291,7 +291,7 @@ return {
                 local opts = { buffer = bufnr, noremap = true, silent = true }
 
                 -- Manual formatting
-                vim.keymap.set({ "n", "v" }, "<leader>pf", function()
+                vim.keymap.set({ "n", "v" }, "<leader>cf", function()
                     vim.lsp.buf.format({
                         timeout_ms = 2000,
                         filter = function(c)
@@ -351,12 +351,12 @@ return {
         -- ==============================================================================
 
         -- Command to show none-ls log (useful for debugging)
-        vim.keymap.set("n", "<leader>nl", function()
+        vim.keymap.set("n", "<leader>ll", function()
             vim.cmd("NullLsLog")
         end, { desc = "Open none-ls log" })
 
         -- Command to show none-ls info (shows active sources)
-        vim.keymap.set("n", "<leader>ni", function()
+        vim.keymap.set("n", "<leader>li", function()
             vim.cmd("NullLsInfo")
         end, { desc = "Show none-ls info" })
     end,

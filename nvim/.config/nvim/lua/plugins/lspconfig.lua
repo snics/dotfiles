@@ -20,13 +20,13 @@ return {
                 map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
                 map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code actions")
                 map("n", "K", vim.lsp.buf.hover, "Hover documentation")
-                map("n", "<leader>d", vim.diagnostic.open_float, "Line diagnostics")
+                map("n", "<leader>cd", vim.diagnostic.open_float, "Line diagnostics")
                 map("n", "[d", vim.diagnostic.goto_prev, "Prev diagnostic")
                 map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
-                map("n", "<leader>rs", "<cmd>LspRestart<CR>", "Restart LSP")
+                map("n", "<leader>ls", "<cmd>LspRestart<CR>", "Restart LSP")
 
                 -- IncRename integration (expr keymap)
-                vim.keymap.set("n", "<leader>rn", function()
+                vim.keymap.set("n", "<leader>cr", function()
                     return ":IncRename " .. vim.fn.expand("<cword>")
                 end, { desc = "Smart rename", buffer = ev.buf, silent = true, expr = true })
             end,

@@ -7,7 +7,7 @@ return {
     -- Lazy load: only when opening YAML files
     ft = { "yaml", "yml" },
     keys = {
-        { "<leader>Ks", "<cmd>KubernetesGenerateSchema<CR>", desc = "Regenerate K8s schema from cluster" },
+        { "<leader>yK", "<cmd>KubernetesGenerateSchema<CR>", desc = "Regenerate K8s schema from cluster", ft = "yaml" },
     },
     -- Available config: schema_strict, schema_generate_always, patch, yamlls_root
     opts = {
