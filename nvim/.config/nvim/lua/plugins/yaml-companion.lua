@@ -6,36 +6,60 @@ return {
         "b0o/schemastore.nvim",
     },
     keys = {
-        { "<leader>ys", "<cmd>YamlBrowseDatreeSchemas<cr>", desc = "Browse YAML schemas (Datree)", ft = "yaml" },
-        { "<leader>yc", "<cmd>YamlBrowseClusterCRDs<cr>",   desc = "Browse cluster CRD schemas",   ft = "yaml" },
-        { "<leader>ym", "<cmd>YamlAddCRDModelines<cr>",     desc = "Add CRD schema modelines",     ft = "yaml" },
-        { "<leader>yK", "<cmd>YamlKeys<cr>",                desc = "YAML keys to quickfix",        ft = "yaml" },
+        -- Schema management
+        {
+            "<leader>ys",
+            function() require("yaml-companion").open_ui_select() end,
+            desc = "Select YAML schema",
+            ft = "yaml",
+        },
+        {
+            "<leader>yS",
+            function()
+                local schema = require("yaml-companion").get_buf_schema(0)
+                if schema.result[1].name == "none" then
+                    vim.notify("No schema active", vim.log.levels.INFO)
+                else
+                    vim.notify("Schema: " .. schema.result[1].name, vim.log.levels.INFO)
+                end
+            end,
+            desc = "Show current YAML schema",
+            ft = "yaml",
+        },
+        -- CRD features
+        { "<leader>yd", "<cmd>YamlBrowseDatreeSchemas<cr>", desc = "Browse Datree CRD schemas",  ft = "yaml" },
+        { "<leader>yc", "<cmd>YamlBrowseClusterCRDs<cr>",   desc = "Browse cluster CRD schemas", ft = "yaml" },
+        { "<leader>ym", "<cmd>YamlAddCRDModelines<cr>",     desc = "Add CRD schema modelines",   ft = "yaml" },
+        -- Key navigation
+        { "<leader>yK", "<cmd>YamlKeys<cr>",                desc = "YAML keys to quickfix",      ft = "yaml" },
     },
     config = function()
-        -- Load existing yamlls server configuration
         local yamlls_config = require("config.lsp.servers.yamlls").config
         local capabilities = require("config.lsp").capabilities
 
         local cfg = require("yaml-companion").setup({
-            -- Built-in matchers for auto-detection
             builtin_matchers = {
                 kubernetes = { enabled = true },
                 cloud_init = { enabled = true },
             },
 
-            -- YAML key navigation via :YamlKeys
             keys = { enabled = true },
 
-            -- Cluster CRD browsing via :YamlBrowseClusterCRDs / :YamlFetchClusterCRD
-            cluster_crds = { enabled = true },
+            cluster_crds = {
+                enabled = true,
+                fallback = true, -- auto-fallback to cluster when Datree unavailable
+            },
 
-            -- Merge our existing yamlls settings
+            modeline = {
+                validate_urls = true, -- required when fallback = true
+                notify = true,
+            },
+
             lspconfig = vim.tbl_deep_extend("force", yamlls_config, {
                 capabilities = capabilities,
             }),
         })
 
-        -- Apply config and enable yamlls (managed here instead of config.lsp.init)
         vim.lsp.config("yamlls", cfg)
         vim.lsp.enable("yamlls")
     end,
