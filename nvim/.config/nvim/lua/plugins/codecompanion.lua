@@ -45,6 +45,9 @@ return {
                 codex = function()
                     return require("codecompanion.adapters").resolve("codex")
                 end,
+                kimi_cli = function()
+                    return require("codecompanion.adapters").resolve("kimi_cli")
+                end,
                 -- HTTP APIs (for inline edits — ACP doesn't support inline)
                 anthropic = function()
                     return require("codecompanion.adapters").resolve("anthropic", {

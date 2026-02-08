@@ -1,29 +1,23 @@
 #!/usr/bin/env bash
 
-echo -e "Installing AI CLI tools..."
-
-# Gemini CLI (Google) — requires Node.js 18+
-# https://github.com/google-gemini/gemini-cli
-if ! command -v gemini &> /dev/null; then
-  echo "Installing Gemini CLI..."
-  npm install -g @google/gemini-cli
-else
-  echo "Gemini CLI already installed ($(gemini --version))"
-fi
-
-# Codex CLI (OpenAI) — requires Node.js
-# https://github.com/openai/codex
-if ! command -v codex &> /dev/null; then
-  echo "Installing Codex CLI..."
-  npm install -g @openai/codex
-else
-  echo "Codex CLI already installed ($(codex --version))"
-fi
-
-echo -e "AI CLI tools installation done!"
+echo -e "AI CLI tools overview"
 echo -e ""
-echo -e "Note: The following tools are installed via Brewfile:"
-echo -e "  - claude-code (cask)"
-echo -e "  - opencode (brew sst/tap/opencode)"
+echo -e "All AI coding agents are managed via Brewfile:"
 echo -e ""
-echo -e "Run 'gemini' and 'codex' to authenticate on first use."
+echo -e "  Homebrew formulas:"
+echo -e "    - opencode    (brew sst/tap/opencode)"
+echo -e "    - gemini-cli  (brew gemini-cli)       → binary: gemini"
+echo -e "    - kimi-cli    (brew kimi-cli)          → binary: kimi"
+echo -e ""
+echo -e "  Homebrew casks:"
+echo -e "    - claude-code (cask claude-code)       → binary: claude"
+echo -e "    - codex       (cask codex)             → binary: codex"
+echo -e ""
+echo -e "Run 'brew bundle' from the dotfiles root to install all tools."
+echo -e ""
+echo -e "First-use authentication:"
+echo -e "  - claude: launches interactive auth on first run"
+echo -e "  - opencode: launches interactive auth on first run"
+echo -e "  - gemini: run 'gemini' to authenticate with Google"
+echo -e "  - codex: run 'codex' to authenticate with OpenAI"
+echo -e "  - kimi: run 'kimi /login' to authenticate with Moonshot AI"

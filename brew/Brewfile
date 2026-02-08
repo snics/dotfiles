@@ -146,6 +146,8 @@ brew "socat" # Multipurpose relay (SOcket CAT). [Socat](http://www.dest-unreach.
 brew "sqlmap" # Automatic SQL injection and database takeover tool. [Sqlmap](https://sqlmap.org/)
 brew "ssh-copy-id" # brew "ssh-copy-id" # Add a public key to a remote machine's authorized_keys file. [Ssh-copy-id](https://www.openssh.com/manual.html)
 brew "sst/tap/opencode" # This is a OSS Code Agenda for the terminal. [OpenCode](https://github.com/sst/opencode)
+brew "gemini-cli" # Google's AI coding agent for the terminal. [Gemini CLI](https://github.com/google-gemini/gemini-cli)
+brew "kimi-cli" # Moonshot AI's coding agent for the terminal. [Kimi CLI](https://github.com/MoonshotAI/kimi-cli)
 brew "starship" # The minimal, blazing-fast, and infinitely customizable prompt for any shell! [Starship](https://starship.rs/)
 brew "stow" # Manage installation of multiple software packages in the same directory tree. [Stow](https://www.gnu.org/software/stow/)
 brew "swift" # The Swift programming language. [Swift](https://swift.org/)
@@ -190,6 +192,7 @@ cask "cardhop" # Manage your contacts with ease. [Cardhop](https://flexibits.com
 cask "cleanshot" # Screenshot and screen recording tool. [CleanShot](https://cleanshot.com/)
 cask "container" # A tool to manage Docker containers. [Container](https://container.sh/)
 cask "claude-code" # Terminal-based AI coding assistant from Anthropic. [Claude Code](https://code.claude.com/)
+cask "codex" # OpenAI's coding agent for the terminal. [Codex](https://github.com/openai/codex)
 cask "cursor" # AI powered VSCode. [Cursor](https://www.cursor.com/)
 cask "discord" # Free voice and text chat for gamers. [Discord](https://discord.com/)
 cask "elgato-stream-deck" # Stream Deck software. [Stream Deck](https://www.elgato.com/en/gaming/stream
