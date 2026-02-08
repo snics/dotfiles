@@ -1,50 +1,26 @@
+-- todo-comments.nvim — highlight and search TODO/FIX/HACK/etc. comments
+--
+-- Keywords (all defaults): FIX, TODO, HACK, WARN, PERF, NOTE, TEST
+-- Colors below are Catppuccin Mocha overrides (defaults are generic hex values)
 return {
-  "folke/todo-comments.nvim",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = { "nvim-lua/plenary.nvim" },
-  keys = {
-    { "<leader>st", function() Snacks.picker.todo_comments() end, desc = "Todo" },
-    { "<leader>sT", function () Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Todo/Fix/Fixme" },
-  },
-  opts = {
-      keywords = {
-        FIX = {
-          icon = " ", -- icon used for the sign, and in search results
-          color = "error", -- can be a hex color, or a named color (see below)
-          alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
-          -- signs = false, -- configure signs for some keywords individually
+    "folke/todo-comments.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+        { "]t",         function() require("todo-comments").jump_next() end,                                   desc = "Next todo comment" },
+        { "[t",         function() require("todo-comments").jump_prev() end,                                   desc = "Previous todo comment" },
+        { "<leader>st", function() Snacks.picker.todo_comments() end,                                          desc = "Todo" },
+        { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Todo/Fix/Fixme" },
+    },
+    opts = {
+        -- Catppuccin Mocha color overrides (defaults: generic hex like #DC2626, #FBBF24, etc.)
+        colors = {
+            error = { "DiagnosticError", "ErrorMsg", "#f38ba8" },
+            warning = { "DiagnosticWarn", "WarningMsg", "#f9e2af" },
+            info = { "DiagnosticInfo", "#74c7ec" },
+            hint = { "DiagnosticHint", "#a6e3a1" },
+            default = { "Identifier", "#cba6f7" },
+            test = { "Identifier", "#f5c2e7" },
         },
-        TODO = { icon = " ", color = "info" },
-        HACK = { icon = " ", color = "warning" },
-        WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
-        PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-        NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
-        TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
-      },
-      colors = {
-        error = { "DiagnosticError", "ErrorMsg", "#f38ba8" },
-        warning = { "DiagnosticWarn", "WarningMsg", "#f9e2af" },
-        info = { "DiagnosticInfo", "#74c7ec" },
-        hint = { "DiagnosticHint", "#a6e3a1" },
-        default = { "Identifier", "#cba6f7" },
-        test = { "Identifier", "#f5c2e7" }
-      }
-  },
-  config = function()
-    local todo_comments = require("todo-comments")
-    -- set keymaps
-    local keymap = vim.keymap -- for conciseness
-
-    -- Set keymaps for jump to next todo comment
-    keymap.set("n", "]t", function()
-      todo_comments.jump_next()
-    end, { desc = "Next todo comment" })
-
-    -- Set keymaps for jump to previous todo comment
-    keymap.set("n", "[t", function()
-      todo_comments.jump_prev()
-    end, { desc = "Previous todo comment" })
-
-    todo_comments.setup()
-  end,
+    },
 }

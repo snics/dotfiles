@@ -1,26 +1,23 @@
+-- catppuccin/nvim — Catppuccin Mocha color scheme
+--
+-- Available flavours: "latte", "frappe", "macchiato", "mocha"
+-- transparent_background sets Normal/NormalNC bg to NONE
+-- float.transparent must be set separately for floating windows
 return {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
     config = function()
-        require('catppuccin').setup({
-            flavour = "mocha", -- set the theme to be `mocha`
-            transparent_background = true, -- enable the theme's transparent background
+        require("catppuccin").setup({
+            flavour = "mocha",
+            transparent_background = true,
+            float = { transparent = true }, -- NormalFloat bg = NONE (separate from transparent_background)
         })
 
-        vim.cmd.colorscheme 'catppuccin' -- Set the colorscheme
-        -- Set transparent background
-        vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-        vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-        
-        -- Enhanced line number colors for better visibility
-        vim.api.nvim_set_hl(0, 'LineNr', { 
-            fg = '#6c7086', -- Catppuccin overlay0 - more subtle and less white
-            bold = false 
-        })
-        vim.api.nvim_set_hl(0, 'CursorLineNr', { 
-            fg = '#fab387', -- Catppuccin peach - warm and friendly
-            bold = true 
-        })
-    end
+        vim.cmd.colorscheme("catppuccin")
+
+        -- Line number colors (Catppuccin Mocha palette overrides)
+        vim.api.nvim_set_hl(0, "LineNr", { fg = "#6c7086" })                    -- overlay0 — subtle
+        vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#fab387", bold = true }) -- peach — warm
+    end,
 }

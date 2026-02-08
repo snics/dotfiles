@@ -3,17 +3,16 @@ return {
     event = "VeryLazy",
     dependencies = "nvim-tree/nvim-web-devicons",
     init = function()
-        vim.o.timeout = true
-        vim.o.timeoutlen = 500
+        vim.o.timeout = true   -- required for which-key to work
+        vim.o.timeoutlen = 500 -- default: 1000 — time in ms to wait for a mapped sequence
     end,
     opts = {
-        preset = "modern",
+        preset = "modern", -- default: "classic" — available: "classic", "modern", "helix"
     },
     config = function(_, opts)
         require("which-key").setup(opts)
-        require("nvim-web-devicons").setup()
+        -- nvim-web-devicons.setup() is handled by nvim-web-devicons itself (lazy.nvim auto-loads it)
 
-        -- Register your keybindings
         local wk = require("which-key")
         wk.add({
             -- General

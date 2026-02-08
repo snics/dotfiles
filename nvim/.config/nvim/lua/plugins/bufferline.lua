@@ -5,10 +5,10 @@ return {
     event = "VeryLazy",
     opts = {
         options = {
-            mode = "tabs",
-            separator_style = "thick",
-            always_show_bufferline = false,
-            diagnostics = "nvim_lsp",
+            mode = "tabs",                  -- default: "buffers" — show tabs instead of buffers
+            separator_style = "thick",      -- default: "thin"
+            always_show_bufferline = false, -- default: true — only show when multiple tabs exist
+            diagnostics = "nvim_lsp",       -- default: false — show LSP diagnostic indicators
         },
     },
     config = function(_, opts)
