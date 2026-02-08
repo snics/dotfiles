@@ -42,3 +42,6 @@ alias cl="clear"
 # Add NeoVim to vim
 alias vim="nvim"
 alias vi="nvim"
+
+# App aliases
+alias claude-mem='bun "/Users/nico/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
