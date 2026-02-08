@@ -1,4 +1,20 @@
--- Advanced completion engine with LSP, AI, snippets, and smart filtering
+-- Advanced completion engine with LSP, AI, snippets, and smart filtering.
+--
+-- Available setup() options:
+--   preselect           — default: PreselectMode.Item — auto-select first item
+--   completion          — autocomplete, completeopt, keyword_length, keyword_pattern
+--   performance         — debounce(60), throttle(30), fetching_timeout(500),
+--                         max_view_entries(200), async_budget(1), confirm_resolve_timeout(80)
+--   snippet.expand      — default: vim.snippet.expand
+--   mapping             — default: {} — keybindings
+--   sources             — default: {} — completion sources with priority/group_index
+--   formatting          — fields, format function, expandable_indicator(true)
+--   sorting             — priority_weight(2), comparators list
+--   window              — completion/documentation bordered windows
+--   view                — entries(custom/native/wildmenu), docs.auto_open(true)
+--   matching            — fuzzy/partial matching toggles
+--   confirmation        — default_behavior(Insert), get_commit_characters
+--   experimental        — ghost_text(false)
 return {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
@@ -6,11 +22,11 @@ return {
     -- Dependencies grouped by functionality for clarity
     dependencies = {
         -- Core LSP integration - provides the main completion data
-        "hrsh7th/cmp-nvim-lsp",            -- LSP capabilities for cmp
+        "hrsh7th/cmp-nvim-lsp",                -- LSP capabilities for cmp
         "hrsh7th/cmp-nvim-lsp-signature-help", -- Function signature help
 
         -- Snippet system - enables code templates and expansions
-        "saadparwaiz1/cmp_luasnip", -- LuaSnip integration
+        "saadparwaiz1/cmp_luasnip",     -- LuaSnip integration
         "rafamadriz/friendly-snippets", -- Pre-built snippets for common languages
         {
             "L3MON4D3/LuaSnip",
@@ -19,17 +35,17 @@ return {
         },
 
         -- Essential completion sources
-        "hrsh7th/cmp-buffer", -- Words from current buffer
-        "hrsh7th/cmp-path", -- File system paths
+        "hrsh7th/cmp-buffer",  -- Words from current buffer
+        "hrsh7th/cmp-path",    -- File system paths
         "hrsh7th/cmp-cmdline", -- Command line completion
 
         -- Context-aware sources - only activate in specific situations
         "petertriho/cmp-git", -- Git commit types and branches
-        "f3fora/cmp-spell", -- Spell checking suggestions
-        "hrsh7th/cmp-emoji", -- Emoji completion
+        "f3fora/cmp-spell",   -- Spell checking suggestions
+        "hrsh7th/cmp-emoji",  -- Emoji completion
 
         -- Visual enhancements
-        "onsails/lspkind.nvim",               -- Icons for completion items
+        "onsails/lspkind.nvim",                   -- Icons for completion items
         "roobert/tailwindcss-colorizer-cmp.nvim", -- Tailwind color previews in completion
 
         -- AI-powered completion
@@ -55,11 +71,11 @@ return {
         -- LuaSnip configuration: Enhanced snippet behavior
         require("luasnip.loaders.from_vscode").lazy_load() -- Load VSCode-style snippets
         luasnip.config.set_config({
-            history = true,                            -- Remember last snippet for re-expansion
-            updateevents = "TextChanged,TextChangedI", -- Update snippets dynamically
-            enable_autosnippets = true,                -- Enable automatic snippet triggers
-            region_check_events = "InsertEnter",       -- When to validate snippet regions
-            delete_check_events = "TextChanged",       -- When to clean up old snippets
+            history = true,                                -- Remember last snippet for re-expansion
+            updateevents = "TextChanged,TextChangedI",     -- Update snippets dynamically
+            enable_autosnippets = true,                    -- Enable automatic snippet triggers
+            region_check_events = "InsertEnter",           -- When to validate snippet regions
+            delete_check_events = "TextChanged",           -- When to clean up old snippets
         })
 
         -- Helper functions for smart completion behavior
@@ -126,9 +142,12 @@ return {
         -- Main completion engine setup
         cmp.setup({
             -- Don't pre-select items - let user choose explicitly
-            preselect = cmp.PreselectMode.None,
+            preselect = cmp.PreselectMode.None, -- default: PreselectMode.Item
+
             completion = {
-                completeopt = "menu,menuone,preview,noselect",
+                completeopt = "menu,menuone,preview,noselect", -- default: "menu,menuone,noselect" — added preview
+                -- keyword_length = 1, -- default: 1
+                -- autocomplete = { cmp.TriggerEvent.TextChanged }, -- default
             },
 
             -- Performance: Disable in prompts and huge files
@@ -197,16 +216,16 @@ return {
 
             -- Completion sources with smart filtering
             sources = cmp.config.sources({
-                { name = "lazydev",                group_index = 0 },         -- Neovim Lua API (lazydev.nvim)
+                { name = "lazydev",                group_index = 0 },                                                      -- Neovim Lua API (lazydev.nvim)
                 { name = "codeium",                group_index = 2,                       entry_filter = codeium_filter }, -- AI suggestions
-                { name = "nvim_lsp",               entry_filter = non_comment_filter }, -- Language server
-                { name = "nvim_lsp_signature_help" },                         -- Function signatures (always active)
-                { name = "git",                    entry_filter = git_filter }, -- Git-specific completion
-                { name = "spell",                  entry_filter = text_and_comment_filter }, -- Spell check
-                { name = "emoji",                  entry_filter = text_and_comment_filter }, -- Emojis
-                { name = "luasnip",                entry_filter = non_comment_filter }, -- Snippets
+                { name = "nvim_lsp",               entry_filter = non_comment_filter },                                    -- Language server
+                { name = "nvim_lsp_signature_help" },                                                                      -- Function signatures (always active)
+                { name = "git",                    entry_filter = git_filter },                                            -- Git-specific completion
+                { name = "spell",                  entry_filter = text_and_comment_filter },                               -- Spell check
+                { name = "emoji",                  entry_filter = text_and_comment_filter },                               -- Emojis
+                { name = "luasnip",                entry_filter = non_comment_filter },                                    -- Snippets
                 { name = "buffer",                 keyword_length = 3,                    entry_filter = non_comment_filter, get_bufnrs = get_loaded_buffers },
-                { name = "path",                   entry_filter = non_comment_filter }, -- File paths
+                { name = "path",                   entry_filter = non_comment_filter },                                    -- File paths
             }),
 
             -- Visual formatting with icons and Tailwind color previews
@@ -243,7 +262,7 @@ return {
 
             -- Intelligent sorting: LSP first, then usage, snippets last
             sorting = {
-                priority_weight = 2,
+                priority_weight = 2, -- default: 2
                 comparators = {
                     cmp.config.compare.offset,
                     cmp.config.compare.exact,
@@ -269,9 +288,16 @@ return {
 
             -- Performance tuning for responsive completion
             performance = {
-                debounce = 60,  -- Wait 60ms before triggering
-                fetching_timeout = 200, -- Timeout after 200ms
-                max_view_entries = 120, -- Limit visible items
+                debounce = 60,          -- default: 60
+                -- throttle = 30,        -- default: 30
+                fetching_timeout = 200, -- default: 500 — faster timeout
+                -- async_budget = 1,     -- default: 1
+                max_view_entries = 120, -- default: 200 — less clutter
+            },
+
+            -- Ghost text preview (inline preview of selected completion)
+            experimental = {
+                ghost_text = false, -- default: false — disabled, windsurf handles inline preview
             },
         })
 
@@ -317,7 +343,7 @@ return {
         end
 
         -- Spell check: Configure for German and English
-        vim.opt.spell = false       -- Manual activation only
+        vim.opt.spell = false           -- Manual activation only
         vim.opt.spelllang = { "de", "en" }
         vim.opt.spellsuggest = "best,3" -- Show top 3 suggestions
 
