@@ -48,6 +48,7 @@ return {
                     return require("codecompanion.adapters").resolve("gemini_cli")
                 end,
                 codex = function()
+                    -- requires 'brew install --cask codex' (provides codex-acp binary)
                     return require("codecompanion.adapters").resolve("codex")
                 end,
                 kimi_cli = function()
