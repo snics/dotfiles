@@ -111,6 +111,11 @@ return {
             display = {
                 action_palette = {
                     provider = "snacks",
+                    opts = {
+                        show_preset_actions = true,
+                        show_preset_prompts = true,
+                        show_preset_rules = true,
+                    },
                 },
                 chat = {
                     show_token_count = true,
