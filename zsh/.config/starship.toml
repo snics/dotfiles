@@ -23,7 +23,7 @@ vimcmd_visual_symbol = "[❮](yellow)"
 # Set the OS model to display the OS icon
 [os]
 format = '[$symbol]($style)'
-style = "bold text"
+style = "text"
 disabled = false
 
 [os.symbols]
@@ -73,8 +73,8 @@ Windows = "󰍲 "
 
 # Set username module to display the current user's username
 [username]
-style_user = 'blue bold'
-style_root = 'black bold'
+style_user = 'blue'
+style_root = 'black'
 format = '[$user]($style) '
 disabled = false
 show_always = true
@@ -97,15 +97,15 @@ disabled = false
 
 [[battery.display]] # 'bold red' style and discharging_symbol when capacity is between 0% and 10%
 threshold = 10
-style = 'bold red'
+style = 'red'
 
 [[battery.display]]
 threshold = 30
-style = 'bold yellow'
+style = 'yellow'
 
 # Set up cmd_duration module to display the time it took for the last command to execute
 [cmd_duration]
-format = ' 󰔚 [$duration](bold yellow) '
+format = ' 󰔚 [$duration](yellow) '
 
 # Shows current directory
 [directory]
@@ -150,15 +150,15 @@ only_nonzero_diffs = false
 [golang]
 format = '[$symbol($version )]($style) '
 symbol = ""
-style = 'bold blue'
+style = 'blue'
 
 [helm]
 format = '[$symbol($version )]($style) '
-style = 'bold blue'
+style = 'blue'
 
 [kubernetes]
 format = '⋯ [$symbol ( $user on )$context\($namespace\)]($style) '
-style = 'bold sky'
+style = 'sky'
 symbol = "⛵"
 disabled = false
 contexts = [
@@ -168,7 +168,7 @@ contexts = [
 [lua]
 format = '[$symbol($version )]($style) '
 symbol = ""
-style = 'bold blue'
+style = 'blue'
 
 [memory_usage]
 format = '[$symbol${ram}( | ${swap})]($style) '
@@ -182,21 +182,21 @@ format = '[$symbol$project]($style) '
 
 [nodejs]
 format = '[$symbol($version)]($style) '
-style = 'bold green'
+style = 'green'
 
 [package]
-style = 'bold peach'
+style = 'peach'
 symbol = "📦 "
 
 [rust]
 format = '[$symbol($version )]($style) '
 symbol = ""
-style = 'bold red'
+style = 'red'
 
 [terraform]
 format = '[$symbol$workspace]($style) '
 symbol = "󱁢"
-style = 'bold mauve'
+style = 'mauve'
 
 # palette tables should be last in the config ⚓️
 # Catppucci theme
