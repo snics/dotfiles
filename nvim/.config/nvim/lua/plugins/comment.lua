@@ -1,67 +1,43 @@
+-- Note: Comment.nvim is unmaintained since June 2024, but still works.
+-- Neovim 0.10+ has built-in gc/gcc, but lacks block comments (gb/gbc)
+-- and extra mappings (gco/gcO/gcA). Keeping this until Neovim adds those.
 return {
-  "numToStr/Comment.nvim",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = {
-    "JoosepAlviste/nvim-ts-context-commentstring",
-  },
-  config = function()
-    -- TODO: add good handling for treesitter and lsp integration
-    -- import comment plugin safely
-    local comment = require("Comment")
-    -- import ts_context_commentstring plugin safely for tsx, jsx, html files
-    local ts_context_commentstring = require("ts_context_commentstring.integrations.comment_nvim")
+    "numToStr/Comment.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+        "JoosepAlviste/nvim-ts-context-commentstring",
+    },
+    config = function()
+        local ts_context_commentstring = require("ts_context_commentstring.integrations.comment_nvim")
 
-    -- enable comment with comprehensive configuration
-    comment.setup({
-      -- Add a space b/w comment and the line
-      padding = true,
-      
-      -- Whether the cursor should stay at its position
-      sticky = true,
-      
-      -- Lines to be ignored while (un)comment
-      ignore = nil,
-      
-      -- LHS of toggle mappings in NORMAL mode
-      toggler = {
-        -- Line-comment toggle keymap
-        line = 'gcc',
-        -- Block-comment toggle keymap
-        block = 'gbc',
-      },
-      
-      -- LHS of operator-pending mappings in NORMAL and VISUAL mode
-      opleader = {
-        -- Line-comment keymap
-        line = 'gc',
-        -- Block-comment keymap
-        block = 'gb',
-      },
-      
-      -- LHS of extra mappings
-      extra = {
-        -- Add comment on the line above
-        above = 'gcO',
-        -- Add comment on the line below
-        below = 'gco',
-        -- Add comment at the end of line
-        eol = 'gcA',
-      },
-      
-      -- Enable keybindings
-      -- NOTE: If given `false` then the plugin won't create any mappings
-      mappings = {
-        -- Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
-        basic = true,
-        -- Extra mapping; `gco`, `gcO`, `gcA`
-        extra = true,
-      },
-      
-      -- Function to call before (un)comment
-      pre_hook = ts_context_commentstring.create_pre_hook(),
-      
-      -- Function to call after (un)comment
-      post_hook = nil,
-    })
-  end,
+        -- All options below are defaults except pre_hook.
+        -- Kept explicitly to document available settings.
+        require("Comment").setup({
+            padding = true, -- default: true — space between comment char and text
+            sticky = true, -- default: true — cursor stays at position
+            ignore = nil, -- default: nil — pattern to ignore lines (e.g. "^$" for blank)
+
+            toggler = { -- defaults: gcc, gbc
+                line = "gcc", -- toggle line comment
+                block = "gbc", -- toggle block comment — not available in Neovim built-in
+            },
+            opleader = { -- defaults: gc, gb
+                line = "gc", -- line comment operator
+                block = "gb", -- block comment operator — not available in Neovim built-in
+            },
+            extra = {  -- defaults: gcO, gco, gcA — not available in Neovim built-in
+                above = "gcO", -- add comment line above
+                below = "gco", -- add comment line below
+                eol = "gcA", -- add comment at end of line
+            },
+            mappings = { -- defaults: both true
+                basic = true, -- gc, gcc, gb, gbc
+                extra = true, -- gco, gcO, gcA
+            },
+
+            -- JSX/TSX/HTML: use treesitter to determine correct commentstring
+            pre_hook = ts_context_commentstring.create_pre_hook(),
+            post_hook = nil, -- default: nil
+        })
+    end,
 }
