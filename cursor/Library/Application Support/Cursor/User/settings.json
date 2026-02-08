@@ -36,8 +36,5 @@
     "editor.defaultFormatter": "redhat.vscode-yaml"
   },
   "makefile.configureOnOpen": true,
-  "cursor.cpp.disabledLanguages": [
-    "markdown",
-    "plaintext"
-  ]
+  "cursor.cpp.disabledLanguages": ["markdown", "plaintext"]
 }
