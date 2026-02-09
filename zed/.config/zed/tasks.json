@@ -1,1 +1,219 @@
-[]
+[
+  // =====================================================================
+  // Go
+  // =====================================================================
+  {
+    "label": "go test ./...",
+    "command": "go test ./...",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "go test (current package)",
+    "command": "go test ./$ZED_RELATIVE_DIR/...",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "go run",
+    "command": "go run $ZED_FILE",
+    "reveal": "always"
+  },
+  {
+    "label": "go build",
+    "command": "go build ./...",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "on_success"
+  },
+  {
+    "label": "go mod tidy",
+    "command": "go mod tidy",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "on_success"
+  },
+  {
+    "label": "golangci-lint",
+    "command": "golangci-lint run ./...",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  // =====================================================================
+  // Rust
+  // =====================================================================
+  {
+    "label": "cargo test",
+    "command": "cargo test",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "cargo build",
+    "command": "cargo build",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "on_success"
+  },
+  {
+    "label": "cargo run",
+    "command": "cargo run",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "cargo clippy",
+    "command": "cargo clippy --all-targets --all-features",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "cargo check",
+    "command": "cargo check",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "on_success"
+  },
+  // =====================================================================
+  // JavaScript / TypeScript
+  // =====================================================================
+  {
+    "label": "npm test",
+    "command": "npm test",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "npm run dev",
+    "command": "npm run dev",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "npm run build",
+    "command": "npm run build",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "npm install",
+    "command": "npm install",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "on_success"
+  },
+  {
+    "label": "npx vitest",
+    "command": "npx vitest run",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "npx vitest (watch)",
+    "command": "npx vitest",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  // =====================================================================
+  // Python
+  // =====================================================================
+  {
+    "label": "python run",
+    "command": "python3 $ZED_FILE",
+    "reveal": "always"
+  },
+  {
+    "label": "pytest",
+    "command": "python3 -m pytest",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "pytest (current file)",
+    "command": "python3 -m pytest $ZED_FILE",
+    "reveal": "always"
+  },
+  // =====================================================================
+  // Docker
+  // =====================================================================
+  {
+    "label": "docker compose up",
+    "command": "docker compose up -d",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "on_success"
+  },
+  {
+    "label": "docker compose down",
+    "command": "docker compose down",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "on_success"
+  },
+  {
+    "label": "docker compose logs",
+    "command": "docker compose logs -f --tail 100",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "docker build",
+    "command": "docker build -t $ZED_STEM .",
+    "cwd": "$ZED_DIRNAME",
+    "reveal": "always"
+  },
+  // =====================================================================
+  // Terraform
+  // =====================================================================
+  {
+    "label": "terraform plan",
+    "command": "terraform plan",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "terraform apply",
+    "command": "terraform apply",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "terraform init",
+    "command": "terraform init",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "on_success"
+  },
+  {
+    "label": "terraform validate",
+    "command": "terraform validate",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "on_success"
+  },
+  // =====================================================================
+  // Make
+  // =====================================================================
+  {
+    "label": "make",
+    "command": "make",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "make (target)",
+    "command": "make $ZED_SELECTED_TEXT",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  // =====================================================================
+  // Linting (sprachuebergreifend)
+  // =====================================================================
+  {
+    "label": "hadolint (Dockerfile)",
+    "command": "hadolint $ZED_FILE",
+    "reveal": "always"
+  },
+  {
+    "label": "shellcheck",
+    "command": "shellcheck $ZED_FILE",
+    "reveal": "always"
+  },
+  {
+    "label": "actionlint",
+    "command": "actionlint",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  }
+]

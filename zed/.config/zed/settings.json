@@ -1,40 +1,46 @@
 {
   "$schema": "zed://schemas/settings",
-
   // =====================================================================
   // Theme
   // =====================================================================
   "theme": "Catppuccin Macchiato",
   "icon_theme": "Catppuccin Macchiato",
-
   // =====================================================================
   // Fonts
   // =====================================================================
-  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_family": "Lilex Nerd Font",
   "buffer_font_size": 15,
   "buffer_font_features": {
     "calt": true, // (default)
     "liga": true,
   },
   "buffer_line_height": "comfortable",
-  "ui_font_family": "JetBrainsMono Nerd Font",
+  "ui_font_family": "Lilex Nerd Font",
   "ui_font_size": 15,
   "ui_font_features": {
     "calt": true, // (default)
   },
   "agent_ui_font_size": 16,
   "agent_buffer_font_size": 14,
-
   // =====================================================================
   // Editor
   // =====================================================================
+  "tab_size": 2, // (default)
+  "hard_tabs": false, // Spaces statt Tabs
+  "soft_wrap": "none",
+  "preferred_line_length": 80,
+  "show_wrap_guides": true,
+  "format_on_save": "on",
+  "ensure_final_newline_on_save": true,
+  "remove_trailing_whitespace_on_save": true,
   "show_whitespaces": "all",
   "colorize_brackets": true,
-  "jsx_tag_auto_close": { "enabled": true }, // (default)
+  "jsx_tag_auto_close": {
+    "enabled": true
+  }, // (default)
   "auto_signature_help": true,
   "show_signature_help_after_edits": true,
   "semantic_tokens": "combined",
-
   // Inlay Hints
   "inlay_hints": {
     "enabled": true,
@@ -46,14 +52,12 @@
     "edit_debounce_ms": 700, // (default)
     "scroll_debounce_ms": 50, // (default)
   },
-
   // Inline Diagnostics
   "diagnostics": {
     "inline": {
       "enabled": true,
     },
   },
-
   // Indent Guides
   "indent_guides": {
     "enabled": true, // (default)
@@ -62,16 +66,13 @@
     "coloring": "indent_aware",
     "background_coloring": "indent_aware",
   },
-
   // Edit Predictions — Zeta
   "features": {
     "edit_prediction_provider": "zed",
   },
-
   // =====================================================================
   // UI Panels
   // =====================================================================
-
   // Tabs
   "tabs": {
     "git_status": true, // (default)
@@ -80,12 +81,10 @@
     "activate_on_close": "last_used",
     "show_diagnostics": true, // (default)
   },
-
   // Minimap — deaktiviert (Vim-Navigation reicht)
   "minimap": {
     "show": "never",
   },
-
   // Scrollbar
   "scrollbar": {
     "show": "auto", // (default)
@@ -96,7 +95,6 @@
     "selected_symbol": true, // (default)
     "diagnostics": true, // (default)
   },
-
   // Gutter
   "gutter": {
     "line_numbers": true, // (default)
@@ -105,7 +103,6 @@
     "folds": true, // (default)
     "min_line_number_digits": 2,
   },
-
   // Project Panel
   "project_panel": {
     "starts_open": false,
@@ -116,7 +113,6 @@
     "hide_root": false, // (default)
     "auto_open": false,
   },
-
   // =====================================================================
   // Vim Mode
   // =====================================================================
@@ -135,13 +131,11 @@
     },
   },
   "use_smartcase_search": true,
-
   // Which-Key Popup (wie which-key.nvim)
   "which_key": {
     "enabled": true,
     "delay_ms": 300,
   },
-
   // =====================================================================
   // Terminal
   // =====================================================================
@@ -152,16 +146,20 @@
     "working_directory": "current_project_directory",
     "alternate_scroll": "on", // (default)
     "copy_on_select": false, // (default)
-    "toolbar": { "breadcrumbs": true }, // (default)
+    "toolbar": {
+      "breadcrumbs": true
+    }, // (default)
     "detect_venv": {
       "on": {
-        "directories": [".venv", "venv"], // (default)
+        "directories": [
+          ".venv",
+          "venv"
+        ], // (default)
         "activate_script": "default", // (default)
       },
     },
     "max_scroll_history_lines": 10000, // (default)
   },
-
   // =====================================================================
   // AI Agent — OpenRouter
   // =====================================================================
@@ -176,18 +174,38 @@
     },
     "favorite_models": [
       // Anthropic
-      { "provider": "openrouter", "model": "anthropic/claude-opus-4.6" },
-      { "provider": "openrouter", "model": "anthropic/claude-sonnet-4.5" },
-      { "provider": "openrouter", "model": "anthropic/claude-haiku-4.5" },
+      {
+        "provider": "openrouter",
+        "model": "anthropic/claude-opus-4.6"
+      },
+      {
+        "provider": "openrouter",
+        "model": "anthropic/claude-sonnet-4.5"
+      },
+      {
+        "provider": "openrouter",
+        "model": "anthropic/claude-haiku-4.5"
+      },
       // Google
-      { "provider": "openrouter", "model": "google/gemini-3-pro-preview" },
-      { "provider": "openrouter", "model": "google/gemini-2.5-flash:free" },
+      {
+        "provider": "openrouter",
+        "model": "google/gemini-3-pro-preview"
+      },
+      {
+        "provider": "openrouter",
+        "model": "google/gemini-2.5-flash:free"
+      },
       // Andere
-      { "provider": "openrouter", "model": "moonshotai/kimi-k2.5" },
-      { "provider": "openrouter", "model": "qwen/qwen3-coder:free" },
+      {
+        "provider": "openrouter",
+        "model": "moonshotai/kimi-k2.5"
+      },
+      {
+        "provider": "openrouter",
+        "model": "qwen/qwen3-coder:free"
+      },
     ],
   },
-
   // OpenRouter — verfuegbare Modelle
   "language_models": {
     "open_router": {
@@ -301,7 +319,6 @@
       ],
     },
   },
-
   // =====================================================================
   // MCP Context Servers
   // =====================================================================
@@ -328,14 +345,337 @@
       "env": {},
     },
   },
-
+  // =====================================================================
+  // Language Overrides
+  // =====================================================================
+  "languages": {
+    "Go": {
+      "tab_size": 4,
+      "hard_tabs": true,
+      "format_on_save": "on",
+      "preferred_line_length": 100,
+    },
+    "Rust": {
+      "tab_size": 4,
+      "format_on_save": "on",
+      "formatter": "language_server",
+      "preferred_line_length": 100,
+    },
+    "TypeScript": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ],
+        },
+      },
+    },
+    "TSX": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ],
+        },
+      },
+    },
+    "JavaScript": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ],
+        },
+      },
+    },
+    "JSX": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ],
+        },
+      },
+    },
+    "Python": {
+      "tab_size": 4,
+      "format_on_save": "on",
+      "formatter": "language_server",
+      "preferred_line_length": 88,
+      "soft_wrap": "preferred_line_length",
+    },
+    "Lua": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "stylua",
+          "arguments": [
+            "--indent-type",
+            "Spaces",
+            "--indent-width",
+            "2",
+            "--quote-style",
+            "AutoPreferDouble",
+            "-",
+          ],
+        },
+      },
+    },
+    "Shell Script": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "shfmt",
+          "arguments": [
+            "-i",
+            "2",
+            "-ci"
+          ],
+        },
+      },
+    },
+    "YAML": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server",
+    },
+    "JSON": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server",
+    },
+    "JSONC": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server",
+    },
+    "SQL": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "sqlfluff",
+          "arguments": [
+            "format",
+            "--dialect",
+            "postgres",
+            "-"
+          ],
+        },
+      },
+    },
+    "Terraform": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server",
+    },
+    "HCL": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server",
+    },
+    "TOML": {
+      "tab_size": 2,
+      "format_on_save": "on",
+    },
+    "Markdown": {
+      "tab_size": 2,
+      "soft_wrap": "editor_width",
+      "format_on_save": "off",
+    },
+    "CSS": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ],
+        },
+      },
+    },
+    "SCSS": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ],
+        },
+      },
+    },
+    "HTML": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ],
+        },
+      },
+    },
+    "GraphQL": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ],
+        },
+      },
+    },
+    "Dart": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server",
+    },
+    "Zig": {
+      "tab_size": 4,
+      "format_on_save": "on",
+      "formatter": "language_server",
+    },
+    "Nix": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": "language_server",
+    },
+    "LaTeX": {
+      "tab_size": 2,
+      "soft_wrap": "preferred_line_length",
+      "format_on_save": "off",
+    },
+    "Dockerfile": {
+      "tab_size": 4,
+    },
+    "Helm": {
+      "tab_size": 2,
+    },
+  },
+  // =====================================================================
+  // LSP Server Settings
+  // =====================================================================
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "check": {
+          "command": "clippy",
+        },
+        "cargo": {
+          "allFeatures": true,
+        },
+        "procMacro": {
+          "enable": true,
+        },
+      },
+    },
+    "gopls": {
+      "initialization_options": {
+        "usePlaceholders": true,
+        "hints": {
+          "assignVariableTypes": true,
+          "compositeLiteralFields": true,
+          "parameterNames": true,
+        },
+      },
+    },
+    "yaml-language-server": {
+      "settings": {
+        "yaml": {
+          "schemaStore": {
+            "enable": true,
+          },
+          "format": {
+            "enable": true,
+          },
+        },
+      },
+    },
+  },
   // =====================================================================
   // System
   // =====================================================================
   "auto_update": true, // (default)
   "load_direnv": "shell_hook",
-  "auto_install_extensions": {},
-
+  "auto_install_extensions": {
+    // Themes & Icons
+    "cappuccino-icons": true,
+    "cappuccino": true,
+    // Languages
+    "html": true,
+    "toml": true,
+    "dockerfile": true,
+    "sql": true,
+    "make": true,
+    "lua": true,
+    "xml": true,
+    "terraform": true,
+    "latex": true,
+    "dart": true,
+    "zig": true,
+    "nix": true,
+    "csv": true,
+    "graphql": true,
+    "proto": true,
+    "ini": true,
+    "just": true,
+    "ansible": true,
+    "helm": true,
+    "go": true,
+    // Python
+    "basedpyright": true,
+    "ruff": true,
+    // JS/TS Tooling
+    "biome": true,
+    "emmet": true,
+    // Docker
+    "docker-compose": true,
+    // Shell
+    "basher": true,
+    // Editor Utilities
+    "color-highlight": true,
+    "snippets": true,
+    // Git & Utilities
+    "git_firefly": true,
+    "rainbow-csv": true,
+    "comment": true,
+    "ghostty": true,
+    // Snippets
+    "react-typescript-snippets": true,
+    "go-snippets": true,
+    "rust-snippets": true,
+    "python-snippets": true,
+    // Tools
+    "tombi": true,
+  },
   // Telemetrie
   "telemetry": {
     "diagnostics": true, // (default) — Crash-Reports
