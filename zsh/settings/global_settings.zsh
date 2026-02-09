@@ -17,3 +17,10 @@ export XDG_CONFIG_HOME="$HOME/.config"
 
 # Set config directory for k9s
 export K9S_CONFIG_DIR=~/.config/k9s
+
+# Homebrew performance
+# --------------------
+# Skip auto-update before every install/upgrade (we run `brew update` explicitly in `update brew`)
+export HOMEBREW_NO_AUTO_UPDATE=1
+# Skip auto-cleanup after install (we run `brew cleanup` explicitly in `update brew`)
+export HOMEBREW_NO_INSTALL_CLEANUP=1
