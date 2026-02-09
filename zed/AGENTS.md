@@ -10,7 +10,7 @@ Instructions for AI agents working on the Zed editor configuration.
 | `.config/zed/keymap.json` | Vim-mode keybindings (space-leader) |
 | `.config/zed/tasks.json` | Build/test/lint task definitions |
 | `.config/zed/snippets/` | Code snippets per language |
-| `KEYMAPPING-ANALYSIS.md` | NeoVim-to-Zed keybinding reference |
+| `AGENTS.md` | Agent instructions (this file) |
 
 ## Keybinding Rules
 
@@ -137,7 +137,8 @@ When modifying this config, always check the NeoVim counterpart:
 - **Formatter settings changed?** Ensure NeoVim's none-ls/conform config
   uses the same formatter preference.
 
-Reference `KEYMAPPING-ANALYSIS.md` for the full mapping between editors.
+Known gaps and mapping decisions are documented as `// NOT POSSIBLE` comments
+inside `keymap.json`.
 
 ## Validation Checklist
 

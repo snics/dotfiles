@@ -1,8 +1,8 @@
 # Dotfiles — Claude Code Project Instructions
 
 > **Migration notice:** This file exists because Claude Code does not yet support
-> the `agents.md` open standard. Once Claude Code reads `agents.md` files natively,
-> delete this file and rely solely on `zed/agents.md` and `nvim/agents.md`.
+> the `AGENTS.md` open standard. Once Claude Code reads `AGENTS.md` files natively,
+> delete this file and rely solely on `zed/AGENTS.md` and `nvim/AGENTS.md`.
 
 ## Project Overview
 
@@ -41,8 +41,8 @@ identical group structure) and overlap in LSP servers, formatters, and linters.
   check `nvim/KEYMAPPING.md` and propose the equivalent NeoVim binding.
 - When adding or changing a keybinding in NeoVim (any plugin or `keymaps.lua`),
   check `zed/.config/zed/keymap.json` and propose the equivalent Zed binding.
-- Use `zed/KEYMAPPING-ANALYSIS.md` as the reference for what is mappable
-  between editors and what is not.
+- The keybinding mapping decisions and known gaps are documented in comments
+  inside `zed/.config/zed/keymap.json` (NOT POSSIBLE comments).
 - If a binding cannot be mapped, document it as a `// NOT POSSIBLE` comment
   (Zed) or a Lua comment (NeoVim) with the reason.
 
@@ -70,7 +70,7 @@ identical group structure) and overlap in LSP servers, formatters, and linters.
 
 For detailed rules on each editor's configuration:
 
-- **Zed:** see `zed/agents.md`
-- **NeoVim:** see `nvim/agents.md`
+- **Zed:** see `zed/AGENTS.md`
+- **NeoVim:** see `nvim/AGENTS.md`
 - **NeoVim LSP:** see `nvim/.config/nvim/lua/config/lsp/AGENTS.md`
 - **NeoVim (Cursor):** see `nvim/.config/nvim/.cursorrules`

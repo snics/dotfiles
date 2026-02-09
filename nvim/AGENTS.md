@@ -99,7 +99,7 @@ When modifying this config, always check the Zed counterpart:
 
 - **Keybinding changed?** Check `zed/.config/zed/keymap.json` for the
   equivalent Zed binding. Propose an update or document why it's not possible.
-  Reference `zed/KEYMAPPING-ANALYSIS.md` for known compatibility.
+  Known gaps are documented as `// NOT POSSIBLE` comments inside Zed's keymap.json.
 - **Plugin added?** Check if a Zed extension equivalent exists
   (search Zed extension registry). Propose adding it to
   `auto_install_extensions` in Zed's settings.json.
@@ -111,7 +111,7 @@ When modifying this config, always check the Zed counterpart:
 ### What is NOT possible in Zed
 
 Many NeoVim plugin features have no Zed equivalent. Known gaps are documented
-in `zed/KEYMAPPING-ANALYSIS.md` Section B. Major categories:
+as `// NOT POSSIBLE` comments in Zed's keymap.json. Major categories:
 
 - Debug (nvim-dap) — Zed DAP is early-stage
 - Refactoring (refactoring.nvim) — use LSP code actions instead
