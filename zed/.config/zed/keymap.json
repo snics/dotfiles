@@ -1,1 +1,432 @@
-[]
+[
+  // =====================================================================
+  // Insert Mode
+  // =====================================================================
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      // Exit insert mode
+      "j j": "vim::NormalBefore",
+      "j k": "vim::NormalBefore",
+      // Save
+      "ctrl-s": "workspace::Save",
+      // AI completions
+      "ctrl-l": "editor::AcceptEditPrediction",
+      "ctrl-right": "editor::AcceptNextWordEditPrediction",
+      // Edit predictions (Zeta)
+      "alt-]": "editor::NextEditPrediction",
+      "alt-[": "editor::PreviousEditPrediction"
+    }
+  },
+  // =====================================================================
+  // Normal Mode — Leader Key Bindings (space)
+  // =====================================================================
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      // -------------------------------------------------------------------
+      // Instant Actions (no submenu)
+      // -------------------------------------------------------------------
+      "space w": "workspace::Save",
+      "space shift-w": [
+        "workspace::SendKeystrokes",
+        ": w q enter"
+      ],
+      "space e": "project_panel::ToggleFocus",
+      "space space": "file_finder::Toggle",
+      "space ,": "tab_switcher::Toggle",
+      "space /": "pane::DeploySearch",
+      "space :": "command_palette::Toggle",
+      "space z": "workspace::ToggleCenteredLayout",
+      "space shift-z": "workspace::ToggleZoom",
+      "space +": "vim::Increment",
+      "space -": "vim::Decrement",
+      // -------------------------------------------------------------------
+      // AI — space a
+      // -------------------------------------------------------------------
+      "space a a": "agent::ToggleFocus",
+      "space a shift-a": "agent::NewThread",
+      "space a i": "assistant::InlineAssist",
+      "space a o": "agent::ToggleFocus",
+      "space a p": "command_palette::Toggle",
+      "space a v": "editor::ToggleEditPrediction",
+      "space a d": "assistant::InlineAssist",
+      // NOT POSSIBLE: space a e — explain code (CodeCompanion-specific)
+      // NOT POSSIBLE: space a f — fix code (CodeCompanion-specific)
+      // NOT POSSIBLE: space a t — generate tests (CodeCompanion-specific)
+      // NOT POSSIBLE: space a r — review code (CodeCompanion-specific)
+      // -------------------------------------------------------------------
+      // Buffer — space b
+      // -------------------------------------------------------------------
+      "space b d": "pane::CloseActiveItem",
+      "space b o": "pane::CloseInactiveItems",
+      // NOT POSSIBLE: space b p — pick buffer by letter overlay
+      // -------------------------------------------------------------------
+      // Code — space c
+      // -------------------------------------------------------------------
+      "space c a": "editor::ToggleCodeActions",
+      "space c r": "editor::Rename",
+      // NOTE: space c R — file rename is available via R in project panel (vim mode)
+      "space c d": "editor::Hover",
+      "space c f": "editor::Format",
+      "space c g": "git::Blame",
+      "space c p": "editor::OpenPermalink",
+      // -------------------------------------------------------------------
+      // Debug — space d
+      // NOT POSSIBLE: Zed's DAP support is early-stage.
+      // The entire nvim-dap workflow (breakpoints, stepping, REPL,
+      // variable hover, scopes, frames) has no Zed equivalent yet.
+      // -------------------------------------------------------------------
+      // -------------------------------------------------------------------
+      // Find — space f
+      // -------------------------------------------------------------------
+      "space f f": "file_finder::Toggle",
+      "space f r": "projects::OpenRecent",
+      "space f s": "pane::DeploySearch",
+      "space f b": "tab_switcher::Toggle",
+      "space f w": [
+        "workspace::SendKeystrokes",
+        "g /"
+      ],
+      "space f t": "pane::DeploySearch",
+      // NOT POSSIBLE: space f g — git files only filter
+      // NOT POSSIBLE: space f c — NeoVim config files
+      // NOT POSSIBLE: space f p — multi-project switcher (Snacks)
+      // -------------------------------------------------------------------
+      // Git — space g
+      // -------------------------------------------------------------------
+      "space g s": "git_panel::ToggleFocus",
+      "space g b": "git::Branch",
+      "space g d": "editor::ToggleSelectedDiffHunks",
+      "space g shift-b": "editor::OpenPermalink",
+      // Git hunks — space g h
+      "space g h b": "git::Blame",
+      "space g h shift-b": "git::Blame",
+      "space g h s": [
+        "workspace::SendKeystrokes",
+        "d u"
+      ],
+      "space g h r": [
+        "workspace::SendKeystrokes",
+        "d p"
+      ],
+      "space g h p": [
+        "workspace::SendKeystrokes",
+        "d o"
+      ],
+      // NOT POSSIBLE: space g g — lazygit (external TUI)
+      // NOT POSSIBLE: space g l — git log viewer
+      // NOT POSSIBLE: space g shift-l — git log current line
+      // NOT POSSIBLE: space g shift-s — git stash management
+      // NOT POSSIBLE: space g f — git log file
+      // NOT POSSIBLE: space g i/I — GitHub issues browser
+      // NOT POSSIBLE: space g p/P — GitHub PRs browser
+      // NOT POSSIBLE: space g h S — stage entire buffer
+      // NOT POSSIBLE: space g h R — reset entire buffer
+      // NOT POSSIBLE: space g h u — undo last stage
+      // NOT POSSIBLE: space g h q — hunks to quickfix
+      // NOT POSSIBLE: space g v * — diffview (no equivalent)
+      // -------------------------------------------------------------------
+      // LSP/Lint — space l
+      // -------------------------------------------------------------------
+      "space l d": "diagnostics::Deploy",
+      "space l shift-d": "editor::Hover",
+      "space l s": "editor::RestartLanguageServer",
+      // NOT POSSIBLE: space l c — clear diagnostics
+      // NOT POSSIBLE: space l l — none-ls log (plugin-specific)
+      // NOT POSSIBLE: space l i — none-ls info (plugin-specific)
+      // -------------------------------------------------------------------
+      // Markdown — space m
+      // -------------------------------------------------------------------
+      "space m p": "markdown::OpenPreview",
+      "space m shift-p": "markdown::OpenPreviewToTheSide",
+      // NOT POSSIBLE: space m r — render-markdown toggle (plugin-specific)
+      // -------------------------------------------------------------------
+      // Quit — space q
+      // -------------------------------------------------------------------
+      "space q q": "pane::CloseActiveItem",
+      "space q shift-q": [
+        "pane::CloseActiveItem",
+        {
+          "save_intent": "skip"
+        }
+      ],
+      // -------------------------------------------------------------------
+      // Refactor — space r
+      // NOT POSSIBLE: refactoring.nvim operations (extract function,
+      // extract variable, inline, debug print, etc.) have no Zed
+      // equivalent. Use LSP code actions (space c a) instead —
+      // rust-analyzer and TypeScript LSP offer some refactorings there.
+      // -------------------------------------------------------------------
+      // -------------------------------------------------------------------
+      // Search — space s
+      // -------------------------------------------------------------------
+      "space s b": "buffer_search::Deploy",
+      "space s g": "pane::DeploySearch",
+      "space s r": [
+        "pane::DeploySearch",
+        {
+          "replace_enabled": true
+        }
+      ],
+      "space s d": "diagnostics::Deploy",
+      "space s s": "outline::Toggle",
+      "space s shift-s": "project_symbols::Toggle",
+      "space s c": "command_palette::Toggle",
+      "space s shift-b": "pane::DeploySearch",
+      "space s shift-c": "command_palette::Toggle",
+      "space s shift-d": "diagnostics::Deploy",
+      "space s w": "pane::DeploySearch",
+      "space s t": "pane::DeploySearch",
+      // NOT POSSIBLE: space s " — registers browser
+      // NOT POSSIBLE: space s / — search history
+      // NOT POSSIBLE: space s a — autocmds browser (NeoVim-specific)
+      // NOT POSSIBLE: space s h — help pages
+      // NOT POSSIBLE: space s i — icon picker
+      // NOT POSSIBLE: space s j — jumps browser
+      // NOT POSSIBLE: space s k — keymaps browser
+      // NOT POSSIBLE: space s l — location list
+      // NOT POSSIBLE: space s m — marks browser
+      // NOT POSSIBLE: space s q — quickfix list
+      // NOT POSSIBLE: space s u — undo history tree
+      // -------------------------------------------------------------------
+      // Tests — space t
+      // -------------------------------------------------------------------
+      "space t t": "task::Rerun",
+      "space t a": "task::Spawn",
+      "space t l": "task::Rerun",
+      "space t r": "task::Spawn",
+      "space t shift-r": "task::Rerun",
+      // NOT POSSIBLE: space t f — run all tests in file
+      // NOT POSSIBLE: space t s — test summary panel (neotest)
+      // NOT POSSIBLE: space t o — test output panel
+      // NOT POSSIBLE: space t d — debug nearest test
+      // NOT POSSIBLE: space t S — stop running test
+      // -------------------------------------------------------------------
+      // Tabs — space tab
+      // -------------------------------------------------------------------
+      "space tab tab": "workspace::NewFile",
+      "space tab x": "pane::CloseActiveItem",
+      "space tab ]": "pane::ActivateNextItem",
+      "space tab [": "pane::ActivatePrevItem",
+      // -------------------------------------------------------------------
+      // UI Toggles — space u
+      // -------------------------------------------------------------------
+      "space u w": "editor::ToggleSoftWrap",
+      "space u l": "editor::ToggleLineNumbers",
+      "space u shift-l": "editor::ToggleRelativeLineNumbers",
+      "space u h": "editor::ToggleInlayHints",
+      "space u g": "editor::ToggleIndentGuides",
+      "space u shift-c": "theme_selector::Toggle",
+      "space u b": "theme_selector::Toggle",
+      "space u shift-d": "diagnostics::Deploy",
+      "space u n": "workspace::ClearAllNotifications",
+      // NOT POSSIBLE: space u s — spelling toggle
+      // NOT POSSIBLE: space u d — diagnostics inline toggle
+      // NOT POSSIBLE: space u c — conceal level (NeoVim-specific)
+      // NOT POSSIBLE: space u T — treesitter highlight toggle
+      // NOT POSSIBLE: space u x — treesitter context toggle
+      // NOT POSSIBLE: space u H — colorizer toggle
+      // NOT POSSIBLE: space u a — animation toggle
+      // -------------------------------------------------------------------
+      // Session — space w
+      // Zed handles sessions automatically, no manual save/restore.
+      // NOT POSSIBLE: space w r/s/d/f — session management
+      // -------------------------------------------------------------------
+      // -------------------------------------------------------------------
+      // Trouble / Diagnostics — space x
+      // -------------------------------------------------------------------
+      "space x w": "diagnostics::Deploy",
+      "space x d": "diagnostics::Deploy",
+      "space x s": "outline::Toggle",
+      "space x shift-l": "editor::FindAllReferences",
+      // -------------------------------------------------------------------
+      // YAML & K8s — space y
+      // NOT POSSIBLE: yaml.nvim, yaml-companion, kubernetes.nvim are all
+      // NeoVim-specific plugins. No interactive path navigation, schema
+      // selection, or CRD management in Zed. YAML LSP handles basic
+      // schema validation via SchemaStore (configured in settings.json).
+      // -------------------------------------------------------------------
+      // -------------------------------------------------------------------
+      // Language-Specific — space G (Go), space R (Rust)
+      // NOT POSSIBLE: go.nvim (tags, mod, generate, if-err) and
+      // rustaceanvim (expand macro, runnables, crates.nvim) are
+      // plugin-specific. Some operations available via LSP code actions.
+      // -------------------------------------------------------------------
+      // -------------------------------------------------------------------
+      // Zen/Zoom (already mapped above as instant actions)
+      // space z → ToggleCenteredLayout
+      // space Z → ToggleZoom
+      // -------------------------------------------------------------------
+      // ===================================================================
+      // Zed-Exclusive: Panels — space shift-*
+      // ===================================================================
+      "space shift-e": "project_panel::ToggleFocus",
+      "space shift-t": "terminal_panel::ToggleFocus",
+      "space shift-g": "git_panel::ToggleFocus",
+      "space shift-d": "diagnostics::Deploy",
+      "space shift-o": "outline_panel::ToggleFocus",
+      // ===================================================================
+      // Zed-Exclusive: Projects & Palette
+      // ===================================================================
+      "space p": "projects::OpenRecent",
+      "space shift-p": "command_palette::Toggle",
+      // ===================================================================
+      // Zed-Exclusive: Splits
+      // ===================================================================
+      "space |": "pane::SplitRight",
+      "space \\": "pane::SplitRight",
+      // ===================================================================
+      // LSP Navigation (remaps to match NeoVim)
+      // ===================================================================
+      "g r": "editor::FindAllReferences",
+      "shift-k": "editor::Hover",
+      // ===================================================================
+      // Window Navigation
+      // ===================================================================
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      // ===================================================================
+      // Line Movement
+      // ===================================================================
+      "alt-j": "editor::MoveLineDown",
+      "alt-k": "editor::MoveLineUp",
+      // ===================================================================
+      // Bracket Navigation
+      // ===================================================================
+      "[ b": "pane::ActivatePrevItem",
+      "] b": "pane::ActivateNextItem",
+      "[ h": [
+        "workspace::SendKeystrokes",
+        "[ c"
+      ],
+      "] h": [
+        "workspace::SendKeystrokes",
+        "] c"
+      ],
+      // ===================================================================
+      // Folds
+      // ===================================================================
+      "z shift-r": "editor::UnfoldAll",
+      "z shift-m": "editor::FoldAll",
+      // ===================================================================
+      // Incremental Selection
+      // ===================================================================
+      "ctrl-enter": "editor::SelectLargerSyntaxNode",
+      // ===================================================================
+      // Zed Vim: Sneak (partial flash.nvim replacement)
+      // ===================================================================
+      "s": "vim::PushSneak",
+      "shift-s": "vim::PushSneakBackward",
+      // ===================================================================
+      // Terminal Toggle
+      // ===================================================================
+      "ctrl-/": "terminal_panel::ToggleFocus",
+      // ===================================================================
+      // Save
+      // ===================================================================
+      "ctrl-s": "workspace::Save"
+    }
+  },
+  // =====================================================================
+  // Visual Mode
+  // =====================================================================
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      // Line movement
+      "alt-j": "editor::MoveLineDown",
+      "alt-k": "editor::MoveLineUp",
+      // AI inline assist on selection
+      "space a i": "assistant::InlineAssist",
+      // Code actions on selection
+      "space c a": "editor::ToggleCodeActions",
+      "space c f": "editor::Format",
+      // Surround selection
+      "shift-s": "vim::PushAddSurrounds",
+      // Incremental selection
+      "ctrl-enter": "editor::SelectLargerSyntaxNode",
+      "ctrl-backspace": "editor::SelectSmallerSyntaxNode",
+      // Search selected text
+      "space s w": "pane::DeploySearch"
+    }
+  },
+  // =====================================================================
+  // Terminal
+  // =====================================================================
+  {
+    "context": "Terminal",
+    "bindings": {
+      // Window navigation from terminal
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-/": "terminal_panel::ToggleFocus"
+    }
+  },
+  // =====================================================================
+  // Workspace-wide (all modes)
+  // =====================================================================
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-s": "workspace::Save",
+      "ctrl-/": "terminal_panel::ToggleFocus"
+    }
+  }
+  // =====================================================================
+  // NOT POSSIBLE IN ZED — Full Reference
+  // =====================================================================
+  //
+  // Debug (space d *):
+  //   Entire nvim-dap workflow — breakpoints, stepping, REPL, variable
+  //   hover, scopes, frames, eval. Zed DAP is early-stage.
+  //
+  // Refactoring (space r *):
+  //   refactoring.nvim — extract function/variable/block, inline,
+  //   debug print. Partial via LSP code actions (space c a).
+  //
+  // Flash Navigation (s/S in NeoVim):
+  //   flash.nvim labels on jump targets. Zed has vim::PushSneak
+  //   (2-char search) as partial replacement — mapped above.
+  //
+  // Git Advanced:
+  //   lazygit, diffview.nvim, GitHub issues/PRs browser, stash,
+  //   file-level git log, stage/reset entire buffer.
+  //
+  // Language-Specific (space G / space R):
+  //   Go: tags, mod tidy, generate, if-err, implement interface
+  //   Rust: expand macro, runnables, debuggables, crates.nvim
+  //
+  // YAML & K8s (space y *):
+  //   yaml.nvim path navigation, yaml-companion schema selection,
+  //   kubernetes.nvim CRD management.
+  //
+  // Snacks Pickers:
+  //   Registers, marks, jumps, undo history, man pages, search
+  //   history, icons, highlights, plugin specs, autocmds.
+  //
+  // Yank History:
+  //   yanky.nvim ring (ctrl-p/ctrl-n cycling after paste).
+  //
+  // Treesitter Text Objects (partial):
+  //   Loop (al/il), conditional (ai/ii), block (ab/ib),
+  //   function call (aC/iC), assignment (as/is), number (an),
+  //   statement (aS), git hunk (ih).
+  //
+  // Session Management:
+  //   Manual save/restore/delete/find — Zed auto-manages sessions.
+  //
+  // Comments (partial):
+  //   gbc (block comment), gco/gcO/gcA (add comment lines).
+  //
+  // Fold Preview:
+  //   zK (peek folded lines via ufo.nvim).
+  //
+  // Smooth Scrolling:
+  //   Animated scroll via Snacks.scroll — Zed scrolls instantly.
+  //
+]
