@@ -205,6 +205,7 @@ cask "font-hack-nerd-font" # Hack Nerd Font. [Hack Nerd Font](https://github.com
 cask "font-inconsolata" # Inconsolata font. [Inconsolata](https://fonts.google.com/specimen/Inconsolata)
 cask "font-jetbrains-mono" # JetBrains Mono font. [JetBrains Mono](https://www.jetbrains.com/lp/mono/)
 cask "font-jetbrains-mono-nerd-font" # JetBrains Mono Nerd Font. [JetBrains Mono Nerd Font](https://github.com/ryanoasis/nerd-fonts)
+cask "font-lilex-nerd-font" # Lilex Nerd Font. [Lilex Nerd Font](https://github.com/ryanoasis/nerd-fonts)
 cask "font-meslo-lg-nerd-font" # Meslo LG Nerd Font. [Meslo LG Nerd Font](https://github.com/ryanoasis/nerd-fonts)
 cask "font-open-sans" # Open Sans font. [Open Sans](https://fonts.google.com/specimen/Open+Sans)
 cask "font-ubuntu" # Ubuntu font family. [Ubuntu Font](https://design.ubuntu.com/font/)
