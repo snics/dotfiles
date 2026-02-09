@@ -1,4 +1,7 @@
 {
+  "edit_predictions": {
+    "provider": "zed"
+  },
   "$schema": "zed://schemas/settings",
   // =====================================================================
   // Theme
@@ -52,10 +55,14 @@
     "edit_debounce_ms": 700, // (default)
     "scroll_debounce_ms": 50, // (default)
   },
-  // Inline Diagnostics
+  // Inline Diagnostics (no "current line only" option available in Zed)
   "diagnostics": {
     "inline": {
       "enabled": true,
+      "update_debounce_ms": 150, // (default) — delay after last edit
+      "padding": 4, // (default) — columns between line end and diagnostic
+      "min_column": 40, // align diagnostics at column 40 for short lines
+      "max_severity": "warning", // show errors and warnings, hide info/hints
     },
   },
   // Indent Guides
@@ -67,9 +74,6 @@
     "background_coloring": "indent_aware",
   },
   // Edit Predictions — Zeta
-  "features": {
-    "edit_prediction_provider": "zed",
-  },
   // =====================================================================
   // UI Panels
   // =====================================================================
@@ -93,7 +97,7 @@
     "search_results": true, // (default)
     "selected_text": true, // (default)
     "selected_symbol": true, // (default)
-    "diagnostics": true, // (default)
+    "diagnostics": "all", // (default)
   },
   // Gutter
   "gutter": {
@@ -167,7 +171,7 @@
     "favorite_models": [],
     "inline_assistant_model": {
       "provider": "openrouter",
-      "model": "openai/gpt-4"
+      "model": "openrouter/free"
     },
     "model_parameters": []
   },
@@ -289,12 +293,14 @@
   // =====================================================================
   "context_servers": {
     "context7": {
+      "settings": {},
       "url": "https://mcp.context7.com/mcp",
       "headers": {
         "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}",
       },
     },
     "grep_app": {
+      "settings": {},
       "url": "https://mcp.grep.app",
     },
     "serena": {

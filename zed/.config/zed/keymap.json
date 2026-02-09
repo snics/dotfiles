@@ -131,8 +131,8 @@
       // -------------------------------------------------------------------
       // LSP/Lint — space l
       // -------------------------------------------------------------------
-      "space l d": "diagnostics::Deploy",
-      "space l shift-d": "editor::Hover",
+      "space l d": "editor::ToggleInlineDiagnostics",
+      "space l shift-d": "diagnostics::Deploy",
       "space l s": "editor::RestartLanguageServer",
       // NOT POSSIBLE: space l c — clear diagnostics
       // NOT POSSIBLE: space l l — none-ls log (plugin-specific)
@@ -221,10 +221,10 @@
       "space u g": "editor::ToggleIndentGuides",
       "space u shift-c": "theme_selector::Toggle",
       "space u b": "theme_selector::Toggle",
-      "space u shift-d": "diagnostics::Deploy",
+      "space u d": "editor::ToggleInlineDiagnostics",
+      "space u shift-d": "editor::ToggleDiagnostics",
       "space u n": "workspace::ClearAllNotifications",
       // NOT POSSIBLE: space u s — spelling toggle
-      // NOT POSSIBLE: space u d — diagnostics inline toggle
       // NOT POSSIBLE: space u c — conceal level (NeoVim-specific)
       // NOT POSSIBLE: space u T — treesitter highlight toggle
       // NOT POSSIBLE: space u x — treesitter context toggle
