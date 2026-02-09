@@ -72,60 +72,42 @@
   },
   // =====================================================================
   // JavaScript / TypeScript
+  // Priority: pnpm > bun > deno > npm (detected via lock files)
   // =====================================================================
   {
-    "label": "npm test",
-    "command": "npm test",
+    "label": "js: test",
+    "command": "if [ -f pnpm-lock.yaml ]; then pnpm test; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bun test; elif [ -f deno.json ] || [ -f deno.jsonc ]; then deno test; else npm test; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
   {
-    "label": "npm run dev",
-    "command": "npm run dev",
+    "label": "js: dev",
+    "command": "if [ -f pnpm-lock.yaml ]; then pnpm run dev; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bun run dev; elif [ -f deno.json ] || [ -f deno.jsonc ]; then deno task dev; else npm run dev; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
   {
-    "label": "npm run build",
-    "command": "npm run build",
+    "label": "js: build",
+    "command": "if [ -f pnpm-lock.yaml ]; then pnpm run build; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bun run build; elif [ -f deno.json ] || [ -f deno.jsonc ]; then deno task build; else npm run build; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
   {
-    "label": "npm install",
-    "command": "npm install",
+    "label": "js: install",
+    "command": "if [ -f pnpm-lock.yaml ]; then pnpm install; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bun install; elif [ -f deno.json ] || [ -f deno.jsonc ]; then deno install; else npm install; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "hide": "on_success"
   },
   {
-    "label": "npx vitest",
-    "command": "npx vitest run",
+    "label": "js: vitest",
+    "command": "if [ -f pnpm-lock.yaml ]; then pnpm exec vitest run; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bunx vitest run; else npx vitest run; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
   {
-    "label": "npx vitest (watch)",
-    "command": "npx vitest",
+    "label": "js: vitest (watch)",
+    "command": "if [ -f pnpm-lock.yaml ]; then pnpm exec vitest; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bunx vitest; else npx vitest; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
-    "reveal": "always"
-  },
-  // =====================================================================
-  // Python
-  // =====================================================================
-  {
-    "label": "python run",
-    "command": "python3 $ZED_FILE",
-    "reveal": "always"
-  },
-  {
-    "label": "pytest",
-    "command": "python3 -m pytest",
-    "cwd": "$ZED_WORKTREE_ROOT",
-    "reveal": "always"
-  },
-  {
-    "label": "pytest (current file)",
-    "command": "python3 -m pytest $ZED_FILE",
     "reveal": "always"
   },
   // =====================================================================
@@ -156,29 +138,30 @@
     "reveal": "always"
   },
   // =====================================================================
-  // Terraform
+  // OpenTofu / Terraform
+  // Default: tofu — uses terraform only when .terraform-version file exists
   // =====================================================================
   {
-    "label": "terraform plan",
-    "command": "terraform plan",
+    "label": "tf: plan",
+    "command": "if [ -f .terraform-version ]; then terraform plan; else tofu plan; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
   {
-    "label": "terraform apply",
-    "command": "terraform apply",
+    "label": "tf: apply",
+    "command": "if [ -f .terraform-version ]; then terraform apply; else tofu apply; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
   {
-    "label": "terraform init",
-    "command": "terraform init",
+    "label": "tf: init",
+    "command": "if [ -f .terraform-version ]; then terraform init; else tofu init; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "hide": "on_success"
   },
   {
-    "label": "terraform validate",
-    "command": "terraform validate",
+    "label": "tf: validate",
+    "command": "if [ -f .terraform-version ]; then terraform validate; else tofu validate; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "hide": "on_success"
   },
@@ -198,7 +181,7 @@
     "reveal": "always"
   },
   // =====================================================================
-  // Linting (sprachuebergreifend)
+  // Linting (cross-language)
   // =====================================================================
   {
     "label": "hadolint (Dockerfile)",

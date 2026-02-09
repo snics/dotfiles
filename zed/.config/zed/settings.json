@@ -26,7 +26,7 @@
   // Editor
   // =====================================================================
   "tab_size": 2, // (default)
-  "hard_tabs": false, // Spaces statt Tabs
+  "hard_tabs": false, // use spaces instead of tabs
   "soft_wrap": "none",
   "preferred_line_length": 80,
   "show_wrap_guides": true,
@@ -81,7 +81,7 @@
     "activate_on_close": "last_used",
     "show_diagnostics": true, // (default)
   },
-  // Minimap — deaktiviert (Vim-Navigation reicht)
+  // Minimap — disabled (Vim navigation is sufficient)
   "minimap": {
     "show": "never",
   },
@@ -131,7 +131,7 @@
     },
   },
   "use_smartcase_search": true,
-  // Which-Key Popup (wie which-key.nvim)
+  // Which-Key Popup (similar to which-key.nvim)
   "which_key": {
     "enabled": true,
     "delay_ms": 300,
@@ -195,7 +195,7 @@
         "provider": "openrouter",
         "model": "google/gemini-2.5-flash:free"
       },
-      // Andere
+      // Other
       {
         "provider": "openrouter",
         "model": "moonshotai/kimi-k2.5"
@@ -206,7 +206,7 @@
       },
     ],
   },
-  // OpenRouter — verfuegbare Modelle
+  // OpenRouter — available models
   "language_models": {
     "open_router": {
       "available_models": [
@@ -280,7 +280,7 @@
           "max_output_tokens": 65535,
         },
         // =============================================================
-        // Andere (Paid)
+        // Other (Paid)
         // =============================================================
         {
           "name": "moonshotai/kimi-k2.5",
@@ -296,7 +296,7 @@
         },
         // =============================================================
         // Free — ":free" = OpenRouter Free Tier
-        // Falls Free-Tier endet, auf Paid-ID ohne ":free" wechseln
+        // If free tier ends, switch to paid ID without ":free"
         // =============================================================
         {
           "name": "qwen/qwen3-coder:free",
@@ -676,9 +676,9 @@
     // Tools
     "tombi": true,
   },
-  // Telemetrie
+  // Telemetry
   "telemetry": {
-    "diagnostics": true, // (default) — Crash-Reports
-    "metrics": false, // Nutzungsstatistiken aus
+    "diagnostics": true, // (default) — crash reports
+    "metrics": false, // usage statistics disabled
   },
 }
