@@ -2,7 +2,6 @@
   "edit_predictions": {
     "provider": "zed"
   },
-  "$schema": "zed://schemas/settings",
   // =====================================================================
   // Theme
   // =====================================================================
@@ -29,7 +28,7 @@
   // Editor
   // =====================================================================
   "tab_size": 2, // (default)
-  "hard_tabs": false, // use spaces instead of tabs
+  "hard_tabs": false, // use spaces instead of tab
   "soft_wrap": "none",
   "preferred_line_length": 80,
   "show_wrap_guides": true,
@@ -55,14 +54,10 @@
     "edit_debounce_ms": 700, // (default)
     "scroll_debounce_ms": 50, // (default)
   },
-  // Inline Diagnostics (no "current line only" option available in Zed)
+  // Inline Diagnostics
   "diagnostics": {
     "inline": {
       "enabled": true,
-      "update_debounce_ms": 150, // (default) — delay after last edit
-      "padding": 4, // (default) — columns between line end and diagnostic
-      "min_column": 40, // align diagnostics at column 40 for short lines
-      "max_severity": "warning", // show errors and warnings, hide info/hints
     },
   },
   // Indent Guides
@@ -82,8 +77,8 @@
     "git_status": true, // (default)
     "file_icons": true, // (default)
     "show_close_button": "hover", // (default)
-    "activate_on_close": "last_used",
-    "show_diagnostics": true, // (default)
+    "activate_on_close": "history",
+    "show_diagnostics": "all",
   },
   // Minimap — disabled (Vim navigation is sufficient)
   "minimap": {
@@ -115,7 +110,11 @@
     "hide_gitignore": false, // (default)
     "hide_hidden": false, // (default)
     "hide_root": false, // (default)
-    "auto_open": false,
+    "auto_open": {
+      "on_create": true,
+      "on_paste": false,
+      "on_drop": false,
+    },
   },
   // =====================================================================
   // Vim Mode
@@ -138,7 +137,7 @@
   // Which-Key Popup (similar to which-key.nvim)
   "which_key": {
     "enabled": true,
-    "delay_ms": 300,
+    "delay_ms": 200,
   },
   // =====================================================================
   // Terminal
@@ -382,30 +381,6 @@
       },
     },
     "JavaScript": {
-      "tab_size": 2,
-      "format_on_save": "on",
-      "formatter": [
-        {
-          "language_server": {
-            "name": "biome"
-          }
-        },
-        {
-          "external": {
-            "command": "prettier",
-            "arguments": [
-              "--stdin-filepath",
-              "{buffer_path}"
-            ]
-          }
-        },
-      ],
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true,
-      },
-    },
-    "JSX": {
       "tab_size": 2,
       "format_on_save": "on",
       "formatter": [
@@ -703,6 +678,7 @@
     // Python
     "basedpyright": true,
     "ruff": true,
+    "scss": true,
     // JS/TS Tooling
     "biome": true,
     "emmet": true,

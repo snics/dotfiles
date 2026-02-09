@@ -61,7 +61,7 @@
       // Buffer — space b
       // -------------------------------------------------------------------
       "space b d": "pane::CloseActiveItem",
-      "space b o": "pane::CloseInactiveItems",
+      "space b o": "pane::CloseOtherItems",
       // NOT POSSIBLE: space b p — pick buffer by letter overlay
       // -------------------------------------------------------------------
       // Code — space c
@@ -72,7 +72,7 @@
       "space c d": "editor::Hover",
       "space c f": "editor::Format",
       "space c g": "git::Blame",
-      "space c p": "editor::OpenPermalink",
+      "space c p": "editor::OpenPermalinkToLine",
       // -------------------------------------------------------------------
       // Debug — space d
       // NOT POSSIBLE: Zed's DAP support is early-stage.
@@ -100,7 +100,7 @@
       "space g s": "git_panel::ToggleFocus",
       "space g b": "git::Branch",
       "space g d": "editor::ToggleSelectedDiffHunks",
-      "space g shift-b": "editor::OpenPermalink",
+      "space g shift-b": "editor::OpenPermalinkToLine",
       // Git hunks — space g h
       "space g h b": "git::Blame",
       "space g h shift-b": "git::Blame",
