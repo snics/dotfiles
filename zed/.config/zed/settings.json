@@ -164,47 +164,12 @@
   // AI Agent — OpenRouter
   // =====================================================================
   "agent": {
+    "favorite_models": [],
     "inline_assistant_model": {
       "provider": "openrouter",
-      "model": "google/gemini-2.5-flash:free",
+      "model": "openai/gpt-4"
     },
-    "default_model": {
-      "provider": "openrouter",
-      "model": "anthropic/claude-sonnet-4.5",
-    },
-    "favorite_models": [
-      // Anthropic
-      {
-        "provider": "openrouter",
-        "model": "anthropic/claude-opus-4.6"
-      },
-      {
-        "provider": "openrouter",
-        "model": "anthropic/claude-sonnet-4.5"
-      },
-      {
-        "provider": "openrouter",
-        "model": "anthropic/claude-haiku-4.5"
-      },
-      // Google
-      {
-        "provider": "openrouter",
-        "model": "google/gemini-3-pro-preview"
-      },
-      {
-        "provider": "openrouter",
-        "model": "google/gemini-2.5-flash:free"
-      },
-      // Other
-      {
-        "provider": "openrouter",
-        "model": "moonshotai/kimi-k2.5"
-      },
-      {
-        "provider": "openrouter",
-        "model": "qwen/qwen3-coder:free"
-      },
-    ],
+    "model_parameters": []
   },
   // OpenRouter — available models
   "language_models": {
