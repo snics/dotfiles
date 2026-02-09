@@ -1,6 +1,10 @@
 # Zed Editor — Agent Instructions
 
+> **Note:** Once Claude Code supports `AGENTS.md` natively, a root-level
+> `CLAUDE.md` can be removed in favor of these `AGENTS.md` files.
+
 Instructions for AI agents working on the Zed editor configuration.
+All comments, documentation, and commit messages must be in **English**.
 
 ## Config Files
 
