@@ -361,56 +361,101 @@
       "formatter": "language_server",
       "preferred_line_length": 100,
     },
+    // JS/TS: Biome (if biome.json exists) > Prettier fallback
     "TypeScript": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "prettier",
-          "arguments": [
-            "--stdin-filepath",
-            "{buffer_path}"
-          ],
+      "formatter": [
+        {
+          "language_server": {
+            "name": "biome"
+          }
         },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        },
+      ],
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+        "source.organizeImports.biome": true,
       },
     },
     "TSX": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "prettier",
-          "arguments": [
-            "--stdin-filepath",
-            "{buffer_path}"
-          ],
+      "formatter": [
+        {
+          "language_server": {
+            "name": "biome"
+          }
         },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        },
+      ],
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+        "source.organizeImports.biome": true,
       },
     },
     "JavaScript": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "prettier",
-          "arguments": [
-            "--stdin-filepath",
-            "{buffer_path}"
-          ],
+      "formatter": [
+        {
+          "language_server": {
+            "name": "biome"
+          }
         },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        },
+      ],
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+        "source.organizeImports.biome": true,
       },
     },
     "JSX": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "prettier",
-          "arguments": [
-            "--stdin-filepath",
-            "{buffer_path}"
-          ],
+      "formatter": [
+        {
+          "language_server": {
+            "name": "biome"
+          }
         },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        },
+      ],
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+        "source.organizeImports.biome": true,
       },
     },
     "Python": {
@@ -460,12 +505,26 @@
     "JSON": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": "language_server",
+      "formatter": [
+        {
+          "language_server": {
+            "name": "biome"
+          }
+        },
+        "language_server",
+      ],
     },
     "JSONC": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": "language_server",
+      "formatter": [
+        {
+          "language_server": {
+            "name": "biome"
+          }
+        },
+        "language_server",
+      ],
     },
     "SQL": {
       "tab_size": 2,
@@ -504,15 +563,22 @@
     "CSS": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "prettier",
-          "arguments": [
-            "--stdin-filepath",
-            "{buffer_path}"
-          ],
+      "formatter": [
+        {
+          "language_server": {
+            "name": "biome"
+          }
         },
-      },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        },
+      ],
     },
     "SCSS": {
       "tab_size": 2,
@@ -543,15 +609,22 @@
     "GraphQL": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "prettier",
-          "arguments": [
-            "--stdin-filepath",
-            "{buffer_path}"
-          ],
+      "formatter": [
+        {
+          "language_server": {
+            "name": "biome"
+          }
         },
-      },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        },
+      ],
     },
     "Dart": {
       "tab_size": 2,
@@ -607,6 +680,12 @@
         },
       },
     },
+    // Biome: only activate when biome.json exists in project
+    "biome": {
+      "settings": {
+        "require_config_file": true,
+      },
+    },
     "yaml-language-server": {
       "settings": {
         "yaml": {
@@ -627,8 +706,8 @@
   "load_direnv": "shell_hook",
   "auto_install_extensions": {
     // Themes & Icons
-    "cappuccino-icons": true,
-    "cappuccino": true,
+    "catppuccin-icons": true,
+    "catppuccin": true,
     // Languages
     "html": true,
     "toml": true,
@@ -664,7 +743,7 @@
     "color-highlight": true,
     "snippets": true,
     // Git & Utilities
-    "git_firefly": true,
+    "git-firefly": true,
     "rainbow-csv": true,
     "comment": true,
     "ghostty": true,

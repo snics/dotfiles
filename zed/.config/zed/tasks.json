@@ -75,38 +75,62 @@
   // Priority: pnpm > bun > deno > npm (detected via lock files)
   // =====================================================================
   {
-    "label": "js: test",
+    "label": "js/ts: test",
     "command": "if [ -f pnpm-lock.yaml ]; then pnpm test; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bun test; elif [ -f deno.json ] || [ -f deno.jsonc ]; then deno test; else npm test; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
   {
-    "label": "js: dev",
+    "label": "js/ts: dev",
     "command": "if [ -f pnpm-lock.yaml ]; then pnpm run dev; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bun run dev; elif [ -f deno.json ] || [ -f deno.jsonc ]; then deno task dev; else npm run dev; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
   {
-    "label": "js: build",
+    "label": "js/ts: build",
     "command": "if [ -f pnpm-lock.yaml ]; then pnpm run build; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bun run build; elif [ -f deno.json ] || [ -f deno.jsonc ]; then deno task build; else npm run build; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
   {
-    "label": "js: install",
+    "label": "js/ts: install",
     "command": "if [ -f pnpm-lock.yaml ]; then pnpm install; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bun install; elif [ -f deno.json ] || [ -f deno.jsonc ]; then deno install; else npm install; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "hide": "on_success"
   },
   {
-    "label": "js: vitest",
+    "label": "js/ts: vitest",
     "command": "if [ -f pnpm-lock.yaml ]; then pnpm exec vitest run; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bunx vitest run; else npx vitest run; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
   {
-    "label": "js: vitest (watch)",
+    "label": "js/ts: vitest (watch)",
     "command": "if [ -f pnpm-lock.yaml ]; then pnpm exec vitest; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bunx vitest; else npx vitest; fi",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "js/ts: format (prettier)",
+    "command": "if [ -f pnpm-lock.yaml ]; then pnpm exec prettier --write .; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bunx prettier --write .; else npx prettier --write .; fi",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "js/ts: format (biome)",
+    "command": "if [ -f pnpm-lock.yaml ]; then pnpm exec biome format --write .; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bunx biome format --write .; else npx biome format --write .; fi",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "js/ts: lint (biome)",
+    "command": "if [ -f pnpm-lock.yaml ]; then pnpm exec biome lint .; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bunx biome lint .; else npx biome lint .; fi",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "js/ts: check (biome)",
+    "command": "if [ -f pnpm-lock.yaml ]; then pnpm exec biome check --write .; elif [ -f bun.lockb ] || [ -f bun.lock ]; then bunx biome check --write .; else npx biome check --write .; fi",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
   },
