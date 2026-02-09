@@ -36,6 +36,10 @@ alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && kil
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 
+# Zoxide shortcuts (zim-zoxide uses --cmd cd, so z/zi don't exist by default)
+alias z="cd"
+alias zi="cdi"
+
 # Clear terminal in a sort way
 alias cl="clear"
 
