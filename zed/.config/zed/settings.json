@@ -646,6 +646,11 @@
   // =====================================================================
   // System
   // =====================================================================
+  "node": {
+    "ignore_system_version": true,
+    "path": "/opt/homebrew/bin/node",
+    "npm_path": "/opt/homebrew/bin/npm",
+  },
   "auto_update": true, // (default)
   "load_direnv": "shell_hook",
   "auto_install_extensions": {
