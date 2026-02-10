@@ -1,103 +1,27 @@
 #!/usr/bin/env bash
+# Dotfiles installer — thin wrapper around justfile
+#
+# Preferred usage:
+#   just all          (if just is installed)
+#   make all          (universal fallback)
+#   ./install.sh      (backwards compatibility)
+#
+# First-time setup from scratch:
+#   curl -fsSL https://raw.githubusercontent.com/snics/dotfiles/master/bootstrap.sh | bash
 
-cd "$(dirname "${BASH_SOURCE}")";
+set -euo pipefail
 
-git pull origin master;
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
-function doIt() {
-    source ./_install/brew.sh;
-
-    read -p "Would you like to put on my Mac Dock (y/n) " -n 1;
-    echo "";
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./macOS/dock.sh;
-    fi;
-
-    read -p "Do you want to use my zsh and oh-my-zsh settings? (y/n) " -n 1;
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./_install/zsh.sh
-    fi;
-
-    read -p "Do you want to use Golang? (y/n) " -n 1;
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./_install/golang.sh
-    fi;
-
-    read -p "Do you want to use Rust? (y/n) " -n 1;
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./_install/rust.sh
-    fi;
-
-    read -p "Do you want to use asdf? (y/n) " -n 1;
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./asdf/plugins.sh;
-    fi;
-
-    read -p "Would you like to use Mackup? (Keep your application settings in sync (OS X/Linux). https://github.com/lra/mackup) (y/n)" -n 1;
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./_install/mackup.sh
-    fi;
-
-    read -p "Do you want to use Vim and NeoVim? (y/n) " -n 1;
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./_install/nvim.sh
-    fi;
-
-    read -p "Do you want to setup Obsidian for Second Brain / PARA methodology? (y/n) " -n 1;
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./_install/obsidian.sh
-    fi;
-
-    read -p "Do you want to use OpenCode config (opencode.json, themes)? (y/n) " -n 1;
-    echo "";
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./_install/opencode.sh
-    fi;
-
-    read -p "Do you want to use Cursor config (settings, keybindings, mcp.json)? (y/n) " -n 1;
-    echo "";
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./_install/cursor.sh
-    fi;
-
-    read -p "Do you want to use Claude CLI config (settings.json)? (y/n) " -n 1;
-    echo "";
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./_install/claude.sh
-    fi;
-
-    read -p "Do you want to use Zed config (settings.json)? (y/n) " -n 1;
-    echo "";
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./_install/zed.sh
-    fi;
-
-    read -p "Do you want to have my Development/Project folder structure? (y/n) " -n 1;
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        source ./macOS/project-folder-structure.sh
-    fi;
-
-    source ./_install/git.sh
-
-    source ./macOS/settings.sh;
-
-    echo ""
-    echo "Set your user tokens as environment variables, such as ~/.secrets"
-    echo "See the README for examples."
-
-    read -p "Do you want to restart your Mac (This is recommended now)? (y/n) " -n 1;
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        sudo reboot
-    fi;
-}
-
-if [ "$1" == "--force" -o "$1" == "-f" ]; then
-    doIt;
+# Prefer just, fall back to make
+if command -v just &>/dev/null; then
+    echo "==> Running: just all"
+    just all
+elif command -v make &>/dev/null; then
+    echo "==> just not found, falling back to: make all"
+    make all
 else
-    read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
-    echo "";
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        doIt;
-    fi;
-fi;
-unset doIt;
+    echo "Error: Neither just nor make found. Run bootstrap.sh first:"
+    echo "  curl -fsSL https://raw.githubusercontent.com/snics/dotfiles/master/bootstrap.sh | bash"
+    exit 1
+fi

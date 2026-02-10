@@ -48,6 +48,14 @@ Detailed rules live in each package's `AGENTS.md`:
 | `nvim/AGENTS.md` | NeoVim config, keybindings, cross-sync with Zed |
 | `zed/AGENTS.md` | Zed editor config, keybindings, cross-sync with NeoVim |
 
+## Justfile / Makefile Sync Rule
+
+Both `justfile` and `Makefile` expose identical targets. When adding or modifying
+a target, **always update both files**. The Justfile is the primary interface;
+the Makefile is the universal fallback for environments without `just`.
+
+Run `just --list` or `make help` to verify targets match after changes.
+
 ## Cross-Package Dependencies
 
 Changes in one package often require updates in another. The `AGENTS.md` in

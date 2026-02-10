@@ -1,0 +1,181 @@
+# Dotfiles — https://github.com/snics/dotfiles
+# Usage: just <target>
+# List all targets: just --list
+
+set shell := ["bash", "-cu"]
+
+DOTFILES := env_var("HOME") / ".dotfiles"
+
+# Stow package lists
+
+HOME_PACKAGES := "zsh git"
+CONFIG_PACKAGES := "nvim ghostty tmux lazygit k9s zed opencode claude cursor"
+ALL_PACKAGES := HOME_PACKAGES + " " + CONFIG_PACKAGES
+
+# ── Full Setup ──────────────────────────────────────────
+
+# Full setup: brew + link + macos
+all: install link macos
+    @echo "Done! Open a new shell to apply changes."
+
+# ── Install ─────────────────────────────────────────────
+
+# Install Homebrew and all packages from Brewfile
+install:
+    @echo "==> Installing Homebrew packages..."
+    @if ! command -v brew &>/dev/null; then \
+        /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; \
+        eval "$$(/opt/homebrew/bin/brew shellenv)"; \
+    fi
+    brew bundle --file={{ DOTFILES }}/brew/Brewfile
+
+# ── Link / Unlink ──────────────────────────────────────
+
+# Symlink all stow packages (idempotent)
+link:
+    @echo "==> Linking dotfiles..."
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" {{ ALL_PACKAGES }}
+
+# Remove all symlinks
+unlink:
+    @echo "==> Unlinking dotfiles..."
+    @cd {{ DOTFILES }} && stow --delete -t "$HOME" {{ ALL_PACKAGES }}
+
+# Re-link all packages (alias for link)
+relink: link
+
+# ── Per-Package ─────────────────────────────────────────
+
+# Link zsh config
+zsh:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" zsh
+
+# Link git config
+git:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" git
+
+# Link nvim config
+nvim:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" nvim
+
+# Link ghostty config
+ghostty:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" ghostty
+
+# Link tmux config
+tmux:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" tmux
+
+# Link lazygit config
+lazygit:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" lazygit
+
+# Link k9s config
+k9s:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" k9s
+
+# Link zed config
+zed:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" zed
+
+# Link opencode config
+opencode:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" opencode
+
+# Link claude config
+claude:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" claude
+
+# Link cursor config
+cursor:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" cursor
+
+# ── Updates ─────────────────────────────────────────────
+
+# Update Homebrew packages
+update:
+    brew update
+    brew upgrade
+    brew cleanup
+
+# ── macOS ───────────────────────────────────────────────
+
+# Apply macOS system settings and dock
+[macos]
+macos:
+    @if [[ "$${CI:-}" != "true" ]]; then \
+        echo "==> Applying macOS settings..."; \
+        source {{ DOTFILES }}/macOS/settings.sh; \
+        source {{ DOTFILES }}/macOS/dock.sh; \
+    else \
+        echo "==> Skipping macOS settings (CI mode)"; \
+    fi
+
+# Configure dock apps
+[macos]
+dock:
+    source {{ DOTFILES }}/macOS/dock.sh
+
+# Create development project folder structure
+[macos]
+project-folders:
+    source {{ DOTFILES }}/macOS/project-folder-structure.sh
+
+# ── Optional Dev Tools ──────────────────────────────────
+
+# Install Go via g version manager
+golang:
+    source {{ DOTFILES }}/_install/golang.sh
+
+# Install Rust via rustup
+rust:
+    source {{ DOTFILES }}/_install/rust.sh
+
+# Install asdf plugins
+asdf:
+    source {{ DOTFILES }}/asdf/plugins.sh
+
+# ── Validation ──────────────────────────────────────────
+
+# Check installed tools and symlinks
+check:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "==> Checking stow symlinks..."
+    errors=0
+    for pkg in {{ ALL_PACKAGES }}; do
+        if cd {{ DOTFILES }} && stow --simulate --restow -t "$HOME" "$pkg" 2>&1 | grep -q "ERROR"; then
+            echo "  FAIL: $pkg"
+            errors=$((errors + 1))
+        else
+            echo "  OK: $pkg"
+        fi
+    done
+    echo ""
+    echo "==> Checking key tools..."
+    for tool in brew stow nvim git tmux zsh starship fzf bat eza rg fd lazygit k9s kubectl helm op just; do
+        if command -v "$tool" &>/dev/null; then
+            echo "  OK: $tool"
+        else
+            echo "  MISSING: $tool"
+            errors=$((errors + 1))
+        fi
+    done
+    if [[ $errors -gt 0 ]]; then
+        echo ""
+        echo "$errors issue(s) found."
+        exit 1
+    else
+        echo ""
+        echo "All checks passed."
+    fi
+
+# Lint shell scripts
+lint:
+    shellcheck _install/*.sh macOS/*.sh bootstrap.sh install.sh
+
+# Dry-run stow for all packages (no changes)
+test: lint
+    @echo "==> Dry-run stow simulation..."
+    @cd {{ DOTFILES }} && stow --simulate --restow -t "$HOME" {{ ALL_PACKAGES }} 2>&1
+    @echo "All tests passed."

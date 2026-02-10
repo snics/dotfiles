@@ -85,6 +85,7 @@ brew "john" # John the Ripper password cracker. [John the Ripper](https://www.op
 brew "jj" # Git-compatible version control system with automatic rebasing, undo, and conflict-as-data. [Jujutsu](https://github.com/jj-vcs/jj)
 brew "jjui" # TUI for jujutsu (jj) — log, diff, rebase, split, absorb, bookmarks. [jjui](https://github.com/idursun/jjui)
 brew "jq" # Lightweight and flexible command-line JSON processor. [Jq](https://stedolan.github.io/jq/)
+brew "just" # A handy way to save and run project-specific commands. [Just](https://just.systems/)
 brew "k9s" # Kubernetes CLI to manage your clusters in style. [K9s](https://k9scli.io/)
 brew "kind" # Kubernetes IN Docker - local clusters for testing Kubernetes. [Kind](https://kind.sigs.k8s.io/)
 brew "knock" # A port-knocking server and client. [Knock](http://www.zeroflux.org/projects/knock)

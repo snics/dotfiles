@@ -84,63 +84,53 @@ Phase 4: Dokumentation & Media
 
 ## Phase 1: Install Script Refactoring + macOS Settings
 
-### 1.1 Install Script — Makefile + bootstrap.sh
+### 1.1 Install Script — Justfile + Makefile + bootstrap.sh [DONE ✔]
 
-**Problem:** Aktuelles `install.sh` nutzt `read -p` Prompts. Nicht automatisierbar für Docker, CI, VMs.
+**Problem:** Aktuelles `install.sh` nutzte `read -p` Prompts (11 Stück). Nicht automatisierbar für Docker, CI, VMs.
 
-**Empfehlung: Makefile** (pre-installed, dependency graph, GNU Stow fit) + `bootstrap.sh` (curl-pipeable).
+**Lösung: Justfile (primary) + Makefile (universal fallback)** — identische Targets, immer synchron gehalten. CLAUDE.md-Regel erzwingt Sync.
 
 **Architektur:**
 ```
 ~/.dotfiles/
-  Makefile              # Primary entry point
-  bootstrap.sh          # curl-pipeable: git clone + make all
+  justfile              # Primary interface (just --list)
+  Makefile              # Universal fallback (make help)
+  bootstrap.sh          # curl-pipeable: xcode-select + git clone + brew install just stow + just all
+  install.sh            # Thin wrapper → just all (backwards compat)
   _install/             # Per-tool Skripte für komplexe Installs
 ```
 
-**Makefile-Targets:**
-```makefile
-make all               # Full setup: install + link
-make install           # Homebrew + Packages
-make link              # GNU Stow Symlinks (alle Packages)
-make unlink            # Symlinks entfernen
-make relink            # Idempotent re-link (stow --restow)
-make update            # brew update + upgrade + cleanup
-make check             # Validiere installierte Tools
-make macos             # macOS System Settings anwenden
-make clean             # Symlinks + Caches entfernen
+**Targets (identisch in Justfile + Makefile):**
+```
+all                    # Full setup: install + link + macos
+install                # Homebrew + brew bundle
+link                   # stow --restow alle Packages (idempotent)
+unlink                 # stow --delete alle Packages
+relink                 # Alias für link
+update                 # brew update + upgrade + cleanup
+macos                  # macOS System Settings + Dock (CI-skip)
+dock                   # Dock Apps konfigurieren
+project-folders        # Development Folder-Struktur
+check                  # Validiere Symlinks + installierte Tools
+lint                   # ShellCheck auf allen Scripts
+test                   # lint + stow dry-run
 
-# Per-Package Targets:
-make zsh / make nvim / make git / make tmux / make ghostty / ...
+# Per-Package:
+zsh / git / nvim / ghostty / tmux / lazygit / k9s / zed / opencode / claude / cursor
 
-# Testing (Phase 2):
-make test              # lint + stow dry-run
-make test-macos        # Tart macOS VM Test
-make test-linux        # Lima Linux VM Test
-make test-docker       # Docker Container Test
-make lint              # ShellCheck + yamllint + TOML Validation
+# Optional Dev Tools:
+golang / rust / asdf
 ```
 
-**Package-Listen:**
-- `HOME_PACKAGES` (zsh, git) → `stow -t "$HOME"`
-- `CONFIG_PACKAGES` (nvim, ghostty, tmux, lazygit, k9s, zed, opencode) → `stow -t "$XDG_CONFIG_HOME"`
+**Key Design Decisions:**
+- **Non-interactive by default** — `just all` läuft ohne Prompts
+- **Alle Packages** nutzen `stow -t "$HOME"` (auch CONFIG_PACKAGES haben `.config/` Subdirectory-Struktur)
+- **Idempotent** — `stow --restow`, `brew bundle` (nativ idempotent)
+- **CI mode** — `CI=true just all` überspringt macOS Settings
+- **bootstrap.sh** installiert Xcode CLT + Homebrew + git clone + just + stow, dann `just all`
+- **install.sh** ist thin wrapper: versucht `just all`, fällt zurück auf `make all`
 
-**Key Patterns (aus Research):**
-- **Platform-Detection:** `$(shell uname -s)` + `$(shell uname -m)`
-- **Idempotenz:** `stow --restow`, `command -v` Guards, `brew bundle` (nativ idempotent)
-- **CI-Kompatibilität:** `NONINTERACTIVE=1` (Homebrew), `CI=true` zum Überspringen interaktiver Steps
-- **Dependency-Chain:** `brew → stow → link`, per-package `ensure-stow` Guard
-- **Help System:** `make help` via `grep -E '^[a-zA-Z_-]+:.*?## .*$$'` Pattern
-
-**bootstrap.sh:**
-```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/snics/dotfiles/master/bootstrap.sh)"
-```
-Installiert Xcode CLT, klont Repo, führt `make all` aus.
-
-**Referenz-Repos:** webpro/dotfiles (Makefile + Stow), holman/dotfiles (topic-based), sagebind/dotfiles (.no-stow-folding Pattern)
-
-**Aufwand:** 1-2 Sessions
+**Aufwand:** 1 Session
 
 ### 1.2 macOS Settings Cleanup
 
