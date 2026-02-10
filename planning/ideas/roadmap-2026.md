@@ -25,7 +25,7 @@ Phase 4: Dokumentation & Media
 
 > Unabhängige Items die das Setup stabilisieren. Reihenfolge nach Priorität.
 
-### 0.1 Secret Management [PRIORITY: DO NOW]
+### 0.1 Secret Management [DONE ✔]
 
 **Problem:** `~/.secrets` enthält 7+ API-Keys als Plaintext (OpenAI, Anthropic, Gemini, OpenRouter, Context7, Exa, GitHub). Wird in `.zshrc` Zeile 10 gesourced. Sicherheitsrisiko.
 
