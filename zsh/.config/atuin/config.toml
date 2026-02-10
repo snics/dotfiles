@@ -126,6 +126,8 @@ common_subcommands = [
   "cargo",
   "go",
   "rustup",
+  "uv",
+  "mas",
   # Container tools
   "docker",
   "docker-compose",
@@ -133,29 +135,39 @@ common_subcommands = [
   "podman-compose",
   "skopeo",
   "trivy",
+  "reg",
   # Kubernetes
   "kubectl",
   "k",
   "helm",
   "minikube",
-  # Cloud
+  "kind",
+  "istioctl",
+  "cmctl",
+  "kompose",
+  "kubescape",
+  "kubeshark",
+  "polaris",
+  # Cloud & Infra
   "aws",
   "gcloud",
   "hcloud",
   "coder",
+  "oc",
+  "rancher",
+  "rke",
+  "limactl",
   # Dev tools
   "git",
-  "make",
-  "tmux",
-  "stow",
+  "gh",
+  "glab",
+  "dlv",
   "op",
   "sesh",
+  "mc",
   # IaC
   "terraform",
   "tofu",
-  "ansible-playbook",
-  # Hardware
-  "qmk",
 ]
 
 # Strip wrapper prefixes for accurate counting
@@ -219,6 +231,10 @@ ignored_commands = [
   "kubectx",
   # macOS
   "open",
+  "trash",
+  # Interactive filters/shells
+  "peco",
+  "nu",
   # Trivial
   "echo",
   "printf",
