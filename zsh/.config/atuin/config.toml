@@ -115,41 +115,84 @@ filters = ["workspace", "directory", "host", "global"]
 
 [stats]
 # Track subcommands separately for better stats
-# "git commit" instead of just "git", "kubectl get" instead of "kubectl"
+# "kubectl get" vs "kubectl apply" — each tells a different story
 common_subcommands = [
+  # Package managers
   "brew",
+  "npm",
+  "yarn",
+  "pnpm",
+  "pip",
   "cargo",
+  "go",
+  # Container tools
   "docker",
   "docker-compose",
-  "git",
-  "go",
-  "helm",
-  "kubectl",
-  "make",
-  "npm",
-  "pnpm",
   "podman",
   "podman-compose",
-  "terraform",
+  "skopeo",
+  "trivy",
+  # Kubernetes
+  "kubectl",
+  "k",
+  "helm",
+  "minikube",
+  # Dev tools
+  "git",
+  "make",
   "tmux",
-  "yarn",
+  "stow",
+  # IaC
+  "terraform",
+  "ansible-playbook",
 ]
 
-# Strip "sudo" prefix for accurate counting
-common_prefix = ["sudo"]
+# Strip wrapper prefixes for accurate counting
+# "sudo docker ps" → counts as "docker ps"
+common_prefix = ["sudo", "time", "nohup", "watch", "command"]
 
-# Exclude trivial commands from stats
+# Exclude trivial/noise commands from stats
 ignored_commands = [
+  # Navigation
   "cd",
+  "pwd",
+  "z",
+  "zi",
+  # Listing (eza aliases)
   "ls",
   "la",
   "ll",
+  "l",
+  "lt",
+  "lc",
+  "lw",
   "tree",
+  # Viewing
   "cat",
+  "bat",
+  "less",
+  "more",
+  # Editors (opening is noise, the work happens inside)
+  "vi",
+  "vim",
+  "nvim",
+  "nano",
+  # Terminal housekeeping
   "clear",
+  "cl",
   "exit",
-  "pwd",
-  "z",
+  "history",
+  # Info/help
+  "man",
+  "which",
+  "type",
+  # K8s context switching (too frequent)
+  "kubens",
+  # Trivial
+  "echo",
+  "printf",
+  "true",
+  "false",
 ]
 
 # ── Theme ───────────────────────────────────────────────
