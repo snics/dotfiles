@@ -1,3 +1,2 @@
-# fzf-tab directory preview (works for cd/z/zi via zoxide --cmd cd)
-zstyle ':fzf-tab:complete:cd:*' fzf-preview \
-  'eza --tree --level 3 --icons=automatic --color=always -a -l -h --no-permissions --no-time $realpath'
+# fzf-tab configuration moved to conf.d/post/30-fzf-tab.zsh
+# (must load after zimfw completion module to override format strings)
