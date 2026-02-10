@@ -34,8 +34,3 @@ for conf in ~/.dotfiles/zsh/conf.d/post/*.zsh(N); do
   source "$conf"
 done
 unset conf
-
-# ── TPM (Tmux Plugin Manager) ──────────
-if command -v git &>/dev/null && [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
-  git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
-fi
