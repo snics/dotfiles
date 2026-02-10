@@ -161,6 +161,8 @@ common_subcommands = [
   "git",
   "gh",
   "glab",
+  "jj",
+  "but",
   "dlv",
   "op",
   "sesh",
@@ -203,6 +205,7 @@ ignored_commands = [
   "k9s",
   "lazygit",
   "lazydocker",
+  "jjui",
   "dive",
   # AI agents (interactive sessions)
   "claude",

@@ -48,6 +48,7 @@
     # TUIs (minimal flags, but still nice to complete)
     lazygit       # Git TUI
     lazydocker    # Docker TUI
+    jjui          # Jujutsu TUI
     peco          # Interactive filter
 
     # Utilities
