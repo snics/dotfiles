@@ -31,34 +31,22 @@ Phase 4: Dokumentation & Media
 
 **Empfehlung: 1Password CLI (`op`)** — bereits installiert (`1password-cli` im Brewfile), Touch ID Integration, Cross-Device Sync, CI/CD Support.
 
+**Status: IMPLEMENTIERT** (Commit `1819de42`, `04cd9849`)
+
 **Layered Approach:**
-- **Primär:** 1Password CLI (`op inject`) mit 60-Min Disk-Cache (~5ms Startup)
+- **Primär:** 1Password CLI (`op inject`) — Secrets nur im RAM, kein Disk-Cache
 - **Sekundär (ab Phase 3):** SOPS + age für nix-darwin (`sops-nix` hat `darwinModules.sops`)
 - **Legacy-Fallback:** Plaintext `~/.secrets` während Migrationsperiode
 
-**Umsetzung:**
-1. `~/.secrets.tpl` erstellen mit `op://` Referenzen für alle Keys — **committable** (enthält nur Referenzen, keine Secrets)
-2. `.zshrc` Secret-Loading ersetzen (mit Disk-Cache für schnellen Startup):
-   ```zsh
-   if command -v op &>/dev/null && op account list &>/dev/null 2>&1; then
-     _secrets_cache="/tmp/.secrets-cache-$EUID"
-     if [[ -f "$_secrets_cache" ]] && [[ $(find "$_secrets_cache" -mmin -60 2>/dev/null) ]]; then
-       source "$_secrets_cache"
-     else
-       op inject -i ~/.secrets.tpl -o "$_secrets_cache" && source "$_secrets_cache"
-       chmod 600 "$_secrets_cache"
-     fi
-     unset _secrets_cache
-   elif command -v sops &>/dev/null && [[ -f ~/.secrets.sops.env ]]; then
-     eval "$(sops --decrypt --output-type dotenv ~/.secrets.sops.env | sed 's/^/export /')"
-   elif [[ -e ~/.secrets ]]; then
-     source ~/.secrets  # Legacy-Fallback
-   fi
-   ```
-3. `git config` Commands aus `.secrets` nach `~/.config/git/config` verschieben (sind keine Secrets)
-4. `.secrets.example` mit 1Password Setup-Anleitung aktualisieren
-5. Für Docker: `op run --env-file=.env.tpl -- docker compose up`
-6. Für CI/CD: `1password/load-secrets-action` oder GitHub Secrets direkt
+**Was umgesetzt wurde:**
+1. `zsh/.secrets.tpl` mit `op://Employee/...` Referenzen — **committed** (enthält nur Referenzen, keine Secrets)
+2. `.zshrc` Secret-Loading: `eval "$(op inject -i ~/.secrets.tpl)"` — Secrets bleiben nur im RAM
+3. `git/.gitconfig` hardcoded `[user]`/`[gpg]` entfernt — kommt jetzt aus secrets.tpl
+4. `.secrets.example` mit 1Password Setup-Anleitung aktualisiert
+5. 1Password Items erstellt: Git Config, OpenAI/Anthropic/Google/OpenRouter/Context7 API Keys
+6. Touch ID Frequenz: op's interne Session (~30 min) reduziert Prompts
+7. Für Docker: `op run --env-file=.env.tpl -- docker compose up`
+8. Für CI/CD: `1password/load-secrets-action` oder GitHub Secrets direkt
 
 **Zukunft: Bitwarden/Vaultwarden Migration**
 > Geplanter Wechsel von 1Password zu Bitwarden/Vaultwarden steht langfristig an (nicht in eigener Hand, Timing offen). Bei der Implementierung darauf achten, dass der Secret-Loading-Code backend-agnostisch bleibt — der SOPS+age Layer funktioniert unabhängig vom Password Manager. `op inject` Aufrufe auf wenige Stellen isolieren, damit ein späterer Wechsel zu `bw`/`bws` minimal-invasiv ist.
