@@ -9,6 +9,7 @@ tap "homebrew/command-not-found" # Command-not-found hook for Homebrew. [Homebre
 tap "kubeshark/kubeshark" # API traffic viewer for Kubernetes. [Kubeshark](https://github.com/kubeshark/homebrew-tap)
 tap "lotyp/formulae" # Various useful Homebrew formulas. [Lotyp Formulae](https://github.com/lotyp/homebrew-formulae)
 tap "joshmedeski/sesh" # Sesh: A tool for managing shell sessions. [Sesh](https://github.com/joshmedeski/sesh)
+tap "robusta-dev/homebrew-holmesgpt" # AI-powered Kubernetes troubleshooting. [HolmesGPT](https://github.com/robusta-dev/holmesgpt)
 tap "robusta-dev/homebrew-krr" # Kubernetes Resource Reporter. [KRR](https://github.com/robusta-dev/krr)
 tap "molovo/revolver" # Revolver: A simple command-line tool for rotating text. [Revolver](https://github.com/molovo/revolver)
 
@@ -74,6 +75,7 @@ brew "hcloud" # Command-line interface for Hetzner Cloud. [hcloud](https://githu
 brew "helm" # The Kubernetes package manager. [Helm](https://helm.sh/)
 brew "lua" # Powerful, efficient, lightweight, embeddable scripting language. [Lua](https://www.lua.org/)
 brew "highlight" # A universal source code to formatted text converter. [Highlight](http://www.andre-simon.de/doku/highlight/en/highlight.php)
+brew "robusta-dev/holmesgpt/holmesgpt" # AI-powered Kubernetes troubleshooting agent (CNCF Sandbox). [HolmesGPT](https://github.com/robusta-dev/holmesgpt)
 brew "htop" # An interactive process viewer. [Htop](https://htop.dev/)
 brew "mysql-client" # MySQL client tools. [MySQL](https://dev.mysql.com/downloads/shell/)
 brew "hydra" # Very fast network logon cracker which supports many different services. [Hydra](https://github.com/vanhauser-thc/thc-hydra)

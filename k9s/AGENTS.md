@@ -51,7 +51,9 @@ Many plugins require tools from `brew/Brewfile`:
 | helm-values   | helm               |
 | krr           | krr                |
 | cert-*        | cmctl              |
+| holmesgpt     | holmes (robusta-dev/holmesgpt) |
 | crd-wizard*   | kubectl-crd_wizard (krew) |
+| watch-events  | watch              |
 
 Verify tools are installed before adding plugins that depend on them.
 
