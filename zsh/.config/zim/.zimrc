@@ -16,6 +16,10 @@ zmodule zsh-users/zsh-autosuggestions
 zmodule completion
 zmodule Aloxaf/fzf-tab
 
+# Enhanced completions (npm run / yarn run script names)
+zmodule lukechilds/zsh-better-npm-completion
+zmodule g-plane/zsh-yarn-autocompletions
+
 # Community plugins
 zmodule joke/zim-starship
 zmodule joke/zim-helm
