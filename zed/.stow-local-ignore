@@ -1,1 +1,2 @@
-# (all patterns handled by ~/.stow-global-ignore)
+# Documentation (keep in repo, don't symlink)
+AGENTS\.md

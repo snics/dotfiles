@@ -8,26 +8,35 @@ All comments, documentation, and commit messages must be in **English**.
 GNU Stow-managed dotfiles. Each top-level directory is a stow package that
 symlinks into `$HOME`. Run `stow <package>` from the repo root to install.
 
+```
+brew/        → Brewfile (Homebrew packages)
+claude/      → Claude Code user config
+ghostty/     → Ghostty terminal
+git/         → Git config + aliases
+k9s/         → Kubernetes TUI
+lazygit/     → Lazygit config
+nvim/        → NeoVim config
+opencode/    → OpenCode AI config
+tmux/        → tmux config
+zed/         → Zed editor config
+zsh/         → Zsh shell (conf.d/, functions/, themes/)
+```
+
 ## Commit Conventions
 
-- Conventional Commits with gitmoji: `<emoji> <type>(scope): <description>`
-- Scopes match package directories: `zsh`, `nvim`, `zed`, `brew`, `git`, etc.
+Conventional Commits with gitmoji: `<emoji> <type>(scope): <description>`
 
-## Configuration Dependencies
+## Cross-Package Dependencies
 
-When modifying `brew/Brewfile` (adding/removing CLI tools), also update:
+Changes in one package may require updates in another:
 
-1. **`zsh/.config/atuin/config.toml`** — `[stats]` section:
-   - Tools with subcommands → `common_subcommands`
-   - TUIs and interactive apps → `ignored_commands`
-   - Wrappers (sudo-like) → `common_prefix`
-   - Regular tools (no subcommands) → no change needed
-
-2. **`zsh/conf.d/90-completions.zsh`** — if the tool needs `bashcompinit`.
-
-See `CLAUDE.md` for detailed categorization rules.
+- **`brew/Brewfile`** ↔ **`zsh/.config/atuin/config.toml`**: CLI tool changes
+  require Atuin stats config updates. See `brew/AGENTS.md`.
+- **`nvim/`** ↔ **`zed/`**: Keybindings, LSP, formatters stay in sync.
 
 ## Package-Specific Instructions
 
-- `nvim/AGENTS.md` — NeoVim config rules, keybindings, cross-sync with Zed
-- `zed/AGENTS.md` — Zed editor config rules, keybindings, cross-sync with NeoVim
+- `brew/AGENTS.md` — Brewfile rules and sync obligations
+- `zsh/AGENTS.md` — Zsh config structure, Atuin maintenance
+- `nvim/AGENTS.md` — NeoVim config, keybindings, Zed cross-sync
+- `zed/AGENTS.md` — Zed editor config, keybindings, NeoVim cross-sync
