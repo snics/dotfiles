@@ -1,9 +1,39 @@
 aliases:
+  # ── Workloads ─────────────────────────
   dp: deployments
-  sec: v1/secrets
+  ds: daemonsets
+  sts: statefulsets
+  rs: replicasets
   jo: jobs
+  cj: cronjobs
+
+  # ── Networking ────────────────────────
+  svc: v1/services
+  ep: endpoints
+  ing: networking.k8s.io/v1/ingresses
+  np: networkpolicies
+
+  # ── Config & Storage ──────────────────
+  sec: v1/secrets
+  cm: v1/configmaps
+  pv: persistentvolumes
+  pvc: persistentvolumeclaims
+  sc: storage.k8s.io/v1/storageclasses
+
+  # ── RBAC ──────────────────────────────
   cr: clusterroles
   crb: clusterrolebindings
   ro: roles
   rb: rolebindings
-  np: networkpolicies
+  sa: v1/serviceaccounts
+
+  # ── Cluster ───────────────────────────
+  no: nodes
+  ns: v1/namespaces
+  ev: events
+
+  # ── CRDs / Cert Manager ──────────────
+  crd: customresourcedefinitions
+  cert: certificates
+  ci: clusterissuers
+  iss: issuers
