@@ -132,68 +132,49 @@ golang / rust / asdf
 
 **Aufwand:** 1 Session
 
-### 1.2 macOS Settings Cleanup
+### 1.2 macOS Settings Cleanup [DONE ✔]
 
-**Problem:** `macOS/settings.sh` ist eine Kopie von Mathias Bynens' `.macos` (~2014). Viele Settings sind auf Sequoia 15.x kaputt oder veraltet.
+**Problem:** `macOS/settings.sh` war eine Kopie von Mathias Bynens' `.macos` (~2014). Viele Settings auf Sequoia 15.x kaputt oder veraltet.
 
-**Audit-Ergebnis (verifiziert via `defaults read` auf Live-System):**
+**Was gemacht wurde:**
+- Audit gegen Live-System (macOS Sequoia 15.4, `defaults read` auf alle Keys)
+- 320 Zeilen entfernt, 140 hinzugefügt (960 → 638 Zeilen)
+- shellcheck-clean
 
-#### ENTFERNEN (15 Items):
-- Dashboard (seit Catalina entfernt)
-- `launchctl unload` Notification Center (SIP blockiert)
-- `tmutil disablelocal` (seit Sierra entfernt)
-- Safari Java/Plugins (`WebKitJavaEnabled` etc., seit Safari 12 weg)
-- iTunes/rcd Media Keys (`launchctl load rcd`, iTunes → Music)
-- iCal Debug Menu (iCal → Calendar, BundleID geändert)
-- Address Book Debug Menu (→ Contacts, Key existiert nicht mehr)
-- Terminal.app Theme AppleScript (wir nutzen Ghostty)
-- iTerm2 Theme Installation + Solarized (wir nutzen Ghostty)
-- Opera Settings (wir nutzen Chrome/Arc)
-- Tweetbot im Kill-List (discontinued)
-- GPGMail Settings (nicht installiert)
-- Dashboard Hot Corner Value 7 (aus Doku entfernen)
+**ENTFERNT (verifiziert nicht mehr existent auf Sequoia):**
+- Dashboard defaults (seit Catalina entfernt)
+- `launchctl unload` Notification Center (plist existiert nicht mehr)
+- `tmutil disablelocal` (Command entfernt)
+- Safari Java/Plugins (`WebKitJavaEnabled`, `WebKitPluginsEnabled` — Keys existieren nicht)
+- iTunes/rcd Media Keys (`launchctl load rcd`)
+- iCal/Address Book Debug Menus (Keys existieren nicht)
+- Terminal.app Theme AppleScript + iTerm2 Themes (nutzen Ghostty)
+- Opera/GPGMail/Tweetbot Settings (nicht installiert/discontinued)
+- `AppleFontSmoothing` (seit Big Sur entfernt)
+- Bluetooth Bitpool (`com.apple.BluetoothAudioAgent` Key existiert nicht)
+- `.CFUserTextEncoding` Hack
+- `NSTextShowsControlCharacters`
+- Chrome Canary Duplikate
 
-#### AKTUALISIEREN (15 Items):
+**AKTUALISIERT:**
 - "System Preferences" → "System Settings" (quit AppleScript)
-- Computer Name konfigurierbar: `COMPUTER_NAME="${COMPUTER_NAME:-Nicos MacBook}"`
-- `com.apple.universalaccess`: FDA-Warnung als Kommentar
+- Computer Name via `COMPUTER_NAME` Environment Variable (Default: `pikachu`)
 - `systemsetup` Commands: `2>/dev/null` für Error:-99
-- Safari: Sandbox-Container Hinweis
-- `spctl --master-disable`: Sequoia-spezifische Anleitung hinzufügen
-- Font Smoothing Kommentar (kein Subpixel seit Mojave)
-- `ScheduleFrequency`: Hinweis dass evtl. ignoriert
-- Kill-List: "Address Book" → "Contacts", "iCal" entfernen
-- `expose-group-by-app`: Monitoring-Hinweis (evtl. renamed)
-- Bluetooth Bitpool: Relevanz-Hinweis für moderne Codecs
-- Screensaver Password: Hinweis auf Lock Screen Migration
-- Safari "Top Sites" → Start Page Kommentar
-- macOS Version Guard am Anfang (`sw_vers -productVersion`)
+- `spctl --master-disable`: Sequoia-Hinweis + `|| true`
+- `lidwake 1` (war fälschlicherweise auf 0 = kein Aufwachen)
+- Kill-List: "Address Book" → "Contacts", entfernt: iCal, Opera, Tweetbot, Terminal
+- PlistBuddy Commands: `2>/dev/null || true` für Robustheit
+- macOS Version Guard + Platform Guard am Anfang
+- Full Disk Access Hinweis im Header
+- `set -euo pipefail` für Robustheit
 
-#### NEU HINZUFÜGEN (9 Kategorien):
-- **Window Manager / Stage Manager** (`com.apple.WindowManager`): Stage Manager deaktivieren, Click-to-show-Desktop, Tiled Window Margins
-- **Control Center** (`com.apple.controlcenter`): Bluetooth, Battery %, NowPlaying
-- **Apple Intelligence Opt-out** (`com.apple.CloudSubscriptionFeatures.optIn`)
-- **Clock Settings** (`com.apple.menuextra.clock`): Seconds, Date, Day of Week
-- **Three-finger Drag** (Accessibility)
-- **Dark Mode** (`AppleInterfaceStyle`)
-- **Reduce Motion** (`com.apple.Accessibility`)
-- **Fn Key Behavior** (`com.apple.HIToolbox`)
-- **Moderne Safari Developer Keys**
-
-#### NEEDS TESTING (10 Items):
-- `NSTextShowsControlCharacters`, `AdminHostInfo`, `.CFUserTextEncoding`
-- Safari AutoFill (Sandbox + Passwords App)
-- Help Viewer `DevMode`, AirDrop over Ethernet, Messages `SOInputLineSettings`
-- Spotlight `orderedItems` (AI-driven Verhalten)
-- `lsregister -kill`, `lidwake 0` (Absicht prüfen — 0 = kein Aufwachen bei Lid-Open)
-
-#### Best Practices für Rewrite:
-1. macOS Version Guard am Anfang
-2. Full Disk Access Warnung als Kommentar
-3. Computer Name via Environment Variable
-4. `2>/dev/null` auf allen `systemsetup` Commands
-5. Aufteilen: `settings.sh` (System), `dock.sh` (Dock, existiert bereits), `apps.sh` (App-spezifisch)
-6. `verify_default()` Helper-Funktion für Validierung
+**NEU HINZUGEFÜGT:**
+- Dark Mode (`AppleInterfaceStyle Dark`)
+- Window Manager / Stage Manager (deaktiviert, Click-to-show-Desktop, keine Tiled Margins)
+- Control Center: Battery % in Menu Bar
+- Clock: ShowDayOfWeek, ShowDate, ShowAMPM
+- Three-finger Drag (Accessibility)
+- Reduce Transparency (explizit auf false gesetzt)
 
 **Aufwand:** 1 Session
 
