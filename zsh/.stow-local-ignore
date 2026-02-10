@@ -1,2 +1,3 @@
 themes/*
-settings/*
+conf.d/*
+functions/*
