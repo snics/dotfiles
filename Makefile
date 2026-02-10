@@ -14,7 +14,9 @@ ALL_PACKAGES := $(HOME_PACKAGES) $(CONFIG_PACKAGES)
 
 .PHONY: all install link unlink relink update macos dock project-folders \
         golang rust asdf check lint test help \
-        zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor
+        zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor \
+        docker-build docker-build-nvim docker-build-devenv docker-build-web \
+        docker-test docker-run docker-run-web docker-push docker-lint
 
 # ── Full Setup ──────────────────────────────────────────
 
@@ -144,6 +146,48 @@ check: ## Check installed tools and symlinks
 		echo ""; \
 		echo "All checks passed."; \
 	fi
+
+# ── Docker ──────────────────────────────────────────────
+
+docker-build: docker-build-nvim docker-build-devenv docker-build-web ## Build all Docker images
+
+docker-build-nvim: ## Build snics/nvim image
+	docker build -f docker/Dockerfile.nvim -t snics/nvim:latest .
+
+docker-build-devenv: ## Build snics/devenv image
+	docker build -f docker/Dockerfile.devenv -t snics/devenv:latest .
+
+docker-build-web: ## Build snics/devenv-web image
+	docker build -f docker/Dockerfile.devenv-web -t snics/devenv-web:latest .
+
+docker-test: ## Smoke test all Docker images
+	@echo "==> Testing snics/nvim..."
+	@docker run --rm snics/nvim:latest --version | head -1
+	@docker run --rm snics/nvim:latest --headless -c 'lua print("Plugins: " .. #require("lazy").plugins())' +qa 2>&1
+	@echo ""
+	@echo "==> Testing snics/devenv..."
+	@docker run --rm snics/devenv:latest -c 'starship --version | head -1 && lazygit --version | head -1 && delta --version && tmux -V && nvim --version | head -1'
+	@echo ""
+	@echo "==> Testing snics/devenv-web..."
+	@docker run --rm --entrypoint ttyd snics/devenv-web:latest --version
+	@echo ""
+	@echo "All Docker tests passed."
+
+docker-run: ## Run interactive devenv with current directory mounted
+	docker run -it --rm -v "$$(pwd):/workspace" snics/devenv:latest
+
+docker-run-web: ## Start devenv-web on port 7681
+	docker run -it --rm -p 7681:7681 snics/devenv-web:latest
+
+docker-push: ## Multi-arch build + push to Docker Hub
+	docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile.nvim -t snics/nvim:latest --push .
+	docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile.devenv -t snics/devenv:latest --push .
+	docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile.devenv-web -t snics/devenv-web:latest --push .
+
+docker-lint: ## Lint Dockerfiles with hadolint
+	hadolint docker/Dockerfile.nvim docker/Dockerfile.devenv docker/Dockerfile.devenv-web
+
+# ── Validation ──────────────────────────────────────────
 
 lint: ## Lint shell scripts
 	shellcheck _install/*.sh macOS/*.sh bootstrap.sh install.sh

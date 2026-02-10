@@ -1,0 +1,48 @@
+# ── Git ──────────────────────────────────────────────────
+.git
+.gitignore
+
+# ── macOS / GUI apps (not needed in containers) ─────────
+.DS_Store
+**/.DS_Store
+macOS/
+cursor/
+ghostty/
+obsidian/
+opencode/
+zed/
+claude/
+
+# ── Documentation & planning ────────────────────────────
+docs/
+planning/
+*.md
+!nvim/.config/nvim/**/*.md
+
+# ── Install scripts (macOS-specific) ────────────────────
+_install/
+bootstrap.sh
+install.sh
+Makefile
+justfile
+
+# ── Build artifacts & caches ────────────────────────────
+**/*.zwc
+**/*.zwc.old
+.tmp/
+
+# ── tmux plugins (TPM installs fresh in build) ──────────
+tmux/.config/tmux/plugins/
+
+# ── Editor / IDE metadata ───────────────────────────────
+.idea/
+.serena/
+.claude/
+.secrets.example
+
+# ── Stow ignore files (not relevant in containers) ──────
+**/.stow-local-ignore
+
+# ── Agent instruction files ─────────────────────────────
+**/AGENTS.md
+**/CLAUDE.md

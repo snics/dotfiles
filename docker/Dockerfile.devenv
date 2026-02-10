@@ -1,0 +1,209 @@
+# syntax=docker/dockerfile:1
+# ---------------------------------------------------------
+# snics/devenv — Full CLI + TUI development environment
+#
+# Multi-stage build:
+#   Stage 1 (tools): download GitHub release binaries
+#   Stage 2 (final): FROM snics/nvim + shell + TUI tools + configs
+#
+# Build:  docker build -f docker/Dockerfile.devenv -t snics/devenv .
+# Run:    docker run -it --rm -v $(pwd):/workspace snics/devenv
+# ---------------------------------------------------------
+ARG NVIM_TAG=latest
+
+# ============================================================
+# Stage 1: Download GitHub release binaries (multi-arch)
+# ============================================================
+FROM debian:bookworm-slim AS tools
+
+ARG TARGETARCH
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl unzip bzip2 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY docker/scripts/install-github-release.sh /usr/local/bin/install-gh
+RUN chmod +x /usr/local/bin/install-gh
+
+# Pin versions for reproducible builds
+ARG LAZYGIT_VERSION=v0.59.0
+ARG K9S_VERSION=v0.50.18
+ARG LAZYDOCKER_VERSION=v0.24.4
+ARG STARSHIP_VERSION=v1.24.2
+ARG ZOXIDE_VERSION=v0.9.9
+ARG DELTA_VERSION=0.18.2
+ARG YAZI_VERSION=v26.1.22
+ARG BTOP_VERSION=v1.4.6
+ARG ATUIN_VERSION=v18.12.0
+ARG FZF_VERSION=v0.67.0
+ARG EZA_VERSION=v0.21.2
+
+# Download all tools in a single layer
+RUN install-gh "jesseduffield/lazygit" "${LAZYGIT_VERSION}" \
+      "lazygit_${LAZYGIT_VERSION#v}_Linux_x86_64.tar.gz" \
+      "lazygit_${LAZYGIT_VERSION#v}_Linux_arm64.tar.gz" \
+      "lazygit" \
+    && install-gh "derailed/k9s" "${K9S_VERSION}" \
+      "k9s_Linux_amd64.tar.gz" \
+      "k9s_Linux_arm64.tar.gz" \
+      "k9s" \
+    && install-gh "jesseduffield/lazydocker" "${LAZYDOCKER_VERSION}" \
+      "lazydocker_${LAZYDOCKER_VERSION#v}_Linux_x86_64.tar.gz" \
+      "lazydocker_${LAZYDOCKER_VERSION#v}_Linux_arm64.tar.gz" \
+      "lazydocker" \
+    && install-gh "starship/starship" "${STARSHIP_VERSION}" \
+      "starship-x86_64-unknown-linux-gnu.tar.gz" \
+      "starship-aarch64-unknown-linux-musl.tar.gz" \
+      "starship" \
+    && install-gh "ajeetdsouza/zoxide" "${ZOXIDE_VERSION}" \
+      "zoxide-${ZOXIDE_VERSION#v}-x86_64-unknown-linux-musl.tar.gz" \
+      "zoxide-${ZOXIDE_VERSION#v}-aarch64-unknown-linux-musl.tar.gz" \
+      "zoxide" \
+    && install-gh "dandavison/delta" "${DELTA_VERSION}" \
+      "delta-${DELTA_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+      "delta-${DELTA_VERSION}-aarch64-unknown-linux-gnu.tar.gz" \
+      "delta" \
+    && install-gh "junegunn/fzf" "${FZF_VERSION}" \
+      "fzf-${FZF_VERSION#v}-linux_amd64.tar.gz" \
+      "fzf-${FZF_VERSION#v}-linux_arm64.tar.gz" \
+      "fzf" \
+    && install-gh "atuinsh/atuin" "${ATUIN_VERSION}" \
+      "atuin-x86_64-unknown-linux-gnu.tar.gz" \
+      "atuin-aarch64-unknown-linux-gnu.tar.gz" \
+      "atuin" \
+    && install-gh "eza-community/eza" "${EZA_VERSION}" \
+      "eza_x86_64-unknown-linux-gnu.tar.gz" \
+      "eza_aarch64-unknown-linux-gnu.zip" \
+      "eza"
+
+# yazi: use musl build (glibc 2.39 required by gnu build, Bookworm has 2.36)
+RUN ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
+    && curl -fsSL "https://github.com/sxyazi/yazi/releases/download/${YAZI_VERSION}/yazi-${ARCH}-unknown-linux-musl.zip" \
+       -o /tmp/yazi.zip \
+    && cd /tmp && unzip -q yazi.zip \
+    && find /tmp -name "yazi" -type f -executable -exec cp {} /usr/local/bin/yazi \; \
+    && chmod +x /usr/local/bin/yazi \
+    && rm -rf /tmp/yazi*
+
+# btop uses .tbz format
+RUN ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
+    && curl -fsSL "https://github.com/aristocratos/btop/releases/download/${BTOP_VERSION}/btop-${ARCH}-unknown-linux-musl.tbz" \
+    | tar xjf - -C /tmp \
+    && cp /tmp/btop/bin/btop /usr/local/bin/btop \
+    && chmod +x /usr/local/bin/btop \
+    && rm -rf /tmp/btop
+
+# ============================================================
+# Stage 2: Final image — snics/nvim + shell + TUI tools
+# ============================================================
+FROM snics/nvim:${NVIM_TAG}
+
+USER root
+
+# Shell, TUI, and runtime dependencies
+# eza not in Debian bookworm — installed via GitHub release in tools stage
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    zsh \
+    tmux \
+    bat \
+    jq \
+    less \
+    file \
+    locales \
+    && rm -rf /var/lib/apt/lists/* \
+    && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
+    && locale-gen
+
+ENV LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8
+
+# Copy GitHub release binaries from tools stage
+COPY --from=tools /usr/local/bin/lazygit    /usr/local/bin/
+COPY --from=tools /usr/local/bin/k9s        /usr/local/bin/
+COPY --from=tools /usr/local/bin/lazydocker /usr/local/bin/
+COPY --from=tools /usr/local/bin/starship   /usr/local/bin/
+COPY --from=tools /usr/local/bin/zoxide     /usr/local/bin/
+COPY --from=tools /usr/local/bin/delta      /usr/local/bin/
+COPY --from=tools /usr/local/bin/yazi       /usr/local/bin/
+COPY --from=tools /usr/local/bin/btop       /usr/local/bin/
+COPY --from=tools /usr/local/bin/atuin      /usr/local/bin/
+COPY --from=tools /usr/local/bin/fzf        /usr/local/bin/
+COPY --from=tools /usr/local/bin/eza        /usr/local/bin/
+
+# Set zsh as default shell for dev user
+RUN chsh -s /bin/zsh dev
+
+USER dev
+
+ENV SHELL=/bin/zsh
+
+# ── Zsh + Zimfw ─────────────────────────────────────────
+
+# Copy Docker-adapted zsh config
+COPY --chown=dev:dev docker/conf/zshrc.docker ${HOME}/.zshrc
+
+# Copy Docker-adapted zimrc (no homebrew/asdf/direnv modules)
+COPY --chown=dev:dev docker/conf/zimrc.docker ${XDG_CONFIG_HOME}/zim/.zimrc
+
+# Copy portable zsh configs (conf.d files sourced by .zshrc loop)
+COPY --chown=dev:dev zsh/conf.d/00-init.zsh          ${HOME}/.dotfiles/zsh/conf.d/00-init.zsh
+COPY --chown=dev:dev zsh/conf.d/10-path.zsh          ${HOME}/.dotfiles/zsh/conf.d/10-path.zsh
+COPY --chown=dev:dev zsh/conf.d/20-aliases.zsh       ${HOME}/.dotfiles/zsh/conf.d/20-aliases.zsh
+COPY --chown=dev:dev zsh/conf.d/30-fzf-tab.zsh      ${HOME}/.dotfiles/zsh/conf.d/30-fzf-tab.zsh
+COPY --chown=dev:dev zsh/conf.d/40-fzf.zsh          ${HOME}/.dotfiles/zsh/conf.d/40-fzf.zsh
+COPY --chown=dev:dev zsh/conf.d/50-keybindings.zsh  ${HOME}/.dotfiles/zsh/conf.d/50-keybindings.zsh
+COPY --chown=dev:dev zsh/conf.d/60-atuin.zsh        ${HOME}/.dotfiles/zsh/conf.d/60-atuin.zsh
+COPY --chown=dev:dev zsh/conf.d/70-functions.zsh    ${HOME}/.dotfiles/zsh/conf.d/70-functions.zsh
+COPY --chown=dev:dev zsh/conf.d/80-gnu-generic.zsh  ${HOME}/.dotfiles/zsh/conf.d/80-gnu-generic.zsh
+COPY --chown=dev:dev docker/conf/completions.docker.zsh ${HOME}/.dotfiles/zsh/conf.d/90-completions.zsh
+
+# Copy zsh themes and functions
+COPY --chown=dev:dev zsh/themes/   ${HOME}/.dotfiles/zsh/themes/
+COPY --chown=dev:dev zsh/functions/ ${HOME}/.dotfiles/zsh/functions/
+
+# Copy custom zim modules (bat, eza — fully portable)
+COPY --chown=dev:dev zsh/.config/zim-modules/ ${XDG_CONFIG_HOME}/zim-modules/
+
+# Initialize Zimfw (download zimfw.zsh + install plugins)
+RUN zsh -c 'ZIM_HOME=~/.config/zim; ZDOTDIR=~/.config/zim; \
+    curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+      https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh && \
+    source ${ZIM_HOME}/zimfw.zsh init -q && \
+    source ${ZIM_HOME}/zimfw.zsh install' 2>&1 || true
+
+# ── Starship prompt ─────────────────────────────────────
+COPY --chown=dev:dev zsh/.config/starship.toml ${XDG_CONFIG_HOME}/starship.toml
+
+# ── fzf config (Catppuccin theme) ───────────────────────
+COPY --chown=dev:dev zsh/.config/fzf/config ${XDG_CONFIG_HOME}/fzf/config
+
+# ── tmux + TPM ──────────────────────────────────────────
+COPY --chown=dev:dev docker/conf/tmux.docker.conf ${XDG_CONFIG_HOME}/tmux/tmux.conf
+COPY --chown=dev:dev tmux/.config/tmux/catppuccin.conf ${XDG_CONFIG_HOME}/tmux/catppuccin.conf
+
+# Install TPM and plugins
+RUN git clone --depth 1 https://github.com/tmux-plugins/tpm \
+      ${XDG_CONFIG_HOME}/tmux/plugins/tpm \
+    && ${XDG_CONFIG_HOME}/tmux/plugins/tpm/bin/install_plugins 2>&1 || true
+
+# ── Git config ──────────────────────────────────────────
+COPY --chown=dev:dev git/.gitconfig          ${HOME}/.gitconfig
+COPY --chown=dev:dev git/catppuccin.gitconfig ${HOME}/.dotfiles/git/catppuccin.gitconfig
+COPY --chown=dev:dev git/.config/git/ignore  ${XDG_CONFIG_HOME}/git/ignore
+
+# ── TUI tool configs (Catppuccin everywhere) ────────────
+COPY --chown=dev:dev lazygit/.config/lazygit/ ${XDG_CONFIG_HOME}/lazygit/
+COPY --chown=dev:dev k9s/.config/k9s/         ${XDG_CONFIG_HOME}/k9s/
+COPY --chown=dev:dev zsh/.config/bat/          ${XDG_CONFIG_HOME}/bat/
+COPY --chown=dev:dev zsh/.config/btop/         ${XDG_CONFIG_HOME}/btop/
+COPY --chown=dev:dev zsh/.config/atuin/        ${XDG_CONFIG_HOME}/atuin/
+COPY --chown=dev:dev zsh/.config/yazi/         ${XDG_CONFIG_HOME}/yazi/
+
+# Build bat theme cache (registers Catppuccin themes)
+# Debian names the binary 'batcat'
+RUN batcat cache --build 2>/dev/null || bat cache --build 2>/dev/null || true
+
+WORKDIR /workspace
+
+ENTRYPOINT ["/bin/zsh"]
+CMD ["-l"]

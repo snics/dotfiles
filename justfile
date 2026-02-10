@@ -170,6 +170,59 @@ check:
         echo "All checks passed."
     fi
 
+# ── Docker ──────────────────────────────────────────────
+
+# Build all Docker images (local arch)
+docker-build: docker-build-nvim docker-build-devenv docker-build-web
+
+# Build snics/nvim image
+docker-build-nvim:
+    docker build -f docker/Dockerfile.nvim -t snics/nvim:latest .
+
+# Build snics/devenv image
+docker-build-devenv:
+    docker build -f docker/Dockerfile.devenv -t snics/devenv:latest .
+
+# Build snics/devenv-web image
+docker-build-web:
+    docker build -f docker/Dockerfile.devenv-web -t snics/devenv-web:latest .
+
+# Smoke test all Docker images
+docker-test:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "==> Testing snics/nvim..."
+    docker run --rm snics/nvim:latest --version | head -1
+    docker run --rm snics/nvim:latest --headless -c 'lua print("Plugins: " .. #require("lazy").plugins())' +qa 2>&1
+    echo ""
+    echo "==> Testing snics/devenv..."
+    docker run --rm snics/devenv:latest -c 'starship --version | head -1 && lazygit --version | head -1 && delta --version && tmux -V && nvim --version | head -1'
+    echo ""
+    echo "==> Testing snics/devenv-web..."
+    docker run --rm --entrypoint ttyd snics/devenv-web:latest --version
+    echo ""
+    echo "All Docker tests passed."
+
+# Run interactive devenv with current directory mounted
+docker-run:
+    docker run -it --rm -v "$(pwd):/workspace" snics/devenv:latest
+
+# Start devenv-web on port 7681
+docker-run-web:
+    docker run -it --rm -p 7681:7681 snics/devenv-web:latest
+
+# Multi-arch build + push to Docker Hub
+docker-push:
+    docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile.nvim -t snics/nvim:latest --push .
+    docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile.devenv -t snics/devenv:latest --push .
+    docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile.devenv-web -t snics/devenv-web:latest --push .
+
+# Lint Dockerfiles with hadolint
+docker-lint:
+    hadolint docker/Dockerfile.nvim docker/Dockerfile.devenv docker/Dockerfile.devenv-web
+
+# ── Validation ──────────────────────────────────────────
+
 # Lint shell scripts
 lint:
     shellcheck _install/*.sh macOS/*.sh bootstrap.sh install.sh
