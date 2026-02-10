@@ -53,19 +53,7 @@ Phase 4: Dokumentation & Media
 
 **Aufwand:** 1-2 Stunden
 
-### 0.2 Obsidian Second Brain [PRIORITY: DO IN PHASE 0]
-
-**Status:** 90% fertig. PARA-Struktur, 6 Templates, Catppuccin Theme, 6 Plugin-Configs vorhanden.
-
-**Verbleibend:**
-1. `_install/obsidian.sh` erstellen (kopiert Config nach iCloud Vault)
-2. `backup-obsidian` Zsh-Funktion (rsync Config zurück ins Repo)
-3. In `install.sh` verdrahten (Prompt existiert bereits)
-4. iCloud Sync testen
-
-**Aufwand:** 1-2 Stunden
-
-### 0.3 CRD Wizard Integration [PRIORITY: DO IN PHASE 0]
+### 0.2 CRD Wizard Integration [PRIORITY: DO IN PHASE 0]
 
 **Status:** krew ist installiert, k9s plugins.yaml hat 15+ Plugins.
 
@@ -76,9 +64,21 @@ Phase 4: Dokumentation & Media
 
 **Aufwand:** 15-30 Minuten
 
-### 0.4 Skills CLI Integration [PRIORITY: DEFER]
+### 0.3 Skills CLI Integration [PRIORITY: DEFER]
 
 **Begründung:** Ecosystem noch unreif (`@dhruvwill/skills-cli` = 6 Stars, 3 Wochen alt). Offizielle `npx skills` hat 45 offene PRs. Stow kann SKILL.md Dateien nativ verwalten. Kein Pain Point. Revisit Q2/Q3 2026.
+
+### 0.4 Obsidian Second Brain [PRIORITY: FUTURE]
+
+**Status:** 90% fertig. PARA-Struktur, 6 Templates, Catppuccin Theme, 6 Plugin-Configs vorhanden. Workflow-Design noch offen.
+
+**Verbleibend:**
+1. `_install/obsidian.sh` erstellen (kopiert Config nach iCloud Vault)
+2. `backup-obsidian` Zsh-Funktion (rsync Config zurück ins Repo)
+3. In `install.sh` verdrahten (Prompt existiert bereits)
+4. iCloud Sync testen
+
+**Aufwand:** 1-2 Stunden
 
 ---
 
