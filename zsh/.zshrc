@@ -29,29 +29,13 @@ if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
 fi
 source ${ZIM_HOME}/init.zsh
 
-# ── fzf preview overrides ──────────────
-export FZF_CTRL_T_OPTS="--bind ctrl-/:toggle-preview --preview 'if [[ -d {} ]]; then eza --tree --level 3 --icons=auto --color=always -a {}; else bat --style=numbers --color=always --line-range :500 {}; fi'"
+# ── Post-Zimfw configuration ───────────
+for conf in ~/.dotfiles/zsh/conf.d/post/*.zsh(N); do
+  source "$conf"
+done
+unset conf
 
 # ── TPM (Tmux Plugin Manager) ──────────
 if command -v git &>/dev/null && [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
   git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi
-
-# ── Atuin (SQLite shell history) ────────
-if (( $+commands[atuin] )); then
-  export ATUIN_NOBIND="true"
-  eval "$(atuin init zsh)"
-  bindkey '^E' _atuin_search_widget
-fi
-
-# ── Keybindings ─────────────────────────
-bindkey -e  # Emacs keybindings
-
-# ── Extra completions ───────────────────
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /opt/homebrew/bin/tofu tofu
-complete -o nospace -C /opt/homebrew/bin/mc mc
-
-# Google Cloud SDK (must load after compinit)
-[[ -f /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ]] && \
-  source /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
