@@ -6,8 +6,18 @@ if [[ -f "/opt/homebrew/bin/brew" ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# ── Secrets ─────────────────────────────
-[[ -e ~/.secrets ]] && source ~/.secrets
+# ── Secrets (1Password CLI → disk cache → legacy fallback) ──
+if command -v op &>/dev/null && [[ -f ~/.secrets.tpl ]]; then
+  _secrets_cache="/tmp/.secrets-cache-$EUID"
+  if [[ -f "$_secrets_cache" ]] && [[ $(find "$_secrets_cache" -mmin -60 2>/dev/null) ]]; then
+    source "$_secrets_cache"
+  else
+    op inject -i ~/.secrets.tpl -o "$_secrets_cache" 2>/dev/null && chmod 600 "$_secrets_cache" && source "$_secrets_cache"
+  fi
+  unset _secrets_cache
+elif [[ -e ~/.secrets ]]; then
+  source ~/.secrets
+fi
 
 # ── Zimfw ───────────────────────────────
 ZIM_HOME=~/.config/zim

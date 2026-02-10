@@ -183,13 +183,13 @@
 
 [url "git://gitlab.devninjas/"]
   insteadOf = "devn:"
-[user]
-	name = Nico Swiatecki
-	email = nico@devninjas.io
-	signingKey = 8F65D195ED1CA6ED4120360FD525A868E8801ADC
-[gpg]
-	program = gpg2
+# [user] and [gpg] are set via ~/.secrets.tpl (1Password CLI)
+# See: zsh/.secrets.tpl for op:// references
 [init]
 	defaultBranch = main
 [tag]
 	forceSignAnnotated = false
+[user]
+	name = Nico Swiatecki
+	email = nico@devninjas.io
+	signingkey = 8F65D195ED1CA6ED4120360FD525A868E8801ADC
