@@ -10,6 +10,13 @@
 #      https://github.com/Aloxaf/fzf-tab/issues/379
 zstyle ':completion:*:descriptions' format '[%d]'
 
+# Popup height: fill the terminal below the prompt line.
+# fzf-tab hardcodes --height to max 2/3 of LINES (lib/-ftb-fzf:98).
+# fzf-flags is appended AFTER --height, and fzf takes the last value.
+# A negative value means "terminal height minus N lines", so -1 leaves
+# exactly the prompt line visible while the popup fills everything below.
+zstyle ':fzf-tab:*' fzf-flags --height=-3
+
 # Directory preview for cd/z/zi (via zoxide --cmd cd)
 zstyle ':fzf-tab:complete:cd:*' fzf-preview \
   'eza --tree --level 3 --icons=automatic --color=always -a -l -h --no-permissions --no-time $realpath'
