@@ -1,3 +1,13 @@
+# Stow defaults (overridden by having a .stow-local-ignore)
+\.git
+\.gitignore
+^/README.*
+^/LICENSE.*
+
+# macOS
+\.DS_Store
+
+# Zsh internals (sourced by .zshrc, not symlinked)
 themes/*
 conf.d/*
 functions/*
