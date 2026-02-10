@@ -1,3 +1,6 @@
+# Pre-Zimfw initialization: environment variables and zstyles that
+# plugins read during their init. Sourced explicitly before Zimfw.
+
 # Editor
 export EDITOR="nvim"
 
@@ -20,3 +23,16 @@ export FZF_DEFAULT_OPTS_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/fzf/config"
 # OMZ cache dir (required for docker/podman completion caching)
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 [[ -d "$ZSH_CACHE_DIR/completions" ]] || mkdir -p "$ZSH_CACHE_DIR/completions"
+
+# ── Zim module zstyles (read during plugin init) ───────
+
+# bat
+zstyle ':zim:plugins:bat' theme 'Catppuccin-Mocha'
+
+# eza
+zstyle ':zim:plugins:eza' dirs-first 'yes'
+zstyle ':zim:plugins:eza' header 'yes'
+zstyle ':zim:plugins:eza' show-group 'yes'
+zstyle ':zim:plugins:eza' icons 'yes'
+zstyle ':zim:plugins:eza' size-prefix 'binary'
+zstyle ':zim:plugins:eza' hyperlink 'yes'

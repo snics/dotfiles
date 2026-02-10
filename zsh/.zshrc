@@ -1,5 +1,5 @@
-# ── Environment ─────────────────────────
-source ~/.dotfiles/zsh/conf.d/00-env.zsh
+# ── Pre-Zimfw init ──────────────────────
+source ~/.dotfiles/zsh/conf.d/00-init.zsh
 
 # ── Homebrew ────────────────────────────
 if [[ -f "/opt/homebrew/bin/brew" ]]; then
@@ -8,12 +8,6 @@ fi
 
 # ── Secrets ─────────────────────────────
 [[ -e ~/.secrets ]] && source ~/.secrets
-
-# ── Configuration ───────────────────────
-for conf in ~/.dotfiles/zsh/conf.d/[1-9]*.zsh(N); do
-  source "$conf"
-done
-unset conf
 
 # ── Zimfw ───────────────────────────────
 ZIM_HOME=~/.config/zim
@@ -29,8 +23,8 @@ if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
 fi
 source ${ZIM_HOME}/init.zsh
 
-# ── Post-Zimfw configuration ───────────
-for conf in ~/.dotfiles/zsh/conf.d/post/*.zsh(N); do
+# ── Configuration ───────────────────────
+for conf in ~/.dotfiles/zsh/conf.d/[1-9]*.zsh(N); do
   source "$conf"
 done
 unset conf
