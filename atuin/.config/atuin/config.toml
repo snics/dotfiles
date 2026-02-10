@@ -1,0 +1,151 @@
+# ── Search ──────────────────────────────────────────────
+
+# Fuzzy matching like fzf — characters in order, gaps allowed
+search_mode = "fuzzy"
+
+# Up-arrow: prefix match for quick "I just ran this" recall
+search_mode_shell_up_key_binding = "prefix"
+
+# Ctrl+E: search everything globally
+filter_mode = "global"
+
+# Up-arrow: only commands from the current directory
+filter_mode_shell_up_key_binding = "directory"
+
+# Git-repo-aware workspace filtering
+workspaces = true
+
+# ── UI ──────────────────────────────────────────────────
+
+# Compact single-line entries, saves vertical space
+style = "compact"
+
+# Max 40 lines for Ctrl+E TUI
+inline_height = 40
+
+# Search bar at bottom (matches fzf layout)
+invert = false
+
+# Command preview for long/truncated commands
+show_preview = true
+max_preview_height = 4
+
+# Help bar with version, keymap hints, total commands
+show_help = true
+show_tabs = true
+
+# Enter executes immediately, Tab copies to prompt for editing
+enter_accept = true
+
+# Allow completion after && || | for building pipelines
+command_chaining = true
+
+# Restore original command line on Escape
+exit_mode = "return-original"
+
+# Emacs-style word jumping (Ctrl+Left/Right)
+word_jump_mode = "emacs"
+
+# ── Keybindings ─────────────────────────────────────────
+
+# Auto-detect shell keymap (picks emacs since bindkey -e)
+keymap_mode = "auto"
+
+# macOS: Alt produces special chars (Alt+3 = #), use Ctrl+1-9 instead
+ctrl_n_shortcuts = true
+
+# ── History Filters ─────────────────────────────────────
+
+# Prevent sensitive commands from ever being stored
+history_filter = [
+  "^export .*TOKEN",
+  "^export .*SECRET",
+  "^export .*PASSWORD",
+  "^export .*KEY=",
+  "--password[= ]",
+  "--token[= ]",
+  "^curl.*-H.*[Aa]uthoriz",
+  "^curl.*-u ",
+  "mysql.*-p",
+  "pgcli.*-W",
+  "^sshpass ",
+]
+
+# Auto-detect AWS keys, GitHub PATs, Slack tokens, Stripe keys
+secrets_filter = true
+
+# ── Sync ────────────────────────────────────────────────
+
+# Disabled for now — enable when you want cross-machine sync
+auto_sync = false
+
+[sync]
+records = true
+
+[daemon]
+enabled = false
+
+# ── Preview ─────────────────────────────────────────────
+
+[preview]
+strategy = "auto"
+
+# ── Keys ────────────────────────────────────────────────
+
+[keys]
+scroll_exits = true
+exit_past_line_start = true
+accept_past_line_end = true
+
+# ── Search Filter Cycle Order ───────────────────────────
+
+[search]
+# Ctrl+R in TUI cycles through these filter modes
+# Workspace first (git repos), then directory, host, global
+filters = ["workspace", "directory", "host", "global"]
+
+# ── Stats ───────────────────────────────────────────────
+
+[stats]
+# Track subcommands separately for better stats
+# "git commit" instead of just "git", "kubectl get" instead of "kubectl"
+common_subcommands = [
+  "brew",
+  "cargo",
+  "docker",
+  "docker-compose",
+  "git",
+  "go",
+  "helm",
+  "kubectl",
+  "make",
+  "npm",
+  "pnpm",
+  "podman",
+  "podman-compose",
+  "terraform",
+  "tmux",
+  "yarn",
+]
+
+# Strip "sudo" prefix for accurate counting
+common_prefix = ["sudo"]
+
+# Exclude trivial commands from stats
+ignored_commands = [
+  "cd",
+  "ls",
+  "la",
+  "ll",
+  "tree",
+  "cat",
+  "clear",
+  "exit",
+  "pwd",
+  "z",
+]
+
+# ── Theme ───────────────────────────────────────────────
+
+[theme]
+name = "catppuccin-mocha-mauve"
