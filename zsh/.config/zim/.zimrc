@@ -9,7 +9,7 @@ zmodule magic-enter
 zmodule homebrew
 zmodule k
 
-# Auto completions and syntax highlighting
+# Completions and syntax highlighting
 zmodule zsh-users/zsh-syntax-highlighting
 zmodule zsh-users/zsh-completions --fpath src
 zmodule zsh-users/zsh-autosuggestions
@@ -17,7 +17,7 @@ zmodule zsh-users/zsh-history-substring-search
 zmodule completion
 zmodule Aloxaf/fzf-tab
 
-# Comunity plugins
+# Community plugins
 zmodule joke/zim-starship
 zmodule joke/zim-helm
 zmodule joke/zim-k9s
@@ -28,13 +28,12 @@ zmodule kiesman99/zim-zoxide
 
 # Oh My Zsh plugins
 zmodule ohmyzsh/ohmyzsh --root plugins/sudo
+zmodule ohmyzsh/ohmyzsh --root plugins/docker
+zmodule ohmyzsh/ohmyzsh --root plugins/podman
 
 zmodule macunha1/zsh-terraform --source terraform.plugin.zsh
 
+# Tools
+zmodule zimfw/fzf
 zmodule ~/.config/zim-modules/bat
 zmodule ~/.config/zim-modules/eza
-zmodule ~/.config/zim-modules/fzf
-
-zmodule ~/.config/zim-modules/docker --fpath functions --source init.zsh
-zmodule ~/.config/zim-modules/podman --fpath functions --source init.zsh
-
