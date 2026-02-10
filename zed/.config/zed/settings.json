@@ -143,9 +143,14 @@
   // Terminal
   // =====================================================================
   "terminal": {
+    "font_family": "Lilex Nerd Font",
     "font_size": 15,
+    "font_features": {
+      "calt": false, // Disable ligatures in terminal — fixes Nerd Font icon spacing
+      "liga": false,
+    },
     "option_as_meta": true,
-    "line_height": "comfortable",
+    "line_height": "standard",
     "working_directory": "current_project_directory",
     "alternate_scroll": "on", // (default)
     "copy_on_select": false, // (default)
@@ -292,12 +297,14 @@
   // =====================================================================
   "context_servers": {
     "context7": {
+      "settings": {},
       "url": "https://mcp.context7.com/mcp",
       "headers": {
         "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}",
       },
     },
     "grep_app": {
+      "settings": {},
       "url": "https://mcp.grep.app",
     },
     "serena": {
