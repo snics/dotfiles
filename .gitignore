@@ -58,3 +58,6 @@ gen
 # Zim modules: ignore compiled cache, keep custom source
 zsh/.config/zim-modules/**/*.zwc
 zsh/.config/zim-modules/**/*.zwc.old
+
+# Tmux plugins: managed by TPM (prefix + I to install)
+tmux/.config/tmux/plugins/
