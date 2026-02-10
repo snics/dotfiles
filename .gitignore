@@ -55,4 +55,6 @@ gen
 
 # Project settings
 .tmp/
-zsh/.config/zim-modules/*
+# Zim modules: ignore compiled cache, keep custom source
+zsh/.config/zim-modules/**/*.zwc
+zsh/.config/zim-modules/**/*.zwc.old
