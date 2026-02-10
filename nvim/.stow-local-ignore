@@ -1,5 +1,2 @@
-# Stow ignore file for NeoVim
-# These files stay in dotfiles but won't be symlinked
-
+# NeoVim docs (keep in repo, don't symlink)
 KEYMAPPING.md
-AGENTS.md
