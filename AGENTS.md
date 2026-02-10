@@ -37,6 +37,10 @@ Changes in one package may require updates in another:
 ## Package-Specific Instructions
 
 - `brew/AGENTS.md` — Brewfile rules and sync obligations
-- `zsh/AGENTS.md` — Zsh config structure, Atuin maintenance
+- `git/AGENTS.md` — Git config, Delta pager, GPG signing, aliases
+- `k9s/AGENTS.md` — K9s plugins, themes, tool dependencies
+- `lazygit/AGENTS.md` — Lazygit config, Catppuccin theme, keybindings
 - `nvim/AGENTS.md` — NeoVim config, keybindings, Zed cross-sync
+- `tmux/AGENTS.md` — Tmux config, TPM plugin management, shell setup
 - `zed/AGENTS.md` — Zed editor config, keybindings, NeoVim cross-sync
+- `zsh/AGENTS.md` — Zsh config structure, Atuin maintenance
