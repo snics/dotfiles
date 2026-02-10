@@ -192,7 +192,12 @@ ignored_commands = [
   "lazygit",
   "lazydocker",
   "dive",
+  # AI agents (interactive sessions)
+  "claude",
   "opencode",
+  "codex",
+  "gemini",
+  "kimi",
   # System monitors
   "btop",
   "htop",
