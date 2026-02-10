@@ -125,6 +125,7 @@ common_subcommands = [
   "pip",
   "cargo",
   "go",
+  "rustup",
   # Container tools
   "docker",
   "docker-compose",
@@ -137,13 +138,21 @@ common_subcommands = [
   "k",
   "helm",
   "minikube",
+  # Cloud
+  "aws",
+  "gcloud",
+  "hcloud",
+  "coder",
   # Dev tools
   "git",
   "make",
   "tmux",
   "stow",
+  "op",
+  "sesh",
   # IaC
   "terraform",
+  "tofu",
   "ansible-playbook",
 ]
 
@@ -188,9 +197,13 @@ ignored_commands = [
   "type",
   # K8s context switching (too frequent)
   "kubens",
+  "kubectx",
+  # macOS
+  "open",
   # Trivial
   "echo",
   "printf",
+  "source",
   "true",
   "false",
 ]
