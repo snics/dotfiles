@@ -2,6 +2,11 @@
 # Uses zsh's built-in _gnu_generic which parses --help output on first
 # tab-press (cached in-memory for the rest of the session).
 # Zero startup cost, full fzf-tab compatibility.
+#
+# Only tools with standard --help output are listed here. Tools that use
+# -h only (foremost, hydra, socat), non-standard formats (krr, fcrackzip),
+# or have no help at all (john, rename) are excluded — _gnu_generic
+# cannot parse them.
 
 () {
   local cmd
@@ -9,7 +14,6 @@
     # DevOps / Cloud
     dockle        # Container image linter
     dockutil      # macOS dock management
-    krr           # Kubernetes Resource Reporter
     mackup        # macOS app settings backup
     mas           # Mac App Store CLI
     podman-compose # Podman Compose
@@ -31,33 +35,23 @@
     # Security / Pentest
     aircrack-ng   # WiFi security suite
     binwalk       # Firmware analysis
-    cifer         # Encryption tool
-    clair         # Container vulnerability scanner
-    fcrackzip     # ZIP password cracker
-    foremost      # File recovery
     hashpump      # Hash length extension
-    hydra         # Network logon cracker
-    john          # Password cracker
     lynis         # Security auditing
     sqlmap        # SQL injection tool
     sysdig        # System exploration
 
     # Network / Analysis
-    socat         # Multipurpose relay
     tcpflow       # TCP connection capture
     tcpreplay     # Network traffic replay
     tcptrace      # tcpdump analyzer
 
     # TUIs (minimal flags, but still nice to complete)
-    btop          # Resource monitor
-    ctop          # Container metrics
     lazygit       # Git TUI
     lazydocker    # Docker TUI
     peco          # Interactive filter
 
     # Utilities
     pngcheck      # PNG integrity checker
-    rename        # Batch file rename
     rlwrap        # Readline wrapper
     vbindiff      # Visual binary diff
     wdiff         # Word diff
