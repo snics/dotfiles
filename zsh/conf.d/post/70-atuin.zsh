@@ -3,6 +3,9 @@
 # provides autosuggestion strategy for zsh-autosuggestions
 if (( $+commands[atuin] )); then
   eval "$(atuin init zsh)"
+
+  # Prefer Atuin's history for autosuggestions, fall back to zsh history + completion
+  ZSH_AUTOSUGGEST_STRATEGY=(atuin history completion)
 fi
 
 # Reduce zsh history to small fallback (Atuin is primary)
