@@ -4,7 +4,7 @@ echo -e "\\n\\nSetup mac dock."
 echo ""
 
 ###############################################################################
-# Dock, Dashboard, and hot corners                                            #
+# Dock, Mission Control, and hot corners                                      #
 ###############################################################################
 
 # Enable highlight hover effect for the grid view of a stack (Dock)
@@ -41,14 +41,11 @@ defaults write com.apple.dock expose-animation-duration -float 0.1
 
 # Don’t group windows by application in Mission Control
 # (i.e. use the old Exposé behavior instead)
-defaults write com.apple.dock expose-group-by-app -bool false
+# NOTE: Key renamed from expose-group-by-app to expose-group-apps in Ventura+
+defaults write com.apple.dock expose-group-apps -bool false
 
-# Disable Dashboard
-defaults write com.apple.dashboard mcx-disabled -bool true
-
-# Don’t show Dashboard as a Space
-defaults write com.apple.dock dashboard-in-overlay -bool true
-
+# Disable Dock icon bouncing for notifications
+defaults write com.apple.dock no-bouncing -bool true
 # Don’t automatically rearrange Spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
 
@@ -89,7 +86,7 @@ find "${HOME}/Library/Application Support/Dock" -name "*-*.db" -maxdepth 1 -dele
 #  4: Desktop
 #  5: Start screen saver
 #  6: Disable screen saver
-#  7: Dashboard
+#  7: (removed — was Dashboard)
 # 10: Put display to sleep
 # 11: Launchpad
 # 12: Notification Center

@@ -119,6 +119,16 @@ defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
 # Reduce transparency (set to false to keep transparency)
 defaults write com.apple.universalaccess reduceTransparency -bool false
 
+# Disable wallpaper tinting in windows (neutral gray backgrounds)
+defaults write NSGlobalDomain AppleReduceDesktopTinting -bool true
+
+# Reduce Motion — fade transitions instead of slide between Spaces
+defaults write com.apple.Accessibility ReduceMotionEnabled -bool true
+defaults write com.apple.universalaccess reduceMotion -bool true
+
+# Double-click title bar to maximize (instead of minimize)
+defaults write NSGlobalDomain AppleActionOnDoubleClick -string "Maximize"
+
 ###############################################################################
 # Window Manager / Stage Manager                                              #
 ###############################################################################
@@ -131,6 +141,33 @@ defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool tr
 
 # Disable tiled window margins
 defaults write com.apple.WindowManager EnableTiledWindowMargins -bool false
+
+# Hide desktop widgets
+defaults write com.apple.WindowManager StandardHideWidgets -bool true
+defaults write com.apple.WindowManager StageManagerHideWidgets -bool true
+
+###############################################################################
+# Siri & Privacy                                                              #
+###############################################################################
+
+# Disable Siri
+defaults write com.apple.Siri StatusMenuVisible -bool false
+defaults write com.apple.Siri UserHasDeclinedEnable -bool true
+defaults write com.apple.Siri VoiceTriggerUserEnabled -bool false
+defaults write com.apple.assistant.support "Assistant Enabled" -bool false
+
+# Opt out of Siri data collection
+defaults write com.apple.assistant.support "Siri Data Sharing Opt-In Status" -int 2
+
+# Disable Siri suggestions in Spotlight
+defaults write com.apple.Spotlight SiriSuggestionsEnabled -bool false
+defaults write com.apple.Siri SuggestionsEnabled -bool false
+
+# Disable personalized ads and ad tracking
+defaults write com.apple.AdLib allowApplePersonalizedAdvertising -bool false
+defaults write com.apple.AdLib forceLimitAdTracking -bool true
+
+# Note: Apple Intelligence is intentionally left ENABLED (no opt-out)
 
 ###############################################################################
 # Control Center / Menu Bar                                                   #
@@ -239,6 +276,9 @@ defaults write com.apple.screencapture type -string "png"
 # Disable shadow in screenshots
 defaults write com.apple.screencapture disable-shadow -bool true
 
+# Disable the floating screenshot thumbnail preview (saves instantly)
+defaults write com.apple.screencapture show-thumbnail -bool false
+
 # Enable HiDPI display modes (requires restart)
 sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
 
@@ -279,6 +319,15 @@ defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
 # Keep folders on top when sorting by name
 defaults write com.apple.finder _FXSortFoldersFirst -bool true
+
+# Keep folders on top on the Desktop too
+defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
+
+# Auto-empty Trash after 30 days
+defaults write com.apple.finder FXRemoveOldTrashItems -bool true
+
+# Show proxy icon in title bar immediately (no hover delay)
+defaults write NSGlobalDomain NSToolbarTitleViewRolloverDelay -float 0
 
 # When performing a search, search the current folder by default
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
@@ -414,6 +463,13 @@ defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
 # Block pop-up windows
 defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically -bool false
 defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically -bool false
+
+# Disable Safari Highlights (AI-powered page summaries, Sequoia 15+)
+defaults write com.apple.Safari WebKitPreferences.highlightsEnabled -bool false
+defaults write com.apple.Safari ShowHighlightsInOverview -bool false
+
+# Disable preloading top hit in address bar (privacy)
+defaults write com.apple.Safari PreloadTopHit -bool false
 
 # Enable "Do Not Track"
 defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
