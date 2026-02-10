@@ -18,13 +18,13 @@ workspaces = true
 # ── UI ──────────────────────────────────────────────────
 
 # Compact single-line entries, saves vertical space
-style = "compact"
+style = "full"
 
 # Max 40 lines for Ctrl+E TUI
-inline_height = 40
+inline_height = 0
 
 # Search bar at bottom (matches fzf layout)
-invert = false
+invert = true
 
 # Command preview for long/truncated commands
 show_preview = true
@@ -32,7 +32,7 @@ max_preview_height = 4
 
 # Help bar with version, keymap hints, total commands
 show_help = true
-show_tabs = true
+show_tabs = false
 
 # Enter executes immediately, Tab copies to prompt for editing
 enter_accept = true
@@ -73,6 +73,9 @@ history_filter = [
 
 # Auto-detect AWS keys, GitHub PATs, Slack tokens, Stripe keys
 secrets_filter = true
+
+# Keep failed commands (useful for debugging)
+store_failed = true
 
 # ── Sync ────────────────────────────────────────────────
 
