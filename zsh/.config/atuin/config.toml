@@ -154,6 +154,8 @@ common_subcommands = [
   "terraform",
   "tofu",
   "ansible-playbook",
+  # Hardware
+  "qmk",
 ]
 
 # Strip wrapper prefixes for accurate counting
@@ -181,11 +183,21 @@ ignored_commands = [
   "bat",
   "less",
   "more",
-  # Editors (opening is noise, the work happens inside)
+  # Editors & TUIs (opening is noise, the work happens inside)
   "vi",
   "vim",
   "nvim",
   "nano",
+  "k9s",
+  "lazygit",
+  "lazydocker",
+  "dive",
+  "opencode",
+  # System monitors
+  "btop",
+  "htop",
+  "top",
+  "ctop",
   # Terminal housekeeping
   "clear",
   "cl",
@@ -195,6 +207,8 @@ ignored_commands = [
   "man",
   "which",
   "type",
+  "tldr",
+  "neofetch",
   # K8s context switching (too frequent)
   "kubens",
   "kubectx",
