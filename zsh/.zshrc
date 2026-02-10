@@ -7,9 +7,11 @@ if [[ -f "/opt/homebrew/bin/brew" ]]; then
 fi
 
 # ── Secrets (1Password CLI → legacy fallback) ──
-# Secrets stay in RAM only — no disk cache. op's internal session (~30 min)
-# reduces Touch ID prompts. For disk-cache variant (~5ms startup), see:
-# https://github.com/Integralist/dotfiles — /tmp/.secrets-cache pattern
+# Secrets stay in RAM only — no disk cache.
+# To avoid Touch ID on every new shell, enable in 1Password app:
+#   Settings → Developer → "Integrate with 1Password CLI"
+#   Settings → Security → Auto-Lock → 1-2 hours
+# This lets the app act as auth agent — one Touch ID per session.
 if command -v op &>/dev/null && [[ -f ~/.secrets.tpl ]]; then
   eval "$(op inject -i ~/.secrets.tpl 2>/dev/null)"
 elif [[ -e ~/.secrets ]]; then
