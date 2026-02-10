@@ -3,8 +3,8 @@
 # Fuzzy matching like fzf — characters in order, gaps allowed
 search_mode = "fuzzy"
 
-# Up-arrow: prefix match for quick "I just ran this" recall
-search_mode_shell_up_key_binding = "prefix"
+# Up-arrow: fuzzy match — finds "npm run def" even when typing "def"
+search_mode_shell_up_key_binding = "fuzzy"
 
 # Ctrl+E: search everything globally
 filter_mode = "global"
