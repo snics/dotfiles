@@ -6,15 +6,12 @@ if [[ -f "/opt/homebrew/bin/brew" ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# ── Secrets (1Password CLI → disk cache → legacy fallback) ──
+# ── Secrets (1Password CLI → legacy fallback) ──
+# Secrets stay in RAM only — no disk cache. op's internal session (~30 min)
+# reduces Touch ID prompts. For disk-cache variant (~5ms startup), see:
+# https://github.com/Integralist/dotfiles — /tmp/.secrets-cache pattern
 if command -v op &>/dev/null && [[ -f ~/.secrets.tpl ]]; then
-  _secrets_cache="/tmp/.secrets-cache-$EUID"
-  if [[ -f "$_secrets_cache" ]] && [[ $(find "$_secrets_cache" -mmin -60 2>/dev/null) ]]; then
-    source "$_secrets_cache"
-  else
-    op inject -i ~/.secrets.tpl -o "$_secrets_cache" 2>/dev/null && chmod 600 "$_secrets_cache" && source "$_secrets_cache"
-  fi
-  unset _secrets_cache
+  eval "$(op inject -i ~/.secrets.tpl 2>/dev/null)"
 elif [[ -e ~/.secrets ]]; then
   source ~/.secrets
 fi
