@@ -57,3 +57,13 @@ When removing a tool from Brewfile, also remove it from `common_subcommands`,
 
 If a new CLI tool needs `bashcompinit`-style completions (like `tofu` or `mc`),
 add the completion setup to `zsh/conf.d/90-completions.zsh`.
+
+## Sync Obligation: Brewfile → _gnu_generic Fallback
+
+If a new CLI tool has **no native zsh completion** (no `_<tool>` file in
+Homebrew's `site-functions/`, zsh-completions, or any zimfw module), add it
+to the tools list in `zsh/conf.d/80-gnu-generic.zsh`. This uses zsh's built-in
+`_gnu_generic` to parse `--help` output for flag completion.
+
+Check first: `ls /opt/homebrew/share/zsh/site-functions/_<tool>` — if it
+exists, no action needed.

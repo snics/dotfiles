@@ -19,6 +19,7 @@ zsh/
 │   ├── 50-keybindings.zsh   # Emacs mode + macOS Alt+C fix
 │   ├── 60-atuin.zsh         # Atuin init + autosuggestions strategy
 │   ├── 70-functions.zsh     # Functions auto-loader
+│   ├── 80-gnu-generic.zsh  # _gnu_generic fallback for tools without completions
 │   └── 90-completions.zsh   # bashcompinit + gcloud
 ├── functions/                # Auto-loaded shell functions (one per file)
 ├── themes/                   # Syntax highlighting themes
@@ -55,7 +56,8 @@ variables and zstyles that plugins read during initialization.
 | 50    | Keybindings |
 | 60    | Atuin (history) |
 | 70    | Functions auto-loader |
-| 90    | Completions |
+| 80    | _gnu_generic fallback completions |
+| 90    | Completions (bashcompinit + gcloud) |
 
 Gaps are intentional — they allow inserting new configs without renumbering.
 
