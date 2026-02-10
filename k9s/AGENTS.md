@@ -52,6 +52,7 @@ Many plugins require tools from `brew/Brewfile`:
 | krr           | krr                |
 | cert-*        | cmctl              |
 | holmesgpt     | holmes             |
+| crd-wizard*   | kubectl-crd_wizard (krew) |
 
 Verify tools are installed before adding plugins that depend on them.
 

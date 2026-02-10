@@ -53,7 +53,7 @@ Phase 4: Dokumentation & Media
 
 **Aufwand:** 1-2 Stunden
 
-### 0.2 CRD Wizard Integration [PRIORITY: DO IN PHASE 0]
+### 0.2 CRD Wizard Integration [DONE ✔]
 
 **Status:** krew ist installiert, k9s plugins.yaml hat 15+ Plugins.
 
