@@ -1,0 +1,15 @@
+# Catppuccin Mocha theme
+--color=fg:-1,fg+:#d0d0d0,bg:-1,bg+:#262626
+--color=hl:#f38ba8,hl+:#5fd7ff
+--color=info:#cba6f7,marker:#b4befe,prompt:#cba6f7
+--color=spinner:#f5e0dc,pointer:#5fd7ff,header:#f38ba8
+--color=gutter:#1e1e2e,border:#585b70,label:#aeaeae,query:#d9d9d9
+
+# Layout
+--border=rounded
+--preview-window=border-rounded
+--prompt='  '
+--marker=''
+--pointer='⏽'
+--scrollbar='│'
+--layout=reverse
