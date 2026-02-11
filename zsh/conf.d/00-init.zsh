@@ -16,6 +16,8 @@ source ~/.dotfiles/zsh/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
 export HOMEBREW_NO_AUTO_UPDATE=1
 # Skip auto-cleanup after install (we run `brew cleanup` explicitly in `update brew`)
 export HOMEBREW_NO_INSTALL_CLEANUP=1
+# Use generated ~/.Brewfile so `brew bundle` works without --file
+export HOMEBREW_BUNDLE_FILE="$HOME/.Brewfile"
 
 # fzf config file (Catppuccin Mocha theming)
 export FZF_DEFAULT_OPTS_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/fzf/config"

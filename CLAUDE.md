@@ -14,7 +14,7 @@ _install/    → Setup scripts (not a stow package)
 _macOS/      → macOS system settings scripts (not a stow package)
 _planning/   → Project planning docs (not a stow package)
 asdf/        → asdf version manager plugins
-brew/        → Brewfile (Homebrew packages)
+brew/        → Split Brewfiles (Brewfile.00-taps … Brewfile.99-hardware, not a stow package)
 claude/      → ~/.claude/ (Claude Code user config, MCP servers)
 cursor/      → Cursor editor config
 ghostty/     → ~/.config/ghostty/ (terminal emulator)
@@ -62,7 +62,9 @@ Run `just --list` or `make help` to verify targets match after changes.
 Changes in one package often require updates in another. The `AGENTS.md` in
 each package documents these dependencies. Key relationships:
 
-- **`brew/Brewfile`** ↔ **`zsh/.config/atuin/config.toml`**: New CLI tools
+- **`brew/Brewfile.*`** ↔ **`zsh/.config/atuin/config.toml`**: New CLI tools
   must be categorized for Atuin shell history stats. See `brew/AGENTS.md`.
+  The split Brewfiles are concatenated into `~/.Brewfile` by `zsh/conf.d/15-brew.zsh`
+  on shell startup, so `brew bundle` works without `--file`.
 - **`nvim/`** ↔ **`zed/`**: Keybindings, LSP settings, and formatters should
   stay in sync. See `nvim/AGENTS.md` and `zed/AGENTS.md`.

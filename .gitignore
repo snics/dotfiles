@@ -61,3 +61,8 @@ zsh/.config/zim-modules/**/*.zwc.old
 
 # Tmux plugins: managed by TPM (prefix + I to install)
 tmux/.config/tmux/plugins/
+.claude/plans/
+
+# Brew: generated composite file and dump output
+.Brewfile
+brew/Brewfile.dump

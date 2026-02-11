@@ -15,6 +15,8 @@ ALL_PACKAGES := $(HOME_PACKAGES) $(CONFIG_PACKAGES)
 .PHONY: all install link unlink relink update macos dock project-folders \
         golang rust asdf check lint test help \
         zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor \
+        brew-gen brew-install brew-list brew-check brew-cleanup \
+        brew-cleanup-force brew-dump brew-edit \
         docker-build docker-build-nvim docker-build-devenv docker-build-web \
         docker-test docker-run docker-run-web docker-push docker-lint \
         docker-dive-ci
@@ -32,7 +34,7 @@ install: ## Install Homebrew and all packages from Brewfile
 		/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; \
 		eval "$$(/opt/homebrew/bin/brew shellenv)"; \
 	fi
-	brew bundle --file=$(DOTFILES)/brew/Brewfile
+	cat $(DOTFILES)/brew/Brewfile.* | brew bundle --file=-
 
 # ── Link / Unlink ──────────────────────────────────────
 
@@ -87,6 +89,37 @@ update: ## Update Homebrew packages
 	brew update
 	brew upgrade
 	brew cleanup
+
+# ── Brew Lifecycle ──────────────────────────────────────
+
+brew-gen: ## Regenerate ~/.Brewfile from split sources
+	cat $(DOTFILES)/brew/Brewfile.* > ~/.Brewfile
+	@echo "Generated ~/.Brewfile from $$(ls -1 $(DOTFILES)/brew/Brewfile.* | wc -l | tr -d ' ') sources"
+
+brew-install: brew-gen ## Install all packages from split Brewfiles
+	brew bundle --file=~/.Brewfile
+
+brew-list: ## List all packages from split Brewfiles
+	cat $(DOTFILES)/brew/Brewfile.* | brew bundle list --file=-
+
+brew-check: brew-gen ## Check which packages are not installed
+	brew bundle check --file=~/.Brewfile
+
+brew-cleanup: brew-gen ## Remove packages not in Brewfile (dry-run)
+	brew bundle cleanup --file=~/.Brewfile
+
+brew-cleanup-force: brew-gen ## Force-remove packages not in Brewfile
+	brew bundle cleanup --force --file=~/.Brewfile
+
+brew-dump: ## Dump installed packages for comparison
+	brew bundle dump --describe --file=$(DOTFILES)/brew/Brewfile.dump --force
+	@echo "Dumped to brew/Brewfile.dump — compare with Brewfile.* sources"
+
+brew-edit: ## Edit split Brewfiles (shows directory)
+	@echo "Split Brewfiles in $(DOTFILES)/brew/"
+	@ls -1 $(DOTFILES)/brew/Brewfile.*
+	@echo ""
+	@echo "Edit with: $$EDITOR $(DOTFILES)/brew/Brewfile.<category>"
 
 # ── macOS ───────────────────────────────────────────────
 

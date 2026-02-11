@@ -1,0 +1,8 @@
+# Media, image, and document tools
+brew "exiv2" # Image metadata manipulation tool. [Exiv2](https://www.exiv2.org/)
+brew "ghostscript" # An interpreter for the PostScript language and for PDF. [Ghostscript](https://www.ghostscript.com/)
+brew "imagemagick" # Tools and libraries to manipulate images in many formats. [ImageMagick](https://imagemagick.org/)
+brew "netpbm" # Toolkit for manipulation of graphic images. [Netpbm](http://netpbm.sourceforge.net/)
+brew "pngcheck" # Verifies the integrity of PNG and dump information about PNG image files. [Pngcheck](http://www.libpng.org/pub/png/apps/pngcheck.html)
+brew "vbindiff" # Visual binary diff, visually compare binary files. [Vbindiff](https://www.cjmweb.net/vbindiff/)
+brew "xpdf" # PDF viewer. [Xpdf](https://www.xpdfreader.com/)

@@ -1,0 +1,10 @@
+# Git and version control
+brew "bfg" # BFG Repo-Cleaner: Remove large files or passwords from Git history. [BFG Repo-Cleaner](https://rtyley.github.io/bfg-repo-cleaner/)
+brew "gh" # GitHub's official command line tool. [GitHub CLI](https://cli.github.com/)
+brew "git" # Distributed revision control system. [Git](https://git-scm.com/)
+brew "git-delta" # A syntax-highlighting pager for git and diff output. [Git Delta](https://github.com/dandavison/delta)
+brew "git-lfs" # Git extension for versioning large files. [Git LFS](https://git-lfs.github.com/)
+brew "glab" # GitLab's official command line tool. [GitLab CLI](https://gitlab.com/gitlab-org/cli)
+brew "jj" # Git-compatible version control system with automatic rebasing, undo, and conflict-as-data. [Jujutsu](https://github.com/jj-vcs/jj)
+brew "jjui" # TUI for jujutsu (jj) — log, diff, rebase, split, absorb, bookmarks. [jjui](https://github.com/idursun/jjui)
+brew "lazygit" # Simple terminal UI for git commands. [Lazygit](https://github.com/jesseduffield/lazygit)

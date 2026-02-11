@@ -1,0 +1,10 @@
+# Quick Look plugins
+cask "qlcolorcode" # Quick Look plugin for source code with syntax highlighting. [QLColorCode](https://github.com/anthonygelibert/QLColorCode)
+cask "qlimagesize" # Quick Look plugin for displaying image size and resolution. [QLImageSize](https://github.com/Nyx0uf/qlImageSize)
+cask "qlmarkdown" # Quick Look plugin for Markdown files. [QLMarkdown](https://github.com/toland/qlmarkdown)
+cask "qlstephen" # Quick Look plugin for plain text files without a file extension. [QLStephen](https://github.com/whomwah/qlstephen)
+cask "qlvideo" # Quick Look plugin for video files. [QLVideo](https://github.com/Marginal/QLVideo)
+cask "quicklook-json" # Quick Look plugin for JSON files. [QuickLook JSON](https://github.com/sindresorhus/quick-look-plugins)
+cask "quicklookase" # Quick Look plugin for Adobe Swatch Exchange (.ase) files. [QuicklookASE](https://github.com/rsodre/quicklookase)
+cask "syntax-highlight" # Quick Look plugin for source code with syntax highlighting. [Syntax Highlight](https://github.com/sbarex/SourceCodeSyntaxHighlight)
+cask "webpquicklook" # Quick Look plugin for WebP image files. [WebPQuickLook](https://github.com/emin/WebPQuickLook)

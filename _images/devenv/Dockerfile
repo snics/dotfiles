@@ -107,6 +107,7 @@ COPY --chown=dev:dev zsh/.config/zim/.zimrc            ${XDG_CONFIG_HOME}/zim/.z
 # Copy portable zsh configs (conf.d files sourced by .zshrc loop)
 COPY --chown=dev:dev zsh/conf.d/00-init.zsh            ${HOME}/.dotfiles/zsh/conf.d/00-init.zsh
 COPY --chown=dev:dev zsh/conf.d/10-path.zsh            ${HOME}/.dotfiles/zsh/conf.d/10-path.zsh
+COPY --chown=dev:dev zsh/conf.d/15-brew.zsh            ${HOME}/.dotfiles/zsh/conf.d/15-brew.zsh
 COPY --chown=dev:dev zsh/conf.d/20-aliases.zsh         ${HOME}/.dotfiles/zsh/conf.d/20-aliases.zsh
 COPY --chown=dev:dev zsh/conf.d/30-fzf-tab.zsh         ${HOME}/.dotfiles/zsh/conf.d/30-fzf-tab.zsh
 COPY --chown=dev:dev zsh/conf.d/40-fzf.zsh             ${HOME}/.dotfiles/zsh/conf.d/40-fzf.zsh

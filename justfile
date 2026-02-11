@@ -27,7 +27,7 @@ install:
         /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; \
         eval "$$(/opt/homebrew/bin/brew shellenv)"; \
     fi
-    brew bundle --file={{ DOTFILES }}/brew/Brewfile
+    cat {{ DOTFILES }}/brew/Brewfile.* | brew bundle --file=-
 
 # ── Link / Unlink ──────────────────────────────────────
 
@@ -97,6 +97,45 @@ update:
     brew update
     brew upgrade
     brew cleanup
+
+# ── Brew Lifecycle ──────────────────────────────────────
+
+# Regenerate ~/.Brewfile from split sources
+brew-gen:
+    cat {{ DOTFILES }}/brew/Brewfile.* > ~/.Brewfile
+    @echo "Generated ~/.Brewfile from $(ls -1 {{ DOTFILES }}/brew/Brewfile.* | wc -l | tr -d ' ') sources"
+
+# Install all packages from split Brewfiles
+brew-install: brew-gen
+    brew bundle --file=~/.Brewfile
+
+# List all packages from split Brewfiles
+brew-list:
+    cat {{ DOTFILES }}/brew/Brewfile.* | brew bundle list --file=-
+
+# Check which packages are not installed
+brew-check: brew-gen
+    brew bundle check --file=~/.Brewfile
+
+# Remove packages not in Brewfile (dry-run first)
+brew-cleanup: brew-gen
+    brew bundle cleanup --file=~/.Brewfile
+
+# Force-remove packages not in Brewfile
+brew-cleanup-force: brew-gen
+    brew bundle cleanup --force --file=~/.Brewfile
+
+# Dump currently installed packages to a temp file for comparison
+brew-dump:
+    brew bundle dump --describe --file={{ DOTFILES }}/brew/Brewfile.dump --force
+    @echo "Dumped to brew/Brewfile.dump — compare with Brewfile.* sources"
+
+# Edit split Brewfiles (opens directory)
+brew-edit:
+    @echo "Split Brewfiles in {{ DOTFILES }}/brew/"
+    @ls -1 {{ DOTFILES }}/brew/Brewfile.*
+    @echo ""
+    @echo "Edit with: \$$EDITOR {{ DOTFILES }}/brew/Brewfile.<category>"
 
 # ── macOS ───────────────────────────────────────────────
 

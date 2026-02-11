@@ -1,11 +1,47 @@
 # Brew Package — Agent Instructions
 
-Rules for modifying the Homebrew Brewfile and keeping dependent configs in sync.
+Rules for modifying the Homebrew Brewfiles and keeping dependent configs in sync.
 
 ## Brewfile Structure
 
-`Brewfile` contains all Homebrew-managed packages: formulas (CLI tools),
-casks (GUI apps + some CLIs), and Mac App Store apps (via `mas`).
+The `brew/` directory contains split Brewfiles with numeric prefixes that
+control load order (taps must come first). The files are concatenated into
+`~/.Brewfile` by `zsh/conf.d/15-brew.zsh` on shell startup.
+
+```
+Brewfile.00-taps        Tap repositories (must be first)
+Brewfile.10-cli-core    Core CLI tools (shell, editor, file utils)
+Brewfile.20-dev-tools   Languages, runtimes, package managers
+Brewfile.30-git         Git and version control
+Brewfile.40-cloud-k8s   Cloud, Kubernetes, infrastructure
+Brewfile.50-containers  Docker, Podman, container security
+Brewfile.55-k8s-security  Kubernetes security and compliance
+Brewfile.60-security    Security and networking tools
+Brewfile.65-ai          AI coding agents
+Brewfile.70-media       Media, image, document tools
+Brewfile.75-compression Compression and archiving
+Brewfile.78-webfonts    Web font tools
+Brewfile.80-misc        Miscellaneous CLI tools
+Brewfile.85-casks       macOS GUI applications
+Brewfile.87-quicklook   Quick Look plugins
+Brewfile.88-fonts       Fonts
+Brewfile.90-mas         Mac App Store apps
+Brewfile.99-hardware    Keyboards and peripherals
+```
+
+### Adding a new tool
+
+Add the entry to the appropriate category file. When adding a tap-specific
+formula, ensure the tap is declared in `Brewfile.00-taps`.
+
+### CLI workflow
+
+All standard `brew bundle` commands work without `--file` because
+`HOMEBREW_BUNDLE_FILE=~/.Brewfile` is set in `zsh/conf.d/00-init.zsh`.
+The `~/.Brewfile` is auto-regenerated when any source file changes.
+
+Additional justfile/Makefile targets: `brew-install`, `brew-list`,
+`brew-check`, `brew-cleanup`, `brew-dump`, `brew-edit`.
 
 ## Sync Obligation: Brewfile ↔ Atuin Config
 
