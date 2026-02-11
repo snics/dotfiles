@@ -1,4 +1,5 @@
 {
+  "base_keymap": "JetBrains",
   "edit_predictions": {
     "provider": "zed"
   },
