@@ -86,12 +86,21 @@ See `brew/AGENTS.md` for the full file list and sync obligations.
 
 ### Docker images
 
-The Docker images (`_images/devenv/Dockerfile`) install a **subset** of brew
-tools directly via `brew install` in a multi-stage build — they do **not** use
-`brew bundle` or the split Brewfiles. The `15-brew.zsh` is copied into the
-container but is a no-op since `brew/` doesn't exist there. When adding a new
-CLI tool to both host and container, update the matching `Brewfile.*` **and**
-the Dockerfile's `brew install` list.
+The Docker devenv image (`_images/devenv/Dockerfile`) mirrors the macOS CLI
+environment as closely as possible. It uses a multi-stage build:
+
+1. **Brew stage**: COPYs `brew/Brewfile.*` into a `homebrew/brew` builder,
+   extracts all `brew` formulae, filters out packages listed in
+   `brew/Brewfile.docker-exclude`, then installs everything. The entire
+   `/home/linuxbrew/.linuxbrew` prefix is carried over to the final image
+   (no patchelf — scripts, Python tools, and runtimes all work natively).
+2. **Final stage**: Based on `snics/nvim`, adds the Homebrew prefix to `PATH`,
+   then layers zsh, tmux, dotfile configs, and TUI tool themes.
+
+When adding a new CLI tool, just add it to the matching `Brewfile.*`. It will
+automatically be included in the next Docker build. To exclude a formula from
+Docker (macOS-only, hardware-dependent, or too large), add it to
+`brew/Brewfile.docker-exclude`.
 
 ## Cross-Package Dependencies
 

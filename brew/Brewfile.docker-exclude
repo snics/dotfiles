@@ -1,0 +1,36 @@
+# Formulae to exclude from Docker devenv builds.
+# One formula name per line (exact match against brew "name" in Brewfile.*).
+# Lines starting with # are comments.
+
+# macOS-only tools (no Linux equivalent)
+mas
+mackup
+reattach-to-user-namespace
+trash
+lotyp/formulae/dockutil
+
+# Requires hardware, VM, or Docker daemon on host
+lima
+qemu
+minikube
+kind
+aircrack-ng
+qmk/qmk/qmk
+
+# Already provided by base image (properly compiled, no Homebrew deps)
+neovim
+curl
+
+# No Linux bottle / build fails on Linux
+gox
+hashpump
+krr
+rename
+robusta-dev/holmesgpt/holmesgpt
+
+# Too large for container image (install on demand if needed)
+texlive
+swift
+qt@5
+imagemagick
+numpy

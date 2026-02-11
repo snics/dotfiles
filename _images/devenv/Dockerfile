@@ -12,7 +12,7 @@
 ARG NVIM_TAG=latest
 
 # ============================================================
-# Stage 1: Install CLI tools via Homebrew (pre-compiled bottles)
+# Stage 1: Install CLI tools via Homebrew (from split Brewfiles)
 # ============================================================
 FROM homebrew/brew:latest AS brew
 
@@ -22,41 +22,30 @@ ENV HOMEBREW_NO_AUTO_UPDATE=1 \
     HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 \
     HOMEBREW_NO_ENV_HINTS=1
 
-RUN brew install \
-    lazygit \
-    k9s \
-    lazydocker \
-    starship \
-    zoxide \
-    git-delta \
-    fzf \
-    atuin \
-    eza \
-    bat \
-    btop \
-    yazi \
-    patchelf
+# Copy split Brewfiles + exclude list into builder
+COPY brew/Brewfile.* /tmp/brew/
 
-# Stage binaries + shared libs for multi-stage COPY
-# Static binaries (Go): just copy
-# Dynamic binaries (Rust/C++): patchelf to use system ld + bundled libs
-RUN INTERP=$(ls /lib/ld-linux-*.so.* 2>/dev/null | head -1) \
-    && mkdir -p /tmp/staging/bin /tmp/staging/lib \
-    && for bin in lazygit k9s lazydocker fzf; do \
-    cp "$(readlink -f /home/linuxbrew/.linuxbrew/bin/$bin)" /tmp/staging/bin/$bin; \
-    done \
-    && for bin in bat starship zoxide delta atuin eza btop yazi; do \
-    real="$(readlink -f /home/linuxbrew/.linuxbrew/bin/$bin)"; \
-    cp "$real" /tmp/staging/bin/$bin; \
-    chmod +w /tmp/staging/bin/$bin; \
-    ldd "$real" 2>/dev/null | grep linuxbrew | grep -v ld-linux | awk '{print $1, $3}' | \
-    while read soname libpath; do \
-    actual="$(readlink -f "$libpath")"; \
-    cp -n "$actual" /tmp/staging/lib/ 2>/dev/null || true; \
-    ln -sf "$(basename "$actual")" /tmp/staging/lib/"$soname" 2>/dev/null || true; \
-    done; \
-    patchelf --set-interpreter "$INTERP" --set-rpath /usr/local/lib /tmp/staging/bin/$bin; \
-    done
+# Install all formulae from Brewfiles, excluding macOS-only and oversized packages.
+# Steps: 1) extract formula names  2) remove excluded  3) add taps  4) brew install
+RUN grep -h '^brew ' /tmp/brew/Brewfile.* | sed 's/brew "\([^"]*\)".*/\1/' | sort -u > /tmp/all_formulae.txt \
+    && grep -v '^#' /tmp/brew/Brewfile.docker-exclude | grep -v '^$' > /tmp/excludes.txt \
+    && grep -v -F -f /tmp/excludes.txt /tmp/all_formulae.txt > /tmp/install.txt \
+    && grep -h '^tap ' /tmp/brew/Brewfile.* | sed 's/tap "\([^"]*\)".*/\1/' | sort -u | while IFS= read -r t; do brew tap "$t" 2>&1 || echo "WARN: tap $t failed"; done \
+    && failed="" \
+    && while IFS= read -r pkg; do \
+    brew install "$pkg" 2>&1 || { echo "WARN: failed to install $pkg"; failed="$failed $pkg"; }; \
+    done < /tmp/install.txt \
+    && if [ -n "$failed" ]; then echo "==> Packages that failed to install:$failed"; fi \
+    && rm -rf /tmp/brew /tmp/*.txt || true
+
+# Trim Homebrew caches and build artifacts to reduce COPY size.
+# The entire /home/linuxbrew prefix is kept intact (no patchelf needed)
+# so that scripts, Python tools, and complex runtimes all work correctly.
+RUN rm -rf /home/linuxbrew/.cache \
+    /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/*/homebrew-*/Formula \
+    /home/linuxbrew/.linuxbrew/share/doc \
+    /home/linuxbrew/.linuxbrew/share/man \
+    /home/linuxbrew/.linuxbrew/share/info
 
 # ============================================================
 # Stage 2: Final image — snics/nvim + shell + TUI tools
@@ -87,16 +76,16 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 ENV LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 
-# Copy CLI tool binaries and shared libs from Homebrew stage
-COPY --from=brew /tmp/staging/bin/ /usr/local/bin/
-COPY --from=brew /tmp/staging/lib/ /usr/local/lib/
+# Copy entire Homebrew prefix from brew stage (scripts, runtimes, libs all intact)
+COPY --from=brew /home/linuxbrew/.linuxbrew /home/linuxbrew/.linuxbrew
 
 # Set zsh as default shell for dev user
 RUN chsh -s /bin/zsh dev
 
 USER dev
 
-ENV SHELL=/bin/zsh
+ENV SHELL=/bin/zsh \
+    PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH
 
 # ── Zsh + Zimfw ─────────────────────────────────────────
 
