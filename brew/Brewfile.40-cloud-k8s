@@ -24,3 +24,10 @@ brew "robusta-dev/holmesgpt/holmesgpt" # AI-powered Kubernetes troubleshooting a
 brew "krr" # Kubernetes Resource Reporter. [KRR](https://github.com/robusta-dev/krr)
 brew "s3cmd" # Command line tool for managing Amazon S3 and CloudFront services. [S3cmd](https://s3tools.org/s3cmd)
 brew "stern" # Multi pod and container log tailing for Kubernetes. [Stern](https://github.com/stern/stern)
+
+# Kubernetes security and compliance
+brew "kube-bench" # Checks whether Kubernetes is deployed securely by running CIS Kubernetes Benchmark. [Kube-bench](https://github.com/aquasecurity/kube-bench)
+brew "kube-linter" # Static analysis tool that checks Kubernetes YAML files and Helm charts. [Kube-linter](https://github.com/stackrox/kube-linter)
+brew "kubeaudit" # Audit Kubernetes clusters for various security concerns. [Kubeaudit](https://github.com/Shopify/kubeaudit)
+brew "kubescape" # Kubernetes security posture management. [Kubescape](https://github.com/kubescape/kubescape)
+brew "polaris" # Kubernetes configuration validation and best practices checker. [Polaris](https://github.com/FairwindsOps/polaris)

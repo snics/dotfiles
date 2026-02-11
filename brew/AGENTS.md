@@ -10,23 +10,18 @@ control load order (taps must come first). The files are concatenated into
 
 ```
 Brewfile.00-taps        Tap repositories (must be first)
-Brewfile.10-cli-core    Core CLI tools (shell, editor, file utils)
+Brewfile.10-cli-core    Core CLI tools, shell, compression
 Brewfile.20-dev-tools   Languages, runtimes, package managers
 Brewfile.30-git         Git and version control
-Brewfile.40-cloud-k8s   Cloud, Kubernetes, infrastructure
+Brewfile.40-cloud-k8s   Cloud, Kubernetes, infra, K8s security
 Brewfile.50-containers  Docker, Podman, container security
-Brewfile.55-k8s-security  Kubernetes security and compliance
 Brewfile.60-security    Security and networking tools
 Brewfile.65-ai          AI coding agents
-Brewfile.70-media       Media, image, document tools
-Brewfile.75-compression Compression and archiving
-Brewfile.78-webfonts    Web font tools
-Brewfile.80-misc        Miscellaneous CLI tools
-Brewfile.85-casks       macOS GUI applications
-Brewfile.87-quicklook   Quick Look plugins
+Brewfile.70-media       Media, image, document, web font tools
+Brewfile.80-misc        Miscellaneous CLI tools, hardware
+Brewfile.85-casks       macOS GUI apps, Quick Look plugins
 Brewfile.88-fonts       Fonts
 Brewfile.90-mas         Mac App Store apps
-Brewfile.99-hardware    Keyboards and peripherals
 ```
 
 ### Adding a new tool

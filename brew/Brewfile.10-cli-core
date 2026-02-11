@@ -39,3 +39,9 @@ brew "yazi" # Blazing fast terminal file manager written in Rust. [Yazi](https:/
 brew "yq" # Portable command-line YAML processor. [Yq](https://github.com/mikefarah/yq)
 brew "zoxide" # A smarter cd command, inspired by z and autojump. [Zoxide](https://github.com/ajeetdsouza/zoxide)
 brew "zsh" # UNIX shell (command interpreter). [Zsh](https://www.zsh.org/)
+
+# Compression and archiving
+brew "p7zip" # 7-Zip (high compression file archiver) implementation. [P7zip](https://p7zip.sourceforge.net/)
+brew "pigz" # Parallel implementation of gzip for modern multi-processor, multi-core machines. [Pigz](https://zlib.net/pigz/)
+brew "xz" # General-purpose data compression with high compression ratio. [XZ Utils](https://tukaani.org/xz/)
+brew "zopfli" # Compression algorithm based on deflate. [Zopfli](https://github.com/google/zopfli)

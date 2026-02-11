@@ -1,4 +1,0 @@
-# Web font tools
-brew "bramstein/webfonttools/sfnt2woff" # Convert sfnt (TrueType/OpenType) fonts to WOFF. [Sfnt2woff](https://github.com/bramstein/sfnt2woff)
-brew "bramstein/webfonttools/sfnt2woff-zopfli" # Convert sfnt fonts to WOFF using Zopfli compression. [Sfnt2woff-zopfli](https://github.com/bramstein/sfnt2woff-zopfli)
-brew "woff2" # Web Open Font Format 2.0. [Woff2](https://github.com/google/woff2)

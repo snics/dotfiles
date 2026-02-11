@@ -1,4 +1,0 @@
-# Hardware — keyboards, peripherals
-brew "qmk/qmk/qmk" # Quantum Mechanical Keyboard Firmware. [QMK](https://qmk.fm/)
-cask "qmk-toolbox" # QMK Toolbox is a keyboard firmware flashing and key tester tool. [QMK Toolbox](https://qmk.fm/toolbox/)
-cask "vial" # Keyboard firmware for Atmel AVR and ARM USB families. [Vial](https://get.vial.moe/)

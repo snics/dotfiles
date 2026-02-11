@@ -6,3 +6,8 @@ brew "netpbm" # Toolkit for manipulation of graphic images. [Netpbm](http://netp
 brew "pngcheck" # Verifies the integrity of PNG and dump information about PNG image files. [Pngcheck](http://www.libpng.org/pub/png/apps/pngcheck.html)
 brew "vbindiff" # Visual binary diff, visually compare binary files. [Vbindiff](https://www.cjmweb.net/vbindiff/)
 brew "xpdf" # PDF viewer. [Xpdf](https://www.xpdfreader.com/)
+
+# Web font tools
+brew "bramstein/webfonttools/sfnt2woff" # Convert sfnt (TrueType/OpenType) fonts to WOFF. [Sfnt2woff](https://github.com/bramstein/sfnt2woff)
+brew "bramstein/webfonttools/sfnt2woff-zopfli" # Convert sfnt fonts to WOFF using Zopfli compression. [Sfnt2woff-zopfli](https://github.com/bramstein/sfnt2woff-zopfli)
+brew "woff2" # Web Open Font Format 2.0. [Woff2](https://github.com/google/woff2)
