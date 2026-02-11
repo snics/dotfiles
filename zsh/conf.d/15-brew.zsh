@@ -17,7 +17,7 @@ if [[ -d "$_brew_srcdir" ]] && ls "$_brew_srcdir"/Brewfile.* &>/dev/null; then
   fi
 
   if (( _brew_regen )); then
-    cat "$_brew_srcdir"/Brewfile.* > "$HOMEBREW_BUNDLE_FILE"
+    cat "$_brew_srcdir"/Brewfile.* >| "$HOMEBREW_BUNDLE_FILE"
   fi
 
   unset _brew_regen
