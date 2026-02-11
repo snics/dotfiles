@@ -14,7 +14,7 @@ _install/    → Setup scripts (not a stow package)
 _macOS/      → macOS system settings scripts (not a stow package)
 _planning/   → Project planning docs (not a stow package)
 asdf/        → asdf version manager plugins
-brew/        → Split Brewfiles (Brewfile.00-taps … Brewfile.99-hardware, not a stow package)
+brew/        → Split Brewfiles (Brewfile.00-taps … Brewfile.90-mas, not a stow package)
 claude/      → ~/.claude/ (Claude Code user config, MCP servers)
 cursor/      → Cursor editor config
 ghostty/     → ~/.config/ghostty/ (terminal emulator)
@@ -56,6 +56,42 @@ a target, **always update both files**. The Justfile is the primary interface;
 the Makefile is the universal fallback for environments without `just`.
 
 Run `just --list` or `make help` to verify targets match after changes.
+
+## Brew Package Management
+
+The `brew/` directory is **not a stow package** — it contains split Brewfile
+source files that are concatenated into `~/.Brewfile` at shell startup.
+
+### How it works
+
+1. `zsh/conf.d/00-init.zsh` sets `HOMEBREW_BUNDLE_FILE=~/.Brewfile`
+2. `zsh/conf.d/15-brew.zsh` regenerates `~/.Brewfile` from `brew/Brewfile.*`
+   when any source file is newer (runs on every new shell, fast no-op otherwise)
+3. All `brew bundle` commands work without `--file` flags
+
+### Split files (13 categories, numeric prefix = load order)
+
+Taps (`00`) must come first. Add new tools to the matching category file.
+See `brew/AGENTS.md` for the full file list and sync obligations.
+
+### Key commands
+
+| Command | Description |
+|---------|-------------|
+| `brew bundle` | Install all packages (uses `~/.Brewfile` automatically) |
+| `brew bundle check` | Show missing packages |
+| `brew bundle cleanup` | Show packages not in Brewfile |
+| `just brew-install` | Regenerate + install |
+| `just brew-dump` | Dump installed packages for comparison |
+
+### Docker images
+
+The Docker images (`_images/devenv/Dockerfile`) install a **subset** of brew
+tools directly via `brew install` in a multi-stage build — they do **not** use
+`brew bundle` or the split Brewfiles. The `15-brew.zsh` is copied into the
+container but is a no-op since `brew/` doesn't exist there. When adding a new
+CLI tool to both host and container, update the matching `Brewfile.*` **and**
+the Dockerfile's `brew install` list.
 
 ## Cross-Package Dependencies
 
