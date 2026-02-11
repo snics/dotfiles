@@ -6,7 +6,7 @@
 #   Stage 1 (builder): compile Treesitter parsers, install Mason tools + LSPs
 #   Stage 2 (runtime): slim image with only pre-built artifacts
 #
-# Build:  docker build -f images/nvim/Dockerfile -t snics/nvim .
+# Build:  docker build -f _images/nvim/Dockerfile -t snics/nvim .
 # Run:    docker run -it --rm -v $(pwd):/workspace snics/nvim
 # ---------------------------------------------------------
 ARG DEBIAN_VERSION=bookworm

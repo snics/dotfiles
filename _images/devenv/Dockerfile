@@ -3,94 +3,60 @@
 # snics/devenv — Full CLI + TUI development environment
 #
 # Multi-stage build:
-#   Stage 1 (tools): download GitHub release binaries
+#   Stage 1 (brew): install CLI tools via Homebrew bottles
 #   Stage 2 (final): FROM snics/nvim + shell + TUI tools + configs
 #
-# Build:  docker build -f images/devenv/Dockerfile -t snics/devenv .
+# Build:  docker build -f _images/devenv/Dockerfile -t snics/devenv .
 # Run:    docker run -it --rm -v $(pwd):/workspace snics/devenv
 # ---------------------------------------------------------
 ARG NVIM_TAG=latest
 
 # ============================================================
-# Stage 1: Download GitHub release binaries (multi-arch)
+# Stage 1: Install CLI tools via Homebrew (pre-compiled bottles)
 # ============================================================
-FROM debian:bookworm-slim AS tools
+FROM homebrew/brew:latest AS brew
 
-ARG TARGETARCH
+ENV HOMEBREW_NO_AUTO_UPDATE=1 \
+    HOMEBREW_NO_INSTALL_CLEANUP=1 \
+    HOMEBREW_NO_ANALYTICS=1 \
+    HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 \
+    HOMEBREW_NO_ENV_HINTS=1
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates curl unzip bzip2
+RUN brew install \
+    lazygit \
+    k9s \
+    lazydocker \
+    starship \
+    zoxide \
+    git-delta \
+    fzf \
+    atuin \
+    eza \
+    bat \
+    btop \
+    yazi \
+    patchelf
 
-# Pin versions for reproducible builds
-ARG LAZYGIT_VERSION=v0.59.0
-ARG K9S_VERSION=v0.50.18
-ARG LAZYDOCKER_VERSION=v0.24.4
-ARG STARSHIP_VERSION=v1.24.2
-ARG ZOXIDE_VERSION=v0.9.9
-ARG DELTA_VERSION=0.18.2
-ARG YAZI_VERSION=v26.1.22
-ARG BTOP_VERSION=v1.4.6
-ARG ATUIN_VERSION=v18.12.0
-ARG FZF_VERSION=v0.67.0
-ARG EZA_VERSION=v0.21.2
-
-# Download all tools in a single layer using bind-mounted install script
-RUN --mount=type=bind,source=images/scripts/install-github-release.sh,target=/tmp/install-gh \
-    sh /tmp/install-gh "jesseduffield/lazygit" "${LAZYGIT_VERSION}" \
-    "lazygit_${LAZYGIT_VERSION#v}_Linux_x86_64.tar.gz" \
-    "lazygit_${LAZYGIT_VERSION#v}_Linux_arm64.tar.gz" \
-    "lazygit" \
-    && sh /tmp/install-gh "derailed/k9s" "${K9S_VERSION}" \
-    "k9s_Linux_amd64.tar.gz" \
-    "k9s_Linux_arm64.tar.gz" \
-    "k9s" \
-    && sh /tmp/install-gh "jesseduffield/lazydocker" "${LAZYDOCKER_VERSION}" \
-    "lazydocker_${LAZYDOCKER_VERSION#v}_Linux_x86_64.tar.gz" \
-    "lazydocker_${LAZYDOCKER_VERSION#v}_Linux_arm64.tar.gz" \
-    "lazydocker" \
-    && sh /tmp/install-gh "starship/starship" "${STARSHIP_VERSION}" \
-    "starship-x86_64-unknown-linux-gnu.tar.gz" \
-    "starship-aarch64-unknown-linux-musl.tar.gz" \
-    "starship" \
-    && sh /tmp/install-gh "ajeetdsouza/zoxide" "${ZOXIDE_VERSION}" \
-    "zoxide-${ZOXIDE_VERSION#v}-x86_64-unknown-linux-musl.tar.gz" \
-    "zoxide-${ZOXIDE_VERSION#v}-aarch64-unknown-linux-musl.tar.gz" \
-    "zoxide" \
-    && sh /tmp/install-gh "dandavison/delta" "${DELTA_VERSION}" \
-    "delta-${DELTA_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-    "delta-${DELTA_VERSION}-aarch64-unknown-linux-gnu.tar.gz" \
-    "delta" \
-    && sh /tmp/install-gh "junegunn/fzf" "${FZF_VERSION}" \
-    "fzf-${FZF_VERSION#v}-linux_amd64.tar.gz" \
-    "fzf-${FZF_VERSION#v}-linux_arm64.tar.gz" \
-    "fzf" \
-    && sh /tmp/install-gh "atuinsh/atuin" "${ATUIN_VERSION}" \
-    "atuin-x86_64-unknown-linux-gnu.tar.gz" \
-    "atuin-aarch64-unknown-linux-gnu.tar.gz" \
-    "atuin" \
-    && sh /tmp/install-gh "eza-community/eza" "${EZA_VERSION}" \
-    "eza_x86_64-unknown-linux-gnu.tar.gz" \
-    "eza_aarch64-unknown-linux-gnu.zip" \
-    "eza"
-
-# yazi: use musl build (glibc 2.39 required by gnu build, Bookworm has 2.36)
-RUN ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
-    && curl -fsSL "https://github.com/sxyazi/yazi/releases/download/${YAZI_VERSION}/yazi-${ARCH}-unknown-linux-musl.zip" \
-    -o /tmp/yazi.zip \
-    && cd /tmp && unzip -q yazi.zip \
-    && find /tmp -name "yazi" -type f -executable -exec cp {} /usr/local/bin/yazi \; \
-    && chmod +x /usr/local/bin/yazi \
-    && rm -rf /tmp/yazi*
-
-# btop uses .tbz format
-RUN ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
-    && curl -fsSL "https://github.com/aristocratos/btop/releases/download/${BTOP_VERSION}/btop-${ARCH}-unknown-linux-musl.tbz" \
-    | tar xjf - -C /tmp \
-    && cp /tmp/btop/bin/btop /usr/local/bin/btop \
-    && chmod +x /usr/local/bin/btop \
-    && rm -rf /tmp/btop
+# Stage binaries + shared libs for multi-stage COPY
+# Static binaries (Go): just copy
+# Dynamic binaries (Rust/C++): patchelf to use system ld + bundled libs
+RUN INTERP=$(ls /lib/ld-linux-*.so.* 2>/dev/null | head -1) \
+    && mkdir -p /tmp/staging/bin /tmp/staging/lib \
+    && for bin in lazygit k9s lazydocker fzf; do \
+    cp "$(readlink -f /home/linuxbrew/.linuxbrew/bin/$bin)" /tmp/staging/bin/$bin; \
+    done \
+    && for bin in bat starship zoxide delta atuin eza btop yazi; do \
+    real="$(readlink -f /home/linuxbrew/.linuxbrew/bin/$bin)"; \
+    cp "$real" /tmp/staging/bin/$bin; \
+    chmod +w /tmp/staging/bin/$bin; \
+    ldd "$real" 2>/dev/null | grep linuxbrew | grep -v ld-linux | awk '{print $1, $3}' | \
+    while read soname libpath; do \
+    actual="$(readlink -f "$libpath")"; \
+    cp -n "$actual" /tmp/staging/lib/ 2>/dev/null || true; \
+    ln -sf "$(basename "$actual")" /tmp/staging/lib/"$soname" 2>/dev/null || true; \
+    done; \
+    patchelf --set-interpreter "$INTERP" --set-rpath /usr/local/lib /tmp/staging/bin/$bin; \
+    done
 
 # ============================================================
 # Stage 2: Final image — snics/nvim + shell + TUI tools
@@ -111,7 +77,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && apt-get install -y --no-install-recommends \
     zsh \
     tmux \
-    bat \
     jq \
     less \
     file \
@@ -122,18 +87,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 ENV LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 
-# Copy GitHub release binaries from tools stage
-COPY --from=tools /usr/local/bin/lazygit    /usr/local/bin/
-COPY --from=tools /usr/local/bin/k9s        /usr/local/bin/
-COPY --from=tools /usr/local/bin/lazydocker /usr/local/bin/
-COPY --from=tools /usr/local/bin/starship   /usr/local/bin/
-COPY --from=tools /usr/local/bin/zoxide     /usr/local/bin/
-COPY --from=tools /usr/local/bin/delta      /usr/local/bin/
-COPY --from=tools /usr/local/bin/yazi       /usr/local/bin/
-COPY --from=tools /usr/local/bin/btop       /usr/local/bin/
-COPY --from=tools /usr/local/bin/atuin      /usr/local/bin/
-COPY --from=tools /usr/local/bin/fzf        /usr/local/bin/
-COPY --from=tools /usr/local/bin/eza        /usr/local/bin/
+# Copy CLI tool binaries and shared libs from Homebrew stage
+COPY --from=brew /tmp/staging/bin/ /usr/local/bin/
+COPY --from=brew /tmp/staging/lib/ /usr/local/lib/
 
 # Set zsh as default shell for dev user
 RUN chsh -s /bin/zsh dev
@@ -202,8 +158,8 @@ COPY --chown=dev:dev zsh/.config/btop/         ${XDG_CONFIG_HOME}/btop/
 COPY --chown=dev:dev zsh/.config/atuin/        ${XDG_CONFIG_HOME}/atuin/
 COPY --chown=dev:dev zsh/.config/yazi/         ${XDG_CONFIG_HOME}/yazi/
 
-# Build bat theme cache (Debian names the binary 'batcat')
-RUN batcat cache --build 2>/dev/null || bat cache --build 2>/dev/null || true
+# Build bat theme cache
+RUN bat cache --build 2>/dev/null || true
 
 WORKDIR /workspace
 

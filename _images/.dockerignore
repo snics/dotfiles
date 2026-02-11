@@ -5,7 +5,7 @@
 # ── macOS / GUI apps (not needed in containers) ─────────
 .DS_Store
 **/.DS_Store
-macOS/
+_macOS/
 cursor/
 ghostty/
 obsidian/
@@ -14,8 +14,8 @@ zed/
 claude/
 
 # ── Documentation & planning ────────────────────────────
-docs/
-planning/
+_docs/
+_planning/
 *.md
 !nvim/.config/nvim/**/*.md
 

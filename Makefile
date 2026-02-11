@@ -153,13 +153,13 @@ check: ## Check installed tools and symlinks
 docker-build: docker-build-nvim docker-build-devenv docker-build-web ## Build all Docker images
 
 docker-build-nvim: ## Build snics/nvim image
-	docker build -f images/nvim/Dockerfile -t snics/nvim:latest .
+	docker build -f _images/nvim/Dockerfile -t snics/nvim:latest .
 
 docker-build-devenv: ## Build snics/devenv image
-	docker build -f images/devenv/Dockerfile -t snics/devenv:latest .
+	docker build -f _images/devenv/Dockerfile -t snics/devenv:latest .
 
 docker-build-web: ## Build snics/devenv-web image
-	docker build -f images/devenv-web/Dockerfile -t snics/devenv-web:latest .
+	docker build -f _images/devenv-web/Dockerfile -t snics/devenv-web:latest .
 
 docker-test: ## Smoke test all Docker images
 	@echo "==> Testing snics/nvim..."
@@ -181,12 +181,12 @@ docker-run-web: ## Start devenv-web on port 7681
 	docker run -it --rm -p 7681:7681 snics/devenv-web:latest
 
 docker-push: ## Multi-arch build + push to Docker Hub
-	docker buildx build --platform linux/amd64,linux/arm64 -f images/nvim/Dockerfile -t snics/nvim:latest --push .
-	docker buildx build --platform linux/amd64,linux/arm64 -f images/devenv/Dockerfile -t snics/devenv:latest --push .
-	docker buildx build --platform linux/amd64,linux/arm64 -f images/devenv-web/Dockerfile -t snics/devenv-web:latest --push .
+	docker buildx build --platform linux/amd64,linux/arm64 -f _images/nvim/Dockerfile -t snics/nvim:latest --push .
+	docker buildx build --platform linux/amd64,linux/arm64 -f _images/devenv/Dockerfile -t snics/devenv:latest --push .
+	docker buildx build --platform linux/amd64,linux/arm64 -f _images/devenv-web/Dockerfile -t snics/devenv-web:latest --push .
 
 docker-lint: ## Lint Dockerfiles with hadolint
-	hadolint images/nvim/Dockerfile images/devenv/Dockerfile images/devenv-web/Dockerfile
+	hadolint _images/nvim/Dockerfile _images/devenv/Dockerfile _images/devenv-web/Dockerfile
 
 docker-dive-ci: ## CI-mode dive analysis (fails on inefficiency)
 	CI=true dive snics/nvim:latest

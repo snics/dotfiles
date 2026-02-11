@@ -8,21 +8,22 @@ GNU Stow-managed dotfiles. Each top-level directory is a stow package that
 symlinks into `$HOME` via `stow <package>` from the repo root.
 
 ```
+_docs/       → Documentation and screenshots (not a stow package)
+_images/     → Docker build files: nvim/, devenv/, devenv-web/ (not a stow package)
 _install/    → Setup scripts (not a stow package)
+_macOS/      → macOS system settings scripts (not a stow package)
+_planning/   → Project planning docs (not a stow package)
 asdf/        → asdf version manager plugins
 brew/        → Brewfile (Homebrew packages)
 claude/      → ~/.claude/ (Claude Code user config, MCP servers)
 cursor/      → Cursor editor config
-docs/        → Documentation and screenshots (not a stow package)
 ghostty/     → ~/.config/ghostty/ (terminal emulator)
 git/         → ~/.config/git/ + ~/.gitconfig
 k9s/         → ~/.config/k9s/ (Kubernetes TUI)
 lazygit/     → ~/.config/lazygit/
-macOS/       → macOS system settings scripts (not a stow package)
 nvim/        → ~/.config/nvim/ (NeoVim)
 obsidian/    → Obsidian vault structure
 opencode/    → ~/.config/opencode/ (AI coding agent)
-planning/    → Project planning docs (not a stow package)
 tmux/        → ~/.config/tmux/
 zed/         → ~/.config/zed/ (Zed editor)
 zsh/         → Zsh shell config (conf.d/, functions/, themes/)

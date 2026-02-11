@@ -2,7 +2,7 @@
 # ---------------------------------------------------------
 # snics/devenv-web — Browser-accessible dev environment via ttyd
 #
-# Build:  docker build -f images/devenv-web/Dockerfile -t snics/devenv-web .
+# Build:  docker build -f _images/devenv-web/Dockerfile -t snics/devenv-web .
 # Run:    docker run -it --rm -p 7681:7681 snics/devenv-web
 # Open:   http://localhost:7681
 # ---------------------------------------------------------
