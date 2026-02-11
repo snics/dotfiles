@@ -10,6 +10,12 @@ ARG DEVENV_TAG=latest
 
 FROM snics/devenv:${DEVENV_TAG}
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+LABEL org.opencontainers.image.source="https://github.com/snics/dotfiles" \
+    org.opencontainers.image.title="snics/devenv-web" \
+    org.opencontainers.image.description="Browser-accessible dev environment via ttyd"
+
 ARG TARGETARCH
 ARG TTYD_VERSION=1.7.7
 
@@ -24,6 +30,9 @@ RUN ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
 USER dev
 
 EXPOSE 7681
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:7681/ || exit 1
 
 ENTRYPOINT ["ttyd", "-W", "-p", "7681", \
     "-t", "titleFixed=snics/devenv-web", \

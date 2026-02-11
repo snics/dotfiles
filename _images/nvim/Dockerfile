@@ -18,6 +18,8 @@ ARG GO_VERSION=1.22.5
 # ============================================================
 FROM debian:${DEBIAN_VERSION}-slim AS builder
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ARG TARGETARCH
 ARG NVIM_VERSION
 ARG GO_VERSION
@@ -36,6 +38,7 @@ RUN echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
     && echo 'path-exclude=/usr/share/info/*' >> /etc/dpkg/dpkg.cfg.d/excludes
 
 # System dependencies for building
+# hadolint ignore=DL3008
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && apt-get install -y --no-install-recommends \
@@ -68,7 +71,7 @@ ENV PATH="/usr/local/go/bin:${HOME}/go/bin:${PATH}"
 RUN ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "arm64" || echo "x86_64") \
     && curl -fsSL "https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-${ARCH}.tar.gz" \
     | tar -C /usr/local --strip-components=1 -xzf - \
-    && strip --strip-unneeded /usr/local/bin/nvim 2>/dev/null || true
+    && (strip --strip-unneeded /usr/local/bin/nvim 2>/dev/null || true)
 
 USER dev
 WORKDIR ${HOME}
@@ -77,6 +80,7 @@ WORKDIR ${HOME}
 COPY --chown=dev:dev nvim/.config/nvim ${XDG_CONFIG_HOME}/nvim
 
 # Step 1: Install lazy.nvim plugins (pinned by lazy-lock.json)
+# hadolint ignore=SC2015
 RUN for i in 1 2 3; do \
     nvim --headless "+Lazy! restore" +qa 2>&1 && break \
     || { echo "Lazy restore attempt $i failed, retrying..."; sleep 5; }; \
@@ -142,7 +146,13 @@ RUN chmod -R u+w ${HOME}/go/pkg 2>/dev/null; \
 # ============================================================
 FROM debian:${DEBIAN_VERSION}-slim AS runtime
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ARG TARGETARCH
+
+LABEL org.opencontainers.image.source="https://github.com/snics/dotfiles" \
+    org.opencontainers.image.title="snics/nvim" \
+    org.opencontainers.image.description="NeoVim + lazy.nvim plugins + Treesitter + Mason LSPs"
 
 ENV DEBIAN_FRONTEND=noninteractive \
     HOME=/home/dev \
@@ -153,6 +163,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     EDITOR=nvim
 
 # System setup: dpkg excludes + runtime deps + non-root user (one layer)
+# hadolint ignore=DL3008
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/excludes \

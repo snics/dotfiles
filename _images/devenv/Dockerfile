@@ -14,7 +14,9 @@ ARG NVIM_TAG=latest
 # ============================================================
 # Stage 1: Install CLI tools via Homebrew (from split Brewfiles)
 # ============================================================
-FROM homebrew/brew:latest AS brew
+FROM homebrew/brew:4.6.20 AS brew
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV HOMEBREW_NO_AUTO_UPDATE=1 \
     HOMEBREW_NO_INSTALL_CLEANUP=1 \
@@ -52,9 +54,16 @@ RUN rm -rf /home/linuxbrew/.cache \
 # ============================================================
 FROM snics/nvim:${NVIM_TAG}
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+LABEL org.opencontainers.image.source="https://github.com/snics/dotfiles" \
+    org.opencontainers.image.title="snics/devenv" \
+    org.opencontainers.image.description="Full CLI + TUI development environment"
+
 USER root
 
 # System setup: dpkg excludes + shell deps + locale + chsh (one layer)
+# hadolint ignore=DL3008
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
