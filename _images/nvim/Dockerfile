@@ -152,29 +152,17 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TERM=xterm-256color \
     EDITOR=nvim
 
-# Exclude docs/man/locale from all packages
-RUN echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
-    && echo 'path-exclude=/usr/share/man/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
-    && echo 'path-exclude=/usr/share/locale/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
-    && echo 'path-exclude=/usr/share/info/*' >> /etc/dpkg/dpkg.cfg.d/excludes
-
-# Runtime-only dependencies (no compiler toolchain)
+# System setup: dpkg excludes + runtime deps + non-root user (one layer)
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    curl \
-    git \
-    nodejs \
-    npm \
-    python3 \
-    python3-venv \
-    ripgrep \
-    fd-find \
-    xclip
-
-# Create non-root user (same UID/GID as builder)
-RUN groupadd -g 1000 dev \
+    echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+    && echo 'path-exclude=/usr/share/man/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+    && echo 'path-exclude=/usr/share/locale/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+    && echo 'path-exclude=/usr/share/info/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+    && apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl git nodejs npm python3 python3-venv \
+    ripgrep fd-find xclip \
+    && groupadd -g 1000 dev \
     && useradd -m -u 1000 -g dev -s /bin/bash dev
 
 # Copy NeoVim
@@ -182,11 +170,8 @@ COPY --from=builder /usr/local/bin/nvim /usr/local/bin/nvim
 COPY --from=builder /usr/local/lib/nvim /usr/local/lib/nvim
 COPY --from=builder /usr/local/share/nvim /usr/local/share/nvim
 
-# Copy pre-built NeoVim data (plugins, Treesitter parsers, Mason tools)
+# Copy NeoVim config + data + Mason tools (.local includes .local/share/nvim)
 COPY --from=builder --chown=dev:dev ${XDG_CONFIG_HOME}/nvim ${XDG_CONFIG_HOME}/nvim
-COPY --from=builder --chown=dev:dev ${XDG_DATA_HOME}/nvim ${XDG_DATA_HOME}/nvim
-
-# Copy Mason binaries and local tools
 COPY --from=builder --chown=dev:dev ${HOME}/.local ${HOME}/.local
 
 # Copy Go tool binaries if present (gopls, golangci-lint compiled by Mason)

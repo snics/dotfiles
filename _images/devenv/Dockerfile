@@ -54,24 +54,18 @@ FROM snics/nvim:${NVIM_TAG}
 
 USER root
 
-# Exclude docs/man/locale from all packages
-RUN echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
-    && echo 'path-exclude=/usr/share/man/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
-    && echo 'path-exclude=/usr/share/locale/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
-    && echo 'path-exclude=/usr/share/info/*' >> /etc/dpkg/dpkg.cfg.d/excludes
-
-# Shell, TUI, and runtime dependencies
+# System setup: dpkg excludes + shell deps + locale + chsh (one layer)
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update && apt-get install -y --no-install-recommends \
-    zsh \
-    tmux \
-    jq \
-    less \
-    file \
-    locales \
+    echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+    && echo 'path-exclude=/usr/share/man/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+    && echo 'path-exclude=/usr/share/locale/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+    && echo 'path-exclude=/usr/share/info/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
+    && apt-get update && apt-get install -y --no-install-recommends \
+    zsh tmux jq less file locales \
     && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
-    && locale-gen
+    && locale-gen \
+    && chsh -s /bin/zsh dev
 
 ENV LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
@@ -79,77 +73,57 @@ ENV LANG=en_US.UTF-8 \
 # Copy entire Homebrew prefix from brew stage (scripts, runtimes, libs all intact)
 COPY --from=brew /home/linuxbrew/.linuxbrew /home/linuxbrew/.linuxbrew
 
-# Set zsh as default shell for dev user
-RUN chsh -s /bin/zsh dev
+ENV SHELL=/bin/zsh \
+    ZIM_HOME=/home/dev/.config/zim \
+    PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH
+
+# ── All dotfile configs (one layer via bind mounts) ─────
+# Runs as root to avoid host file permission issues on bind mounts,
+# then chown everything to dev at the end.
+RUN --mount=type=bind,source=zsh,target=/tmp/src/zsh \
+    --mount=type=bind,source=tmux,target=/tmp/src/tmux \
+    --mount=type=bind,source=git,target=/tmp/src/git \
+    --mount=type=bind,source=lazygit,target=/tmp/src/lazygit \
+    --mount=type=bind,source=k9s,target=/tmp/src/k9s \
+    mkdir -p /home/dev/.dotfiles/zsh/conf.d /home/dev/.dotfiles/zsh/themes \
+    /home/dev/.dotfiles/zsh/functions /home/dev/.dotfiles/git \
+    /home/dev/.config/zim /home/dev/.config/zim-modules \
+    /home/dev/.config/fzf /home/dev/.config/bat \
+    /home/dev/.config/btop /home/dev/.config/atuin \
+    /home/dev/.config/yazi /home/dev/.config/tmux \
+    /home/dev/.config/lazygit /home/dev/.config/k9s \
+    /home/dev/.config/git \
+    && cp /tmp/src/zsh/.zshrc /home/dev/.zshrc \
+    && cp /tmp/src/zsh/.config/zim/.zimrc /home/dev/.config/zim/.zimrc \
+    && cp -r /tmp/src/zsh/conf.d/. /home/dev/.dotfiles/zsh/conf.d/ \
+    && cp -r /tmp/src/zsh/themes/. /home/dev/.dotfiles/zsh/themes/ \
+    && cp -r /tmp/src/zsh/functions/. /home/dev/.dotfiles/zsh/functions/ \
+    && cp -r /tmp/src/zsh/.config/zim-modules/. /home/dev/.config/zim-modules/ \
+    && cp /tmp/src/zsh/.config/starship.toml /home/dev/.config/starship.toml \
+    && cp -r /tmp/src/zsh/.config/fzf/. /home/dev/.config/fzf/ \
+    && cp -r /tmp/src/zsh/.config/bat/. /home/dev/.config/bat/ \
+    && cp -r /tmp/src/zsh/.config/btop/. /home/dev/.config/btop/ \
+    && cp -r /tmp/src/zsh/.config/atuin/. /home/dev/.config/atuin/ \
+    && cp -r /tmp/src/zsh/.config/yazi/. /home/dev/.config/yazi/ \
+    && cp /tmp/src/tmux/.config/tmux/tmux.conf /home/dev/.config/tmux/tmux.conf \
+    && cp /tmp/src/tmux/.config/tmux/catppuccin.conf /home/dev/.config/tmux/catppuccin.conf \
+    && cp /tmp/src/git/.gitconfig /home/dev/.gitconfig \
+    && cp /tmp/src/git/catppuccin.gitconfig /home/dev/.dotfiles/git/catppuccin.gitconfig \
+    && cp /tmp/src/git/.config/git/ignore /home/dev/.config/git/ignore \
+    && cp -r /tmp/src/lazygit/.config/lazygit/. /home/dev/.config/lazygit/ \
+    && cp -r /tmp/src/k9s/.config/k9s/. /home/dev/.config/k9s/ \
+    && chown -R dev:dev /home/dev/.dotfiles /home/dev/.config /home/dev/.zshrc /home/dev/.gitconfig
 
 USER dev
 
-ENV SHELL=/bin/zsh \
-    PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH
-
-# ── Zsh + Zimfw ─────────────────────────────────────────
-
-# Use original configs directly (cross-platform guards handle macOS vs Docker)
-COPY --chown=dev:dev zsh/.zshrc                        ${HOME}/.zshrc
-COPY --chown=dev:dev zsh/.config/zim/.zimrc            ${XDG_CONFIG_HOME}/zim/.zimrc
-
-# Copy portable zsh configs (conf.d files sourced by .zshrc loop)
-COPY --chown=dev:dev zsh/conf.d/00-init.zsh            ${HOME}/.dotfiles/zsh/conf.d/00-init.zsh
-COPY --chown=dev:dev zsh/conf.d/10-path.zsh            ${HOME}/.dotfiles/zsh/conf.d/10-path.zsh
-COPY --chown=dev:dev zsh/conf.d/15-brew.zsh            ${HOME}/.dotfiles/zsh/conf.d/15-brew.zsh
-COPY --chown=dev:dev zsh/conf.d/20-aliases.zsh         ${HOME}/.dotfiles/zsh/conf.d/20-aliases.zsh
-COPY --chown=dev:dev zsh/conf.d/30-fzf-tab.zsh         ${HOME}/.dotfiles/zsh/conf.d/30-fzf-tab.zsh
-COPY --chown=dev:dev zsh/conf.d/40-fzf.zsh             ${HOME}/.dotfiles/zsh/conf.d/40-fzf.zsh
-COPY --chown=dev:dev zsh/conf.d/50-keybindings.zsh     ${HOME}/.dotfiles/zsh/conf.d/50-keybindings.zsh
-COPY --chown=dev:dev zsh/conf.d/60-atuin.zsh           ${HOME}/.dotfiles/zsh/conf.d/60-atuin.zsh
-COPY --chown=dev:dev zsh/conf.d/70-functions.zsh       ${HOME}/.dotfiles/zsh/conf.d/70-functions.zsh
-COPY --chown=dev:dev zsh/conf.d/80-gnu-generic.zsh     ${HOME}/.dotfiles/zsh/conf.d/80-gnu-generic.zsh
-COPY --chown=dev:dev zsh/conf.d/90-completions.zsh     ${HOME}/.dotfiles/zsh/conf.d/90-completions.zsh
-
-# Copy zsh themes and functions
-COPY --chown=dev:dev zsh/themes/   ${HOME}/.dotfiles/zsh/themes/
-COPY --chown=dev:dev zsh/functions/ ${HOME}/.dotfiles/zsh/functions/
-
-# Copy custom zim modules (bat, eza — fully portable)
-COPY --chown=dev:dev zsh/.config/zim-modules/ ${XDG_CONFIG_HOME}/zim-modules/
-
-# Initialize Zimfw (download zimfw.zsh + install plugins)
-ENV ZIM_HOME=${XDG_CONFIG_HOME}/zim
-
+# ── Zimfw + TPM + bat cache (one layer) ─────────────────
 RUN curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
     https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh \
-    && zsh -c 'source ${ZIM_HOME}/zimfw.zsh init -q && source ${ZIM_HOME}/zimfw.zsh install' 2>&1 || true
-
-# ── Starship prompt ─────────────────────────────────────
-COPY --chown=dev:dev zsh/.config/starship.toml ${XDG_CONFIG_HOME}/starship.toml
-
-# ── fzf config (Catppuccin theme) ───────────────────────
-COPY --chown=dev:dev zsh/.config/fzf/config ${XDG_CONFIG_HOME}/fzf/config
-
-# ── tmux + TPM (uses original config with if-shell guards) ──
-COPY --chown=dev:dev tmux/.config/tmux/tmux.conf       ${XDG_CONFIG_HOME}/tmux/tmux.conf
-COPY --chown=dev:dev tmux/.config/tmux/catppuccin.conf ${XDG_CONFIG_HOME}/tmux/catppuccin.conf
-
-# Install TPM and plugins
-RUN git clone --depth 1 https://github.com/tmux-plugins/tpm \
-    ${XDG_CONFIG_HOME}/tmux/plugins/tpm \
-    && ${XDG_CONFIG_HOME}/tmux/plugins/tpm/bin/install_plugins 2>&1 || true
-
-# ── Git config ──────────────────────────────────────────
-COPY --chown=dev:dev git/.gitconfig          ${HOME}/.gitconfig
-COPY --chown=dev:dev git/catppuccin.gitconfig ${HOME}/.dotfiles/git/catppuccin.gitconfig
-COPY --chown=dev:dev git/.config/git/ignore  ${XDG_CONFIG_HOME}/git/ignore
-
-# ── TUI tool configs (Catppuccin everywhere) ────────────
-COPY --chown=dev:dev lazygit/.config/lazygit/ ${XDG_CONFIG_HOME}/lazygit/
-COPY --chown=dev:dev k9s/.config/k9s/         ${XDG_CONFIG_HOME}/k9s/
-COPY --chown=dev:dev zsh/.config/bat/          ${XDG_CONFIG_HOME}/bat/
-COPY --chown=dev:dev zsh/.config/btop/         ${XDG_CONFIG_HOME}/btop/
-COPY --chown=dev:dev zsh/.config/atuin/        ${XDG_CONFIG_HOME}/atuin/
-COPY --chown=dev:dev zsh/.config/yazi/         ${XDG_CONFIG_HOME}/yazi/
-
-# Build bat theme cache
-RUN bat cache --build 2>/dev/null || true
+    && zsh -c 'source ${ZIM_HOME}/zimfw.zsh init -q && source ${ZIM_HOME}/zimfw.zsh install' 2>&1 || true \
+    && git clone --depth 1 https://github.com/tmux-plugins/tpm \
+    /home/dev/.config/tmux/plugins/tpm \
+    && /home/dev/.config/tmux/plugins/tpm/bin/install_plugins 2>&1 || true \
+    && bat cache --build 2>/dev/null || true
 
 WORKDIR /workspace
 
