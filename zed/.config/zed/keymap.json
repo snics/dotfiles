@@ -52,21 +52,50 @@
       "space +": "vim::Increment",
       "space -": "vim::Decrement",
       // -------------------------------------------------------------------
-      // AI — space a
+      // AI — space a — Navigation & UI
       // -------------------------------------------------------------------
       "space a a": "agent::ToggleFocus",
+      "space a h": "agent::OpenHistory",
+      "space a d": "agent::OpenAgentDiff",
+      "space a e": "agent::ExpandMessageEditor",
+      "space a z": "workspace::ToggleZoom",
+      "space a n": "agent::ToggleNavigationMenu",
+      // -------------------------------------------------------------------
+      // AI — space a — Model & Profiles
+      // -------------------------------------------------------------------
+      "space a m": "agent::ToggleModelSelector",
+      "space a shift-m": "agent::CycleFavoriteModels",
+      "space a p": "agent::ToggleProfileSelector",
+      "space a shift-p": "agent::ManageProfiles",
+      "space a t": "agent::CycleModeSelector",
+      // -------------------------------------------------------------------
+      // AI — space a — Threads & Assist
+      // -------------------------------------------------------------------
       "space a shift-a": "agent::NewThread",
       "space a i": "assistant::InlineAssist",
-      "space a o": "agent::ToggleFocus",
-      "space a p": "command_palette::Toggle",
-      "space a v": "editor::ToggleEditPrediction",
-      "space a d": "assistant::InlineAssist",
       "space a q": "agent::AddSelectionToThread",
       "cmd->": "agent::AddSelectionToThread",
-      // NOT POSSIBLE: space a e — explain code (CodeCompanion-specific)
-      // NOT POSSIBLE: space a f — fix code (CodeCompanion-specific)
-      // NOT POSSIBLE: space a t — generate tests (CodeCompanion-specific)
-      // NOT POSSIBLE: space a r — review code (CodeCompanion-specific)
+      "space a v": "editor::ToggleEditPrediction",
+      // -------------------------------------------------------------------
+      // AI — space a — ACP External Agents
+      // -------------------------------------------------------------------
+      "space a c": ["agent::NewExternalAgentThread", { "agent": "claude_code" }],
+      "space a g": ["agent::NewExternalAgentThread", { "agent": "gemini" }],
+      "space a x": ["agent::NewExternalAgentThread", { "agent": "codex" }],
+      "space a o": [
+        "agent::NewExternalAgentThread",
+        {
+          "agent": {
+            "custom": {
+              "name": "OpenCode",
+              "command": {
+                "command": "opencode",
+                "args": ["acp"]
+              }
+            }
+          }
+        }
+      ],
       // -------------------------------------------------------------------
       // Buffer — space b
       // -------------------------------------------------------------------
@@ -379,6 +408,26 @@
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-/": "terminal_panel::ToggleFocus"
+    }
+  },
+  // =====================================================================
+  // Agent Panel — Navigation & Resize
+  // =====================================================================
+  {
+    "context": "AgentPanel",
+    "bindings": {
+      // Spatial navigation (consistent with vim pane movement)
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "agent::FocusDown",
+      "ctrl-k": "agent::FocusUp",
+      // Expand input field
+      "shift-escape": "agent::ExpandMessageEditor",
+      // Panel zoom
+      "ctrl-shift-z": "workspace::ToggleZoom",
+      // Dock resize
+      "ctrl-shift-h": "workspace::IncreaseActiveDockSize",
+      "ctrl-shift-l": "workspace::DecreaseActiveDockSize",
+      "ctrl-shift-=": "workspace::ResetActiveDockSize"
     }
   },
   // =====================================================================
