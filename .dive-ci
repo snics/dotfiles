@@ -1,0 +1,7 @@
+# Multi-stage builds inherently show low efficiency in dive because builder
+# stage layers persist in image history. These thresholds are tuned for the
+# snics/nvim + devenv images which copy ~3GB of Mason/plugin artifacts.
+rules:
+  lowestEfficiency: 0.50
+  highestWastedBytes: 4GB
+  highestUserWastedPercent: 0.95

@@ -177,15 +177,15 @@ docker-build: docker-build-nvim docker-build-devenv docker-build-web
 
 # Build snics/nvim image
 docker-build-nvim:
-    docker build -f docker/Dockerfile.nvim -t snics/nvim:latest .
+    docker build -f images/nvim/Dockerfile -t snics/nvim:latest .
 
 # Build snics/devenv image
 docker-build-devenv:
-    docker build -f docker/Dockerfile.devenv -t snics/devenv:latest .
+    docker build -f images/devenv/Dockerfile -t snics/devenv:latest .
 
 # Build snics/devenv-web image
 docker-build-web:
-    docker build -f docker/Dockerfile.devenv-web -t snics/devenv-web:latest .
+    docker build -f images/devenv-web/Dockerfile -t snics/devenv-web:latest .
 
 # Smoke test all Docker images
 docker-test:
@@ -213,13 +213,23 @@ docker-run-web:
 
 # Multi-arch build + push to Docker Hub
 docker-push:
-    docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile.nvim -t snics/nvim:latest --push .
-    docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile.devenv -t snics/devenv:latest --push .
-    docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile.devenv-web -t snics/devenv-web:latest --push .
+    docker buildx build --platform linux/amd64,linux/arm64 -f images/nvim/Dockerfile -t snics/nvim:latest --push .
+    docker buildx build --platform linux/amd64,linux/arm64 -f images/devenv/Dockerfile -t snics/devenv:latest --push .
+    docker buildx build --platform linux/amd64,linux/arm64 -f images/devenv-web/Dockerfile -t snics/devenv-web:latest --push .
 
 # Lint Dockerfiles with hadolint
 docker-lint:
-    hadolint docker/Dockerfile.nvim docker/Dockerfile.devenv docker/Dockerfile.devenv-web
+    hadolint images/nvim/Dockerfile images/devenv/Dockerfile images/devenv-web/Dockerfile
+
+# Analyze Docker image layers with dive
+docker-dive image="snics/nvim:latest":
+    dive {{ image }}
+
+# CI-mode dive analysis (fails on inefficiency thresholds)
+docker-dive-ci:
+    CI=true dive snics/nvim:latest
+    CI=true dive snics/devenv:latest
+    CI=true dive snics/devenv-web:latest
 
 # ── Validation ──────────────────────────────────────────
 
