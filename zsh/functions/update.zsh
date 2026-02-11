@@ -383,6 +383,29 @@ update() {
   _update_sudo_stop
 }
 
+# ── Tab Completion ─────────────────────────────────────────
+# Auto-registered by 70-functions.zsh (compdef _update update)
+
+_update() {
+  local state
+  _arguments -s \
+    '(-y --all)'{-y,--all}'[Update all without prompting]' \
+    '(-d --dock)'{-d,--dock}'[Rebuild dock after updates]' \
+    '*:target:->targets'
+
+  if [[ "$state" == "targets" ]]; then
+    local -a targets=('help:Show help with available targets')
+    local entry
+    for entry in "${_UPDATE_TARGETS[@]}"; do
+      local key="${entry%%:*}"
+      local rest="${entry#*:}"
+      local desc="${rest#*:}"
+      targets+=("${key}:${desc}")
+    done
+    _describe 'update target' targets
+  fi
+}
+
 # ── Outdated ────────────────────────────────────────────────
 
 outdated() {
