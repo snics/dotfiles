@@ -82,7 +82,10 @@ COPY --chown=dev:dev nvim/.config/nvim ${XDG_CONFIG_HOME}/nvim
 # Patch config for Docker: disable update checker and auto-install
 # (keeps original dotfiles untouched, plugins are pre-baked in the image)
 RUN sed -i 's/enabled = true,/enabled = false,/' ${XDG_CONFIG_HOME}/nvim/lua/config/lazy.lua \
-    && sed -i 's/auto_install = true,/auto_install = false,/' ${XDG_CONFIG_HOME}/nvim/lua/plugins/treesitter.lua
+    && sed -i 's/auto_install = true,/auto_install = false,/' ${XDG_CONFIG_HOME}/nvim/lua/plugins/treesitter.lua \
+    && sed -i '2i\    cond = false, -- disabled in Docker (needs auth + downloads server)' ${XDG_CONFIG_HOME}/nvim/lua/plugins/windsurf.lua \
+    && sed -i 's/mason_tool_installer.setup({/mason_tool_installer.setup({\n            run_on_start = false,/' ${XDG_CONFIG_HOME}/nvim/lua/plugins/mason.lua \
+    && sed -i '/cond = function/,/end,/d' ${XDG_CONFIG_HOME}/nvim/lua/plugins/kubernetes.lua
 
 # Step 1: Install lazy.nvim plugins (pinned by lazy-lock.json)
 # hadolint ignore=SC2015
@@ -106,24 +109,29 @@ RUN nvim --headless \
     -c "lua vim.defer_fn(function() vim.cmd('qa') end, 120000)" 2>&1 \
     || echo "Warning: Some Mason tools may have failed to install"
 
-# Step 4: Install Mason LSP servers explicitly via programmatic API
+# Step 4: Install Mason LSP servers from mason-lspconfig ensure_installed
+# Reads the list dynamically from config — no hardcoded duplicate to maintain
 RUN nvim --headless -c "lua \
     require('lazy').load({ plugins = { 'mason.nvim', 'mason-lspconfig.nvim' } }); \
     local reg = require('mason-registry'); \
+    local mappings = require('mason-lspconfig').get_mappings(); \
+    local lsp_to_pkg = mappings.lspconfig_to_package; \
+    local lsp_servers = require('mason-lspconfig.settings').current.ensure_installed or {}; \
     reg.refresh(function() \
-    local servers = { \
-    'ansible-language-server', 'bash-language-server', 'css-lsp', \
-    'docker-compose-language-service', 'dockerfile-language-server', \
-    'emmet-ls', 'gopls', 'graphql-language-service-cli', 'helm-ls', \
-    'html-lsp', 'json-lsp', 'lua-language-server', 'marksman', \
-    'tailwindcss-language-server', 'terraform-ls', \
-    'typescript-language-server', 'yaml-language-server', \
-    }; \
-    local pending = #servers; \
-    for _, name in ipairs(servers) do \
-    local ok, pkg = pcall(reg.get_package, name); \
+    local pending = #lsp_servers; \
+    if pending == 0 then vim.schedule(function() vim.cmd('qa') end); return end; \
+    for _, lsp in ipairs(lsp_servers) do \
+    local pkg_name = lsp_to_pkg[lsp]; \
+    if not pkg_name then \
+    print('WARN: no Mason package for ' .. lsp); \
+    pending = pending - 1; \
+    if pending == 0 then vim.schedule(function() vim.cmd('qa') end) end; \
+    else \
+    local ok, pkg = pcall(reg.get_package, pkg_name); \
     if ok and not pkg:is_installed() then \
+    print('Installing: ' .. pkg_name); \
     pkg:install():once('closed', function() \
+    print('Done: ' .. pkg_name); \
     pending = pending - 1; \
     if pending == 0 then vim.schedule(function() vim.cmd('qa') end) end \
     end); \
@@ -132,9 +140,18 @@ RUN nvim --headless -c "lua \
     if pending == 0 then vim.schedule(function() vim.cmd('qa') end) end \
     end \
     end \
+    end \
     end); \
     vim.defer_fn(function() vim.cmd('qa') end, 300000)" 2>&1 \
     || echo "Warning: Some Mason LSP servers may have failed to install"
+
+# Step 5: Prevent runtime ensure_installed checks (everything is pre-baked)
+# mason-lspconfig re-checks ensure_installed on every non-headless start.
+# Replace the ensure_installed list with an empty one so it doesn't try to
+# install anything at runtime. run_on_start=false (added above) handles
+# mason-tool-installer.
+RUN sed -i '/mason_lspconfig\.setup/,/})/ s/ensure_installed = {/ensure_installed = {} --[[ cleared for Docker ]], _original_ensure_installed = {/' \
+    ${XDG_CONFIG_HOME}/nvim/lua/plugins/mason.lua
 
 # Step 6: Verify plugin installation
 RUN nvim --headless -c "lua \
