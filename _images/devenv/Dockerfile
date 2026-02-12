@@ -126,13 +126,24 @@ RUN --mount=type=bind,source=zsh,target=/tmp/src/zsh \
 USER dev
 
 # ── Zimfw + TPM + bat cache (one layer) ─────────────────
-RUN curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+# 1. zimfw install clones all modules (including zim-starship)
+# 2. zim-starship only generates starship-init.zsh when init.zsh is *sourced*,
+#    not during zimfw install — so we explicitly generate it via starship CLI
+# 3. Verify the generated file contains the correct binary path
+RUN command -v starship >/dev/null && echo "starship found at: $(command -v starship)" \
+    || { echo "ERROR: starship not in PATH"; exit 1; } \
+    && curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
     https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh \
-    && zsh -c 'source ${ZIM_HOME}/zimfw.zsh init -q && source ${ZIM_HOME}/zimfw.zsh install' 2>&1 || true \
+    && ZDOTDIR=${ZIM_HOME} zsh -c 'source ${ZIM_HOME}/zimfw.zsh init -q && source ${ZIM_HOME}/zimfw.zsh install' 2>&1 \
+    && starship init zsh --print-full-init > ${ZIM_HOME}/modules/zim-starship/starship-init.zsh \
+    && echo "starship-init.zsh generated successfully" \
+    && grep -q "$(command -v starship)" "${ZIM_HOME}/modules/zim-starship/starship-init.zsh" \
+    && echo "starship path verified in init file" \
+    || { echo "ERROR: starship-init.zsh generation or path verification failed"; exit 1; } \
     && git clone --depth 1 https://github.com/tmux-plugins/tpm \
     /home/dev/.config/tmux/plugins/tpm \
-    && /home/dev/.config/tmux/plugins/tpm/bin/install_plugins 2>&1 || true \
-    && bat cache --build 2>/dev/null || true
+    && { /home/dev/.config/tmux/plugins/tpm/bin/install_plugins 2>&1 || true; } \
+    && { bat cache --build 2>/dev/null || true; }
 
 WORKDIR /workspace
 
