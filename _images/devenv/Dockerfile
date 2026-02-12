@@ -25,12 +25,12 @@ ENV HOMEBREW_NO_AUTO_UPDATE=1 \
     HOMEBREW_NO_ENV_HINTS=1
 
 # Copy split Brewfiles + exclude list into builder
-COPY brew/Brewfile.* /tmp/brew/
+COPY brew/Brewfile.* brew/docker-exclude /tmp/brew/
 
 # Install all formulae from Brewfiles, excluding macOS-only and oversized packages.
 # Steps: 1) extract formula names  2) remove excluded  3) add taps  4) brew install
 RUN grep -h '^brew ' /tmp/brew/Brewfile.* | sed 's/brew "\([^"]*\)".*/\1/' | sort -u > /tmp/all_formulae.txt \
-    && grep -v '^#' /tmp/brew/Brewfile.docker-exclude | grep -v '^$' > /tmp/excludes.txt \
+    && grep -v '^#' /tmp/brew/docker-exclude | grep -v '^$' > /tmp/excludes.txt \
     && grep -v -F -f /tmp/excludes.txt /tmp/all_formulae.txt > /tmp/install.txt \
     && grep -h '^tap ' /tmp/brew/Brewfile.* | sed 's/tap "\([^"]*\)".*/\1/' | sort -u | while IFS= read -r t; do brew tap "$t" 2>&1 || echo "WARN: tap $t failed"; done \
     && failed="" \
