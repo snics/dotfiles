@@ -47,5 +47,39 @@ Do not change to `/bin/zsh` — Homebrew zsh has the correct fpath for completio
 
 ## Keybindings
 
+Prefix: **Ctrl+Space** (changed from default Ctrl+b).
+
+### Navigation (no prefix needed)
+
+- `Ctrl+h/j/k/l` — navigate panes (via vim-tmux-navigator, seamless with NeoVim)
+
+### Splits & Resize
+
+- `prefix + |` or `prefix + \` — vertical split (current dir)
+- `prefix + -` — horizontal split (current dir)
+- `prefix + H/J/K/L` — resize pane (repeatable, 5px)
+- `prefix + z` — zoom toggle
+- `prefix + c` — new window (current dir)
+
+### Vi Copy Mode
+
+- `prefix + v` — enter copy mode
+- `v` / `V` / `Ctrl+v` — selection / line / rectangle
+- `y` — copy to clipboard (pbcopy)
+
+### TUI Popups (90% overlay, auto-close)
+
+- `prefix + g` — lazygit
+- `prefix + y` — yazi
+- `prefix + b` — btop
+- `prefix + k` — k9s
+
+### Management
+
 - `prefix + r` — reload config
-- Vi mode enabled for both copy mode (`mode-keys vi`) and command prompt (`status-keys vi`)
+- `prefix + I` — install plugins (TPM)
+- `prefix + U` — update plugins
+
+Vi mode enabled for both copy mode (`mode-keys vi`) and command prompt (`status-keys vi`).
+
+When changing keybindings, also update `_docs/keybindings.md`.

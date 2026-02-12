@@ -102,6 +102,24 @@ automatically be included in the next Docker build. To exclude a formula from
 Docker (macOS-only, hardware-dependent, or too large), add it to
 `brew/docker-exclude`.
 
+## Keybindings Cheatsheet Sync Rule
+
+A unified keybindings reference lives at `_docs/keybindings.md`. When adding,
+removing, or changing keybindings in **any** tool config, **always update the
+cheatsheet** to reflect the change. This applies to:
+
+- `ghostty/.config/ghostty/config` — Ghostty keybindings
+- `tmux/.config/tmux/tmux.conf` — Tmux bindings and popup launchers
+- `nvim/.config/nvim/lua/config/keymaps.lua` — NeoVim keymaps
+- `nvim/.config/nvim/lua/plugins/*.lua` — Plugin-specific keybindings
+- `zed/.config/zed/keymap.json` — Zed keybindings
+- `zsh/conf.d/50-keybindings.zsh` — Shell keybindings
+- `zsh/conf.d/40-fzf.zsh` — FZF keybindings
+- `k9s/.config/k9s/plugins.yaml` — K9s plugin shortcuts
+
+The cheatsheet groups shortcuts by tool and includes a cross-tool consistency
+table at the bottom. Keep it in sync.
+
 ## Cross-Package Dependencies
 
 Changes in one package often require updates in another. The `AGENTS.md` in
