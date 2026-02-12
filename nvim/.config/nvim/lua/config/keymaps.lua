@@ -17,15 +17,8 @@ keymap.set("n", "<leader>W", "<cmd>wq<CR>", { desc = "Save and close" })
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" })
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" })
 
--- Window navigation (Ctrl+hjkl — standard in LazyVim/AstroNvim/NvChad)
-keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
-keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
-keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
-keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
-keymap.set("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })
-keymap.set("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
-keymap.set("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
-keymap.set("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
+-- Window navigation: Ctrl+hjkl handled by vim-tmux-navigator plugin
+-- (see lua/plugins/vim-tmux-navigator.lua)
 
 -- Window resize (Ctrl+Arrow)
 keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })

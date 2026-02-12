@@ -488,10 +488,10 @@ return {
             ---------------------------------------------------------------
             -- NON-LEADER: Window Navigation & Resize
             ---------------------------------------------------------------
-            { "<C-h>", desc = "Go to left window", icon = "󰁍" },
-            { "<C-j>", desc = "Go to lower window", icon = "󰁅" },
-            { "<C-k>", desc = "Go to upper window", icon = "󰁝" },
-            { "<C-l>", desc = "Go to right window", icon = "󰁔" },
+            { "<C-h>", desc = "Go to left pane (tmux-aware)", icon = "󰁍" },
+            { "<C-j>", desc = "Go to lower pane (tmux-aware)", icon = "󰁅" },
+            { "<C-k>", desc = "Go to upper pane (tmux-aware)", icon = "󰁝" },
+            { "<C-l>", desc = "Go to right pane (tmux-aware)", icon = "󰁔" },
             { "<C-Up>", desc = "Increase window height", icon = "󰞙" },
             { "<C-Down>", desc = "Decrease window height", icon = "󰞒" },
             { "<C-Left>", desc = "Decrease window width", icon = "󰞗" },
