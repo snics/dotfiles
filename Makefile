@@ -18,7 +18,7 @@ ALL_PACKAGES := $(HOME_PACKAGES) $(CONFIG_PACKAGES)
         brew-gen brew-install brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
         docker-build docker-build-nvim docker-build-devenv docker-build-web \
-        docker-test docker-run docker-run-web docker-push docker-lint \
+        docker-test docker-run docker-run-web docker-run-web-tmux docker-run-web-nvim docker-push docker-lint \
         docker-dive-ci
 
 # ── Full Setup ──────────────────────────────────────────
@@ -210,8 +210,14 @@ docker-test: ## Smoke test all Docker images
 docker-run: ## Run interactive devenv with current directory mounted
 	docker run -it --rm -v "$$(pwd):/workspace" snics/devenv:latest
 
-docker-run-web: ## Start devenv-web on port 7681
+docker-run-web: ## Start devenv-web on port 7681 (default: terminal)
 	docker run -it --rm -p 7681:7681 snics/devenv-web:latest
+
+docker-run-web-tmux: ## Start devenv-web with tmux
+	docker run -it --rm -p 7681:7681 -e TTYD_MODE=tmux snics/devenv-web:latest
+
+docker-run-web-nvim: ## Start devenv-web with NeoVim
+	docker run -it --rm -p 7681:7681 -e TTYD_MODE=nvim snics/devenv-web:latest
 
 docker-push: ## Multi-arch build + push to Docker Hub
 	docker buildx build --platform linux/amd64,linux/arm64 -f _images/nvim/Dockerfile -t snics/nvim:latest --push .

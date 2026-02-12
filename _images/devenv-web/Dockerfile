@@ -27,14 +27,17 @@ RUN ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
     -o /usr/local/bin/ttyd \
     && chmod +x /usr/local/bin/ttyd
 
+COPY _images/devenv-web/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 USER dev
+
+# Entry mode: terminal (default), tmux, nvim, or any custom command
+ENV TTYD_MODE=terminal
 
 EXPOSE 7681
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:7681/ || exit 1
 
-ENTRYPOINT ["ttyd", "-W", "-p", "7681", \
-    "-t", "titleFixed=snics/devenv-web", \
-    "-t", "fontSize=14"]
-CMD ["tmux", "new-session", "-A", "-s", "main"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -246,9 +246,17 @@ docker-test:
 docker-run:
     docker run -it --rm -v "$(pwd):/workspace" snics/devenv:latest
 
-# Start devenv-web on port 7681
+# Start devenv-web on port 7681 (default: terminal)
 docker-run-web:
     docker run -it --rm -p 7681:7681 snics/devenv-web:latest
+
+# Start devenv-web with tmux
+docker-run-web-tmux:
+    docker run -it --rm -p 7681:7681 -e TTYD_MODE=tmux snics/devenv-web:latest
+
+# Start devenv-web with NeoVim
+docker-run-web-nvim:
+    docker run -it --rm -p 7681:7681 -e TTYD_MODE=nvim snics/devenv-web:latest
 
 # Multi-arch build + push to Docker Hub
 docker-push:
