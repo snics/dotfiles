@@ -86,12 +86,12 @@ Prefix: **`Ctrl+Space`**
 
 ### TUI Popups (90% overlay)
 
-| Shortcut | Tool |
-|----------|------|
-| `Prefix + g` | lazygit |
-| `Prefix + y` | yazi (file manager) |
-| `Prefix + b` | btop (system monitor) |
-| `Prefix + k` | k9s (Kubernetes) |
+| Shortcut | Tool | Mnemonik |
+|----------|------|----------|
+| `Prefix + f` | yazi | **F**iles |
+| `Prefix + g` | lazygit | **G**it |
+| `Prefix + s` | btop | **S**ystem monitor |
+| `Prefix + k` | k9s | **K**ubernetes |
 
 ### Session Management
 
@@ -280,21 +280,25 @@ Leader: **`Space`** (Vim mode)
 
 ## Shell (Zsh)
 
-### FZF
+### FZF & Atuin
 
 | Shortcut | Action |
 |----------|--------|
 | `Ctrl+T` | File finder (bat/eza preview) |
+| `Ctrl+R` | History search (Atuin) |
 | `Alt+C` | Directory changer (eza preview) |
 | `Ctrl+/` | Toggle preview (inside fzf) |
+| `Up` / `Down` | Prefix search (Atuin) |
+| `Ctrl+1..9` | Quick shortcuts (Atuin) |
 
-### Atuin (History)
+### TUI Launchers (same keys as tmux popups)
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+R` | History search (Atuin) |
-| `Up` / `Down` | Prefix search |
-| `Ctrl+1..9` | Quick shortcuts |
+| Shortcut | Tool | Mnemonik |
+|----------|------|----------|
+| `Alt+F` | yazi | **F**iles |
+| `Alt+G` | lazygit | **G**it |
+| `Alt+S` | btop | **S**ystem monitor |
+| `Alt+K` | k9s | **K**ubernetes |
 
 ### Aliases
 
@@ -330,12 +334,15 @@ Leader: **`Space`** (Vim mode)
 
 ## Cross-Tool Consistency
 
-These bindings use the same key across multiple tools:
+These bindings use the same key across all layers. Letters map to **function**,
+not tool name (`f` = files, `g` = git, `s` = system, `k` = kubernetes).
 
-| Key | Ghostty | Tmux | NeoVim | Zed |
-|-----|---------|------|--------|-----|
-| `hjkl` | `Ctrl+Shift+hjkl` navigate | `Ctrl+hjkl` navigate | `Ctrl+hjkl` navigate | `Ctrl+hjkl` navigate |
-| `\|` / `-` | `Ctrl+Shift+\` / `-` split | `Prefix+\|` / `-` split | — | — |
-| `z` | `Ctrl+Shift+z` zoom | `Prefix+z` zoom | `Space z` zen | `Space z` zen |
-| `g` | — | `Prefix+g` lazygit | `Space gg` lazygit | `Space gs` git panel |
-| `y` | — | `Prefix+y` yazi | `y` yank | — |
+| Key | Shell (Zsh) | Tmux | Ghostty | NeoVim | Zed |
+|-----|-------------|------|---------|--------|-----|
+| `hjkl` | — | `Ctrl+hjkl` navigate | `Ctrl+Shift+hjkl` navigate | `Ctrl+hjkl` navigate | `Ctrl+hjkl` navigate |
+| `\|` / `-` | — | `Prefix+\|` / `-` split | `Ctrl+Shift+\` / `-` split | — | — |
+| `z` | — | `Prefix+z` zoom | `Ctrl+Shift+z` zoom | `Space z` zen | `Space z` zen |
+| `f` | `Alt+F` yazi | `Prefix+f` yazi | — | `Space ff` find files | `Space Space` file finder |
+| `g` | `Alt+G` lazygit | `Prefix+g` lazygit | — | `Space gg` lazygit | `Space gs` git panel |
+| `s` | `Alt+S` btop | `Prefix+s` btop | — | — | — |
+| `k` | `Alt+K` k9s | `Prefix+k` k9s | — | — | — |

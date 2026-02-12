@@ -69,10 +69,12 @@ Prefix: **Ctrl+Space** (changed from default Ctrl+b).
 
 ### TUI Popups (90% overlay, auto-close)
 
-- `prefix + g` — lazygit
-- `prefix + y` — yazi
-- `prefix + b` — btop
-- `prefix + k` — k9s
+- `prefix + f` — yazi (**f**iles)
+- `prefix + g` — lazygit (**g**it)
+- `prefix + s` — btop (**s**ystem monitor)
+- `prefix + k` — k9s (**k**ubernetes)
+
+Keys match the shell Alt+key bindings (`Alt+F/G/S/K` in `zsh/conf.d/50-keybindings.zsh`).
 
 ### Management
 
