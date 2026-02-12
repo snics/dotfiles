@@ -6,3 +6,33 @@ background-opacity = 0.9
 background-blur-radius = 50
 cursor-style = "underline"
 macos-titlebar-style = transparent
+
+# ============================================================================
+# Keybindings — Vim-style (Ctrl+Shift layer)
+# ============================================================================
+
+# Pane navigation (hjkl)
+keybind = ctrl+shift+h=goto_split:left
+keybind = ctrl+shift+j=goto_split:bottom
+keybind = ctrl+shift+k=goto_split:top
+keybind = ctrl+shift+l=goto_split:right
+
+# Create splits
+keybind = ctrl+shift+backslash=new_split:right
+keybind = ctrl+shift+minus=new_split:down
+
+# Split management
+keybind = ctrl+shift+z=toggle_split_zoom
+keybind = ctrl+shift+equal=equalize_splits
+keybind = ctrl+shift+w=close_surface
+
+# Resize splits (arrow keys)
+keybind = ctrl+shift+left=resize_split:left,10
+keybind = ctrl+shift+down=resize_split:down,10
+keybind = ctrl+shift+up=resize_split:up,10
+keybind = ctrl+shift+right=resize_split:right,10
+
+# Tab management
+keybind = ctrl+shift+t=new_tab
+keybind = ctrl+shift+right_bracket=next_tab
+keybind = ctrl+shift+left_bracket=previous_tab
