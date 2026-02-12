@@ -79,6 +79,11 @@ WORKDIR ${HOME}
 # Copy NeoVim config (lazy-lock.json ensures reproducible builds)
 COPY --chown=dev:dev nvim/.config/nvim ${XDG_CONFIG_HOME}/nvim
 
+# Patch config for Docker: disable update checker and auto-install
+# (keeps original dotfiles untouched, plugins are pre-baked in the image)
+RUN sed -i 's/enabled = true,/enabled = false,/' ${XDG_CONFIG_HOME}/nvim/lua/config/lazy.lua \
+    && sed -i 's/auto_install = true,/auto_install = false,/' ${XDG_CONFIG_HOME}/nvim/lua/plugins/treesitter.lua
+
 # Step 1: Install lazy.nvim plugins (pinned by lazy-lock.json)
 # hadolint ignore=SC2015
 RUN for i in 1 2 3; do \
@@ -131,7 +136,16 @@ RUN nvim --headless -c "lua \
     vim.defer_fn(function() vim.cmd('qa') end, 300000)" 2>&1 \
     || echo "Warning: Some Mason LSP servers may have failed to install"
 
-# Step 5: Clean up build artifacts to reduce image size
+# Step 6: Verify plugin installation
+RUN nvim --headless -c "lua \
+    local stats = require('lazy').stats(); \
+    print('Lazy plugins: ' .. stats.count); \
+    if stats.count < 30 then \
+    print('ERROR: Too few plugins installed'); \
+    os.exit(1); \
+    end" +qa 2>&1
+
+# Step 7: Clean up build artifacts to reduce image size
 RUN chmod -R u+w ${HOME}/go/pkg 2>/dev/null; \
     rm -rf ${HOME}/go/pkg ${HOME}/go/src \
     && rm -rf ${XDG_CACHE_HOME} \
