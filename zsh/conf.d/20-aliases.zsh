@@ -68,4 +68,4 @@ alias pcconfig='podman-compose config'
 alias pcexec='podman-compose exec'
 
 # App aliases
-alias claude-mem='bun "/Users/nico/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
+alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
