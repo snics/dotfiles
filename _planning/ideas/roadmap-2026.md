@@ -2,8 +2,8 @@
 
 > Strategische Weiterentwicklung: Cross-Platform, Containerisierung, deklaratives Management, Dokumentation
 >
-> **Status:** Planning (Research abgeschlossen, bereit zur Umsetzung)
-> **Last Updated:** 2026-02-10
+> **Status:** Phase 2 abgeschlossen, Phase 3 offen
+> **Last Updated:** 2026-02-15
 
 ## Goal
 
@@ -180,9 +180,9 @@ golang / rust / asdf
 
 ---
 
-## Phase 2: Docker Images + CI/CD
+## Phase 2: Docker Images + CI/CD [DONE ✔]
 
-### 2.1 Image-Architektur: 3-Layer Strategy
+### 2.1 Image-Architektur: 3-Layer Strategy [DONE ✔]
 
 **Empfehlung: 3 Images, KEIN Desktop-Variant**
 
@@ -213,7 +213,7 @@ Alpine hat breiteres Package-Ecosystem für 50+ Dev-Tools. Wolfi wäre besser f�
 - VS Code NeoVim Extension überträgt nur Modal Editing, nicht Plugins
 - Separater Config-Aufwand ohne Benefit
 
-### 2.2 `snic/nvim` — Minimal NeoVim Container
+### 2.2 `snic/nvim` — Minimal NeoVim Container [DONE ✔]
 
 **Inhalt:**
 - Alpine 3.21 + NeoVim + gcc/g++ (Treesitter Compilation)
@@ -226,7 +226,7 @@ Alpine hat breiteres Package-Ecosystem für 50+ Dev-Tools. Wolfi wäre besser f�
 **Non-root User:** `dev` (UID 1000)
 **Entrypoint:** `nvim`
 
-### 2.3 `snic/devenv` — Full CLI + TUI
+### 2.3 `snic/devenv` — Full CLI + TUI [DONE ✔]
 
 **Zusätzlich zu snic/nvim:**
 - Zsh + Zimfw + Starship + fzf + fzf-tab + Atuin
@@ -242,7 +242,7 @@ lazygit, k9s, lazydocker, starship, zoxide — jeweils mit `amd64/arm64` Mapping
 
 **Entrypoint:** `/bin/zsh`
 
-### 2.4 `snic/devenv-web` — Browser-Zugang via ttyd
+### 2.4 `snic/devenv-web` — Browser-Zugang via ttyd [DONE ✔]
 
 **Nur eine Ergänzung über devenv:**
 ```dockerfile
@@ -262,7 +262,7 @@ docker run -d -p 7681:7681 -v $(pwd):/workspace snic/devenv-web
 open http://localhost:7681
 ```
 
-### 2.5 Multi-Arch Support
+### 2.5 Multi-Arch Support [DONE ✔]
 
 Alle Komponenten unterstützen `linux/amd64` + `linux/arm64`:
 - Alpine Packages: alle verfügbar
@@ -272,7 +272,7 @@ Alle Komponenten unterstützen `linux/amd64` + `linux/arm64`:
 
 Build: `docker buildx build --platform linux/amd64,linux/arm64 --push`
 
-### 2.6 CI/CD — GitHub Actions
+### 2.6 CI/CD — GitHub Actions [DONE ✔]
 
 **Registry:** Docker Hub (`snic/nvim`, `snic/devenv`, `snic/devenv-web`)
 
@@ -291,7 +291,7 @@ Build: `docker buildx build --platform linux/amd64,linux/arm64 --push`
 
 **Hinweis:** Tart kann NICHT in GitHub Actions laufen (braucht Apple Silicon + Virtualization.framework). Für CI nutzen wir `macos-latest` Runner direkt. Tart bleibt ein lokales Test-Tool.
 
-### 2.7 Lokale Test-Targets
+### 2.7 Lokale Test-Targets [DONE ✔]
 
 ```
 make test              # lint + stow dry-run (lokal, 7 Sekunden)
@@ -306,7 +306,7 @@ make vm-clean          # Alle Test-VMs aufräumen
 - `_test/validate-configs.sh` — TOML/JSON Syntax-Check
 - `_test/validate-shell.sh` — Zsh Sourcing + Alias/Function Smoke Test
 
-### 2.8 Dev Container Spec
+### 2.8 Dev Container Spec [DONE ✔]
 
 ```
 .devcontainer/
