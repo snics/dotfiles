@@ -168,6 +168,8 @@ _update_brew() {
   echo "Updating Homebrew..."
   brew update
   _sudo_refresh
+  echo "Regenerating Brewfile..."
+  cat "$HOME/.dotfiles/brew"/Brewfile.* >| "${HOMEBREW_BUNDLE_FILE:-$HOME/.Brewfile}"
   echo "Upgrading from Brewfile..."
   brew bundle
   _sudo_refresh
