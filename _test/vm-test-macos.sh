@@ -58,7 +58,7 @@ echo "==> VM ready at $IP"
 
 # SSH helper (default credentials: admin/admin)
 # Use /usr/bin/ssh — Homebrew's openssh has routing issues with Virtualization.framework
-SSH="sshpass -p admin /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 admin@$IP"
+SSH="sshpass -p admin /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o PreferredAuthentications=password -o PubkeyAuthentication=no admin@$IP"
 
 # Wait for SSH to become available
 echo "==> Waiting for SSH..."
