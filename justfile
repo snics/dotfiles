@@ -298,8 +298,14 @@ docker-dive-ci:
 lint:
     shellcheck _install/*.sh _macOS/*.sh bootstrap.sh install.sh
 
-# Dry-run stow for all packages (no changes)
-test: lint
-    @echo "==> Dry-run stow simulation..."
-    @cd {{ DOTFILES }} && stow --simulate --restow -t "$HOME" {{ ALL_PACKAGES }} 2>&1
+# Validate stow symlinks (dry-run)
+test-symlinks:
+    @bash _test/validate-symlinks.sh
+
+# Validate JSON and TOML config syntax
+test-configs:
+    @bash _test/validate-configs.sh
+
+# Run all validation checks
+test: lint test-symlinks test-configs
     @echo "All tests passed."

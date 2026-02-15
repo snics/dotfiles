@@ -1,0 +1,27 @@
+{
+  "name": "devenv",
+  "image": "snic/devenv:latest",
+  "remoteUser": "developer",
+  "containerUser": "developer",
+  "workspaceFolder": "/home/developer/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/developer/workspace,type=bind,consistency=cached",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "asvetliakov.vscode-neovim",
+        "catppuccin.catppuccin-vsc",
+        "catppuccin.catppuccin-vsc-icons"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.fontFamily": "Lilex Nerd Font Mono, JetBrains Mono, monospace"
+      }
+    }
+  },
+  "forwardPorts": [
+    7681,
+    3000
+  ],
+  "postStartCommand": "echo 'devenv ready'",
+  "features": {}
+}

@@ -13,7 +13,7 @@ CONFIG_PACKAGES := nvim ghostty tmux lazygit k9s zed opencode claude cursor
 ALL_PACKAGES := $(HOME_PACKAGES) $(CONFIG_PACKAGES)
 
 .PHONY: all install link unlink relink update macos dock project-folders \
-        golang rust asdf check lint test help \
+        golang rust asdf check lint test test-symlinks test-configs help \
         zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor \
         brew-gen brew-install brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
@@ -250,9 +250,13 @@ docker-dive-ci: ## CI-mode dive analysis (fails on inefficiency)
 lint: ## Lint shell scripts
 	shellcheck _install/*.sh _macOS/*.sh bootstrap.sh install.sh
 
-test: lint ## Run lint + stow dry-run
-	@echo "==> Dry-run stow simulation..."
-	@cd $(DOTFILES) && stow --simulate --restow -t "$(HOME)" $(ALL_PACKAGES) 2>&1
+test-symlinks: ## Validate stow symlinks (dry-run)
+	@bash _test/validate-symlinks.sh
+
+test-configs: ## Validate JSON and TOML config syntax
+	@bash _test/validate-configs.sh
+
+test: lint test-symlinks test-configs ## Run all validation checks
 	@echo "All tests passed."
 
 # ── Help ────────────────────────────────────────────────
