@@ -77,10 +77,16 @@ if ! $SSH_READY; then
 fi
 
 echo "==> Copying dotfiles into VM..."
-$SSH "cp -r /Volumes/My\ Shared\ Files/dotfiles ~/.dotfiles"
+$SSH "cp -r '/Volumes/My Shared Files/dotfiles' ~/.dotfiles"
 
-echo "==> Running bootstrap..."
-$SSH "cd ~/.dotfiles && bash bootstrap.sh"
+# Run bootstrap steps inline (not bootstrap.sh, which git-pulls from origin
+# and would overwrite the local changes we want to test)
+echo "==> Installing Homebrew..."
+$SSH 'NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"' || true
+$SSH 'eval "$(/opt/homebrew/bin/brew shellenv)" && brew install just stow'
+
+echo "==> Running just all..."
+$SSH 'eval "$(/opt/homebrew/bin/brew shellenv)" && cd ~/.dotfiles && just all'
 
 echo ""
 echo "==> Validating installation..."
