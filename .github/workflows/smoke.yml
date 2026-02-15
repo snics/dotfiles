@@ -1,0 +1,156 @@
+name: Smoke Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: .
+          additional_files: bootstrap.sh install.sh pre-install.sh
+
+      - name: Validate JSON configs
+        run: |
+          echo "==> Checking JSON syntax..."
+          errors=0
+          while IFS= read -r f; do
+            if ! python3 -m json.tool "$f" > /dev/null 2>&1; then
+              echo "  FAIL: $f"
+              errors=$((errors + 1))
+            else
+              echo "  OK: $f"
+            fi
+          done < <(find . -name '*.json' -not -path './.git/*' -not -path './node_modules/*')
+          if [ "$errors" -gt 0 ]; then
+            echo "$errors JSON file(s) invalid"
+            exit 1
+          fi
+          echo "All JSON files valid."
+
+      - name: Validate TOML configs
+        run: |
+          pip install --quiet tomli 2>/dev/null || true
+          echo "==> Checking TOML syntax..."
+          errors=0
+          while IFS= read -r f; do
+            if ! python3 -c "import tomli; tomli.load(open('$f','rb'))" 2>/dev/null; then
+              echo "  FAIL: $f"
+              errors=$((errors + 1))
+            else
+              echo "  OK: $f"
+            fi
+          done < <(find . -name '*.toml' -not -path './.git/*')
+          if [ "$errors" -gt 0 ]; then
+            echo "$errors TOML file(s) invalid"
+            exit 1
+          fi
+          echo "All TOML files valid."
+
+      - name: Lint Dockerfiles
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: _images/nvim/Dockerfile
+          failure-threshold: error
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: _images/devenv/Dockerfile
+          failure-threshold: error
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: _images/devenv-web-terminal/Dockerfile
+          failure-threshold: error
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: _images/devenv-web-desktop/Dockerfile
+          failure-threshold: error
+
+  test-macos:
+    name: macOS (stow dry-run)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install stow
+        run: brew install stow
+
+      - name: Stow dry-run (all packages)
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          for pkg in zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor; do
+            echo -n "  $pkg: "
+            if stow --simulate --restow -t "$HOME" "$pkg" 2>&1 | grep -q "ERROR"; then
+              echo "FAIL"
+              stow --simulate --restow -t "$HOME" "$pkg" 2>&1
+              exit 1
+            else
+              echo "OK"
+            fi
+          done
+          echo "All stow packages OK."
+
+  test-docker:
+    name: Docker smoke tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build snic/nvim
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: _images/nvim/Dockerfile
+          tags: snic/nvim:ci
+          load: true
+          cache-from: type=gha,scope=nvim
+          cache-to: type=gha,mode=max,scope=nvim
+
+      - name: Test snic/nvim
+        run: |
+          docker run --rm snic/nvim:ci --version | head -1
+          docker run --rm snic/nvim:ci --headless -c 'lua print("Plugins: " .. #require("lazy").plugins())' +qa 2>&1
+
+      - name: Build snic/devenv
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: _images/devenv/Dockerfile
+          tags: snic/devenv:ci
+          load: true
+          build-args: NVIM_TAG=ci
+          cache-from: type=gha,scope=devenv
+          cache-to: type=gha,mode=max,scope=devenv
+
+      - name: Test snic/devenv
+        run: |
+          docker run --rm snic/devenv:ci -c 'starship --version | head -1 && lazygit --version | head -1 && delta --version && tmux -V && nvim --version | head -1'
+
+      - name: Build snic/devenv-web-terminal
+        uses: docker/build-push-action@v6
+        with:
+          context: _images/devenv-web-terminal
+          tags: snic/devenv-web-terminal:ci
+          load: true
+          build-args: DEVENV_TAG=ci
+          cache-from: type=gha,scope=web-terminal
+          cache-to: type=gha,mode=max,scope=web-terminal
+
+      - name: Test snic/devenv-web-terminal
+        run: |
+          docker run --rm --entrypoint ttyd snic/devenv-web-terminal:ci --version

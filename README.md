@@ -11,6 +11,7 @@ This setup works perfectly for developers and software architects who work with 
 - [✨ Features](#-features)
 - [📦 What's Included](#-whats-included)
 - [🚀 Quick Start](#-quick-start)
+- [🐳 Try it with Docker](#-try-it-with-docker)
 - [📁 Project Structure](#-project-structure)
 - [⚙️ Configuration Details](#️-configuration-details)
 - [🔄 Updates & Maintenance](#-updates--maintenance)
@@ -30,6 +31,7 @@ This setup works perfectly for developers and software architects who work with 
 - 📊 Advanced system monitoring with btop and k9s
 - 🚀 Git workflow optimization with lazygit
 - 🔐 Secure secrets management
+- 🐳 Docker images for instant access (terminal, browser, full desktop)
 - 📁 Organized project folder structure
 
 ## 📦 What's Included
@@ -218,6 +220,42 @@ sh ~/.dotfiles/install.sh
 ```
 
 The wizard will guide you through the installation process and let you choose which components to install.
+
+## 🐳 Try it with Docker
+
+Don't want to install anything on your machine? The entire development environment
+is available as layered Docker images. Try NeoVim, the full CLI toolchain, or even
+a complete Linux desktop — right from your terminal or browser.
+
+```
+debian:bookworm-slim
+  └── snic/nvim                          NeoVim + 77 plugins + LSPs
+       └── snic/devenv                   + zsh, tmux, starship, lazygit, 330+ tools
+            ├── snic/devenv-web-terminal  + browser terminal (ttyd)
+            └── snic/devenv-web-desktop   + full XFCE4 desktop in the browser
+```
+
+```bash
+# NeoVim with all plugins and LSPs — open any project
+docker run -it --rm -v "$(pwd):/home/developer" snic/nvim
+
+# Full dev environment — zsh + tmux + starship + lazygit + all CLI tools
+docker run -it --rm -v "$(pwd):/home/developer/workspace" snic/devenv
+
+# Terminal in the browser (http://localhost:7681)
+docker run --rm -p 7681:7681 snic/devenv-web-terminal
+
+# tmux in the browser
+docker run --rm -p 7681:7681 -e TTYD_MODE=tmux snic/devenv-web-terminal
+
+# NeoVim in the browser
+docker run --rm -p 7681:7681 -e TTYD_MODE=nvim snic/devenv-web-terminal
+
+# Full Linux desktop in the browser (http://localhost:3000)
+docker run --rm -p 3000:3000 --shm-size=256m snic/devenv-web-desktop
+```
+
+All images support `linux/amd64` and `linux/arm64`. See [`_images/README.md`](_images/README.md) for details.
 
 ## 📁 Project Structure
 

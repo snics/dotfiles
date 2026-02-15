@@ -248,7 +248,7 @@ docker-dive-ci: ## CI-mode dive analysis (fails on inefficiency)
 # ── Validation ──────────────────────────────────────────
 
 lint: ## Lint shell scripts
-	shellcheck _install/*.sh macOS/*.sh bootstrap.sh install.sh
+	shellcheck _install/*.sh _macOS/*.sh bootstrap.sh install.sh
 
 test: lint ## Run lint + stow dry-run
 	@echo "==> Dry-run stow simulation..."

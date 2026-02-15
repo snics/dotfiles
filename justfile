@@ -296,7 +296,7 @@ docker-dive-ci:
 
 # Lint shell scripts
 lint:
-    shellcheck _install/*.sh macOS/*.sh bootstrap.sh install.sh
+    shellcheck _install/*.sh _macOS/*.sh bootstrap.sh install.sh
 
 # Dry-run stow for all packages (no changes)
 test: lint
