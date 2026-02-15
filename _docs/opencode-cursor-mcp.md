@@ -76,7 +76,7 @@ opencode/
       catppuccin-*.json
 ```
 
-Installation: `stow opencode` (via `_install/opencode.sh`).
+Installation: `just opencode` or `stow opencode`.
 
 ---
 
@@ -153,7 +153,7 @@ cursor/
 
 **Linux:** Cursor uses `~/.config/cursor/user/` — either symlink the same files there or create a second Stow structure.
 
-Installation: `stow cursor` (via `_install/cursor.sh`).
+Installation: `just cursor` or `stow cursor`.
 
 ---
 

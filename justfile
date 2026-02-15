@@ -6,16 +6,25 @@ set shell := ["bash", "-cu"]
 
 DOTFILES := env_var("HOME") / ".dotfiles"
 
-# Stow package lists
+# Stow package lists (CLI = universal, GUI = macOS only)
 
-HOME_PACKAGES := "zsh git"
-CONFIG_PACKAGES := "nvim ghostty tmux lazygit k9s zed opencode claude cursor"
-ALL_PACKAGES := HOME_PACKAGES + " " + CONFIG_PACKAGES
+CLI_PACKAGES := "zsh git nvim tmux lazygit k9s opencode claude"
+GUI_PACKAGES := "ghostty zed cursor obsidian"
+ALL_PACKAGES := CLI_PACKAGES + " " + GUI_PACKAGES
 
 # ── Full Setup ──────────────────────────────────────────
 
-# Full setup: brew + link + macos
-all: install link macos
+# Full setup: brew + link + macos (macOS settings skipped on Linux)
+all: install link
+    @if [[ "$(uname -s)" == "Darwin" && "${CI:-}" != "true" ]]; then \
+        echo "==> Applying macOS settings..."; \
+        source {{ DOTFILES }}/_macOS/settings.sh; \
+        source {{ DOTFILES }}/_macOS/dock.sh; \
+    elif [[ "$(uname -s)" != "Darwin" ]]; then \
+        echo "==> Skipping macOS settings (not macOS)"; \
+    else \
+        echo "==> Skipping macOS settings (CI mode)"; \
+    fi
     @echo "Done! Open a new shell to apply changes."
 
 # ── Install ─────────────────────────────────────────────
@@ -25,16 +34,29 @@ install:
     @echo "==> Installing Homebrew packages..."
     @if ! command -v brew &>/dev/null; then \
         /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; \
-        eval "$$(/opt/homebrew/bin/brew shellenv)"; \
+        if [[ -f "/opt/homebrew/bin/brew" ]]; then \
+            eval "$$(/opt/homebrew/bin/brew shellenv)"; \
+        elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then \
+            eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"; \
+        fi; \
     fi
     cat {{ DOTFILES }}/brew/Brewfile.* | brew bundle --file=-
 
 # ── Link / Unlink ──────────────────────────────────────
 
-# Symlink all stow packages (idempotent)
-link:
-    @echo "==> Linking dotfiles..."
-    @cd {{ DOTFILES }} && stow --restow -t "$HOME" {{ ALL_PACKAGES }}
+# Symlink all stow packages (CLI on all platforms, GUI on macOS only)
+link: link-cli link-gui
+
+# Symlink CLI packages (universal — works on macOS, Linux, containers)
+link-cli:
+    @echo "==> Linking CLI dotfiles..."
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" {{ CLI_PACKAGES }}
+
+# Symlink GUI packages (macOS only)
+[macos]
+link-gui:
+    @echo "==> Linking GUI dotfiles..."
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" {{ GUI_PACKAGES }}
 
 # Remove all symlinks
 unlink:
@@ -90,6 +112,10 @@ claude:
 cursor:
     @cd {{ DOTFILES }} && stow --restow -t "$HOME" cursor
 
+# Link obsidian config
+obsidian:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" obsidian
+
 # ── Updates ─────────────────────────────────────────────
 
 # Update Homebrew packages
@@ -144,8 +170,8 @@ brew-edit:
 macos:
     @if [[ "$${CI:-}" != "true" ]]; then \
         echo "==> Applying macOS settings..."; \
-        source {{ DOTFILES }}/macOS/settings.sh; \
-        source {{ DOTFILES }}/macOS/dock.sh; \
+        source {{ DOTFILES }}/_macOS/settings.sh; \
+        source {{ DOTFILES }}/_macOS/dock.sh; \
     else \
         echo "==> Skipping macOS settings (CI mode)"; \
     fi
@@ -153,12 +179,12 @@ macos:
 # Configure dock apps
 [macos]
 dock:
-    source {{ DOTFILES }}/macOS/dock.sh
+    source {{ DOTFILES }}/_macOS/dock.sh
 
 # Create development project folder structure
 [macos]
 project-folders:
-    source {{ DOTFILES }}/macOS/project-folder-structure.sh
+    source {{ DOTFILES }}/_macOS/project-folder-structure.sh
 
 # ── Optional Dev Tools ──────────────────────────────────
 
@@ -296,7 +322,7 @@ docker-dive-ci:
 
 # Lint shell scripts
 lint:
-    shellcheck _install/*.sh _macOS/*.sh bootstrap.sh install.sh
+    shellcheck _install/*.sh _macOS/*.sh _lib/*.sh bootstrap.sh install.sh
 
 # Validate stow symlinks (dry-run)
 test-symlinks:
@@ -309,3 +335,31 @@ test-configs:
 # Run all validation checks
 test: lint test-symlinks test-configs
     @echo "All tests passed."
+
+# ── VM Testing ──────────────────────────────────────────
+
+# Test dotfiles in a macOS VM (Tart, ~5-10 min, Apple Silicon only)
+[macos]
+test-macos *ARGS:
+    @bash _test/vm-test-macos.sh {{ ARGS }}
+
+# Test dotfiles in a macOS VM (interactive — keeps VM open for inspection)
+[macos]
+test-macos-gui:
+    @bash _test/vm-test-macos.sh --interactive
+
+# Test dotfiles in a Linux VM (Lima, ~3-5 min)
+test-linux *ARGS:
+    @bash _test/vm-test-linux.sh {{ ARGS }}
+
+# Test dotfiles in a Linux VM (interactive)
+test-linux-gui:
+    @bash _test/vm-test-linux.sh --interactive
+
+# Clean up all test VMs
+vm-clean:
+    @echo "==> Cleaning Tart VMs..."
+    @tart list 2>/dev/null | grep test-dotfiles | awk '{print $$1}' | xargs -I{} tart delete {} 2>/dev/null || true
+    @echo "==> Cleaning Lima VMs..."
+    @limactl list 2>/dev/null | grep test-dotfiles | awk '{print $$1}' | xargs -I{} limactl delete -f {} 2>/dev/null || true
+    @echo "==> Done."

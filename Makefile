@@ -8,23 +8,25 @@
 SHELL := /bin/bash
 DOTFILES := $(HOME)/.dotfiles
 
-HOME_PACKAGES := zsh git
-CONFIG_PACKAGES := nvim ghostty tmux lazygit k9s zed opencode claude cursor
-ALL_PACKAGES := $(HOME_PACKAGES) $(CONFIG_PACKAGES)
+# Stow package lists (CLI = universal, GUI = macOS only)
+CLI_PACKAGES := zsh git nvim tmux lazygit k9s opencode claude
+GUI_PACKAGES := ghostty zed cursor obsidian
+ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
-.PHONY: all install link unlink relink update macos dock project-folders \
+.PHONY: all install link link-cli link-gui unlink relink update macos dock project-folders \
         golang rust asdf check lint test test-symlinks test-configs help \
-        zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor \
+        zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor obsidian \
         brew-gen brew-install brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
         docker-build docker-build-nvim docker-build-devenv docker-build-web-terminal docker-build-web-desktop \
         docker-test docker-run docker-run-web-terminal docker-run-web-terminal-tmux docker-run-web-terminal-nvim \
         docker-run-web-desktop docker-push docker-lint \
-        docker-dive-ci
+        docker-dive docker-dive-ci \
+        test-macos test-macos-gui test-linux test-linux-gui vm-clean
 
 # ── Full Setup ──────────────────────────────────────────
 
-all: install link macos ## Full setup: brew + link + macos
+all: install link macos ## Full setup: brew + link + macos (macOS settings skipped on Linux)
 	@echo "Done! Open a new shell to apply changes."
 
 # ── Install ─────────────────────────────────────────────
@@ -33,15 +35,29 @@ install: ## Install Homebrew and all packages from Brewfile
 	@echo "==> Installing Homebrew packages..."
 	@if ! command -v brew &>/dev/null; then \
 		/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; \
-		eval "$$(/opt/homebrew/bin/brew shellenv)"; \
+		if [ -f "/opt/homebrew/bin/brew" ]; then \
+			eval "$$(/opt/homebrew/bin/brew shellenv)"; \
+		elif [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]; then \
+			eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"; \
+		fi; \
 	fi
 	cat $(DOTFILES)/brew/Brewfile.* | brew bundle --file=-
 
 # ── Link / Unlink ──────────────────────────────────────
 
-link: ## Symlink all stow packages (idempotent)
-	@echo "==> Linking dotfiles..."
-	@cd $(DOTFILES) && stow --restow -t "$(HOME)" $(ALL_PACKAGES)
+link: link-cli link-gui ## Symlink all stow packages (CLI on all platforms, GUI on macOS only)
+
+link-cli: ## Symlink CLI packages (universal)
+	@echo "==> Linking CLI dotfiles..."
+	@cd $(DOTFILES) && stow --restow -t "$(HOME)" $(CLI_PACKAGES)
+
+link-gui: ## Symlink GUI packages (macOS only)
+	@if [[ "$$(uname -s)" == "Darwin" ]]; then \
+		echo "==> Linking GUI dotfiles..."; \
+		cd $(DOTFILES) && stow --restow -t "$(HOME)" $(GUI_PACKAGES); \
+	else \
+		echo "==> Skipping GUI dotfiles (not macOS)"; \
+	fi
 
 unlink: ## Remove all symlinks
 	@echo "==> Unlinking dotfiles..."
@@ -84,6 +100,9 @@ claude: ## Link claude config
 cursor: ## Link cursor config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" cursor
 
+obsidian: ## Link obsidian config
+	@cd $(DOTFILES) && stow --restow -t "$(HOME)" obsidian
+
 # ── Updates ─────────────────────────────────────────────
 
 update: ## Update Homebrew packages
@@ -125,19 +144,21 @@ brew-edit: ## Edit split Brewfiles (shows directory)
 # ── macOS ───────────────────────────────────────────────
 
 macos: ## Apply macOS system settings and dock
-	@if [[ "$${CI:-}" != "true" ]]; then \
+	@if [[ "$$(uname -s)" != "Darwin" ]]; then \
+		echo "==> Skipping macOS settings (not macOS)"; \
+	elif [[ "$${CI:-}" != "true" ]]; then \
 		echo "==> Applying macOS settings..."; \
-		source $(DOTFILES)/macOS/settings.sh; \
-		source $(DOTFILES)/macOS/dock.sh; \
+		source $(DOTFILES)/_macOS/settings.sh; \
+		source $(DOTFILES)/_macOS/dock.sh; \
 	else \
 		echo "==> Skipping macOS settings (CI mode)"; \
 	fi
 
 dock: ## Configure dock apps
-	source $(DOTFILES)/macOS/dock.sh
+	source $(DOTFILES)/_macOS/dock.sh
 
 project-folders: ## Create development project folder structure
-	source $(DOTFILES)/macOS/project-folder-structure.sh
+	source $(DOTFILES)/_macOS/project-folder-structure.sh
 
 # ── Optional Dev Tools ──────────────────────────────────
 
@@ -239,6 +260,9 @@ docker-push: ## Multi-arch build + push to Docker Hub
 docker-lint: ## Lint Dockerfiles with hadolint
 	hadolint _images/nvim/Dockerfile _images/devenv/Dockerfile _images/devenv-web-terminal/Dockerfile _images/devenv-web-desktop/Dockerfile
 
+docker-dive: ## Analyze Docker image layers with dive
+	dive $(or $(IMAGE),snic/nvim:latest)
+
 docker-dive-ci: ## CI-mode dive analysis (fails on inefficiency)
 	CI=true dive snic/nvim:latest
 	CI=true dive snic/devenv:latest
@@ -248,7 +272,7 @@ docker-dive-ci: ## CI-mode dive analysis (fails on inefficiency)
 # ── Validation ──────────────────────────────────────────
 
 lint: ## Lint shell scripts
-	shellcheck _install/*.sh _macOS/*.sh bootstrap.sh install.sh
+	shellcheck _install/*.sh _macOS/*.sh _lib/*.sh bootstrap.sh install.sh
 
 test-symlinks: ## Validate stow symlinks (dry-run)
 	@bash _test/validate-symlinks.sh
@@ -258,6 +282,35 @@ test-configs: ## Validate JSON and TOML config syntax
 
 test: lint test-symlinks test-configs ## Run all validation checks
 	@echo "All tests passed."
+
+# ── VM Testing ──────────────────────────────────────────
+
+test-macos: ## Test dotfiles in a macOS VM (Tart, Apple Silicon only)
+	@if [[ "$$(uname -s)" != "Darwin" ]]; then \
+		echo "==> Skipping macOS VM test (not macOS)"; \
+	else \
+		bash _test/vm-test-macos.sh $(ARGS); \
+	fi
+
+test-macos-gui: ## Test dotfiles in a macOS VM (interactive, keeps VM open)
+	@if [[ "$$(uname -s)" != "Darwin" ]]; then \
+		echo "==> Skipping macOS VM test (not macOS)"; \
+	else \
+		bash _test/vm-test-macos.sh --interactive; \
+	fi
+
+test-linux: ## Test dotfiles in a Linux VM (Lima)
+	bash _test/vm-test-linux.sh $(ARGS)
+
+test-linux-gui: ## Test dotfiles in a Linux VM (interactive)
+	bash _test/vm-test-linux.sh --interactive
+
+vm-clean: ## Clean up all test VMs
+	@echo "==> Cleaning Tart VMs..."
+	@tart list 2>/dev/null | grep test-dotfiles | awk '{print $$1}' | xargs -I{} tart delete {} 2>/dev/null || true
+	@echo "==> Cleaning Lima VMs..."
+	@limactl list 2>/dev/null | grep test-dotfiles | awk '{print $$1}' | xargs -I{} limactl delete -f {} 2>/dev/null || true
+	@echo "==> Done."
 
 # ── Help ────────────────────────────────────────────────
 

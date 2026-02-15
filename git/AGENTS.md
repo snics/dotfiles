@@ -49,6 +49,6 @@ When adding new aliases, follow the same pattern: short name + comment.
 
 ## Editor and Merge Tool
 
-- Editor: `vim`
-- Merge tool: `mvimdiff` (with Fugitive integration)
+- Editor: `nvim`
+- Merge tool: `nvimdiff`
 - Conflict style: `diff3`

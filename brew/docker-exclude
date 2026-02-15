@@ -10,6 +10,7 @@ trash
 lotyp/formulae/dockutil
 
 # Requires hardware, VM, or Docker daemon on host
+cirruslabs/cli/tart
 lima
 qemu
 minikube
@@ -22,14 +23,12 @@ neovim
 curl
 
 # No Linux bottle / build fails on Linux
-gox
 hashpump
 krr
 rename
 robusta-dev/holmesgpt/holmesgpt
 
 # Too large for container image (install on demand if needed)
-texlive
 swift
 qt@5
 imagemagick

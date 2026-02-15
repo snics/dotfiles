@@ -21,7 +21,7 @@ jobs:
         uses: ludeeus/action-shellcheck@2.0.0
         with:
           scandir: .
-          additional_files: bootstrap.sh install.sh pre-install.sh
+          additional_files: bootstrap.sh install.sh
 
       - name: Validate JSON configs
         run: |
@@ -90,7 +90,7 @@ jobs:
       - name: Stow dry-run (all packages)
         run: |
           cd "$GITHUB_WORKSPACE"
-          for pkg in zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor; do
+          for pkg in zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor obsidian; do
             echo -n "  $pkg: "
             if stow --simulate --restow -t "$HOME" "$pkg" 2>&1 | grep -q "ERROR"; then
               echo "FAIL"
@@ -154,3 +154,17 @@ jobs:
       - name: Test snic/devenv-web-terminal
         run: |
           docker run --rm --entrypoint ttyd snic/devenv-web-terminal:ci --version
+
+      - name: Build snic/devenv-web-desktop
+        uses: docker/build-push-action@v6
+        with:
+          context: _images/devenv-web-desktop
+          tags: snic/devenv-web-desktop:ci
+          load: true
+          build-args: DEVENV_TAG=ci
+          cache-from: type=gha,scope=web-desktop
+          cache-to: type=gha,mode=max,scope=web-desktop
+
+      - name: Test snic/devenv-web-desktop
+        run: |
+          docker run --rm --entrypoint supervisord snic/devenv-web-desktop:ci --version

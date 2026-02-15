@@ -6,6 +6,7 @@ brew "dockle" # Container Image Linter for Security, Helping build the Best-Prac
 brew "hadolint" # Dockerfile linter, validate inline bash, written in Haskell. [Hadolint](https://github.com/hadolint/hadolint)
 brew "lazydocker" # The lazier way to manage everything docker. [Lazydocker](https://github.com/jesseduffield/lazydocker)
 brew "lima" # Linux virtual machines, typically on macOS, for running containerd. [Lima](https://github.com/lima-vm/lima)
+brew "cirruslabs/cli/tart" # Run macOS and Linux VMs on Apple Silicon. [Tart](https://tart.run)
 brew "podman" # Tool for managing OCI containers and pods. [Podman](https://podman.io/)
 brew "podman-compose" # Docker Compose replacement for Podman. [Podman Compose](https://github.com/containers/podman-compose)
 brew "reg" # Docker registry v2 command line client. [Reg](https://github.com/genuinetools/reg)

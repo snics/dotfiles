@@ -3,7 +3,7 @@ _mkdock() {
     revolver --style 'dots3' start "💻 Configuring dock..."
 
     # Load central app list
-    source ~/.dotfiles/macOS/dock-apps.sh
+    source ~/.dotfiles/_macOS/dock-apps.sh
 
     # Clear dock
     dockutil --no-restart --remove all &> /dev/null

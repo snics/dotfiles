@@ -42,6 +42,6 @@ case "${TTYD_MODE}" in
     ;;
   *)
     # Custom: treat TTYD_MODE as the command itself
-    exec ttyd "${TTYD_OPTS[@]}" ${TTYD_MODE}
+    exec ttyd "${TTYD_OPTS[@]}" "${TTYD_MODE}"
     ;;
 esac

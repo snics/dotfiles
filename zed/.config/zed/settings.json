@@ -176,7 +176,7 @@
     "favorite_models": [],
     "inline_assistant_model": {
       "provider": "openrouter",
-      "model": "openrouter/free"
+      "model": "moonshotai/kimi-k2.5"
     },
     "model_parameters": []
   },

@@ -1,6 +1,6 @@
 # Nico's dotfiles
 
-![macOS.png](docs/macOS.png)
+![macOS.png](_docs/macOS.png)
 
 Welcome to my world. This is an advanced macOS development setup optimized for modern software development.
 
@@ -128,8 +128,8 @@ This setup works perfectly for developers and software architects who work with 
 - 🐹 [Go](https://golang.org/) - Go programming language
   - gopls language server
   - delve debugger
-  - gox for cross-compilation
-- 🐍 [Python](https://www.python.org/) - Python 3.11+
+  - Built-in cross-compilation via `GOOS`/`GOARCH`
+- 🐍 [Python](https://www.python.org/) - Python 3.13+
   - Managed via asdf and Homebrew
 - ⚡ [Swift](https://swift.org/) - Apple's programming language
 
@@ -203,23 +203,23 @@ The [`brew/Brewfile`](brew/Brewfile) contains 270+ additional packages including
 
 **⚠️ Warning:** If you want to give these dotfiles a try, you should first fork this repository, review the code, and remove things you don't want or need. Don't blindly use my settings unless you know what they do. Use at your own risk!
 
-#### Step 1: Clone and Pre-install
+#### One-Line Install
 
-Run this command in your terminal to download and prepare the dotfiles:
-
-```bash
-sh -c "`curl -fsSL https://raw.githubusercontent.com/snics/dotfiles/master/pre-install.sh`"
-```
-
-#### Step 2: Run Installation Wizard
-
-To run the install wizard, execute:
+Run this command in your terminal to bootstrap everything (Xcode CLT, Homebrew, dotfiles, all packages):
 
 ```bash
-sh ~/.dotfiles/install.sh
+curl -fsSL https://raw.githubusercontent.com/snics/dotfiles/master/bootstrap.sh | bash
 ```
 
-The wizard will guide you through the installation process and let you choose which components to install.
+#### Manual Install
+
+If you prefer to clone first and review:
+
+```bash
+git clone https://github.com/snics/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+just all
+```
 
 ## 🐳 Try it with Docker
 
@@ -263,22 +263,29 @@ This dotfiles repository uses the following structure:
 
 ```
 ~/.dotfiles/
-├── _install/          # Installation scripts for individual tools
+├── _docs/             # Documentation and screenshots
+├── _images/           # Docker build files (nvim, devenv, web-terminal, web-desktop)
+├── _install/          # Setup scripts for optional tools (golang, rust, claude, obsidian)
+├── _lib/              # Shared shell libraries (platform detection)
+├── _macOS/            # macOS system settings and dock scripts
+├── _planning/         # Project planning and roadmap
+├── _test/             # Validation and VM test scripts
 ├── asdf/              # asdf version manager configuration
-├── brew/              # Homebrew bundle file
-├── docs/              # Documentation and screenshots
+├── brew/              # Split Brewfiles (13 categories, concatenated at shell startup)
+├── claude/            # Claude Code config and MCP servers
+├── cursor/            # Cursor editor config
 ├── ghostty/           # Ghostty terminal configuration
 ├── git/               # Git configuration and themes
 ├── k9s/               # Kubernetes CLI configuration
 ├── lazygit/           # Lazygit themes and settings
-├── macOS/             # macOS-specific settings and scripts
 ├── nvim/              # Neovim configuration
-├── obsidian/          # Obsidian settings
-├── planning/          # Project planning and roadmap
+├── obsidian/          # Obsidian vault structure and settings
+├── opencode/          # OpenCode AI agent config
 ├── tmux/              # tmux configuration and plugins
+├── zed/               # Zed editor config
 ├── zsh/               # ZSH configuration, themes, and functions
-├── install.sh         # Main installation script
-└── pre-install.sh     # Pre-installation setup
+├── bootstrap.sh       # Curl-pipeable first-run installer
+└── install.sh         # Cross-platform installer (macOS, Linux, containers)
 ```
 
 ### My Development Folder Structure
@@ -304,7 +311,7 @@ I use a well-organized folder structure for all development work. The installati
 
 ### Neovim Setup
 
-![terminal.gif](docs/terminal.gif)
+![terminal.gif](_docs/terminal.gif)
 
 Neovim should work out of the box once the correct plugins are installed. To install the plugins, open Neovim with:
 
@@ -312,7 +319,7 @@ Neovim should work out of the box once the correct plugins are installed. To ins
 nvim +PlugInstall
 ```
 
-![NeoVim.png](docs/NeoVim.png)
+![NeoVim.png](_docs/NeoVim.png)
 
 ### Setup ~/.secrets
 
@@ -353,11 +360,11 @@ This command will:
 - Update asdf plugins and tool versions
 - Perform system maintenance tasks
 
-You can find the implementation in `zsh/settings/functions/update.zsh`.
+You can find the implementation in `zsh/functions/update.zsh`.
 
 ## 📝 Planning & Roadmap
 
-I maintain a structured planning system for future improvements and features. Check out the [`planning/`](planning/) directory for:
+I maintain a structured planning system for future improvements and features. Check out the [`_planning/`](_planning/) directory for:
 
 - **Roadmap**: High-level plans and timeline
 - **Backlog**: Ideas and future enhancements
@@ -374,7 +381,7 @@ Some planned improvements include:
 - Enhanced documentation
 - More themes and customization options
 
-See the full roadmap in [`planning/backlog.md`](planning/backlog.md) for details.
+See the full roadmap in [`_planning/backlog.md`](_planning/backlog.md) for details.
 
 ## 🤝 Contributing
 

@@ -2,8 +2,6 @@
 # See the README for examples.
 [include]
    path = ~/.dotfiles/git/catppuccin.gitconfig
-[core]
-    pager = delta
 [color]
   ui = auto
 [color "branch"]
@@ -91,10 +89,6 @@
   # tag
   t = tag -n                        # show tags with <n> lines of each tag message
 
-  # svn helpers
-  svnr = svn rebase
-  svnd = svn dcommit
-  svnl = svn log --oneline --show-commit
 [commit]
   # https://help.github.com/articles/signing-commits-using-gpg/
 	gpgsign = true
@@ -102,14 +96,11 @@
   pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
 [mergetool]
   prompt = false
-[mergetool "mvimdiff"]
-  cmd="mvim -c 'Gdiff' $MERGED"     # use fugitive.vim for 3-way merge
-  keepbackup=false
 [merge]
   conflictstyle = diff3
   summary = true
   verbosity = 1
-  tool = mvimdiff
+  tool = nvimdiff
   log = true
 [apply]
   whitespace = nowarn
@@ -124,10 +115,11 @@
   followTags = true
 [core]
   autocrlf = false
-  editor = vim
+  editor = nvim
+  pager = delta
 
-  excludesfile = ~/.dotfiles/git/.gitignore
-  attributesfile = ~/.dotfiles/git/.gitattributes
+  excludesfile = ~/.config/git/.gitignore
+  attributesfile = ~/.config/git/.gitattributes
 
   # Treat spaces before tabs and all kinds of trailing whitespace as an error
   # [default] trailing-space: looks for spaces at the end of a line
@@ -162,7 +154,7 @@
   path = .gitconfig.user
 [help]
   # Automatically correct and execute mistyped commands
-  autocorrect = 1
+  autocorrect = prompt
 
 # URL shorthands
 [url "git@github.com:"]

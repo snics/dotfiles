@@ -215,7 +215,6 @@ ignored_commands = [
   "kimi",
   # System monitors
   "btop",
-  "htop",
   "top",
   "ctop",
   # Terminal housekeeping
@@ -228,7 +227,7 @@ ignored_commands = [
   "which",
   "type",
   "tldr",
-  "neofetch",
+  "fastfetch",
   # K8s context switching (too frequent)
   "kubens",
   "kubectx",
@@ -236,7 +235,6 @@ ignored_commands = [
   "open",
   "trash",
   # Interactive filters/shells
-  "peco",
   "nu",
   # Trivial
   "echo",

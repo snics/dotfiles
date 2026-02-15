@@ -8,7 +8,6 @@ Rules for working on the tmux configuration.
 tmux/
 ├── .config/tmux/
 │   ├── tmux.conf          # Main config (plugins, keybindings, colors)
-│   ├── catppuccin.conf    # Catppuccin theme overrides (sourced from tmux.conf)
 │   └── plugins/           # Managed by TPM — NOT tracked in git
 │       ├── tpm/           # Tmux Plugin Manager
 │       ├── tmux-sensible/ # Sensible defaults
@@ -28,10 +27,8 @@ Plugins are managed by **TPM** (Tmux Plugin Manager), not by git.
 
 ## Theme
 
-Catppuccin Mocha. Two config locations:
-
-1. `tmux.conf` — `@catppuccin_flavor` and status bar layout
-2. `catppuccin.conf` — sourced after plugin declarations for theme overrides
+Catppuccin Mocha. All theme settings live in `tmux.conf` — `@catppuccin_flavor`
+and status bar layout.
 
 When changing the flavor, update `@catppuccin_flavor` in `tmux.conf`.
 

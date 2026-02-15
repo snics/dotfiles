@@ -66,7 +66,7 @@ if [ -d "$DOTFILES_OBSIDIAN/.obsidian" ]; then
     if [ -d "$VAULT_PATH/.obsidian" ]; then
         rm -rf "$VAULT_PATH/.obsidian"
     fi
-    
+
     cp -R "$DOTFILES_OBSIDIAN/.obsidian" "$VAULT_PATH/"
     print_success "Configuration copied"
 else
@@ -112,9 +112,10 @@ if [ -d "$DOTFILES_OBSIDIAN/vault-structure" ]; then
 fi
 
 # Create a welcome note
+TODAYS_DATE="$(date +%Y-%m-%d)"
 cat > "$VAULT_PATH/Welcome to Your Second Brain.md" << 'EOF'
 ---
-date: $(date +%Y-%m-%d)
+date: TODAYS_DATE_PLACEHOLDER
 tags: [welcome, setup]
 ---
 
@@ -159,7 +160,7 @@ This Obsidian vault is configured for the PARA methodology (Projects, Areas, Res
 ## ⌨️ Keyboard Shortcuts
 
 - `Cmd+P` - Quick switcher
-- `Cmd+Shift+P` - Command palette  
+- `Cmd+Shift+P` - Command palette
 - `Cmd+E` - Toggle edit/preview
 - `Cmd+B` - Bold text
 - `Cmd+I` - Italic text
@@ -184,6 +185,7 @@ This Obsidian vault is configured for the PARA methodology (Projects, Areas, Res
 **Dotfiles:** `~/.dotfiles/obsidian`
 **Backup Function:** `backup-obsidian` (in terminal)
 EOF
+sed -i'' -e "s/TODAYS_DATE_PLACEHOLDER/$TODAYS_DATE/" "$VAULT_PATH/Welcome to Your Second Brain.md"
 
 print_success "Welcome note created"
 
@@ -205,4 +207,3 @@ echo ""
 echo "Useful commands:"
 echo "  backup-obsidian  - Backup current vault config to dotfiles"
 echo ""
-

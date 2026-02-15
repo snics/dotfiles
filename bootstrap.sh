@@ -3,7 +3,7 @@
 # Usage: curl -fsSL https://raw.githubusercontent.com/snics/dotfiles/master/bootstrap.sh | bash
 #
 # What this does:
-#   1. Install Xcode Command Line Tools (if missing)
+#   1. Install Xcode Command Line Tools (macOS only, if missing)
 #   2. Install Homebrew (if missing)
 #   3. Clone dotfiles to ~/.dotfiles (if missing)
 #   4. Install just + stow via Homebrew
@@ -16,8 +16,8 @@ REPO="https://github.com/snics/dotfiles.git"
 
 echo "==> Bootstrapping dotfiles..."
 
-# ── 1. Xcode Command Line Tools ────────────────────────
-if ! xcode-select -p &>/dev/null; then
+# ── 1. Xcode Command Line Tools (macOS only) ───────────
+if [[ "$(uname -s)" == "Darwin" ]] && ! xcode-select -p &>/dev/null; then
     echo "==> Installing Xcode Command Line Tools..."
     xcode-select --install
     echo "    Waiting for Xcode CLT installation to complete..."
@@ -30,7 +30,11 @@ fi
 if ! command -v brew &>/dev/null; then
     echo "==> Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    if [[ -f "/opt/homebrew/bin/brew" ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    fi
 fi
 
 # ── 3. Clone dotfiles ──────────────────────────────────

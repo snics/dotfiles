@@ -27,7 +27,6 @@
     cloc          # Count lines of code
     exiv2         # Image metadata tool
     gopls         # Go language server
-    gox           # Go cross-compile
     hadolint      # Dockerfile linter
     pkgx          # Package runner
     gemini        # Google Gemini CLI
@@ -49,13 +48,11 @@
     lazygit       # Git TUI
     lazydocker    # Docker TUI
     jjui          # Jujutsu TUI
-    peco          # Interactive filter
 
     # Utilities
     pngcheck      # PNG integrity checker
     rlwrap        # Readline wrapper
     vbindiff      # Visual binary diff
-    wdiff         # Word diff
   )
 
   for cmd in "${tools[@]}"; do

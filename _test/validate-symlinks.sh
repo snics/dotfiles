@@ -3,9 +3,9 @@
 set -euo pipefail
 
 DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
-HOME_PACKAGES="zsh git"
-CONFIG_PACKAGES="nvim ghostty tmux lazygit k9s zed opencode claude cursor"
-ALL_PACKAGES="$HOME_PACKAGES $CONFIG_PACKAGES"
+CLI_PACKAGES="zsh git nvim tmux lazygit k9s opencode claude"
+GUI_PACKAGES="ghostty zed cursor obsidian"
+ALL_PACKAGES="$CLI_PACKAGES $GUI_PACKAGES"
 
 errors=0
 for pkg in $ALL_PACKAGES; do

@@ -46,7 +46,7 @@ _update_sudo_start() {
 
   # Store password base64-encoded in a secure temp file (owner-only)
   # Use >| to bypass noclobber (mktemp already creates the file)
-  _SUDO_PW_FILE="$(mktemp /tmp/.sudo_pw.XXXXXX)"
+  _SUDO_PW_FILE="$(mktemp "${TMPDIR:-/tmp}/.upd_auth.XXXXXX")"
   chmod 600 "$_SUDO_PW_FILE"
   echo -n "$_pw" | base64 >| "$_SUDO_PW_FILE"
   unset _pw
@@ -55,7 +55,7 @@ _update_sudo_start() {
   # PID is captured via a temp file to avoid zsh subshell/pipe variable scoping issues
   local _pw_file="$_SUDO_PW_FILE"
   local _parent_pid="$$"
-  local _pid_file="$(mktemp /tmp/.sudo_pid.XXXXXX)"
+  local _pid_file="$(mktemp "${TMPDIR:-/tmp}/.upd_proc.XXXXXX")"
   (
     /bin/sh -c '
       while true; do
@@ -135,7 +135,7 @@ _update_ask() {
   local name="$1"
   [[ "$_update_all" == true ]] && return 0
   echo -n " ${name}: Update? [y/N] "
-  read answer
+  read -r answer
   [[ "$answer" =~ ^[Yy] ]]
 }
 
@@ -169,7 +169,7 @@ _update_brew() {
   brew update
   _sudo_refresh
   echo "Upgrading from Brewfile..."
-  brew bundle --file=~/.dotfiles/brew/Brewfile
+  brew bundle
   _sudo_refresh
   echo "Upgrading Cask apps (greedy)..."
   brew upgrade --cask --greedy
@@ -276,10 +276,15 @@ _update_run() {
 
 # ── Target Registry ─────────────────────────────────────────
 
-typeset -ga _UPDATE_TARGETS=(
-  "system:🖥️:System"
+typeset -ga _UPDATE_TARGETS=()
+# macOS-only: system updates (softwareupdate)
+[[ "$(uname -s)" == "Darwin" ]] && _UPDATE_TARGETS+=("system:🖥️:System")
+_UPDATE_TARGETS+=(
   "brew:🍺:Homebrew"
-  "mas:🍎:Mac App Store"
+)
+# macOS-only: Mac App Store (mas)
+[[ "$(uname -s)" == "Darwin" ]] && _UPDATE_TARGETS+=("mas:🍎:Mac App Store")
+_UPDATE_TARGETS+=(
   "asdf:🔌:asdf"
   "rust:🦀:Rust"
   "nvim:📝:Neovim Plugins"
@@ -300,9 +305,13 @@ _update_help() {
   echo "  help         Show this help message"
   echo ""
   echo "\033[1;37mTargets:\033[0m"
-  echo "  system       macOS Software Update"
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    echo "  system       macOS Software Update"
+  fi
   echo "  brew         Homebrew (formulae + casks from Brewfile)"
-  echo "  mas          Mac App Store apps"
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    echo "  mas          Mac App Store apps"
+  fi
   echo "  asdf         asdf version manager plugins"
   echo "  rust         Rust toolchain (rustup)"
   echo "  nvim         Neovim plugins (lazy.nvim)"

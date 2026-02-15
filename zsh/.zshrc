@@ -4,6 +4,8 @@ source ~/.dotfiles/zsh/conf.d/00-init.zsh
 # ── Homebrew ────────────────────────────
 if [[ -f "/opt/homebrew/bin/brew" ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 # ── Secrets (1Password CLI → legacy fallback) ──
