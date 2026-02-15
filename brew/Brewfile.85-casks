@@ -64,7 +64,6 @@ cask "zed" # Collaborative code editor. [Zed](https://zed.dev/)
 cask "zoom" # Video communication and virtual meeting platform. [Zoom](https://zoom.us/)
 
 # Quick Look plugins
-cask "qlimagesize" # Quick Look plugin for displaying image size and resolution. [QLImageSize](https://github.com/Nyx0uf/qlImageSize)
 cask "qlmarkdown" # Quick Look plugin for Markdown files. [QLMarkdown](https://github.com/toland/qlmarkdown)
 cask "qlstephen" # Quick Look plugin for plain text files without a file extension. [QLStephen](https://github.com/whomwah/qlstephen)
 cask "qlvideo" # Quick Look plugin for video files. [QLVideo](https://github.com/Marginal/QLVideo)
