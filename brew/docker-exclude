@@ -23,7 +23,6 @@ neovim
 curl
 
 # No Linux bottle / build fails on Linux
-hashpump
 krr
 rename
 robusta-dev/holmesgpt/holmesgpt
