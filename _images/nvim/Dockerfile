@@ -7,11 +7,16 @@
 #   Stage 2 (runtime): slim image with only pre-built artifacts
 #
 # Build:  docker build -f _images/nvim/Dockerfile -t snics/nvim .
-# Run:    docker run -it --rm -v $(pwd):/workspace snics/nvim
+# Run:    docker run -it --rm -v $(pwd):/home/developer snics/nvim
 # ---------------------------------------------------------
 ARG DEBIAN_VERSION=bookworm
 ARG NVIM_VERSION=0.11.6
 ARG GO_VERSION=1.22.5
+# SHA256 checksums for binary downloads (supply-chain integrity)
+ARG GO_SHA256_AMD64=904b924d435eaea086515bc63235b192ea441bd8c9b198c507e85009e6e4c7f0
+ARG GO_SHA256_ARM64=8d21325bfcf431be3660527c1a39d3d9ad71535fabdf5041c826e44e31642b5a
+ARG NVIM_SHA256_AMD64=2fc90b962327f73a78afbfb8203fd19db8db9cdf4ee5e2bef84704339add89cc
+ARG NVIM_SHA256_ARM64=8ddc0c101846145e830b17bbca50782ca9307eee4fab539d9e2ddaf8793c06f1
 
 # ============================================================
 # Stage 1: Builder — install plugins, compile parsers, install LSPs
@@ -23,12 +28,16 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG TARGETARCH
 ARG NVIM_VERSION
 ARG GO_VERSION
+ARG GO_SHA256_AMD64
+ARG GO_SHA256_ARM64
+ARG NVIM_SHA256_AMD64
+ARG NVIM_SHA256_ARM64
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    HOME=/home/dev \
-    XDG_CONFIG_HOME=/home/dev/.config \
-    XDG_DATA_HOME=/home/dev/.local/share \
-    XDG_CACHE_HOME=/home/dev/.cache \
+    HOME=/home/developer \
+    XDG_CONFIG_HOME=/home/developer/.config \
+    XDG_DATA_HOME=/home/developer/.local/share \
+    XDG_CACHE_HOME=/home/developer/.cache \
     TERM=xterm-256color
 
 # Exclude docs/man/locale from all packages (saves ~30MB)
@@ -57,27 +66,33 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     ripgrep
 
 # Create non-root user
-RUN groupadd -g 1000 dev \
-    && useradd -m -u 1000 -g dev -s /bin/bash dev
+RUN groupadd -g 1000 developer \
+    && useradd -m -u 1000 -g developer -s /bin/bash developer
 
 # Install Go (needed for gopls and Go-based Mason tools)
 RUN GOARCH="${TARGETARCH}" \
-    && curl -fsSL "https://go.dev/dl/go${GO_VERSION}.linux-${GOARCH}.tar.gz" \
-    | tar -C /usr/local -xzf -
+    && GO_SHA256=$([ "${TARGETARCH}" = "arm64" ] && echo "${GO_SHA256_ARM64}" || echo "${GO_SHA256_AMD64}") \
+    && curl -fsSL -o /tmp/go.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-${GOARCH}.tar.gz" \
+    && echo "${GO_SHA256}  /tmp/go.tar.gz" | sha256sum -c - \
+    && tar -C /usr/local -xzf /tmp/go.tar.gz \
+    && rm /tmp/go.tar.gz
 
 ENV PATH="/usr/local/go/bin:${HOME}/go/bin:${PATH}"
 
 # Install NeoVim from GitHub release (multi-arch) + strip debug symbols
 RUN ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "arm64" || echo "x86_64") \
-    && curl -fsSL "https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-${ARCH}.tar.gz" \
-    | tar -C /usr/local --strip-components=1 -xzf - \
+    && NVIM_SHA256=$([ "${TARGETARCH}" = "arm64" ] && echo "${NVIM_SHA256_ARM64}" || echo "${NVIM_SHA256_AMD64}") \
+    && curl -fsSL -o /tmp/nvim.tar.gz "https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-${ARCH}.tar.gz" \
+    && echo "${NVIM_SHA256}  /tmp/nvim.tar.gz" | sha256sum -c - \
+    && tar -C /usr/local --strip-components=1 -xzf /tmp/nvim.tar.gz \
+    && rm /tmp/nvim.tar.gz \
     && (strip --strip-unneeded /usr/local/bin/nvim 2>/dev/null || true)
 
-USER dev
+USER developer
 WORKDIR ${HOME}
 
 # Copy NeoVim config (lazy-lock.json ensures reproducible builds)
-COPY --chown=dev:dev nvim/.config/nvim ${XDG_CONFIG_HOME}/nvim
+COPY --chown=developer:developer nvim/.config/nvim ${XDG_CONFIG_HOME}/nvim
 
 # Patch config for Docker: disable update checker and auto-install
 # (keeps original dotfiles untouched, plugins are pre-baked in the image)
@@ -181,15 +196,18 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG TARGETARCH
 
+ARG IMAGE_VERSION=dev
+
 LABEL org.opencontainers.image.source="https://github.com/snics/dotfiles" \
     org.opencontainers.image.title="snics/nvim" \
-    org.opencontainers.image.description="NeoVim + lazy.nvim plugins + Treesitter + Mason LSPs"
+    org.opencontainers.image.description="NeoVim + lazy.nvim plugins + Treesitter + Mason LSPs" \
+    org.opencontainers.image.version="${IMAGE_VERSION}"
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    HOME=/home/dev \
-    XDG_CONFIG_HOME=/home/dev/.config \
-    XDG_DATA_HOME=/home/dev/.local/share \
-    XDG_CACHE_HOME=/home/dev/.cache \
+    HOME=/home/developer \
+    XDG_CONFIG_HOME=/home/developer/.config \
+    XDG_DATA_HOME=/home/developer/.local/share \
+    XDG_CACHE_HOME=/home/developer/.cache \
     TERM=xterm-256color \
     EDITOR=nvim
 
@@ -204,8 +222,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     && apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl git nodejs npm python3 python3-venv \
     ripgrep fd-find xclip \
-    && groupadd -g 1000 dev \
-    && useradd -m -u 1000 -g dev -s /bin/bash dev
+    && groupadd -g 1000 developer \
+    && useradd -m -u 1000 -g developer -s /bin/bash developer
 
 # Copy NeoVim
 COPY --from=builder /usr/local/bin/nvim /usr/local/bin/nvim
@@ -213,15 +231,15 @@ COPY --from=builder /usr/local/lib/nvim /usr/local/lib/nvim
 COPY --from=builder /usr/local/share/nvim /usr/local/share/nvim
 
 # Copy NeoVim config + data + Mason tools (.local includes .local/share/nvim)
-COPY --from=builder --chown=dev:dev ${XDG_CONFIG_HOME}/nvim ${XDG_CONFIG_HOME}/nvim
-COPY --from=builder --chown=dev:dev ${HOME}/.local ${HOME}/.local
+COPY --from=builder --chown=developer:developer ${XDG_CONFIG_HOME}/nvim ${XDG_CONFIG_HOME}/nvim
+COPY --from=builder --chown=developer:developer ${HOME}/.local ${HOME}/.local
 
 # Copy Go tool binaries if present (gopls, golangci-lint compiled by Mason)
-COPY --from=builder --chown=dev:dev ${HOME}/go ${HOME}/go
+COPY --from=builder --chown=developer:developer ${HOME}/go ${HOME}/go
 
 ENV PATH="${HOME}/go/bin:${HOME}/.local/share/nvim/mason/bin:${HOME}/.local/bin:${PATH}"
 
-USER dev
-WORKDIR /workspace
+USER developer
+WORKDIR ${HOME}
 
 ENTRYPOINT ["nvim"]

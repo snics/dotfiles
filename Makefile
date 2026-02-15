@@ -17,8 +17,9 @@ ALL_PACKAGES := $(HOME_PACKAGES) $(CONFIG_PACKAGES)
         zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor \
         brew-gen brew-install brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
-        docker-build docker-build-nvim docker-build-devenv docker-build-web \
-        docker-test docker-run docker-run-web docker-run-web-tmux docker-run-web-nvim docker-push docker-lint \
+        docker-build docker-build-nvim docker-build-devenv docker-build-web-terminal docker-build-web-desktop \
+        docker-test docker-run docker-run-web-terminal docker-run-web-terminal-tmux docker-run-web-terminal-nvim \
+        docker-run-web-desktop docker-push docker-lint \
         docker-dive-ci
 
 # ── Full Setup ──────────────────────────────────────────
@@ -183,7 +184,7 @@ check: ## Check installed tools and symlinks
 
 # ── Docker ──────────────────────────────────────────────
 
-docker-build: docker-build-nvim docker-build-devenv docker-build-web ## Build all Docker images
+docker-build: docker-build-nvim docker-build-devenv docker-build-web-terminal docker-build-web-desktop ## Build all Docker images
 
 docker-build-nvim: ## Build snics/nvim image
 	docker build -f _images/nvim/Dockerfile -t snics/nvim:latest .
@@ -191,8 +192,11 @@ docker-build-nvim: ## Build snics/nvim image
 docker-build-devenv: ## Build snics/devenv image
 	docker build -f _images/devenv/Dockerfile -t snics/devenv:latest .
 
-docker-build-web: ## Build snics/devenv-web image
-	docker build -f _images/devenv-web/Dockerfile -t snics/devenv-web:latest .
+docker-build-web-terminal: ## Build snics/devenv-web-terminal image
+	docker build -t snics/devenv-web-terminal:latest _images/devenv-web-terminal
+
+docker-build-web-desktop: ## Build snics/devenv-web-desktop image
+	docker build -t snics/devenv-web-desktop:latest _images/devenv-web-desktop
 
 docker-test: ## Smoke test all Docker images
 	@echo "==> Testing snics/nvim..."
@@ -202,35 +206,44 @@ docker-test: ## Smoke test all Docker images
 	@echo "==> Testing snics/devenv..."
 	@docker run --rm snics/devenv:latest -c 'starship --version | head -1 && lazygit --version | head -1 && delta --version && tmux -V && nvim --version | head -1'
 	@echo ""
-	@echo "==> Testing snics/devenv-web..."
-	@docker run --rm --entrypoint ttyd snics/devenv-web:latest --version
+	@echo "==> Testing snics/devenv-web-terminal..."
+	@docker run --rm --entrypoint ttyd snics/devenv-web-terminal:latest --version
+	@echo ""
+	@echo "==> Testing snics/devenv-web-desktop..."
+	@docker run --rm --entrypoint /opt/selkies/bin/selkies snics/devenv-web-desktop:latest --help 2>&1 | head -1
+	@docker run --rm --entrypoint supervisord snics/devenv-web-desktop:latest --version
 	@echo ""
 	@echo "All Docker tests passed."
 
 docker-run: ## Run interactive devenv with current directory mounted
-	docker run -it --rm -v "$$(pwd):/workspace" snics/devenv:latest
+	docker run -it --rm -v "$$(pwd):/home/developer/workspace" snics/devenv:latest
 
-docker-run-web: ## Start devenv-web on port 7681 (default: terminal)
-	docker run -it --rm -p 7681:7681 snics/devenv-web:latest
+docker-run-web-terminal: ## Start devenv-web-terminal on port 7681 (default: terminal)
+	docker run -it --rm -p 7681:7681 -v "$$(pwd):/home/developer/workspace" snics/devenv-web-terminal:latest
 
-docker-run-web-tmux: ## Start devenv-web with tmux
-	docker run -it --rm -p 7681:7681 -e TTYD_MODE=tmux snics/devenv-web:latest
+docker-run-web-terminal-tmux: ## Start devenv-web-terminal with tmux
+	docker run -it --rm -p 7681:7681 -v "$$(pwd):/home/developer/workspace" -e TTYD_MODE=tmux snics/devenv-web-terminal:latest
 
-docker-run-web-nvim: ## Start devenv-web with NeoVim
-	docker run -it --rm -p 7681:7681 -e TTYD_MODE=nvim snics/devenv-web:latest
+docker-run-web-terminal-nvim: ## Start devenv-web-terminal with NeoVim
+	docker run -it --rm -p 7681:7681 -v "$$(pwd):/home/developer/workspace" -e TTYD_MODE=nvim snics/devenv-web-terminal:latest
+
+docker-run-web-desktop: ## Start devenv-web-desktop on port 3000
+	docker run --rm -p 3000:3000 --shm-size=256m snics/devenv-web-desktop:latest
 
 docker-push: ## Multi-arch build + push to Docker Hub
 	docker buildx build --platform linux/amd64,linux/arm64 -f _images/nvim/Dockerfile -t snics/nvim:latest --push .
 	docker buildx build --platform linux/amd64,linux/arm64 -f _images/devenv/Dockerfile -t snics/devenv:latest --push .
-	docker buildx build --platform linux/amd64,linux/arm64 -f _images/devenv-web/Dockerfile -t snics/devenv-web:latest --push .
+	docker buildx build --platform linux/amd64,linux/arm64 -t snics/devenv-web-terminal:latest --push _images/devenv-web-terminal
+	docker buildx build --platform linux/amd64,linux/arm64 -t snics/devenv-web-desktop:latest --push _images/devenv-web-desktop
 
 docker-lint: ## Lint Dockerfiles with hadolint
-	hadolint _images/nvim/Dockerfile _images/devenv/Dockerfile _images/devenv-web/Dockerfile
+	hadolint _images/nvim/Dockerfile _images/devenv/Dockerfile _images/devenv-web-terminal/Dockerfile _images/devenv-web-desktop/Dockerfile
 
 docker-dive-ci: ## CI-mode dive analysis (fails on inefficiency)
 	CI=true dive snics/nvim:latest
 	CI=true dive snics/devenv:latest
-	CI=true dive snics/devenv-web:latest
+	CI=true dive snics/devenv-web-terminal:latest
+	CI=true dive snics/devenv-web-desktop:latest
 
 # ── Validation ──────────────────────────────────────────
 

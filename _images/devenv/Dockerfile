@@ -7,8 +7,9 @@
 #   Stage 2 (final): FROM snics/nvim + shell + TUI tools + configs
 #
 # Build:  docker build -f _images/devenv/Dockerfile -t snics/devenv .
-# Run:    docker run -it --rm -v $(pwd):/workspace snics/devenv
+# Run:    docker run -it --rm -v $(pwd):/home/developer/workspace snics/devenv
 # ---------------------------------------------------------
+# Pin parent image tag — override with --build-arg NVIM_TAG=<tag> for specific versions
 ARG NVIM_TAG=latest
 
 # ============================================================
@@ -35,7 +36,10 @@ RUN grep -h '^brew ' /tmp/brew/Brewfile.* | sed 's/brew "\([^"]*\)".*/\1/' | sor
     && grep -h '^tap ' /tmp/brew/Brewfile.* | sed 's/tap "\([^"]*\)".*/\1/' | sort -u | while IFS= read -r t; do brew tap "$t" 2>&1 || echo "WARN: tap $t failed"; done \
     && failed="" \
     && while IFS= read -r pkg; do \
-    brew install "$pkg" 2>&1 || { echo "WARN: failed to install $pkg"; failed="$failed $pkg"; }; \
+    brew install "$pkg" 2>&1 \
+    || { echo "RETRY: $pkg (attempt 2)"; sleep 3; brew install "$pkg" 2>&1; } \
+    || { echo "RETRY: $pkg (attempt 3)"; sleep 5; brew install "$pkg" 2>&1; } \
+    || { echo "FAIL: $pkg"; failed="$failed $pkg"; }; \
     done < /tmp/install.txt \
     && if [ -n "$failed" ]; then echo "==> Packages that failed to install:$failed"; fi \
     && rm -rf /tmp/brew /tmp/*.txt || true
@@ -56,9 +60,12 @@ FROM snics/nvim:${NVIM_TAG}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+ARG IMAGE_VERSION=dev
+
 LABEL org.opencontainers.image.source="https://github.com/snics/dotfiles" \
     org.opencontainers.image.title="snics/devenv" \
-    org.opencontainers.image.description="Full CLI + TUI development environment"
+    org.opencontainers.image.description="Full CLI + TUI development environment" \
+    org.opencontainers.image.version="${IMAGE_VERSION}"
 
 USER root
 
@@ -71,10 +78,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     && echo 'path-exclude=/usr/share/locale/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
     && echo 'path-exclude=/usr/share/info/*' >> /etc/dpkg/dpkg.cfg.d/excludes \
     && apt-get update && apt-get install -y --no-install-recommends \
-    zsh tmux jq less file locales \
+    zsh tmux jq less file locales procps \
     && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
     && locale-gen \
-    && chsh -s /bin/zsh dev
+    && chsh -s /bin/zsh developer
 
 ENV LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
@@ -83,7 +90,7 @@ ENV LANG=en_US.UTF-8 \
 COPY --from=brew /home/linuxbrew/.linuxbrew /home/linuxbrew/.linuxbrew
 
 ENV SHELL=/bin/zsh \
-    ZIM_HOME=/home/dev/.config/zim \
+    ZIM_HOME=/home/developer/.config/zim \
     PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH
 
 # ── All dotfile configs (one layer via bind mounts) ─────
@@ -94,36 +101,36 @@ RUN --mount=type=bind,source=zsh,target=/tmp/src/zsh \
     --mount=type=bind,source=git,target=/tmp/src/git \
     --mount=type=bind,source=lazygit,target=/tmp/src/lazygit \
     --mount=type=bind,source=k9s,target=/tmp/src/k9s \
-    mkdir -p /home/dev/.dotfiles/zsh/conf.d /home/dev/.dotfiles/zsh/themes \
-    /home/dev/.dotfiles/zsh/functions /home/dev/.dotfiles/git \
-    /home/dev/.config/zim /home/dev/.config/zim-modules \
-    /home/dev/.config/fzf /home/dev/.config/bat \
-    /home/dev/.config/btop /home/dev/.config/atuin \
-    /home/dev/.config/yazi /home/dev/.config/tmux \
-    /home/dev/.config/lazygit /home/dev/.config/k9s \
-    /home/dev/.config/git \
-    && cp /tmp/src/zsh/.zshrc /home/dev/.zshrc \
-    && cp /tmp/src/zsh/.config/zim/.zimrc /home/dev/.config/zim/.zimrc \
-    && cp -r /tmp/src/zsh/conf.d/. /home/dev/.dotfiles/zsh/conf.d/ \
-    && cp -r /tmp/src/zsh/themes/. /home/dev/.dotfiles/zsh/themes/ \
-    && cp -r /tmp/src/zsh/functions/. /home/dev/.dotfiles/zsh/functions/ \
-    && cp -r /tmp/src/zsh/.config/zim-modules/. /home/dev/.config/zim-modules/ \
-    && cp /tmp/src/zsh/.config/starship.toml /home/dev/.config/starship.toml \
-    && cp -r /tmp/src/zsh/.config/fzf/. /home/dev/.config/fzf/ \
-    && cp -r /tmp/src/zsh/.config/bat/. /home/dev/.config/bat/ \
-    && cp -r /tmp/src/zsh/.config/btop/. /home/dev/.config/btop/ \
-    && cp -r /tmp/src/zsh/.config/atuin/. /home/dev/.config/atuin/ \
-    && cp -r /tmp/src/zsh/.config/yazi/. /home/dev/.config/yazi/ \
-    && cp /tmp/src/tmux/.config/tmux/tmux.conf /home/dev/.config/tmux/tmux.conf \
-    && cp /tmp/src/tmux/.config/tmux/catppuccin.conf /home/dev/.config/tmux/catppuccin.conf \
-    && cp /tmp/src/git/.gitconfig /home/dev/.gitconfig \
-    && cp /tmp/src/git/catppuccin.gitconfig /home/dev/.dotfiles/git/catppuccin.gitconfig \
-    && cp /tmp/src/git/.config/git/ignore /home/dev/.config/git/ignore \
-    && cp -r /tmp/src/lazygit/.config/lazygit/. /home/dev/.config/lazygit/ \
-    && cp -r /tmp/src/k9s/.config/k9s/. /home/dev/.config/k9s/ \
-    && chown -R dev:dev /home/dev/.dotfiles /home/dev/.config /home/dev/.zshrc /home/dev/.gitconfig
+    mkdir -p /home/developer/.dotfiles/zsh/conf.d /home/developer/.dotfiles/zsh/themes \
+    /home/developer/.dotfiles/zsh/functions /home/developer/.dotfiles/git \
+    /home/developer/.config/zim /home/developer/.config/zim-modules \
+    /home/developer/.config/fzf /home/developer/.config/bat \
+    /home/developer/.config/btop /home/developer/.config/atuin \
+    /home/developer/.config/yazi /home/developer/.config/tmux \
+    /home/developer/.config/lazygit /home/developer/.config/k9s \
+    /home/developer/.config/git \
+    && cp /tmp/src/zsh/.zshrc /home/developer/.zshrc \
+    && cp /tmp/src/zsh/.config/zim/.zimrc /home/developer/.config/zim/.zimrc \
+    && cp -r /tmp/src/zsh/conf.d/. /home/developer/.dotfiles/zsh/conf.d/ \
+    && cp -r /tmp/src/zsh/themes/. /home/developer/.dotfiles/zsh/themes/ \
+    && cp -r /tmp/src/zsh/functions/. /home/developer/.dotfiles/zsh/functions/ \
+    && cp -r /tmp/src/zsh/.config/zim-modules/. /home/developer/.config/zim-modules/ \
+    && cp /tmp/src/zsh/.config/starship.toml /home/developer/.config/starship.toml \
+    && cp -r /tmp/src/zsh/.config/fzf/. /home/developer/.config/fzf/ \
+    && cp -r /tmp/src/zsh/.config/bat/. /home/developer/.config/bat/ \
+    && cp -r /tmp/src/zsh/.config/btop/. /home/developer/.config/btop/ \
+    && cp -r /tmp/src/zsh/.config/atuin/. /home/developer/.config/atuin/ \
+    && cp -r /tmp/src/zsh/.config/yazi/. /home/developer/.config/yazi/ \
+    && cp /tmp/src/tmux/.config/tmux/tmux.conf /home/developer/.config/tmux/tmux.conf \
+    && cp /tmp/src/tmux/.config/tmux/catppuccin.conf /home/developer/.config/tmux/catppuccin.conf \
+    && cp /tmp/src/git/.gitconfig /home/developer/.gitconfig \
+    && cp /tmp/src/git/catppuccin.gitconfig /home/developer/.dotfiles/git/catppuccin.gitconfig \
+    && cp /tmp/src/git/.config/git/ignore /home/developer/.config/git/ignore \
+    && cp -r /tmp/src/lazygit/.config/lazygit/. /home/developer/.config/lazygit/ \
+    && cp -r /tmp/src/k9s/.config/k9s/. /home/developer/.config/k9s/ \
+    && chown -R developer:developer /home/developer/.dotfiles /home/developer/.config /home/developer/.zshrc /home/developer/.gitconfig
 
-USER dev
+USER developer
 
 # ── Zimfw + TPM + bat cache (one layer) ─────────────────
 # 1. zimfw install clones all modules (including zim-starship)
@@ -133,19 +140,19 @@ USER dev
 RUN command -v starship >/dev/null && echo "starship found at: $(command -v starship)" \
     || { echo "ERROR: starship not in PATH"; exit 1; } \
     && curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
-    https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh \
+    https://github.com/zimfw/zimfw/releases/download/v1.17.1/zimfw.zsh \
     && ZDOTDIR=${ZIM_HOME} zsh -c 'source ${ZIM_HOME}/zimfw.zsh init -q && source ${ZIM_HOME}/zimfw.zsh install' 2>&1 \
     && starship init zsh --print-full-init > ${ZIM_HOME}/modules/zim-starship/starship-init.zsh \
     && echo "starship-init.zsh generated successfully" \
     && grep -q "$(command -v starship)" "${ZIM_HOME}/modules/zim-starship/starship-init.zsh" \
     && echo "starship path verified in init file" \
     || { echo "ERROR: starship-init.zsh generation or path verification failed"; exit 1; } \
-    && git clone --depth 1 https://github.com/tmux-plugins/tpm \
-    /home/dev/.config/tmux/plugins/tpm \
-    && { /home/dev/.config/tmux/plugins/tpm/bin/install_plugins 2>&1 || true; } \
+    && git clone --depth 1 --branch v3.1.0 https://github.com/tmux-plugins/tpm \
+    /home/developer/.config/tmux/plugins/tpm \
+    && { /home/developer/.config/tmux/plugins/tpm/bin/install_plugins 2>&1 || true; } \
     && { bat cache --build 2>/dev/null || true; }
 
-WORKDIR /workspace
+WORKDIR /home/developer
 
 ENTRYPOINT ["/bin/zsh"]
 CMD ["-l"]
