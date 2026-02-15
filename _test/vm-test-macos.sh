@@ -4,6 +4,14 @@
 # Usage: bash _test/vm-test-macos.sh [--interactive]
 set -euo pipefail
 
+# Check prerequisites
+for cmd in tart sshpass; do
+  if ! command -v "$cmd" &>/dev/null; then
+    echo "ERROR: $cmd not found. Install with: brew install $cmd"
+    exit 1
+  fi
+done
+
 VM_NAME="test-dotfiles-$(date +%s)"
 IMAGE="ghcr.io/cirruslabs/macos-sequoia-base:latest"
 DOTFILES="$HOME/.dotfiles"
@@ -26,7 +34,11 @@ echo "==> Cloning macOS VM..."
 tart clone "$IMAGE" "$VM_NAME"
 
 echo "==> Starting VM with dotfiles share..."
-tart run --dir=dotfiles:"$DOTFILES":ro "$VM_NAME" &
+if $INTERACTIVE; then
+  tart run --dir=dotfiles:"$DOTFILES":ro "$VM_NAME" &
+else
+  tart run --no-graphics --dir=dotfiles:"$DOTFILES":ro "$VM_NAME" &
+fi
 
 # Wait for VM to get an IP address
 echo "==> Waiting for VM to boot..."
@@ -45,14 +57,24 @@ fi
 echo "==> VM ready at $IP"
 
 # SSH helper (default credentials: admin/admin)
-SSH="sshpass -p admin ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 admin@$IP"
+# Use /usr/bin/ssh — Homebrew's openssh has routing issues with Virtualization.framework
+SSH="sshpass -p admin /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 admin@$IP"
 
 # Wait for SSH to become available
 echo "==> Waiting for SSH..."
-for _ in $(seq 1 30); do
-  if $SSH true 2>/dev/null; then break; fi
-  sleep 2
+SSH_READY=false
+for _ in $(seq 1 60); do
+  if $SSH true 2>/dev/null; then
+    SSH_READY=true
+    break
+  fi
+  sleep 3
 done
+
+if ! $SSH_READY; then
+  echo "ERROR: SSH not available after 180s"
+  exit 1
+fi
 
 echo "==> Copying dotfiles into VM..."
 $SSH "cp -r /Volumes/My\ Shared\ Files/dotfiles ~/.dotfiles"

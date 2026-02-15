@@ -21,7 +21,7 @@ brew "derailed/popeye/popeye" # A Kubernetes cluster resource sanitizer. [Popeye
 brew "rancher-cli" # Command-line tool for Rancher, a container management platform. [Rancher CLI](https://rancher.com/docs/rancher/v2.x/en/cli/)
 brew "rke" # Rancher Kubernetes Engine, a simple Kubernetes installer. [RKE](https://rancher.com/docs/rke/latest/en/)
 brew "robusta-dev/holmesgpt/holmesgpt" # AI-powered Kubernetes troubleshooting agent (CNCF Sandbox). [HolmesGPT](https://github.com/robusta-dev/holmesgpt)
-brew "krr" # Kubernetes Resource Reporter. [KRR](https://github.com/robusta-dev/krr)
+brew "robusta-dev/krr/krr" # Kubernetes Resource Reporter. [KRR](https://github.com/robusta-dev/krr)
 brew "s3cmd" # Command line tool for managing Amazon S3 and CloudFront services. [S3cmd](https://s3tools.org/s3cmd)
 brew "stern" # Multi pod and container log tailing for Kubernetes. [Stern](https://github.com/stern/stern)
 

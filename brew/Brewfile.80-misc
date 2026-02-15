@@ -14,6 +14,7 @@ brew "qemu" # Open source machine emulator and virtualizer. [QEMU](https://www.q
 brew "qt@5" # Cross-platform application and UI framework (version 5). [Qt](https://www.qt.io/)
 brew "reattach-to-user-namespace" # Reattach process to user's login session. [Reattach to User Namespace](https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard)
 brew "molovo/revolver/revolver" # A simple command-line tool for rotating text. [Revolver](https://github.com/molovo/revolver)
+brew "sshpass" # Non-interactive SSH password authentication. [sshpass](https://sourceforge.net/projects/sshpass/)
 brew "lotyp/formulae/dockutil" # Command-line interface for managing dock items. [Dockutil](https://github.com/kcrawford/dockutil)
 
 # Hardware — keyboards, peripherals

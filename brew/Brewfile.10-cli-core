@@ -23,7 +23,7 @@ brew "pv" # Monitor the progress of data through a pipe. [Pv](https://linux.die.
 brew "rename" # Renames multiple files. [Rename](https://manpages.debian.org/stretch/util-linux/rename.1.en.html)
 brew "ripgrep" # Line-oriented search tool that recursively searches your current directory for a regex pattern. [Ripgrep](https://github.com/BurntSushi/ripgrep)
 brew "rlwrap" # Readline wrapper, allowing the use of readline features with arbitrary programs. [Rlwrap](https://github.com/hanslub42/rlwrap)
-brew "sesh" # A tool for managing shell sessions. [Source](https://github.com/joshmedeski/sesh)
+brew "joshmedeski/sesh/sesh" # A tool for managing shell sessions. [Source](https://github.com/joshmedeski/sesh)
 brew "starship" # The minimal, blazing-fast, and infinitely customizable prompt for any shell! [Starship](https://starship.rs/)
 brew "stow" # Manage installation of multiple software packages in the same directory tree. [Stow](https://www.gnu.org/software/stow/)
 brew "tldr" # Simplified and community-driven man pages. [Tldr](https://tldr.sh/)

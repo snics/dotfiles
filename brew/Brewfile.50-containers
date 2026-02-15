@@ -2,7 +2,7 @@
 brew "ctop" # Top-like interface for container metrics. [Ctop](https://github.com/bcicen/ctop)
 brew "dive" # A tool for exploring a Docker image, layer contents, and discovering ways to shrink the size of your Docker/OCI image. [Dive](https://github.com/wagoodman/dive)
 brew "docker-compose" # Define and run multi-container applications with Docker. [Docker Compose](https://docs.docker.com/compose/)
-brew "dockle" # Container Image Linter for Security, Helping build the Best-Practice Docker Image. [Dockle](https://github.com/goodwithtech/dockle)
+brew "goodwithtech/r/dockle" # Container Image Linter for Security, Helping build the Best-Practice Docker Image. [Dockle](https://github.com/goodwithtech/dockle)
 brew "hadolint" # Dockerfile linter, validate inline bash, written in Haskell. [Hadolint](https://github.com/hadolint/hadolint)
 brew "lazydocker" # The lazier way to manage everything docker. [Lazydocker](https://github.com/jesseduffield/lazydocker)
 brew "lima" # Linux virtual machines, typically on macOS, for running containerd. [Lima](https://github.com/lima-vm/lima)
