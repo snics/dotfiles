@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
 # ---------------------------------------------------------
-# snics/devenv-web-desktop — Full Linux desktop in the browser
+# snic/devenv-web-desktop — Full Linux desktop in the browser
 #
 # Stack: Xvfb + XFCE4 + PulseAudio + Selkies (pixelflux/pcmflux WebSocket streaming)
-# Inherits all CLI tools from snics/devenv (Homebrew, zsh, nvim, tmux, etc.)
+# Inherits all CLI tools from snic/devenv (Homebrew, zsh, nvim, tmux, etc.)
 #
-# Build:  docker build -t snics/devenv-web-desktop _images/devenv-web-desktop
-# Run:    docker run --rm -p 3000:3000 --shm-size=256m snics/devenv-web-desktop
+# Build:  docker build -t snic/devenv-web-desktop _images/devenv-web-desktop
+# Run:    docker run --rm -p 3000:3000 --shm-size=256m snic/devenv-web-desktop
 # Open:   http://localhost:3000
 #
 # Architecture: amd64 + arm64 (pixelflux/pcmflux PyPI wheels for both)
@@ -48,14 +48,14 @@ RUN cp ../gst-web-core/dist/selkies-core.js src/ \
     && cp -ar dist/* /buildout/
 
 # ── Stage 2: Runtime ────────────────────────────────────
-FROM snics/devenv:${DEVENV_TAG}
+FROM snic/devenv:${DEVENV_TAG}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG IMAGE_VERSION=dev
 
 LABEL org.opencontainers.image.source="https://github.com/snics/dotfiles" \
-    org.opencontainers.image.title="snics/devenv-web-desktop" \
+    org.opencontainers.image.title="snic/devenv-web-desktop" \
     org.opencontainers.image.description="Browser-accessible Linux desktop via Selkies WebSocket streaming" \
     org.opencontainers.image.version="${IMAGE_VERSION}"
 

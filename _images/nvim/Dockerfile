@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1
 # ---------------------------------------------------------
-# snics/nvim — NeoVim + lazy.nvim plugins + Treesitter + Mason LSPs
+# snic/nvim — NeoVim + lazy.nvim plugins + Treesitter + Mason LSPs
 #
 # Multi-stage build:
 #   Stage 1 (builder): compile Treesitter parsers, install Mason tools + LSPs
 #   Stage 2 (runtime): slim image with only pre-built artifacts
 #
-# Build:  docker build -f _images/nvim/Dockerfile -t snics/nvim .
-# Run:    docker run -it --rm -v $(pwd):/home/developer snics/nvim
+# Build:  docker build -f _images/nvim/Dockerfile -t snic/nvim .
+# Run:    docker run -it --rm -v $(pwd):/home/developer snic/nvim
 # ---------------------------------------------------------
 ARG DEBIAN_VERSION=bookworm
 ARG NVIM_VERSION=0.11.6
@@ -199,7 +199,7 @@ ARG TARGETARCH
 ARG IMAGE_VERSION=dev
 
 LABEL org.opencontainers.image.source="https://github.com/snics/dotfiles" \
-    org.opencontainers.image.title="snics/nvim" \
+    org.opencontainers.image.title="snic/nvim" \
     org.opencontainers.image.description="NeoVim + lazy.nvim plugins + Treesitter + Mason LSPs" \
     org.opencontainers.image.version="${IMAGE_VERSION}"
 

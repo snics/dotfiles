@@ -18,7 +18,7 @@ CATPPUCCIN_THEME='{
 TTYD_OPTS=(
   -W
   -p 7681
-  -t "titleFixed=snics/devenv-web-terminal"
+  -t "titleFixed=snic/devenv-web-terminal"
   -t "fontSize=14"
   -t "fontFamily=Lilex Nerd Font,Lilex Nerd Font Mono,JetBrains Mono,Menlo,monospace"
   -t "theme=${CATPPUCCIN_THEME}"

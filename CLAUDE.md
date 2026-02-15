@@ -94,7 +94,7 @@ environment as closely as possible. It uses a multi-stage build:
    `brew/docker-exclude`, then installs everything. The entire
    `/home/linuxbrew/.linuxbrew` prefix is carried over to the final image
    (no patchelf — scripts, Python tools, and runtimes all work natively).
-2. **Final stage**: Based on `snics/nvim`, adds the Homebrew prefix to `PATH`,
+2. **Final stage**: Based on `snic/nvim`, adds the Homebrew prefix to `PATH`,
    then layers zsh, tmux, dotfile configs, and TUI tool themes.
 
 When adding a new CLI tool, just add it to the matching `Brewfile.*`. It will

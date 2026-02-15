@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1
 # ---------------------------------------------------------
-# snics/devenv — Full CLI + TUI development environment
+# snic/devenv — Full CLI + TUI development environment
 #
 # Multi-stage build:
 #   Stage 1 (brew): install CLI tools via Homebrew bottles
-#   Stage 2 (final): FROM snics/nvim + shell + TUI tools + configs
+#   Stage 2 (final): FROM snic/nvim + shell + TUI tools + configs
 #
-# Build:  docker build -f _images/devenv/Dockerfile -t snics/devenv .
-# Run:    docker run -it --rm -v $(pwd):/home/developer/workspace snics/devenv
+# Build:  docker build -f _images/devenv/Dockerfile -t snic/devenv .
+# Run:    docker run -it --rm -v $(pwd):/home/developer/workspace snic/devenv
 # ---------------------------------------------------------
 # Pin parent image tag — override with --build-arg NVIM_TAG=<tag> for specific versions
 ARG NVIM_TAG=latest
@@ -54,16 +54,16 @@ RUN rm -rf /home/linuxbrew/.cache \
     /home/linuxbrew/.linuxbrew/share/info
 
 # ============================================================
-# Stage 2: Final image — snics/nvim + shell + TUI tools
+# Stage 2: Final image — snic/nvim + shell + TUI tools
 # ============================================================
-FROM snics/nvim:${NVIM_TAG}
+FROM snic/nvim:${NVIM_TAG}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG IMAGE_VERSION=dev
 
 LABEL org.opencontainers.image.source="https://github.com/snics/dotfiles" \
-    org.opencontainers.image.title="snics/devenv" \
+    org.opencontainers.image.title="snic/devenv" \
     org.opencontainers.image.description="Full CLI + TUI development environment" \
     org.opencontainers.image.version="${IMAGE_VERSION}"
 

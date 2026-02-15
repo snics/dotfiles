@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # ---------------------------------------------------------
-# snics/devenv-web-terminal — Browser-accessible dev environment via ttyd
+# snic/devenv-web-terminal — Browser-accessible dev environment via ttyd
 #
 # Theme: Catppuccin Macchiato (configured in entrypoint.sh)
 #
@@ -13,14 +13,14 @@
 # ---------------------------------------------------------
 ARG DEVENV_TAG=latest
 
-FROM snics/devenv:${DEVENV_TAG}
+FROM snic/devenv:${DEVENV_TAG}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG IMAGE_VERSION=dev
 
 LABEL org.opencontainers.image.source="https://github.com/snics/dotfiles" \
-    org.opencontainers.image.title="snics/devenv-web-terminal" \
+    org.opencontainers.image.title="snic/devenv-web-terminal" \
     org.opencontainers.image.description="Browser-accessible dev environment via ttyd" \
     org.opencontainers.image.version="${IMAGE_VERSION}"
 
