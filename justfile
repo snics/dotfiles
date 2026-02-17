@@ -356,10 +356,12 @@ test-linux *ARGS:
 test-linux-gui:
     @bash _test/vm-test-linux.sh --interactive
 
-# Clean up all test VMs
+# Clean up all test VMs and cached images
 vm-clean:
     @echo "==> Cleaning Tart VMs..."
     @tart list 2>/dev/null | grep test-dotfiles | awk '{print $$1}' | xargs -I{} tart delete {} 2>/dev/null || true
+    @echo "==> Pruning Tart OCI cache..."
+    @tart prune --older-than 0 2>/dev/null || true
     @echo "==> Cleaning Lima VMs..."
     @limactl list 2>/dev/null | grep test-dotfiles | awk '{print $$1}' | xargs -I{} limactl delete -f {} 2>/dev/null || true
     @echo "==> Done."

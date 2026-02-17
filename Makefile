@@ -305,9 +305,11 @@ test-linux: ## Test dotfiles in a Linux VM (Lima)
 test-linux-gui: ## Test dotfiles in a Linux VM (interactive)
 	bash _test/vm-test-linux.sh --interactive
 
-vm-clean: ## Clean up all test VMs
+vm-clean: ## Clean up all test VMs and cached images
 	@echo "==> Cleaning Tart VMs..."
 	@tart list 2>/dev/null | grep test-dotfiles | awk '{print $$1}' | xargs -I{} tart delete {} 2>/dev/null || true
+	@echo "==> Pruning Tart OCI cache..."
+	@tart prune --older-than 0 2>/dev/null || true
 	@echo "==> Cleaning Lima VMs..."
 	@limactl list 2>/dev/null | grep test-dotfiles | awk '{print $$1}' | xargs -I{} limactl delete -f {} 2>/dev/null || true
 	@echo "==> Done."
