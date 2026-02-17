@@ -29,8 +29,12 @@ echo "    macOS ${MACOS_VERSION} detected"
 # Close System Settings to prevent overriding our changes
 osascript -e 'tell application "System Settings" to quit' 2>/dev/null || true
 
-# Ask for the administrator password upfront
-sudo -v
+# Ask for the administrator password upfront.
+# sudo -n true succeeds silently when NOPASSWD is configured (e.g. CI/VM),
+# otherwise sudo -v prompts interactively for the password.
+if ! sudo -n true 2>/dev/null; then
+    sudo -v
+fi
 
 # Keep-alive: update existing sudo timestamp until script finishes
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
