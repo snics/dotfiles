@@ -50,8 +50,8 @@ sudo scutil --set HostName "${COMPUTER_NAME}.local"
 sudo scutil --set LocalHostName "$COMPUTER_NAME"
 sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$COMPUTER_NAME"
 
-# Disable the sound effects on boot
-sudo nvram SystemAudioVolume=" "
+# Disable the sound effects on boot (fails silently in VMs without NVRAM)
+sudo nvram SystemAudioVolume=" " 2>/dev/null || true
 
 # Set sidebar icon size to medium
 defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2
@@ -253,8 +253,8 @@ sudo pmset -a displaysleep 15
 # Disable machine sleep while charging
 sudo pmset -c sleep 0
 
-# Set machine sleep to 10 minutes on battery
-sudo pmset -b sleep 10
+# Set machine sleep to 10 minutes on battery (fails on desktops/VMs without battery)
+sudo pmset -b sleep 10 2>/dev/null || true
 
 # Set standby delay to 24 hours (default is 1 hour)
 sudo pmset -a standbydelay 86400
@@ -541,9 +541,9 @@ defaults write com.apple.spotlight orderedItems -array \
 # Load new settings before rebuilding the index
 killall mds > /dev/null 2>&1 || true
 # Make sure indexing is enabled for the main volume
-sudo mdutil -i on / > /dev/null
+sudo mdutil -i on / > /dev/null 2>&1 || true
 # Rebuild the index from scratch
-sudo mdutil -E / > /dev/null
+sudo mdutil -E / > /dev/null 2>&1 || true
 
 ###############################################################################
 # Terminal.app                                                                #
