@@ -181,8 +181,14 @@ ssh_run "$BREW_ENV && grep -h '^cask ' brew/Brewfile.* | brew bundle --verbose -
   echo "  WARNING: Some casks failed to install (continuing)..."
 }
 
+# Ensure passwordless sudo for the macOS settings step.
+# The base image may not have NOPASSWD configured, and sudo -v always
+# prompts on macOS even when it is. Configure it explicitly.
+echo "==> Configuring passwordless sudo..."
+ssh_run 'echo "admin" | sudo -S sh -c "echo \"admin ALL=(ALL) NOPASSWD: ALL\" > /etc/sudoers.d/admin-nopasswd"'
+
 echo "==> Applying macOS defaults..."
-ssh_run_tty "$BREW_ENV && just macos" || true
+ssh_run "$BREW_ENV && just macos" || true
 
 echo ""
 echo "==> Validating installation..."
