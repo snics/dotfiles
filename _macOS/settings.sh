@@ -13,7 +13,13 @@
 # NOTE: Some `systemsetup` commands may print "Error:-99" without sudo.
 #       This is expected and harmless — the setting still applies if possible.
 
-set -euo pipefail
+# NOTE: Intentionally NOT using set -euo pipefail here.
+# This script applies hundreds of independent system preferences. Many commands
+# may fail on specific macOS versions, VMs, or restricted environments (e.g.
+# lsregister -kill removed in Tahoe, pmset -b fails without battery, Spotlight
+# paths may not exist). Each setting is best-effort — a failure in one must not
+# prevent the remaining settings (and dock.sh) from being applied.
+set -uo pipefail
 
 echo "==> Applying macOS system settings..."
 
