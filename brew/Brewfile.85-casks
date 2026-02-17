@@ -64,9 +64,5 @@ cask "zed" # Collaborative code editor. [Zed](https://zed.dev/)
 cask "zoom" # Video communication and virtual meeting platform. [Zoom](https://zoom.us/)
 
 # Quick Look plugins
-cask "qlmarkdown" # Quick Look plugin for Markdown files. [QLMarkdown](https://github.com/toland/qlmarkdown)
-cask "qlstephen" # Quick Look plugin for plain text files without a file extension. [QLStephen](https://github.com/whomwah/qlstephen)
+cask "glance-chamburr" # All-in-one Quick Look plugin: source code, Markdown, JSON, YAML, WebP, archives, Jupyter, and more. Modern .appex format. [Glance](https://github.com/chamburr/glance)
 cask "qlvideo" # Quick Look plugin for video files. [QLVideo](https://github.com/Marginal/QLVideo)
-cask "quicklookase" # Quick Look plugin for Adobe Swatch Exchange (.ase) files. [QuicklookASE](https://github.com/rsodre/quicklookase)
-cask "syntax-highlight" # Quick Look plugin for source code with syntax highlighting. [Syntax Highlight](https://github.com/sbarex/SourceCodeSyntaxHighlight)
-cask "webpquicklook" # Quick Look plugin for WebP image files. [WebPQuickLook](https://github.com/emin/WebPQuickLook)
