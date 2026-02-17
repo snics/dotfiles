@@ -83,8 +83,8 @@ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 # Disable the "Are you sure you want to open this application?" dialog
 defaults write com.apple.LaunchServices LSQuarantine -bool false
 
-# Remove duplicates in the "Open With" menu
-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
+# Remove duplicates in the "Open With" menu (lsregister -kill removed in macOS 26 Tahoe)
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user 2>/dev/null || true
 
 # Disable Resume system-wide
 defaults write com.apple.systempreferences NSQuitAlwaysKeepsWindows -bool false
@@ -232,7 +232,7 @@ defaults write NSGlobalDomain AppleMetricUnits -bool true
 sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool true
 
 # Set the timezone
-sudo systemsetup -settimezone "Europe/Berlin" 2>/dev/null
+sudo systemsetup -settimezone "Europe/Berlin" 2>/dev/null || true
 
 ###############################################################################
 # Energy saving                                                               #
@@ -245,7 +245,7 @@ sudo pmset -a lidwake 1
 sudo pmset -a autorestart 1
 
 # Restart automatically if the computer freezes
-sudo systemsetup -setrestartfreeze on 2>/dev/null
+sudo systemsetup -setrestartfreeze on 2>/dev/null || true
 
 # Sleep the display after 15 minutes
 sudo pmset -a displaysleep 15
@@ -260,7 +260,7 @@ sudo pmset -b sleep 10 2>/dev/null || true
 sudo pmset -a standbydelay 86400
 
 # Never go into computer sleep mode
-sudo systemsetup -setcomputersleep Off 2>/dev/null
+sudo systemsetup -setcomputersleep Off 2>/dev/null || true
 
 ###############################################################################
 # Screen                                                                      #
@@ -393,11 +393,11 @@ defaults write com.apple.finder WarnOnEmptyTrash -bool false
 defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 
 # Show the ~/Library folder
-chflags nohidden ~/Library
+chflags nohidden ~/Library 2>/dev/null || true
 xattr -d com.apple.FinderInfo ~/Library 2>/dev/null || true
 
 # Show the /Volumes folder
-sudo chflags nohidden /Volumes
+sudo chflags nohidden /Volumes 2>/dev/null || true
 
 # Expand the following File Info panes: "General", "Open with", and "Sharing & Permissions"
 defaults write com.apple.finder FXInfoPanesExpanded -dict \
