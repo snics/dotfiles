@@ -1,6 +1,12 @@
 # Emacs keybindings
 bindkey -e
 
+# Reduce escape-sequence timeout from 400ms (default) to 10ms.
+# Arrow keys send escape sequences (\e[A etc.) — with the default KEYTIMEOUT=40
+# zsh waits 400ms after each keypress to disambiguate, causing visible stutter
+# during fast key repeat. 10ms is enough for terminal escape sequences.
+KEYTIMEOUT=1
+
 # macOS Alt+C fix: Option+C produces 'ç' instead of \ec escape sequence.
 # Bind the literal character to fzf's cd widget so Alt+C works as expected.
 bindkey 'ç' fzf-cd-widget

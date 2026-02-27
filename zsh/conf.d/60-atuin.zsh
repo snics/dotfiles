@@ -6,6 +6,10 @@ if (( $+commands[atuin] )); then
 
   # Prefer Atuin's history for autosuggestions, fall back to zsh history + completion
   ZSH_AUTOSUGGEST_STRATEGY=(atuin history completion)
+
+  # Fetch suggestions asynchronously so Atuin's SQLite queries
+  # don't block the prompt during fast key repeat
+  ZSH_AUTOSUGGEST_USE_ASYNC=1
 fi
 
 # Reduce zsh history to small fallback (Atuin is primary)
