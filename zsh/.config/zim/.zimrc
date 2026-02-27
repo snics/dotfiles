@@ -3,10 +3,10 @@ zmodule environment
 zmodule input
 zmodule run-help
 zmodule archive
-zmodule asdf --if-command asdf
 zmodule direnv --if-command direnv
 zmodule magic-enter
 zmodule homebrew --if-command brew
+zmodule asdf --if-command asdf  # after homebrew so shims take precedence
 zmodule k
 
 # Completions and syntax highlighting
