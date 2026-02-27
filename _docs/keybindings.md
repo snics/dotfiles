@@ -206,6 +206,14 @@ Leader: **`Space`**
 | `jj` / `jk` | Exit insert mode |
 | `Ctrl+u` / `Ctrl+d` | Half-page up / down (smooth) |
 
+### UI Toggles
+
+| Shortcut | Action |
+|----------|--------|
+| `Space uh` | Toggle Vim training (hardtime + precognition) |
+| `Space uH` | Toggle colorizer |
+| `Space ua` | Toggle animations |
+
 ### Folds (ufo.nvim)
 
 | Shortcut | Action |
