@@ -266,6 +266,7 @@ return {
             ---------------------------------------------------------------
             { "<leader>uH", desc = "Toggle colorizer", icon = "󰙵" },
             { "<leader>ua", desc = "Toggle animations", icon = "󰙵" },
+            { "<leader>uh", desc = "Toggle Vim training", icon = "󰗎" },
 
             ---------------------------------------------------------------
             -- SAVE + SESSION — <leader>w
