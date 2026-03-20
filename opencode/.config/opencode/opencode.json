@@ -1,4 +1,15 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "catppuccin-mocha"
+  "theme": "catppuccin-mocha",
+  "mcp": {
+    "pencil": {
+      "command": [
+        "/Applications/Pencil.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64",
+        "--app",
+        "desktop"
+      ],
+      "enabled": true,
+      "type": "local"
+    }
+  }
 }
