@@ -15,13 +15,13 @@
   "buffer_font_size": 15,
   "buffer_font_features": {
     "calt": true, // (default)
-    "liga": true,
+    "liga": true
   },
   "buffer_line_height": "comfortable",
   "ui_font_family": "Lilex Nerd Font",
   "ui_font_size": 15,
   "ui_font_features": {
-    "calt": true, // (default)
+    "calt": true // (default)
   },
   "agent_ui_font_size": 16,
   "agent_buffer_font_size": 14,
@@ -53,13 +53,13 @@
     "show_other_hints": true, // (default)
     "show_background": false, // (default)
     "edit_debounce_ms": 700, // (default)
-    "scroll_debounce_ms": 50, // (default)
+    "scroll_debounce_ms": 50 // (default)
   },
   // Inline Diagnostics
   "diagnostics": {
     "inline": {
-      "enabled": true,
-    },
+      "enabled": true
+    }
   },
   // Indent Guides
   "indent_guides": {
@@ -67,7 +67,7 @@
     "line_width": 1, // (default)
     "active_line_width": 2,
     "coloring": "indent_aware",
-    "background_coloring": "indent_aware",
+    "background_coloring": "indent_aware"
   },
   // Edit Predictions — Zeta
   // =====================================================================
@@ -79,11 +79,11 @@
     "file_icons": true, // (default)
     "show_close_button": "hover", // (default)
     "activate_on_close": "history",
-    "show_diagnostics": "all",
+    "show_diagnostics": "all"
   },
   // Minimap — disabled (Vim navigation is sufficient)
   "minimap": {
-    "show": "never",
+    "show": "never"
   },
   // Scrollbar
   "scrollbar": {
@@ -93,7 +93,7 @@
     "search_results": true, // (default)
     "selected_text": true, // (default)
     "selected_symbol": true, // (default)
-    "diagnostics": "all", // (default)
+    "diagnostics": "all" // (default)
   },
   // Gutter
   "gutter": {
@@ -101,7 +101,7 @@
     "runnables": true, // (default)
     "breakpoints": true, // (default)
     "folds": true, // (default)
-    "min_line_number_digits": 2,
+    "min_line_number_digits": 2
   },
   // Project Panel
   "project_panel": {
@@ -114,8 +114,8 @@
     "auto_open": {
       "on_create": true,
       "on_paste": false,
-      "on_drop": false,
-    },
+      "on_drop": false
+    }
   },
   // =====================================================================
   // Vim Mode
@@ -131,14 +131,14 @@
       "normal": "block", // (default)
       "insert": "bar", // (default)
       "visual": "block", // (default)
-      "replace": "underline", // (default)
-    },
+      "replace": "underline" // (default)
+    }
   },
   "use_smartcase_search": true,
   // Which-Key Popup (similar to which-key.nvim)
   "which_key": {
     "enabled": true,
-    "delay_ms": 200,
+    "delay_ms": 200
   },
   // =====================================================================
   // Terminal
@@ -148,7 +148,7 @@
     "font_size": 15,
     "font_features": {
       "calt": false, // Disable ligatures in terminal — fixes Nerd Font icon spacing
-      "liga": false,
+      "liga": false
     },
     "option_as_meta": true,
     "line_height": "standard",
@@ -164,10 +164,10 @@
           ".venv",
           "venv"
         ], // (default)
-        "activate_script": "default", // (default)
-      },
+        "activate_script": "default" // (default)
+      }
     },
-    "max_scroll_history_lines": 10000, // (default)
+    "max_scroll_history_lines": 10000 // (default)
   },
   // =====================================================================
   // AI Agent — OpenRouter
@@ -192,19 +192,19 @@
           "name": "anthropic/claude-opus-4.6",
           "display_name": "Claude Opus 4.6",
           "max_tokens": 1000000,
-          "max_output_tokens": 128000,
+          "max_output_tokens": 128000
         },
         {
           "name": "anthropic/claude-sonnet-4.5",
           "display_name": "Claude Sonnet 4.5",
           "max_tokens": 1000000,
-          "max_output_tokens": 64000,
+          "max_output_tokens": 64000
         },
         {
           "name": "anthropic/claude-haiku-4.5",
           "display_name": "Claude Haiku 4.5",
           "max_tokens": 200000,
-          "max_output_tokens": 64000,
+          "max_output_tokens": 64000
         },
         // =============================================================
         // OpenAI
@@ -213,19 +213,19 @@
           "name": "openai/gpt-5.2-codex",
           "display_name": "GPT-5.2 Codex",
           "max_tokens": 400000,
-          "max_output_tokens": 128000,
+          "max_output_tokens": 128000
         },
         {
           "name": "openai/gpt-5-codex",
           "display_name": "GPT-5 Codex",
           "max_tokens": 400000,
-          "max_output_tokens": 128000,
+          "max_output_tokens": 128000
         },
         {
           "name": "openai/o4-mini",
           "display_name": "o4 Mini",
           "max_tokens": 200000,
-          "max_output_tokens": 100000,
+          "max_output_tokens": 100000
         },
         // =============================================================
         // Google
@@ -234,25 +234,25 @@
           "name": "google/gemini-3-pro-preview",
           "display_name": "Gemini 3 Pro Preview",
           "max_tokens": 1048576,
-          "max_output_tokens": 65535,
+          "max_output_tokens": 65535
         },
         {
           "name": "google/gemini-3-flash-preview",
           "display_name": "Gemini 3 Flash Preview",
           "max_tokens": 1048576,
-          "max_output_tokens": 65535,
+          "max_output_tokens": 65535
         },
         {
           "name": "google/gemini-2.5-flash",
           "display_name": "Gemini 2.5 Flash",
           "max_tokens": 1048576,
-          "max_output_tokens": 65535,
+          "max_output_tokens": 65535
         },
         {
           "name": "google/gemini-2.5-flash-lite",
           "display_name": "Gemini 2.5 Flash Lite",
           "max_tokens": 1048576,
-          "max_output_tokens": 65535,
+          "max_output_tokens": 65535
         },
         // =============================================================
         // Other (Paid)
@@ -261,13 +261,13 @@
           "name": "moonshotai/kimi-k2.5",
           "display_name": "Kimi K2.5",
           "max_tokens": 262144,
-          "max_output_tokens": 65535,
+          "max_output_tokens": 65535
         },
         {
           "name": "deepseek/deepseek-v3.2",
           "display_name": "DeepSeek V3.2",
           "max_tokens": 164000,
-          "max_output_tokens": 65535,
+          "max_output_tokens": 65535
         },
         // =============================================================
         // Free — ":free" = OpenRouter Free Tier
@@ -277,22 +277,22 @@
           "name": "qwen/qwen3-coder:free",
           "display_name": "Qwen3 Coder (free)",
           "max_tokens": 262000,
-          "max_output_tokens": 262000,
+          "max_output_tokens": 262000
         },
         {
           "name": "openai/gpt-oss-120b:free",
           "display_name": "GPT-OSS 120B (free)",
           "max_tokens": 131072,
-          "max_output_tokens": 131072,
+          "max_output_tokens": 131072
         },
         {
           "name": "google/gemini-2.5-flash:free",
           "display_name": "Gemini 2.5 Flash (free)",
           "max_tokens": 1048576,
-          "max_output_tokens": 65535,
-        },
-      ],
-    },
+          "max_output_tokens": 65535
+        }
+      ]
+    }
   },
   // =====================================================================
   // External Agents (ACP)
@@ -307,8 +307,11 @@
       }
     },
     "OpenCode": {
+      "type": "custom",
       "command": "opencode",
-      "args": ["acp"]
+      "args": [
+        "acp"
+      ]
     }
   },
   // =====================================================================
@@ -319,12 +322,12 @@
       "settings": {},
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}",
-      },
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      }
     },
     "grep_app": {
       "settings": {},
-      "url": "https://mcp.grep.app",
+      "url": "https://mcp.grep.app"
     },
     "serena": {
       "command": "uvx",
@@ -334,10 +337,10 @@
         "serena",
         "start-mcp-server",
         "--context",
-        "ide",
+        "ide"
       ],
-      "env": {},
-    },
+      "env": {}
+    }
   },
   // =====================================================================
   // Language Overrides
@@ -348,24 +351,29 @@
       "hard_tabs": true,
       "format_on_save": "on",
       "document_symbols": "on",
-      "preferred_line_length": 100,
+      "preferred_line_length": 100
     },
     "Rust": {
       "tab_size": 4,
       "format_on_save": "on",
       "document_symbols": "on",
       "formatter": "language_server",
-      "preferred_line_length": 100,
+      "preferred_line_length": 100
     },
-    // JS/TS: Biome (if biome.json exists) > Prettier fallback
+    // JS/TS: Oxc (oxlint + oxfmt) > Prettier fallback
     "TypeScript": {
       "tab_size": 2,
       "format_on_save": "on",
       "document_symbols": "on",
+      "language_servers": [
+        "oxlint",
+        "!biome",
+        "..."
+      ],
       "formatter": [
         {
           "language_server": {
-            "name": "biome"
+            "name": "oxfmt"
           }
         },
         {
@@ -376,21 +384,22 @@
               "{buffer_path}"
             ]
           }
-        },
-      ],
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true,
-      },
+        }
+      ]
     },
     "TSX": {
       "tab_size": 2,
       "format_on_save": "on",
       "document_symbols": "on",
+      "language_servers": [
+        "oxlint",
+        "!biome",
+        "..."
+      ],
       "formatter": [
         {
           "language_server": {
-            "name": "biome"
+            "name": "oxfmt"
           }
         },
         {
@@ -401,21 +410,22 @@
               "{buffer_path}"
             ]
           }
-        },
-      ],
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true,
-      },
+        }
+      ]
     },
     "JavaScript": {
       "tab_size": 2,
       "format_on_save": "on",
       "document_symbols": "on",
+      "language_servers": [
+        "oxlint",
+        "!biome",
+        "..."
+      ],
       "formatter": [
         {
           "language_server": {
-            "name": "biome"
+            "name": "oxfmt"
           }
         },
         {
@@ -426,19 +436,85 @@
               "{buffer_path}"
             ]
           }
-        },
+        }
+      ]
+    },
+    "JSX": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "document_symbols": "on",
+      "language_servers": [
+        "oxlint",
+        "!biome",
+        "..."
       ],
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true,
-      },
+      "formatter": [
+        {
+          "language_server": {
+            "name": "oxfmt"
+          }
+        },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        }
+      ]
+    },
+    "Vue.js": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "document_symbols": "on",
+      "language_servers": [
+        "oxlint",
+        "!biome",
+        "..."
+      ],
+      "formatter": [
+        {
+          "language_server": {
+            "name": "oxfmt"
+          }
+        },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        }
+      ]
+    },
+    "Astro": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "language_servers": [
+        "oxlint",
+        "!biome",
+        "..."
+      ]
+    },
+    "Svelte": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "language_servers": [
+        "oxlint",
+        "!biome",
+        "..."
+      ]
     },
     "Python": {
       "tab_size": 4,
       "format_on_save": "on",
       "formatter": "language_server",
       "preferred_line_length": 88,
-      "soft_wrap": "preferred_line_length",
+      "soft_wrap": "preferred_line_length"
     },
     "Lua": {
       "tab_size": 2,
@@ -453,10 +529,10 @@
             "2",
             "--quote-style",
             "AutoPreferDouble",
-            "-",
-          ],
-        },
-      },
+            "-"
+          ]
+        }
+      }
     },
     "Shell Script": {
       "tab_size": 2,
@@ -468,14 +544,21 @@
             "-i",
             "2",
             "-ci"
-          ],
-        },
-      },
+          ]
+        }
+      }
     },
     "YAML": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": "language_server",
+      "formatter": [
+        {
+          "language_server": {
+            "name": "oxfmt"
+          }
+        },
+        "language_server"
+      ]
     },
     "JSON": {
       "tab_size": 2,
@@ -483,11 +566,11 @@
       "formatter": [
         {
           "language_server": {
-            "name": "biome"
+            "name": "oxfmt"
           }
         },
-        "language_server",
-      ],
+        "language_server"
+      ]
     },
     "JSONC": {
       "tab_size": 2,
@@ -495,11 +578,20 @@
       "formatter": [
         {
           "language_server": {
-            "name": "biome"
+            "name": "oxfmt"
           }
         },
-        "language_server",
-      ],
+        "language_server"
+      ]
+    },
+    "JSON5": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "language_server": {
+          "name": "oxfmt"
+        }
+      }
     },
     "SQL": {
       "tab_size": 2,
@@ -512,28 +604,56 @@
             "--dialect",
             "postgres",
             "-"
-          ],
-        },
-      },
+          ]
+        }
+      }
     },
     "Terraform": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": "language_server",
+      "formatter": "language_server"
     },
     "HCL": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": "language_server",
+      "formatter": "language_server"
     },
     "TOML": {
       "tab_size": 2,
       "format_on_save": "on",
+      "formatter": {
+        "language_server": {
+          "name": "oxfmt"
+        }
+      }
     },
     "Markdown": {
       "tab_size": 2,
       "soft_wrap": "editor_width",
       "format_on_save": "off",
+      "formatter": {
+        "language_server": {
+          "name": "oxfmt"
+        }
+      }
+    },
+    "Handlebars": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "language_server": {
+          "name": "oxfmt"
+        }
+      }
+    },
+    "MDX": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "language_server": {
+          "name": "oxfmt"
+        }
+      }
     },
     "CSS": {
       "tab_size": 2,
@@ -542,7 +662,7 @@
       "formatter": [
         {
           "language_server": {
-            "name": "biome"
+            "name": "oxfmt"
           }
         },
         {
@@ -553,34 +673,68 @@
               "{buffer_path}"
             ]
           }
-        },
-      ],
+        }
+      ]
     },
     "SCSS": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "prettier",
-          "arguments": [
-            "--stdin-filepath",
-            "{buffer_path}"
-          ],
+      "formatter": [
+        {
+          "language_server": {
+            "name": "oxfmt"
+          }
         },
-      },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        }
+      ]
+    },
+    "Less": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": [
+        {
+          "language_server": {
+            "name": "oxfmt"
+          }
+        },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        }
+      ]
     },
     "HTML": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "prettier",
-          "arguments": [
-            "--stdin-filepath",
-            "{buffer_path}"
-          ],
+      "formatter": [
+        {
+          "language_server": {
+            "name": "oxfmt"
+          }
         },
-      },
+        {
+          "external": {
+            "command": "prettier",
+            "arguments": [
+              "--stdin-filepath",
+              "{buffer_path}"
+            ]
+          }
+        }
+      ]
     },
     "GraphQL": {
       "tab_size": 2,
@@ -588,7 +742,7 @@
       "formatter": [
         {
           "language_server": {
-            "name": "biome"
+            "name": "oxfmt"
           }
         },
         {
@@ -599,35 +753,35 @@
               "{buffer_path}"
             ]
           }
-        },
-      ],
+        }
+      ]
     },
     "Dart": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": "language_server",
+      "formatter": "language_server"
     },
     "Zig": {
       "tab_size": 4,
       "format_on_save": "on",
-      "formatter": "language_server",
+      "formatter": "language_server"
     },
     "Nix": {
       "tab_size": 2,
       "format_on_save": "on",
-      "formatter": "language_server",
+      "formatter": "language_server"
     },
     "LaTeX": {
       "tab_size": 2,
       "soft_wrap": "preferred_line_length",
-      "format_on_save": "off",
+      "format_on_save": "off"
     },
     "Dockerfile": {
-      "tab_size": 4,
+      "tab_size": 4
     },
     "Helm": {
-      "tab_size": 2,
-    },
+      "tab_size": 2
+    }
   },
   // =====================================================================
   // LSP Server Settings
@@ -636,15 +790,15 @@
     "rust-analyzer": {
       "initialization_options": {
         "check": {
-          "command": "clippy",
+          "command": "clippy"
         },
         "cargo": {
-          "allFeatures": true,
+          "allFeatures": true
         },
         "procMacro": {
-          "enable": true,
-        },
-      },
+          "enable": true
+        }
+      }
     },
     "gopls": {
       "initialization_options": {
@@ -652,28 +806,22 @@
         "hints": {
           "assignVariableTypes": true,
           "compositeLiteralFields": true,
-          "parameterNames": true,
-        },
-      },
-    },
-    // Biome: only activate when biome.json exists in project
-    "biome": {
-      "settings": {
-        "require_config_file": true,
-      },
+          "parameterNames": true
+        }
+      }
     },
     "yaml-language-server": {
       "settings": {
         "yaml": {
           "schemaStore": {
-            "enable": true,
+            "enable": true
           },
           "format": {
-            "enable": true,
-          },
-        },
-      },
-    },
+            "enable": true
+          }
+        }
+      }
+    }
   },
   // =====================================================================
   // System
@@ -681,7 +829,7 @@
   "node": {
     "ignore_system_version": true,
     "path": "/opt/homebrew/bin/node",
-    "npm_path": "/opt/homebrew/bin/npm",
+    "npm_path": "/opt/homebrew/bin/npm"
   },
   "auto_update": true, // (default)
   "load_direnv": "shell_hook",
@@ -715,7 +863,8 @@
     "ruff": true,
     "scss": true,
     // JS/TS Tooling
-    "biome": true,
+    "oxc": true,
+    "biome": false,
     "emmet": true,
     // Docker
     "docker-compose": true,
@@ -735,11 +884,11 @@
     "rust-snippets": true,
     "python-snippets": true,
     // Tools
-    "tombi": true,
+    "tombi": true
   },
   // Telemetry
   "telemetry": {
     "diagnostics": true, // (default) — crash reports
-    "metrics": false, // usage statistics disabled
-  },
+    "metrics": false // usage statistics disabled
+  }
 }
