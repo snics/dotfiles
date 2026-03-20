@@ -13,6 +13,7 @@ zmodule k
 zmodule zsh-users/zsh-syntax-highlighting
 zmodule zsh-users/zsh-completions --fpath src
 zmodule zsh-users/zsh-autosuggestions
+zmodule ~/.config/zim-modules/just --fpath .  # patched: renames $commands to avoid zsh builtin collision
 zmodule completion
 zmodule Aloxaf/fzf-tab
 
