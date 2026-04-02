@@ -79,9 +79,18 @@
       // -------------------------------------------------------------------
       // AI — space a — ACP External Agents
       // -------------------------------------------------------------------
-      "space a c": ["agent::NewExternalAgentThread", { "agent": "claude_code" }],
-      "space a g": ["agent::NewExternalAgentThread", { "agent": "gemini" }],
-      "space a x": ["agent::NewExternalAgentThread", { "agent": "codex" }],
+      "space a c": [
+        "agent::NewExternalAgentThread",
+        { "agent": { "custom": { "name": "claude-acp" } } }
+      ],
+      "space a g": [
+        "agent::NewExternalAgentThread",
+        { "agent": { "custom": { "name": "gemini" } } }
+      ],
+      "space a x": [
+        "agent::NewExternalAgentThread",
+        { "agent": { "custom": { "name": "codex" } } }
+      ],
       "space a o": [
         "agent::NewExternalAgentThread",
         {
