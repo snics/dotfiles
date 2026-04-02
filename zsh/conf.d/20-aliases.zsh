@@ -57,5 +57,8 @@ alias pcps='podman-compose ps'
 alias pcconfig='podman-compose config'
 alias pcexec='podman-compose exec'
 
-# App aliases
+# AI coding agents
+alias cc='claude'
+alias ccy='claude --dangerously-skip-permissions'
+alias cx='codex'
 alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
