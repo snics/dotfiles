@@ -1,4 +1,7 @@
 {
+  "git_panel": {
+    "tree_view": true
+  },
   "base_keymap": "JetBrains",
   "edit_predictions": {
     "provider": "zed"
