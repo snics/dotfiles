@@ -137,6 +137,7 @@ common_subcommands = [
   "trivy",
   "reg",
   # Kubernetes
+  "devspace",
   "kubectl",
   "k",
   "helm",

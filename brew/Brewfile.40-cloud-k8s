@@ -2,6 +2,7 @@
 brew "ansible" # Automation tool for configuration management, application deployment, and task automation. [Ansible](https://www.ansible.com/)
 brew "awscli" # Official Amazon AWS command-line interface. [AWS CLI](https://aws.amazon.com/cli/)
 brew "cmctl" # Command-line tool for managing cert-manager Infrastructure resources. [cmctl](https://github.com/cert-manager/cmctl)
+brew "devspace" # CLI helps develop/deploy/debug apps with Docker and Kubernetes. [DevSpace](https://devspace.sh/)
 brew "coder/coder/coder" # Coder CLI tools. [Coder](https://github.com/coder/coder)
 brew "hcloud" # Command-line interface for Hetzner Cloud. [hcloud](https://github.com/hetznercloud/cli)
 brew "helm" # The Kubernetes package manager. [Helm](https://helm.sh/)
