@@ -136,6 +136,7 @@ return {
 
             -- Kubernetes/Helm linter (only in K8s projects)
             my_diagnostics.kube_linter,
+            my_diagnostics.kubeconform,
 
             -- Lua
 

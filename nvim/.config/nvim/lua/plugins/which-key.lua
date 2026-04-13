@@ -45,6 +45,7 @@ return {
             { "<leader>Gt", group = "Tags", icon = "󰓹" },
             { "<leader>Gm", group = "Go Mod", icon = "󰏗" },
             { "<leader>Gi", group = "Generate", icon = "󰐊" },
+            { "<leader>k", group = "Kustomize", icon = "󱃾" },
             { "<leader>Rc", group = "Crates", icon = { cat = "filetype", name = "toml" } },
 
             ---------------------------------------------------------------
