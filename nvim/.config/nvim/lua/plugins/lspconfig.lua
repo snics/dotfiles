@@ -21,8 +21,8 @@ return {
                 map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code actions")
                 map("n", "K", vim.lsp.buf.hover, "Hover documentation")
                 map("n", "<leader>cd", vim.diagnostic.open_float, "Line diagnostics")
-                map("n", "[d", vim.diagnostic.goto_prev, "Prev diagnostic")
-                map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+                map("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, "Prev diagnostic")
+                map("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, "Next diagnostic")
                 map("n", "<leader>ls", "<cmd>LspRestart<CR>", "Restart LSP")
 
                 -- IncRename integration (expr keymap)

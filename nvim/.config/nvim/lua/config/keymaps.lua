@@ -56,13 +56,13 @@ keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
 keymap.set("n", "[b", "<cmd>bprev<cr>", { desc = "Prev buffer" })
 keymap.set("n", "]q", "<cmd>cnext<cr>zz", { desc = "Next quickfix" })
 keymap.set("n", "[q", "<cmd>cprev<cr>zz", { desc = "Prev quickfix" })
-keymap.set("n", "]e", function() vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR }) end,
+keymap.set("n", "]e", function() vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR }) end,
     { desc = "Next error" })
-keymap.set("n", "[e", function() vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR }) end,
+keymap.set("n", "[e", function() vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR }) end,
     { desc = "Prev error" })
-keymap.set("n", "]w", function() vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARN }) end,
+keymap.set("n", "]w", function() vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.WARN }) end,
     { desc = "Next warning" })
-keymap.set("n", "[w", function() vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN }) end,
+keymap.set("n", "[w", function() vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.WARN }) end,
     { desc = "Prev warning" })
 
 -- Insert-mode undo breakpoints
