@@ -24,8 +24,10 @@ opt.smartcase = true  -- default: false — case-sensitive when uppercase is use
 opt.cursorline = true -- default: false
 
 -- Colors
-opt.termguicolors = true -- auto-enabled in 0.10+ but set explicitly for compatibility
-opt.signcolumn = "yes"   -- default: "auto" — always show to prevent text shifting
+opt.signcolumn = "yes"       -- default: "auto" — always show to prevent text shifting
+
+-- Floating window borders (0.11+) — consistent rounded borders for all float windows
+vim.o.winborder = "rounded"
 
 -- Whitespace visualization
 opt.list = true

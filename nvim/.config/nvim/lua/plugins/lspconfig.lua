@@ -13,22 +13,44 @@ return {
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(ev)
+                local client = vim.lsp.get_client_by_id(ev.data.client_id)
+                if not client then return end
+
                 local function map(mode, l, r, desc)
                     vim.keymap.set(mode, l, r, { desc = desc, buffer = ev.buf, silent = true })
                 end
 
+                -- Navigation & actions
                 map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
                 map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code actions")
                 map("n", "K", vim.lsp.buf.hover, "Hover documentation")
                 map("n", "<leader>cd", vim.diagnostic.open_float, "Line diagnostics")
-                map("n", "[d", vim.diagnostic.goto_prev, "Prev diagnostic")
-                map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+                map("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, "Prev diagnostic")
+                map("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, "Next diagnostic")
                 map("n", "<leader>ls", "<cmd>LspRestart<CR>", "Restart LSP")
 
                 -- IncRename integration (expr keymap)
                 vim.keymap.set("n", "<leader>cr", function()
                     return ":IncRename " .. vim.fn.expand("<cword>")
                 end, { desc = "Smart rename", buffer = ev.buf, silent = true, expr = true })
+
+                -- Inlay hints (available since 0.10, auto-checks server capability)
+                vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+
+                -- CodeLens (reimplemented in 0.12 with virtual lines display)
+                if client:supports_method("textDocument/codeLens") then
+                    vim.lsp.codelens.enable(true, { bufnr = ev.buf })
+                end
+
+                -- onTypeFormatting (0.12) — only for rust-analyzer
+                if client.name == "rust_analyzer" then
+                    vim.lsp.on_type_formatting.enable(true, { client_id = client.id })
+                end
+
+                -- Linked editing range (0.12) — synchronized tag renaming in HTML/JSX/TSX
+                if client:supports_method("textDocument/linkedEditingRange") then
+                    vim.lsp.linked_editing_range.enable(true, { client_id = client.id })
+                end
             end,
         })
 

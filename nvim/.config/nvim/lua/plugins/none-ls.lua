@@ -136,6 +136,7 @@ return {
 
             -- Kubernetes/Helm linter (only in K8s projects)
             my_diagnostics.kube_linter,
+            my_diagnostics.kubeconform,
 
             -- Lua
 
@@ -262,7 +263,7 @@ return {
 
             -- Format-on-save and formatting keymaps
             on_attach = function(client, bufnr)
-                if client.supports_method("textDocument/formatting") then
+                if client:supports_method("textDocument/formatting") then
                     -- Create an autocommand group for formatting
                     local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = false })
 

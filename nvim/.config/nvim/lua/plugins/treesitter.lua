@@ -2,98 +2,66 @@ return {
     -- 🌳 TREESITTER CORE (Basis-Features)
     {
         "nvim-treesitter/nvim-treesitter",
-        event = { "BufReadPre", "BufNewFile" },
+        branch = "main",
+        lazy = false, -- main branch does not support lazy-loading
         build = ":TSUpdate",
         dependencies = {
             "apple/pkl-neovim", -- PKL support by Apple
         },
         config = function()
-            -- import nvim-treesitter plugin
-            local treesitter = require("nvim-treesitter.configs")
-
-            -- configure treesitter
-            treesitter.setup({
-                auto_install = true,        -- default: false — auto install language parsers
-                highlight = {
-                    enable = true,          -- default: false
-                },
-                indent = { enable = true }, -- default: false
-                -- ensure these language parsers are installed
-                ensure_installed = {
-                    -- Core Neovim languages
-                    "lua",    -- Lua language; *.lua (Neovim config)
-                    "luadoc", -- Lua documentation; --- comments in Lua
-                    "printf", -- Printf format strings; format specifiers
-                    "vim",    -- Vim script; *.vim
-                    "vimdoc", -- Vim help documentation; *.txt help files
-
-                    -- Programming & Markup Languages
-                    "bash",            -- Bash shell scripts; *.sh, *.bash
-                    "c",               -- C language; *.c, *.h
-                    "cpp",             -- C++ language; *.cpp, *.hpp, *.cc
-                    "c_sharp",         -- C# language; *.cs
-                    "css",             -- CSS stylesheets; *.css
-                    "csv",             -- CSV data files; *.csv
-                    "dart",            -- Dart language (Flutter); *.dart
-                    "diff",            -- Diff/patch files; *.diff, *.patch
-                    "dockerfile",      -- Docker files; Dockerfile, *.dockerfile
-                    "go",              -- Go language; *.go
-                    "goctl",           -- Go-zero goctl templates; goctl files
-                    "gomod",           -- Go modules; go.mod
-                    "gosum",           -- Go checksums; go.sum
-                    "gotmpl",          -- Go templates; *.gotmpl, *.tmpl
-                    "gowork",          -- Go workspaces; go.work
-                    "graphql",         -- GraphQL schemas/queries; *.graphql, *.gql
-                    "helm",            -- Helm charts (Kubernetes); Chart.yaml, templates/*
-                    "html",            -- HTML markup; *.html, *.htm
-                    "http",            -- HTTP requests; *.http, REST client files
-                    "javascript",      -- JavaScript; *.js, *.mjs, *.cjs
-                    "jq",              -- jq JSON processor; *.jq
-                    "jsdoc",           -- JSDoc comments; /** */ in JavaScript
-                    "json",            -- JSON data; *.json
-                    "json5",           -- JSON5 (extended JSON); *.json5
-                    "markdown",        -- Markdown; *.md, *.markdown
-                    "markdown_inline", -- Inline markdown; code blocks in markdown
-                    "nginx",           -- Nginx config; nginx.conf, sites-available/*
-                    "php",             -- PHP language; *.php
-                    "pkl",             -- PKL config language (Apple); *.pkl
-                    "powershell",      -- PowerShell scripts; *.ps1, *.psm1
-                    "python",          -- Python language; *.py, *.pyw
-                    "regex",           -- Regular expressions; regex patterns
-                    "rust",            -- Rust language; *.rs, Cargo.toml
-                    "scss",            -- SCSS/Sass stylesheets; *.scss, *.sass
-                    "sql",             -- SQL queries; *.sql
-                    "toml",            -- TOML config files; *.toml, Cargo.toml
-                    "tsx",             -- TypeScript React; *.tsx
-                    "typescript",      -- TypeScript; *.ts
-                    "yaml",            -- YAML data/config; *.yml, *.yaml
-
-                    -- Utility parsers
-                    "comment", -- Generic comments; comment syntax
-                    "tmux",    -- Tmux config; .tmux.conf
-
-                    -- Git-related parsers
-                    "git_config",    -- Git config; .gitconfig
-                    "git_rebase",    -- Git rebase; rebase-merge files
-                    "gitattributes", -- Git attributes; .gitattributes
-                    "gitcommit",     -- Git commit messages; COMMIT_EDITMSG
-                    "gitignore",     -- Git ignore; .gitignore
-                },
-                -- 🚀 INCREMENTAL SELECTION (part of textobjects)
-                incremental_selection = {
-                    enable = true,
-                    keymaps = {
-                        init_selection = "<C-enter>",       -- Start incremental selection
-                        node_incremental = "<C-enter>",     -- Expand selection to next node
-                        scope_incremental = false,          -- Expand selection to next scope
-                        node_decremental = "<C-backspace>", -- Shrink selection to previous node
-                    },
-                },
+            require("nvim-treesitter").setup({
+                -- auto_install is handled by the install call below
             })
+
+            -- Parsers to ensure are installed
+            local ensure_installed = {
+                -- Core Neovim languages
+                "lua", "luadoc", "printf", "vim", "vimdoc",
+                -- Programming & Markup Languages
+                "bash", "c", "cpp", "c_sharp", "css", "csv", "dart", "diff",
+                "dockerfile", "go", "goctl", "gomod", "gosum", "gotmpl", "gowork",
+                "graphql", "helm", "html", "http", "javascript", "jq", "jsdoc",
+                "json", "json5", "markdown", "markdown_inline", "nginx", "php",
+                "pkl", "powershell", "python", "regex", "rust", "scss", "sql",
+                "toml", "tsx", "typescript", "yaml",
+                -- Utility parsers
+                "comment", "tmux",
+                -- Git-related parsers
+                "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore",
+            }
+
+            -- Install missing parsers
+            local installed = require("nvim-treesitter").get_installed()
+            local to_install = vim.iter(ensure_installed)
+                :filter(function(p) return not vim.tbl_contains(installed, p) end)
+                :totable()
+            if #to_install > 0 then
+                require("nvim-treesitter").install(to_install)
+            end
+
+            -- Enable treesitter highlighting and indentation via FileType autocmd
+            vim.api.nvim_create_autocmd("FileType", {
+                group = vim.api.nvim_create_augroup("TreesitterSetup", { clear = true }),
+                callback = function()
+                    if pcall(vim.treesitter.start) then
+                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    end
+                end,
+            })
+
+            -- Native incremental selection (0.12): an/in/]n/[n are default mappings.
+            -- No config needed — they work automatically.
+            -- Optional: add <C-Enter>/<C-Backspace> aliases for muscle memory
+            vim.keymap.set("x", "<C-Enter>", function()
+                require("vim.treesitter._select").select_parent(vim.v.count1)
+            end, { desc = "Expand treesitter selection" })
+            vim.keymap.set("x", "<C-Backspace>", function()
+                require("vim.treesitter._select").select_child(vim.v.count1)
+            end, { desc = "Shrink treesitter selection" })
         end,
     },
 
-    -- nvim-ts-autotag — auto close/rename HTML tags
+    -- nvim-ts-autotag — auto close HTML tags (rename handled by native linked editing)
     -- NOTE: configuring via treesitter.setup({ autotag = ... }) is deprecated
     {
         "windwp/nvim-ts-autotag",
@@ -102,7 +70,7 @@ return {
         opts = {
             opts = {
                 enable_close = true,           -- default: true
-                enable_rename = true,          -- default: true
+                enable_rename = false,         -- native linked editing handles tag rename
                 enable_close_on_slash = false, -- default: false
             },
         },
@@ -111,113 +79,113 @@ return {
     -- Treesitter textobjects & selection
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
-        event = { "BufReadPre", "BufNewFile" },
+        branch = "main",
+        lazy = false, -- must match nvim-treesitter loading
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
         },
         config = function()
-            require("nvim-treesitter.configs").setup({
-                -- 📝 TEXTOBJECTS
-                textobjects = {
-                    select = {
-                        enable = true,
-                        lookahead = true, -- Automatically jump forward to textobj
-                        keymaps = {
-                            -- 🔥 THE ESSENTIAL CORE (you use these daily)
-                            ["af"] = "@function.outer",  -- around function
-                            ["if"] = "@function.inner",  -- inside function
-                            ["ac"] = "@class.outer",     -- around class
-                            ["ic"] = "@class.inner",     -- inside class
-                            ["aa"] = "@parameter.outer", -- around argument
-                            ["ia"] = "@parameter.inner", -- inside argument
-
-                            -- 🎯 CONTROL FLOW (very useful)
-                            ["ai"] = "@conditional.outer", -- around if
-                            ["ii"] = "@conditional.inner", -- inside if
-                            ["al"] = "@loop.outer",        -- around loop
-                            ["il"] = "@loop.inner",        -- inside loop
-
-                            -- 📦 PRACTICAL ADDITIONS (daily use)
-                            ["ab"] = "@block.outer", -- around block
-                            ["ib"] = "@block.inner", -- inside block
-                            ["aC"] = "@call.outer",  -- around call
-                            ["iC"] = "@call.inner",  -- inside call
-
-                            -- 🗂️ YAML-SPECIFIC (Kubernetes/Helm workflow)
-                            ["as"] = "@assignment.outer", -- around assignment (key: value)
-                            ["is"] = "@assignment.inner", -- inside assignment (value only)
-                            ["ak"] = "@assignment.lhs",   -- assignment key (left side)
-                            ["av"] = "@assignment.rhs",   -- assignment value (right side)
-                            ["an"] = "@number.inner",     -- around number values
-                            ["at"] = "@comment.outer",    -- around comments
-                            ["it"] = "@comment.inner",    -- inside comments
-                            ["aS"] = "@statement.outer",  -- around YAML statements
-                        },
-
-                        -- Set selection modes for different textobjects
-                        selection_modes = {
-                            ['@parameter.outer'] = 'v',   -- charwise for parameters
-                            ['@function.outer'] = 'V',    -- linewise for functions
-                            ['@class.outer'] = 'V',       -- linewise for classes
-                            ['@conditional.outer'] = 'V', -- linewise for conditionals
-                            ['@loop.outer'] = 'V',        -- linewise for loops
-                            ['@block.outer'] = 'V',       -- linewise for blocks
-                            ['@call.outer'] = 'v',        -- charwise for function calls
-
-                            -- YAML-specific selection modes
-                            ['@assignment.outer'] = 'V', -- linewise for complete assignments
-                            ['@assignment.inner'] = 'v', -- charwise for values only
-                            ['@assignment.lhs'] = 'v',   -- charwise for keys
-                            ['@assignment.rhs'] = 'v',   -- charwise for values
-                            ['@number.inner'] = 'v',     -- charwise for numbers
-                            ['@comment.outer'] = 'V',    -- linewise for comments
-                            ['@comment.inner'] = 'v',    -- charwise for comment content
-                            ['@statement.outer'] = 'V',  -- linewise for YAML statements
-                        },
-
-                        include_surrounding_whitespace = false, -- false for precise selection
-                    },
-
-                    move = {
-                        enable = true,
-                        set_jumps = true,                  -- Add movements to jumplist (can use <C-o>/<C-i> to navigate back/forward)
-                        goto_next_start = {
-                            ["]m"] = "@function.outer",    -- Go to next method/function start
-                            ["]c"] = "@class.outer",       -- Go to next class start
-                            ["]i"] = "@conditional.outer", -- Go to next if/conditional start
-                            ["]l"] = "@loop.outer",        -- Go to next loop start
-                        },
-                        goto_next_end = {
-                            ["]M"] = "@function.outer",    -- Go to next method/function end
-                            ["]C"] = "@class.outer",       -- Go to next class end
-                            ["]I"] = "@conditional.outer", -- Go to next if/conditional end
-                            ["]L"] = "@loop.outer",        -- Go to next loop end
-                        },
-                        goto_previous_start = {
-                            ["[m"] = "@function.outer",    -- Go to previous method/function start
-                            ["[c"] = "@class.outer",       -- Go to previous class start
-                            ["[i"] = "@conditional.outer", -- Go to previous if/conditional start
-                            ["[l"] = "@loop.outer",        -- Go to previous loop start
-                        },
-                        goto_previous_end = {
-                            ["[M"] = "@function.outer",    -- Go to previous method/function end
-                            ["[C"] = "@class.outer",       -- Go to previous class end
-                            ["[I"] = "@conditional.outer", -- Go to previous if/conditional end
-                            ["[L"] = "@loop.outer",        -- Go to previous loop end
-                        },
-                    },
-
-                    swap = {
-                        enable = true,
-                        swap_next = {
-                            ["]a"] = "@parameter.inner", -- Swap parameter with next
-                        },
-                        swap_previous = {
-                            ["[a"] = "@parameter.inner", -- Swap parameter with previous
-                        },
+            require("nvim-treesitter-textobjects").setup({
+                select = {
+                    lookahead = true,
+                    include_surrounding_whitespace = false,
+                    selection_modes = {
+                        ["@parameter.outer"] = "v",
+                        ["@function.outer"] = "V",
+                        ["@class.outer"] = "V",
+                        ["@conditional.outer"] = "V",
+                        ["@loop.outer"] = "V",
+                        ["@block.outer"] = "V",
+                        ["@call.outer"] = "v",
+                        ["@assignment.outer"] = "V",
+                        ["@assignment.inner"] = "v",
+                        ["@assignment.lhs"] = "v",
+                        ["@assignment.rhs"] = "v",
+                        ["@number.inner"] = "v",
+                        ["@comment.outer"] = "V",
+                        ["@comment.inner"] = "v",
+                        ["@statement.outer"] = "V",
                     },
                 },
+                move = {
+                    set_jumps = true,
+                },
             })
+
+            local ts_select = require("nvim-treesitter-textobjects.select")
+            local ts_move = require("nvim-treesitter-textobjects.move")
+            local ts_swap = require("nvim-treesitter-textobjects.swap")
+
+            local function sel(key, query, desc)
+                vim.keymap.set({ "x", "o" }, key, function()
+                    ts_select.select_textobject(query, "textobjects")
+                end, { desc = desc })
+            end
+
+            -- 🔥 THE ESSENTIAL CORE
+            sel("af", "@function.outer", "around function")
+            sel("if", "@function.inner", "inside function")
+            sel("ac", "@class.outer", "around class")
+            sel("ic", "@class.inner", "inside class")
+            sel("aa", "@parameter.outer", "around argument")
+            sel("ia", "@parameter.inner", "inside argument")
+
+            -- 🎯 CONTROL FLOW
+            sel("ai", "@conditional.outer", "around if")
+            sel("ii", "@conditional.inner", "inside if")
+            sel("al", "@loop.outer", "around loop")
+            sel("il", "@loop.inner", "inside loop")
+
+            -- 📦 PRACTICAL ADDITIONS
+            sel("ab", "@block.outer", "around block")
+            sel("ib", "@block.inner", "inside block")
+            sel("aC", "@call.outer", "around call")
+            sel("iC", "@call.inner", "inside call")
+
+            -- 🗂️ YAML-SPECIFIC (Kubernetes/Helm)
+            sel("as", "@assignment.outer", "around assignment")
+            sel("is", "@assignment.inner", "inside assignment")
+            sel("ak", "@assignment.lhs", "assignment key")
+            sel("av", "@assignment.rhs", "assignment value")
+            sel("aN", "@number.inner", "around number") -- remapped from "an" to free native selection
+            sel("at", "@comment.outer", "around comment")
+            sel("it", "@comment.inner", "inside comment")
+            sel("aS", "@statement.outer", "around statement")
+
+            -- MOVE: goto next/prev start/end
+            local function move_map(key, fn, query, desc)
+                vim.keymap.set({ "n", "x", "o" }, key, function()
+                    fn(query, "textobjects")
+                end, { desc = desc })
+            end
+
+            move_map("]m", ts_move.goto_next_start, "@function.outer", "Next function start")
+            move_map("]c", ts_move.goto_next_start, "@class.outer", "Next class start")
+            move_map("]i", ts_move.goto_next_start, "@conditional.outer", "Next if start")
+            move_map("]l", ts_move.goto_next_start, "@loop.outer", "Next loop start")
+
+            move_map("]M", ts_move.goto_next_end, "@function.outer", "Next function end")
+            move_map("]C", ts_move.goto_next_end, "@class.outer", "Next class end")
+            move_map("]I", ts_move.goto_next_end, "@conditional.outer", "Next if end")
+            move_map("]L", ts_move.goto_next_end, "@loop.outer", "Next loop end")
+
+            move_map("[m", ts_move.goto_previous_start, "@function.outer", "Prev function start")
+            move_map("[c", ts_move.goto_previous_start, "@class.outer", "Prev class start")
+            move_map("[i", ts_move.goto_previous_start, "@conditional.outer", "Prev if start")
+            move_map("[l", ts_move.goto_previous_start, "@loop.outer", "Prev loop start")
+
+            move_map("[M", ts_move.goto_previous_end, "@function.outer", "Prev function end")
+            move_map("[C", ts_move.goto_previous_end, "@class.outer", "Prev class end")
+            move_map("[I", ts_move.goto_previous_end, "@conditional.outer", "Prev if end")
+            move_map("[L", ts_move.goto_previous_end, "@loop.outer", "Prev loop end")
+
+            -- SWAP: swap parameters
+            vim.keymap.set("n", "]a", function()
+                ts_swap.swap_next("@parameter.inner")
+            end, { desc = "Swap parameter with next" })
+            vim.keymap.set("n", "[a", function()
+                ts_swap.swap_previous("@parameter.inner")
+            end, { desc = "Swap parameter with previous" })
         end,
     },
 }
