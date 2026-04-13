@@ -147,6 +147,7 @@ return {
         { "<leader>sq", function() Snacks.picker.qflist() end,                                                 desc = "Quickfix List" },
         { "<leader>sP", function() Snacks.picker.resume() end,                                                 desc = "Resume" },
         { "<leader>su", function() Snacks.picker.undo() end,                                                   desc = "Undo History" },
+        { "<leader>sU", function() vim.cmd("packadd nvim.undotree"); vim.cmd("Undotree") end, desc = "Undo Tree (native)" },
         { "<leader>st", function() Snacks.picker.todo_comments() end,                                          desc = "Todo Comments" },
         { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Todo/Fix/Fixme" },
         { "<leader>uC", function() Snacks.picker.colorschemes() end,                                           desc = "Colorschemes" },

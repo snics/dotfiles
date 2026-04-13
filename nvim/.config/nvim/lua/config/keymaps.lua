@@ -73,3 +73,6 @@ keymap.set("i", ";", ";<C-g>u")
 -- Smart j/k on wrapped lines
 keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+
+-- Restart NeoVim (0.12+) — reconnects all UIs
+keymap.set("n", "<leader>qr", "<cmd>restart<CR>", { desc = "Restart NeoVim" })
