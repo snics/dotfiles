@@ -301,6 +301,15 @@
   // External Agents (ACP)
   // =====================================================================
   "agent_servers": {
+    "gemini": {
+      "type": "registry"
+    },
+    "cursor": {
+      "type": "registry"
+    },
+    "codex-acp": {
+      "type": "registry"
+    },
     "claude-acp": {
       "type": "registry",
       "favorite_config_option_values": {
