@@ -61,7 +61,7 @@ return {
         end,
     },
 
-    -- nvim-ts-autotag — auto close/rename HTML tags
+    -- nvim-ts-autotag — auto close HTML tags (rename handled by native linked editing)
     -- NOTE: configuring via treesitter.setup({ autotag = ... }) is deprecated
     {
         "windwp/nvim-ts-autotag",
@@ -70,7 +70,7 @@ return {
         opts = {
             opts = {
                 enable_close = true,           -- default: true
-                enable_rename = true,          -- default: true
+                enable_rename = false,         -- native linked editing handles tag rename
                 enable_close_on_slash = false, -- default: false
             },
         },
