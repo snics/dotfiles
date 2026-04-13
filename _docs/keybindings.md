@@ -139,6 +139,8 @@ Leader: **`Space`**
 | `gr` | Find references |
 | `gI` | Go to implementation |
 | `gy` | Go to type definition |
+| `grt` | Go to type definition (NeoVim 0.12 native) |
+| `grx` | Run CodeLens action (NeoVim 0.12 native) |
 | `K` | Hover documentation |
 | `Space ca` | Code actions |
 | `Space cr` | Rename symbol |
@@ -210,7 +212,7 @@ Leader: **`Space`**
 
 | Shortcut | Action |
 |----------|--------|
-| `Space uh` | Toggle Vim training (hardtime + precognition) |
+| `Space uh` | Toggle inlay hints (enabled by default) |
 | `Space uH` | Toggle colorizer |
 | `Space ua` | Toggle animations |
 
@@ -221,6 +223,32 @@ Leader: **`Space`**
 | `zR` / `zM` | Open / close all folds |
 | `zr` / `zm` | Open / close one level |
 | `zK` | Peek fold preview |
+
+### Treesitter Selection (visual mode, NeoVim 0.12 native)
+
+> `an` is now the native treesitter node textobject. The "around number" textobject has been remapped to `aN`.
+
+| Shortcut | Action |
+|----------|--------|
+| `van` | Expand treesitter selection (around node) |
+| `vin` | Shrink treesitter selection (inner node) |
+| `v]n` | Select next sibling node |
+| `v[n` | Select previous sibling node |
+| `Ctrl+Enter` | Expand treesitter selection (alias for `van`) |
+| `Ctrl+Backspace` | Shrink treesitter selection (alias for `vin`) |
+| `vaN` | Around number (textobject, remapped from `an`) |
+
+### Session / Quit
+
+| Shortcut | Action |
+|----------|--------|
+| `Space qr` | Restart NeoVim (`:restart`, NeoVim 0.12) |
+
+### Undo
+
+| Shortcut | Action |
+|----------|--------|
+| `Space sU` | Undo tree (`:Undotree`, NeoVim 0.12 native) |
 
 ---
 
