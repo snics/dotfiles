@@ -2,94 +2,62 @@ return {
     -- 🌳 TREESITTER CORE (Basis-Features)
     {
         "nvim-treesitter/nvim-treesitter",
-        event = { "BufReadPre", "BufNewFile" },
+        branch = "main",
+        lazy = false, -- main branch does not support lazy-loading
         build = ":TSUpdate",
         dependencies = {
             "apple/pkl-neovim", -- PKL support by Apple
         },
         config = function()
-            -- import nvim-treesitter plugin
-            local treesitter = require("nvim-treesitter.configs")
-
-            -- configure treesitter
-            treesitter.setup({
-                auto_install = true,        -- default: false — auto install language parsers
-                highlight = {
-                    enable = true,          -- default: false
-                },
-                indent = { enable = true }, -- default: false
-                -- ensure these language parsers are installed
-                ensure_installed = {
-                    -- Core Neovim languages
-                    "lua",    -- Lua language; *.lua (Neovim config)
-                    "luadoc", -- Lua documentation; --- comments in Lua
-                    "printf", -- Printf format strings; format specifiers
-                    "vim",    -- Vim script; *.vim
-                    "vimdoc", -- Vim help documentation; *.txt help files
-
-                    -- Programming & Markup Languages
-                    "bash",            -- Bash shell scripts; *.sh, *.bash
-                    "c",               -- C language; *.c, *.h
-                    "cpp",             -- C++ language; *.cpp, *.hpp, *.cc
-                    "c_sharp",         -- C# language; *.cs
-                    "css",             -- CSS stylesheets; *.css
-                    "csv",             -- CSV data files; *.csv
-                    "dart",            -- Dart language (Flutter); *.dart
-                    "diff",            -- Diff/patch files; *.diff, *.patch
-                    "dockerfile",      -- Docker files; Dockerfile, *.dockerfile
-                    "go",              -- Go language; *.go
-                    "goctl",           -- Go-zero goctl templates; goctl files
-                    "gomod",           -- Go modules; go.mod
-                    "gosum",           -- Go checksums; go.sum
-                    "gotmpl",          -- Go templates; *.gotmpl, *.tmpl
-                    "gowork",          -- Go workspaces; go.work
-                    "graphql",         -- GraphQL schemas/queries; *.graphql, *.gql
-                    "helm",            -- Helm charts (Kubernetes); Chart.yaml, templates/*
-                    "html",            -- HTML markup; *.html, *.htm
-                    "http",            -- HTTP requests; *.http, REST client files
-                    "javascript",      -- JavaScript; *.js, *.mjs, *.cjs
-                    "jq",              -- jq JSON processor; *.jq
-                    "jsdoc",           -- JSDoc comments; /** */ in JavaScript
-                    "json",            -- JSON data; *.json
-                    "json5",           -- JSON5 (extended JSON); *.json5
-                    "markdown",        -- Markdown; *.md, *.markdown
-                    "markdown_inline", -- Inline markdown; code blocks in markdown
-                    "nginx",           -- Nginx config; nginx.conf, sites-available/*
-                    "php",             -- PHP language; *.php
-                    "pkl",             -- PKL config language (Apple); *.pkl
-                    "powershell",      -- PowerShell scripts; *.ps1, *.psm1
-                    "python",          -- Python language; *.py, *.pyw
-                    "regex",           -- Regular expressions; regex patterns
-                    "rust",            -- Rust language; *.rs, Cargo.toml
-                    "scss",            -- SCSS/Sass stylesheets; *.scss, *.sass
-                    "sql",             -- SQL queries; *.sql
-                    "toml",            -- TOML config files; *.toml, Cargo.toml
-                    "tsx",             -- TypeScript React; *.tsx
-                    "typescript",      -- TypeScript; *.ts
-                    "yaml",            -- YAML data/config; *.yml, *.yaml
-
-                    -- Utility parsers
-                    "comment", -- Generic comments; comment syntax
-                    "tmux",    -- Tmux config; .tmux.conf
-
-                    -- Git-related parsers
-                    "git_config",    -- Git config; .gitconfig
-                    "git_rebase",    -- Git rebase; rebase-merge files
-                    "gitattributes", -- Git attributes; .gitattributes
-                    "gitcommit",     -- Git commit messages; COMMIT_EDITMSG
-                    "gitignore",     -- Git ignore; .gitignore
-                },
-                -- 🚀 INCREMENTAL SELECTION (part of textobjects)
-                incremental_selection = {
-                    enable = true,
-                    keymaps = {
-                        init_selection = "<C-enter>",       -- Start incremental selection
-                        node_incremental = "<C-enter>",     -- Expand selection to next node
-                        scope_incremental = false,          -- Expand selection to next scope
-                        node_decremental = "<C-backspace>", -- Shrink selection to previous node
-                    },
-                },
+            require("nvim-treesitter").setup({
+                -- auto_install is handled by the install call below
             })
+
+            -- Parsers to ensure are installed
+            local ensure_installed = {
+                -- Core Neovim languages
+                "lua", "luadoc", "printf", "vim", "vimdoc",
+                -- Programming & Markup Languages
+                "bash", "c", "cpp", "c_sharp", "css", "csv", "dart", "diff",
+                "dockerfile", "go", "goctl", "gomod", "gosum", "gotmpl", "gowork",
+                "graphql", "helm", "html", "http", "javascript", "jq", "jsdoc",
+                "json", "json5", "markdown", "markdown_inline", "nginx", "php",
+                "pkl", "powershell", "python", "regex", "rust", "scss", "sql",
+                "toml", "tsx", "typescript", "yaml",
+                -- Utility parsers
+                "comment", "tmux",
+                -- Git-related parsers
+                "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore",
+            }
+
+            -- Install missing parsers
+            local installed = require("nvim-treesitter").get_installed()
+            local to_install = vim.iter(ensure_installed)
+                :filter(function(p) return not vim.tbl_contains(installed, p) end)
+                :totable()
+            if #to_install > 0 then
+                require("nvim-treesitter").install(to_install)
+            end
+
+            -- Enable treesitter highlighting and indentation via FileType autocmd
+            vim.api.nvim_create_autocmd("FileType", {
+                group = vim.api.nvim_create_augroup("TreesitterSetup", { clear = true }),
+                callback = function()
+                    if pcall(vim.treesitter.start) then
+                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    end
+                end,
+            })
+
+            -- Native incremental selection (0.12): an/in/]n/[n are default mappings.
+            -- No config needed — they work automatically.
+            -- Optional: add <C-Enter>/<C-Backspace> aliases for muscle memory
+            vim.keymap.set("x", "<C-Enter>", function()
+                require("vim.treesitter._select").select_parent(vim.v.count1)
+            end, { desc = "Expand treesitter selection" })
+            vim.keymap.set("x", "<C-Backspace>", function()
+                require("vim.treesitter._select").select_child(vim.v.count1)
+            end, { desc = "Shrink treesitter selection" })
         end,
     },
 
