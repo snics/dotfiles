@@ -45,6 +45,7 @@
 #
 # =============================================================================
 
+# shellcheck disable=SC2034
 DOCK_APPS=(
     "/System/Applications/System Settings.app"
     "/Applications/Spotify.app"
@@ -65,6 +66,7 @@ DOCK_APPS=(
     "SPACER"
 )
 
+# shellcheck disable=SC2034
 DOCK_FOLDERS=(
     "$HOME/Projects|list|folder|name"
     "$HOME/Downloads|list|folder|dateadded"

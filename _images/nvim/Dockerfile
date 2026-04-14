@@ -61,6 +61,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     nodejs \
     npm \
     python3 \
+    pkg-config \
     python3-pip \
     python3-venv \
     ripgrep
@@ -69,8 +70,16 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 RUN groupadd -g 1000 developer \
     && useradd -m -u 1000 -g developer -s /bin/bash developer
 
-# Install tree-sitter CLI (required by nvim-treesitter main branch to compile parsers)
-RUN npm install -g tree-sitter-cli@0.26.8
+# Install tree-sitter CLI from source (required by nvim-treesitter main branch).
+# Pre-built npm binaries require GLIBC 2.39; Bookworm has 2.36 — must compile via cargo.
+# --no-default-features skips qjs-rt (avoids libclang-dev dep); generate falls back to node.
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+      | sh -s -- -y --profile minimal \
+    && . "$HOME/.cargo/env" \
+    && cargo install --locked tree-sitter-cli --no-default-features \
+    && cp "$HOME/.cargo/bin/tree-sitter" /usr/local/bin/tree-sitter \
+    && rustup self uninstall -y \
+    && rm -rf "$HOME/.cargo"
 
 # Install Go (needed for gopls and Go-based Mason tools)
 RUN GOARCH="${TARGETARCH}" \

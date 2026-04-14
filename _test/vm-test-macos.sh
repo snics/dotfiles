@@ -91,17 +91,23 @@ cat "${SSH_KEY}.pub" | tart exec -i "$VM_NAME" sh -c \
   'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys'
 
 # SSH helper using key auth — no sshpass, no password prompts, no session corruption.
-SSH_OPTS="-i $SSH_KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
--o ConnectTimeout=10 -o ServerAliveInterval=30 -o ServerAliveCountMax=10"
+SSH_OPTS=(
+  -i "$SSH_KEY"
+  -o StrictHostKeyChecking=no
+  -o UserKnownHostsFile=/dev/null
+  -o ConnectTimeout=10
+  -o ServerAliveInterval=30
+  -o ServerAliveCountMax=10
+)
 
 ssh_run() {
-  /usr/bin/ssh $SSH_OPTS "admin@$IP" "$1"
+  /usr/bin/ssh "${SSH_OPTS[@]}" "admin@$IP" "$1"
 }
 
 # Variant with pseudo-TTY for commands that need sudo (e.g. settings.sh
 # starts with `sudo -v` which requires a terminal).
 ssh_run_tty() {
-  /usr/bin/ssh -t $SSH_OPTS "admin@$IP" "$1"
+  /usr/bin/ssh -t "${SSH_OPTS[@]}" "admin@$IP" "$1"
 }
 
 # Wait for SSH to become available

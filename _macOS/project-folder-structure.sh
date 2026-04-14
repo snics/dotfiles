@@ -28,7 +28,7 @@ echo ""
 # Scope for Client Project.
 if [ ! -d "$HOME/Projects/Clients" ]
 then
-	read -p "Are you self-employed or do you have customers? (y/n) " -n 1;
+	read -r -p"Are you self-employed or do you have customers? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p "$HOME/Projects/Clients"
   fi;
@@ -38,7 +38,7 @@ fi
 # Scope for Startups Project.
 if [ ! -d "$HOME/Projects/Startups" ]
 then
-	read -p "Are they involved in start-ups or have shares from companies? (y/n) " -n 1;
+	read -r -p"Are they involved in start-ups or have shares from companies? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p "$HOME/Projects/Startups"
   fi;
@@ -48,7 +48,7 @@ fi
 # Scope for Non-Profit organizations.
 if [ ! -d "$HOME/Projects/Non-Profit" ]
 then
-	read -p "Do you work on non-profit organization projects? (y/n) " -n 1;
+	read -r -p"Do you work on non-profit organization projects? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p "$HOME/Projects/Non-Profit"
   fi;
@@ -58,7 +58,7 @@ fi
 # Scope for Talks/Meetups/Lecturer work.
 if [ ! -d "$HOME/Projects/Talks" ]
 then
-	read -p "Are you a lecturer or a speaker? (y/n) " -n 1;
+	read -r -p"Are you a lecturer or a speaker? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p "$HOME/Projects/Talks"
   fi;
@@ -68,7 +68,7 @@ fi
 # Scope for Workshop materials.
 if [ ! -d "$HOME/Projects/Workshop" ]
 then
-	read -p "Do you conduct workshops or training sessions? (y/n) " -n 1;
+	read -r -p"Do you conduct workshops or training sessions? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p "$HOME/Projects/Workshop"
   fi;

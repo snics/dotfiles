@@ -7,7 +7,7 @@ stow claude
 
 # Merge MCP servers into ~/.claude.json
 CLAUDE_JSON="$HOME/.claude.json"
-MCP_CONFIG="$(dirname "${BASH_SOURCE}")/../claude/mcp-servers.json"
+MCP_CONFIG="$(dirname "${BASH_SOURCE[0]}")/../claude/mcp-servers.json"
 
 if command -v jq &>/dev/null; then
     if [ -f "$CLAUDE_JSON" ]; then
