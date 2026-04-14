@@ -10,7 +10,7 @@
 - [x] `_images/devenv/Dockerfile` — gleicher Treesitter-Impact + neue Plugins (kustomize.nvim, kubeconform source)
 - [x] `_images/devenv-web-terminal/Dockerfile` — basiert auf devenv, Rebuild nötig
 - [x] Docker Builds sind nicht fail-closed: Homebrew-Fehler werden gesammelt aber nicht abgebrochen (nvim Dockerfile Zeile 114: `TSUpdate || true`, Mason best-effort)
-- [ ] Smoke Tests nach Rebuild verifizieren
+- [x] Smoke Tests nach Rebuild verifizieren
 
 ### Justfile/Makefile Sync
 - [x] `help` Target fehlt im Justfile (Makefile hat es, verletzt CLAUDE.md Sync-Regel)
