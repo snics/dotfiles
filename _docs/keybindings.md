@@ -195,6 +195,12 @@ Leader: **`Space`**
 
 | Shortcut | Action |
 |----------|--------|
+| `Space aC` | Claude Code Terminal (claudecode.nvim, floating window) |
+| `Space ac` | Chat with Claude Code (ACP, via codecompanion) |
+| `Space ag` | Chat with Gemini (ACP, via codecompanion) |
+| `Space ax` | Chat with Codex (ACP, via codecompanion) |
+| `Space ao` | Chat with OpenCode (ACP, via codecompanion) |
+| `Space aw` | Toggle Windsurf Virtual Text |
 | `Space aa` | Toggle chat (CodeCompanion) |
 | `Space ap` | Action palette |
 | `Space ai` | Inline edit |
