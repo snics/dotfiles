@@ -136,6 +136,9 @@ for folder in "${DOCK_FOLDERS[@]}"; do
     dockutil --add "$path" --view "$view" --display "$display" --sort "$sort" --allhomes
 done
 
+# Restart the Dock so all changes take effect immediately
+killall Dock
+
 echo ""
 echo "Dock setup done!"
 echo ""
