@@ -365,3 +365,9 @@ vm-clean:
     @echo "==> Cleaning Lima VMs..."
     @limactl list 2>/dev/null | grep test-dotfiles | awk '{print $$1}' | xargs -I{} limactl delete -f {} 2>/dev/null || true
     @echo "==> Done."
+
+# ── Help ───────────────────────────────────────────────
+
+# Show available recipes
+help:
+    @just --list
