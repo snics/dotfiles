@@ -86,10 +86,8 @@ return {
         end, {})
 
         -- Keymaps
-        vim.keymap.set("n", "<leader>av", "<cmd>WindsurfVirtualTextToggle<CR>",
-            { desc = "Toggle virtual text" })
-        vim.keymap.set("n", "<leader>aV", "<cmd>WindsurfVirtualTextOn<CR>", { desc = "Virtual text ON" })
-        vim.keymap.set("n", "<leader>ax", "<cmd>WindsurfVirtualTextOff<CR>", { desc = "Virtual text OFF" })
+        vim.keymap.set("n", "<leader>aw", "<cmd>WindsurfVirtualTextToggle<CR>",
+            { desc = "Toggle Windsurf virtual text" })
 
         -- Initialize OFF
         _windsurf_apply_vt_autocmds()
