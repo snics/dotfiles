@@ -322,7 +322,7 @@ docker-dive-ci:
 
 # Lint shell scripts
 lint:
-    shellcheck _install/*.sh _macOS/*.sh _lib/*.sh bootstrap.sh install.sh
+    shellcheck _install/*.sh _macOS/*.sh _lib/*.sh _test/*.sh bootstrap.sh install.sh
 
 # Validate stow symlinks (dry-run)
 test-symlinks:

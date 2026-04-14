@@ -272,7 +272,7 @@ docker-dive-ci: ## CI-mode dive analysis (fails on inefficiency)
 # ── Validation ──────────────────────────────────────────
 
 lint: ## Lint shell scripts
-	shellcheck _install/*.sh _macOS/*.sh _lib/*.sh bootstrap.sh install.sh
+	shellcheck _install/*.sh _macOS/*.sh _lib/*.sh _test/*.sh bootstrap.sh install.sh
 
 test-symlinks: ## Validate stow symlinks (dry-run)
 	@bash _test/validate-symlinks.sh
