@@ -38,8 +38,8 @@ Makes NeoVim a first-class Claude Code IDE (same protocol as VS Code extension).
 
 **How it works:**
 1. Plugin starts a WebSocket MCP server on a random port
-2. Writes lock file to `~/.claude/ide/[port].lock`
-3. Claude Code CLI discovers the lock file and connects
+2. Writes lock file to `~/.claude/ide/[port].lock` (contains port + auth token)
+3. Claude Code CLI discovers the lock file and connects (use `claude --ide` if manual)
 4. NeoVim sends real-time context: open buffers, cursor position, selections, LSP diagnostics
 5. When Claude proposes file changes, NeoVim shows native diff views
 
@@ -51,11 +51,13 @@ Makes NeoVim a first-class Claude Code IDE (same protocol as VS Code extension).
 ```lua
 {
     "coder/claudecode.nvim",
-    lazy = false,
     dependencies = { "folke/snacks.nvim" },
     opts = {
         terminal = {
             provider = "snacks",
+            snacks_win_opts = {
+                position = "float",
+            },
         },
     },
     keys = {
@@ -76,12 +78,21 @@ terminal and still connects via the WebSocket bridge.
 
 The ACP agents need one-time CLI authentication:
 ```bash
-claude setup-token    # Creates OAuth token for claude-code-acp
-codex auth            # Authenticates codex CLI
-gemini auth login     # Google OAuth for gemini CLI
+# Claude Code ACP: creates OAuth token, then set env var
+claude setup-token
+# Copy the output token and add to shell env:
+# export CLAUDE_CODE_OAUTH_TOKEN="<token>"
+
+# Codex: run codex CLI, select "Sign in with ChatGPT" interactively
+codex
+
+# Gemini: run gemini CLI, follow "Sign in with Google" prompt
+gemini
 ```
 
-These tokens are stored by the respective CLIs and picked up by ACP agents automatically.
+Note: `claude setup-token` output must be manually set as `CLAUDE_CODE_OAUTH_TOKEN`
+in the shell environment (e.g., via `zsh/.secrets.tpl`). Codex and Gemini store
+their tokens automatically after interactive login.
 
 ### Keybinding Alignment with Zed
 
@@ -113,7 +124,7 @@ by `<leader>aw` toggle and `<leader>ax` now maps to Codex (Zed consistency).
 
 The codecompanion adapter config stays mostly the same. Key changes:
 - Remove the `acp_setup` auto-install helpers (agents should be pre-installed)
-- Verify OpenRouter inline strategy works after plugin update to v18.4+
+- Verify OpenRouter inline strategy works after plugin update to latest
 - If OpenRouter inline still fails, fallback inline strategy to `"anthropic"`
 
 ### Strategy Config
@@ -146,10 +157,10 @@ No subgroup needed — the keybindings are flat under `<leader>a`.
 
 | File | Action | Changes |
 |------|--------|---------|
-| `plugins/claudecode.lua` | Create | New plugin config for coder/claudecode.nvim |
-| `plugins/codecompanion.lua` | Modify | Restructure keybindings, remove auto-install helpers |
-| `plugins/windsurf.lua` | Modify | Change toggle keybinding from `<leader>av` to `<leader>aw` |
-| `plugins/which-key.lua` | Modify | No structural changes needed (AI group already exists) |
+| `nvim/.config/nvim/lua/plugins/claudecode.lua` | Create | New plugin config for coder/claudecode.nvim |
+| `nvim/.config/nvim/lua/plugins/codecompanion.lua` | Modify | Restructure keybindings, remove auto-install helpers |
+| `nvim/.config/nvim/lua/plugins/windsurf.lua` | Modify | Change toggle keybinding from `<leader>av` to `<leader>aw` |
+| `nvim/.config/nvim/lua/plugins/which-key.lua` | Modify | No structural changes needed (AI group already exists) |
 | `_docs/keybindings.md` | Modify | Update AI keybindings section |
 
 ## Testing
@@ -158,9 +169,9 @@ No subgroup needed — the keybindings are flat under `<leader>a`.
 2. Run `:ClaudeCode` — verify Claude Code terminal opens
 3. Open a second terminal, run `claude` — verify it discovers NeoVim WebSocket
 4. `<leader>aa` — verify CodeCompanion chat opens
-5. `<leader>ac` — verify Claude Code ACP chat starts (requires `claude setup-token`)
-6. `<leader>ag` — verify Gemini chat starts (requires `gemini auth login`)
-7. `<leader>ax` — verify Codex chat starts (requires `codex auth`)
+5. `<leader>ac` — verify Claude Code ACP chat starts (requires `CLAUDE_CODE_OAUTH_TOKEN`)
+6. `<leader>ag` — verify Gemini chat starts (requires `gemini` login)
+7. `<leader>ax` — verify Codex chat starts (requires Codex CLI sign-in)
 8. Select code, `<leader>ai` — verify inline edit works via OpenRouter
 9. `<leader>aw` — verify Windsurf virtual text toggles
 10. Verify `<C-l>` still accepts Windsurf completions
