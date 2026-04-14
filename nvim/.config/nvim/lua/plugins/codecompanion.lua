@@ -17,61 +17,37 @@ return {
     cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd" },
     keys = {
         -- Chat
-        { "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>",                                          desc = "Toggle AI chat",           mode = "n" },
-        { "<leader>aA", "<cmd>CodeCompanionChat<cr>",                                                 desc = "New AI chat",              mode = "n" },
+        { "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>",   desc = "Toggle AI chat",           mode = "n" },
+        { "<leader>aA", "<cmd>CodeCompanionChat<cr>",          desc = "New AI chat",              mode = "n" },
+
+        -- ACP Agent Shortcuts (consistent with Zed: space a c/g/x/o)
+        { "<leader>ac", "<cmd>CodeCompanionChat claude_code<cr>", desc = "Chat with Claude (ACP)", mode = "n" },
+        { "<leader>ag", "<cmd>CodeCompanionChat gemini_cli<cr>",  desc = "Chat with Gemini (ACP)", mode = "n" },
+        { "<leader>ax", "<cmd>CodeCompanionChat codex<cr>",       desc = "Chat with Codex (ACP)",  mode = "n" },
+        { "<leader>ao", "<cmd>CodeCompanionChat opencode<cr>",    desc = "Chat with OpenCode (ACP)", mode = "n" },
 
         -- Action palette
-        { "<leader>ap", "<cmd>CodeCompanionActions<cr>",                                              desc = "AI action palette",        mode = { "n", "v" } },
+        { "<leader>ap", "<cmd>CodeCompanionActions<cr>",       desc = "AI action palette",        mode = { "n", "v" } },
 
         -- Inline edit
-        { "<leader>ai", "<cmd>CodeCompanion<cr>",                                                     desc = "AI inline edit",           mode = "n" },
-        { "<leader>ai", ":'<,'>CodeCompanion<cr>",                                                    desc = "AI inline edit selection", mode = "v" },
+        { "<leader>ai", "<cmd>CodeCompanion<cr>",              desc = "AI inline edit",           mode = "n" },
+        { "<leader>ai", ":'<,'>CodeCompanion<cr>",             desc = "AI inline edit selection", mode = "v" },
 
         -- Quick prompts (visual mode)
-        { "<leader>ae", ":'<,'>CodeCompanion /explain<cr>",                                           desc = "AI explain code",          mode = "v" },
-        { "<leader>af", ":'<,'>CodeCompanion /fix<cr>",                                               desc = "AI fix code",              mode = "v" },
-        { "<leader>at", ":'<,'>CodeCompanion /tests<cr>",                                             desc = "AI generate tests",        mode = "v" },
-        { "<leader>ar", ":'<,'>CodeCompanion Review this code for potential improvements<cr>",        desc = "AI review code",           mode = "v" },
+        { "<leader>ae", ":'<,'>CodeCompanion /explain<cr>",    desc = "AI explain code",          mode = "v" },
+        { "<leader>af", ":'<,'>CodeCompanion /fix<cr>",        desc = "AI fix code",              mode = "v" },
+        { "<leader>at", ":'<,'>CodeCompanion /tests<cr>",      desc = "AI generate tests",        mode = "v" },
+        { "<leader>ar", ":'<,'>CodeCompanion Review this code for potential improvements<cr>", desc = "AI review code", mode = "v" },
 
         -- Quick prompts (normal mode)
-        { "<leader>ad", "<cmd>CodeCompanion Add documentation for the function under the cursor<cr>", desc = "AI document code",         mode = "n" },
-        { "<leader>ac", "<cmd>CodeCompanion /commit<cr>",                                             desc = "AI commit message",        mode = "n" },
+        { "<leader>ad", "<cmd>CodeCompanion Add documentation for the function under the cursor<cr>", desc = "AI document code", mode = "n" },
     },
     config = function()
-        --- Ensure an npm package is installed, auto-install if missing
-        ---@param bin string Binary name to check
-        ---@param pkg string npm package to install
-        local function ensure_npm(bin, pkg)
-            if vim.fn.executable(bin) == 1 then
-                return
-            end
-            vim.notify("CodeCompanion: installing " .. pkg .. "...", vim.log.levels.INFO)
-            local result = vim.fn.system("npm install -g " .. pkg .. " 2>&1")
-            if vim.v.shell_error ~= 0 then
-                vim.notify("CodeCompanion: failed to install " .. pkg .. "\n" .. result, vim.log.levels.ERROR)
-            else
-                vim.notify("CodeCompanion: " .. pkg .. " installed", vim.log.levels.INFO)
-            end
-        end
-
-        --- ACP setup handler that auto-installs npm binaries
-        ---@param bin string Binary name
-        ---@param pkg string npm package name
-        ---@return fun(self: table): boolean
-        local function acp_setup(bin, pkg)
-            return function(self)
-                ensure_npm(bin, pkg)
-                return vim.fn.executable(bin) == 1
-            end
-        end
-
         require("codecompanion").setup({
             adapters = {
                 -- ACP agents (stateful, CLI-based)
                 claude_code = function()
-                    return require("codecompanion.adapters").resolve("claude_code", {
-                        handlers = { setup = acp_setup("claude-code-acp", "@zed-industries/claude-code-acp") },
-                    })
+                    return require("codecompanion.adapters").resolve("claude_code")
                 end,
                 opencode = function()
                     return require("codecompanion.adapters").resolve("opencode")
@@ -80,9 +56,7 @@ return {
                     return require("codecompanion.adapters").resolve("gemini_cli")
                 end,
                 codex = function()
-                    return require("codecompanion.adapters").resolve("codex", {
-                        handlers = { setup = acp_setup("codex-acp", "@zed-industries/codex-acp") },
-                    })
+                    return require("codecompanion.adapters").resolve("codex")
                 end,
                 kimi_cli = function()
                     return require("codecompanion.adapters").resolve("kimi_cli")
