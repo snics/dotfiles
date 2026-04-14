@@ -10,13 +10,13 @@
 # Run:    docker run -it --rm -v $(pwd):/home/developer snic/nvim
 # ---------------------------------------------------------
 ARG DEBIAN_VERSION=bookworm
-ARG NVIM_VERSION=0.11.6
+ARG NVIM_VERSION=0.12.1
 ARG GO_VERSION=1.22.5
 # SHA256 checksums for binary downloads (supply-chain integrity)
 ARG GO_SHA256_AMD64=904b924d435eaea086515bc63235b192ea441bd8c9b198c507e85009e6e4c7f0
 ARG GO_SHA256_ARM64=8d21325bfcf431be3660527c1a39d3d9ad71535fabdf5041c826e44e31642b5a
-ARG NVIM_SHA256_AMD64=2fc90b962327f73a78afbfb8203fd19db8db9cdf4ee5e2bef84704339add89cc
-ARG NVIM_SHA256_ARM64=8ddc0c101846145e830b17bbca50782ca9307eee4fab539d9e2ddaf8793c06f1
+ARG NVIM_SHA256_AMD64=ab757a1fd9ad307d53d2df4045698906a7ca3993d92260dd8fe49108712d57d0
+ARG NVIM_SHA256_ARM64=a3f8aa5590fd2ac930bcc5c9070b9ac1ec33461d262b6428874c5fc640f3f13c
 
 # ============================================================
 # Stage 1: Builder — install plugins, compile parsers, install LSPs
@@ -69,6 +69,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 RUN groupadd -g 1000 developer \
     && useradd -m -u 1000 -g developer -s /bin/bash developer
 
+# Install tree-sitter CLI (required by nvim-treesitter main branch to compile parsers)
+RUN npm install -g tree-sitter-cli@0.26.8
+
 # Install Go (needed for gopls and Go-based Mason tools)
 RUN GOARCH="${TARGETARCH}" \
     && GO_SHA256=$([ "${TARGETARCH}" = "arm64" ] && echo "${GO_SHA256_ARM64}" || echo "${GO_SHA256_AMD64}") \
@@ -94,10 +97,9 @@ WORKDIR ${HOME}
 # Copy NeoVim config (lazy-lock.json ensures reproducible builds)
 COPY --chown=developer:developer nvim/.config/nvim ${XDG_CONFIG_HOME}/nvim
 
-# Patch config for Docker: disable update checker and auto-install
+# Patch config for Docker: disable update checker, skip runtime installs
 # (keeps original dotfiles untouched, plugins are pre-baked in the image)
 RUN sed -i 's/enabled = true,/enabled = false,/' ${XDG_CONFIG_HOME}/nvim/lua/config/lazy.lua \
-    && sed -i 's/auto_install = true,/auto_install = false,/' ${XDG_CONFIG_HOME}/nvim/lua/plugins/treesitter.lua \
     && sed -i '2i\    cond = false, -- disabled in Docker (needs auth + downloads server)' ${XDG_CONFIG_HOME}/nvim/lua/plugins/windsurf.lua \
     && sed -i 's/mason_tool_installer.setup({/mason_tool_installer.setup({\n            run_on_start = false,/' ${XDG_CONFIG_HOME}/nvim/lua/plugins/mason.lua \
     && sed -i '/cond = function/,/end,/d' ${XDG_CONFIG_HOME}/nvim/lua/plugins/kubernetes.lua
@@ -109,20 +111,31 @@ RUN for i in 1 2 3; do \
     || { echo "Lazy restore attempt $i failed, retrying..."; sleep 5; }; \
     done
 
-# Step 2: Compile Treesitter parsers (55+ languages)
-# Plugin is lazy-loaded, so we must load it explicitly first
+# Step 2: Compile Treesitter parsers
+# nvim-treesitter main branch auto-installs on startup via config.
+# We run headless to trigger the install, then verify critical parsers exist.
 RUN nvim --headless \
-    -c "lua require('lazy').load({ plugins = { 'nvim-treesitter' } })" \
-    -c "TSUpdate" \
-    -c "lua vim.defer_fn(function() vim.cmd('qa') end, 60000)" 2>&1 \
-    || true
+    -c "lua vim.defer_fn(function() vim.cmd('qa') end, 120000)" 2>&1 \
+    && nvim --headless -c "lua \
+    local critical = {'lua','go','rust','typescript','javascript','yaml','json','html','bash','python','dockerfile','markdown'}; \
+    local missing = {}; \
+    for _, lang in ipairs(critical) do \
+    if not pcall(vim.treesitter.language.inspect, lang) then table.insert(missing, lang) end \
+    end; \
+    if #missing > 0 then \
+    print('ERROR: Missing critical parsers: ' .. table.concat(missing, ', ')); \
+    os.exit(1); \
+    else \
+    print('OK: All ' .. #critical .. ' critical parsers installed'); \
+    end; \
+    os.exit(0)" 2>&1
 
 # Step 3: Install Mason tools (linters, formatters) — best-effort
 RUN nvim --headless \
     -c "lua require('lazy').load({ plugins = { 'mason.nvim', 'mason-lspconfig.nvim', 'mason-tool-installer.nvim' } })" \
     -c "MasonToolsInstallSync" \
     -c "lua vim.defer_fn(function() vim.cmd('qa') end, 120000)" 2>&1 \
-    || echo "Warning: Some Mason tools may have failed to install"
+    || { echo "ERROR: Mason tools installation failed"; exit 1; }
 
 # Step 4: Install Mason LSP servers from mason-lspconfig ensure_installed
 # Reads the list dynamically from config — no hardcoded duplicate to maintain
@@ -158,7 +171,7 @@ RUN nvim --headless -c "lua \
     end \
     end); \
     vim.defer_fn(function() vim.cmd('qa') end, 300000)" 2>&1 \
-    || echo "Warning: Some Mason LSP servers may have failed to install"
+    || { echo "ERROR: Mason LSP server installation failed"; exit 1; }
 
 # Step 5: Prevent runtime ensure_installed checks (everything is pre-baked)
 # mason-lspconfig re-checks ensure_installed on every non-headless start.
