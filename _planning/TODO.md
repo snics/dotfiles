@@ -44,7 +44,8 @@
 - [ ] iCloud Sync testen
 
 ### NeoVim TODOs
-- [ ] `mason.lua:55` — `pkl-ls` und `tofu-ls` hinzufügen wenn mason-lspconfig die unterstützt
+- [x] `tofu-ls` — eingebaut mit manueller Server-Config (nvim-lspconfig hat noch kein Default)
+- [ ] `pkl-ls` — wartet auf nvim-lspconfig Mapping (Mason hat das Paket, aber kein lspconfig Support)
 - [x] `codecompanion.lua:1` — OpenRouter Adapter — plugin updated, test pending
 - [x] `codecompanion.lua:2` — claude-code-acp Auth — claudecode.nvim added (reuses CLI OAuth), ACP needs setup-token
 - [x] `codecompanion.lua:3` — codex-acp Auth — needs `codex` interactive login (documented)

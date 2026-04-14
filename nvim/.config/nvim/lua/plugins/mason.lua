@@ -50,9 +50,10 @@ return {
                 "sqlls",                           -- SQL Language Server; *.sql
                 "tailwindcss",                     -- Tailwind IntelliSense (Klassen in HTML/JS/TS/JSX/TSX)
                 "terraformls",                     -- Terraform (HCL); *.tf, *.tfvars
+                "tofu_ls",                         -- OpenTofu (HCL); *.tf, *.tfvars (works alongside terraformls)
                 "ts_ls",                           -- TypeScript/JavaScript/React; *.ts, *.tsx, *.js, *.jsx
                 "yamlls",                          -- YAML (inkl. K8s/KYAML via Schemas); *.yml, *.yaml
-                -- TODO: add pkl-ls and tofu-ls after mason_lspconfig supports it.
+                -- TODO: add pkl-ls after mason_lspconfig supports it (mason has pkl-lsp but no lspconfig mapping).
             },
             -- Disable auto enable. This will be done by the lspconfig plugin.
             automatic_enable = false,
