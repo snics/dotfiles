@@ -122,7 +122,6 @@ RUN --mount=type=bind,source=zsh,target=/tmp/src/zsh \
     && cp -r /tmp/src/zsh/.config/atuin/. /home/developer/.config/atuin/ \
     && cp -r /tmp/src/zsh/.config/yazi/. /home/developer/.config/yazi/ \
     && cp /tmp/src/tmux/.config/tmux/tmux.conf /home/developer/.config/tmux/tmux.conf \
-    && cp /tmp/src/tmux/.config/tmux/catppuccin.conf /home/developer/.config/tmux/catppuccin.conf \
     && cp /tmp/src/git/.gitconfig /home/developer/.gitconfig \
     && cp /tmp/src/git/catppuccin.gitconfig /home/developer/.dotfiles/git/catppuccin.gitconfig \
     && cp /tmp/src/git/.config/git/ignore /home/developer/.config/git/ignore \
