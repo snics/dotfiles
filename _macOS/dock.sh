@@ -136,7 +136,7 @@ done
 for folder in "${DOCK_FOLDERS[@]}"; do
     IFS='|' read -r path view display sort <<< "$folder"
     [[ ! -d "$path" ]] && mkdir -p "$path"
-    dockutil --no-restart --add "$path" --view "$view" --display "$display" --sort "$sort" --allhomes
+    dockutil --no-restart --add "$path" --view "$view" --display "$display" --sort "$sort"
 done
 
 # Restart the Dock so all changes take effect immediately

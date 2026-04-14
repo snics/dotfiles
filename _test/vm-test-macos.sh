@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2016,SC2029
 # Test dotfiles installation in a macOS VM via Tart
 # Requires: brew install cirruslabs/cli/tart
 # Usage: bash _test/vm-test-macos.sh [--interactive]
@@ -187,9 +188,16 @@ ssh_run 'rm -rf ~/Library/Caches/Homebrew/downloads ~/Library/Caches/Homebrew/Ca
 ssh_run 'df -h /'
 
 echo "==> Installing Homebrew casks..."
-ssh_run "$BREW_ENV && grep -h '^cask ' brew/Brewfile.* | brew bundle --verbose --file=-" || {
-  echo "  WARNING: Some casks failed to install (continuing)..."
-}
+# Install casks individually so one download failure doesn't block the rest.
+# brew bundle in batch mode aborts all installs when any single fetch fails.
+ssh_run "$BREW_ENV && cd ~/.dotfiles && grep -h '^cask ' brew/Brewfile.* | \
+  sed 's/cask \"\\([^\"]*\\)\".*/\\1/' | while read -r cask; do
+    echo \"  Installing cask: \$cask\"
+    brew install --cask --no-quarantine \"\$cask\" 2>&1 || echo \"  FAIL: \$cask (continuing)\"
+  done"
+
+echo "==> Installed casks:"
+ssh_run "$BREW_ENV && ls /Applications/*.app 2>/dev/null | sed 's|/Applications/||' | sort" || true
 
 # Ensure passwordless sudo for the macOS settings step.
 # The base image may not have NOPASSWD configured, and sudo -v always
