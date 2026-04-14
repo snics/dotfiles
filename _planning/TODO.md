@@ -6,20 +6,20 @@
 ## Priority: HIGH — Bugs & Broken Things
 
 ### Docker Images Rebuild (nach NeoVim 0.12 Migration)
-- [ ] `_images/nvim/Dockerfile` — nvim-treesitter wechselte von `master` → `main` Branch, braucht jetzt `tree-sitter-cli` zum Kompilieren
+- [x] `_images/nvim/Dockerfile` — nvim-treesitter wechselte von `master` → `main` Branch, braucht jetzt `tree-sitter-cli` zum Kompilieren
 - [ ] `_images/devenv/Dockerfile` — gleicher Treesitter-Impact + neue Plugins (kustomize.nvim, kubeconform source)
 - [ ] `_images/devenv-web-terminal/Dockerfile` — basiert auf devenv, Rebuild nötig
-- [ ] Docker Builds sind nicht fail-closed: Homebrew-Fehler werden gesammelt aber nicht abgebrochen (nvim Dockerfile Zeile 114: `TSUpdate || true`, Mason best-effort)
+- [x] Docker Builds sind nicht fail-closed: Homebrew-Fehler werden gesammelt aber nicht abgebrochen (nvim Dockerfile Zeile 114: `TSUpdate || true`, Mason best-effort)
 - [ ] Smoke Tests nach Rebuild verifizieren
 
 ### Justfile/Makefile Sync
-- [ ] `help` Target fehlt im Justfile (Makefile hat es, verletzt CLAUDE.md Sync-Regel)
+- [x] `help` Target fehlt im Justfile (Makefile hat es, verletzt CLAUDE.md Sync-Regel)
 
 ### Lint Coverage
-- [ ] `just lint` / `make lint` prüfen `_test/*.sh` nicht — ShellCheck Findings werden nie exercised
+- [x] `just lint` / `make lint` prüfen `_test/*.sh` nicht — ShellCheck Findings werden nie exercised
 
 ### macOS VM Test
-- [ ] `_test/vm-test-macos.sh` Zeile 143-144: fehlgeschlagene Homebrew-Installs werden maskiert
+- [x] `_test/vm-test-macos.sh` Zeile 143-144: fehlgeschlagene Homebrew-Installs werden maskiert
 
 ## Priority: MEDIUM — Code Quality & Warnings
 
