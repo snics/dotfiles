@@ -1,6 +1,8 @@
 # Formulae to exclude from Docker devenv builds.
 # One formula name per line (exact match against brew "name" in Brewfile.*).
 # Lines starting with # are comments.
+#
+# See also: linux-exclude (subset — shared Linux-incompatible packages)
 
 # macOS-only tools (no Linux equivalent)
 mas

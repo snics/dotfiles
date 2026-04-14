@@ -1,0 +1,34 @@
+# Formulae to exclude from Linux installations (VM tests, containers).
+# One formula name per line (exact match against brew formula name in Brewfile.*).
+# Lines starting with # are comments.
+#
+# See also: docker-exclude (superset — adds base-image-provided packages)
+
+# macOS-only tools (no Linux equivalent)
+mas
+mackup
+reattach-to-user-namespace
+trash
+lotyp/formulae/dockutil
+
+# macOS-only VM / virtualization tools
+cirruslabs/cli/tart
+
+# Requires hardware, VM hypervisor, or Docker daemon on host
+aircrack-ng
+qmk/qmk/qmk
+lima
+qemu
+minikube
+kind
+
+# No Linux bottle / build fails on Linux
+rename
+robusta-dev/holmesgpt/holmesgpt
+robusta-dev/krr/krr
+
+# Too large for standard installs (install on demand if needed)
+swift
+qt@5
+numpy
+imagemagick

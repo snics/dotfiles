@@ -52,11 +52,14 @@ link-cli:
     @echo "==> Linking CLI dotfiles..."
     @cd {{ DOTFILES }} && stow --restow -t "$HOME" {{ CLI_PACKAGES }}
 
-# Symlink GUI packages (macOS only)
-[macos]
+# Symlink GUI packages (macOS only — no-op on Linux)
 link-gui:
-    @echo "==> Linking GUI dotfiles..."
-    @cd {{ DOTFILES }} && stow --restow -t "$HOME" {{ GUI_PACKAGES }}
+    @if [[ "$(uname -s)" == "Darwin" ]]; then \
+        echo "==> Linking GUI dotfiles..."; \
+        cd {{ DOTFILES }} && stow --restow -t "$HOME" {{ GUI_PACKAGES }}; \
+    else \
+        echo "==> Skipping GUI dotfiles (not macOS)"; \
+    fi
 
 # Remove all symlinks
 unlink:
