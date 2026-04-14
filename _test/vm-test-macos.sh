@@ -140,7 +140,11 @@ ssh_run 'rm -f ~/.zshrc ~/.zprofile ~/.zshenv ~/.gitconfig ~/.bash_profile ~/.ba
 # Run bootstrap steps inline (not bootstrap.sh, which git-pulls from origin
 # and would overwrite the local changes we want to test)
 echo "==> Installing Homebrew..."
-ssh_run 'NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"' || true
+ssh_run 'NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"' || {
+  echo "FATAL: Homebrew installation failed — cannot continue"
+  cleanup
+  exit 1
+}
 ssh_run 'eval "$(/opt/homebrew/bin/brew shellenv)" && brew install just stow'
 
 echo "==> Linking dotfiles..."
