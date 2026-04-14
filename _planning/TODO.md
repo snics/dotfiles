@@ -45,9 +45,9 @@
 
 ### NeoVim TODOs
 - [ ] `mason.lua:55` — `pkl-ls` und `tofu-ls` hinzufügen wenn mason-lspconfig die unterstützt
-- [ ] `codecompanion.lua:1` — OpenRouter Adapter "adapter not found" Bug (Inline/Cmd Strategy)
-- [ ] `codecompanion.lua:2` — claude-code-acp Auth Error 401 (braucht ANTHROPIC_API_KEY, kein OAuth)
-- [ ] `codecompanion.lua:3` — codex-acp Auth Error (braucht OPENAI_API_KEY)
+- [x] `codecompanion.lua:1` — OpenRouter Adapter — plugin updated, test pending
+- [x] `codecompanion.lua:2` — claude-code-acp Auth — claudecode.nvim added (reuses CLI OAuth), ACP needs setup-token
+- [x] `codecompanion.lua:3` — codex-acp Auth — needs `codex` interactive login (documented)
 
 ### Docker TODOs
 - [ ] `_images/devenv-web-terminal` — ghostty-web Migration wenn Ghostty v1.0 mit libghostty-vt WASM kommt
