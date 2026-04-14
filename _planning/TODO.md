@@ -7,8 +7,8 @@
 
 ### Docker Images Rebuild (nach NeoVim 0.12 Migration)
 - [x] `_images/nvim/Dockerfile` — nvim-treesitter wechselte von `master` → `main` Branch, braucht jetzt `tree-sitter-cli` zum Kompilieren
-- [ ] `_images/devenv/Dockerfile` — gleicher Treesitter-Impact + neue Plugins (kustomize.nvim, kubeconform source)
-- [ ] `_images/devenv-web-terminal/Dockerfile` — basiert auf devenv, Rebuild nötig
+- [x] `_images/devenv/Dockerfile` — gleicher Treesitter-Impact + neue Plugins (kustomize.nvim, kubeconform source)
+- [x] `_images/devenv-web-terminal/Dockerfile` — basiert auf devenv, Rebuild nötig
 - [x] Docker Builds sind nicht fail-closed: Homebrew-Fehler werden gesammelt aber nicht abgebrochen (nvim Dockerfile Zeile 114: `TSUpdate || true`, Mason best-effort)
 - [ ] Smoke Tests nach Rebuild verifizieren
 
@@ -24,16 +24,16 @@
 ## Priority: MEDIUM — Code Quality & Warnings
 
 ### ShellCheck Findings
-- [ ] `_install/claude.sh:10` — `BASH_SOURCE` sollte `[0]` verwenden
-- [ ] `_macOS/dock-apps.sh:48,68` — Arrays sehen aus ShellCheck-Sicht unused aus
-- [ ] `_macOS/project-folder-structure.sh:31` — `read` ohne `-r` Flag
-- [ ] `_test/vm-test-macos.sh:98` — `SSH_OPTS` sollte ein Array sein
+- [x] `_install/claude.sh:10` — `BASH_SOURCE` sollte `[0]` verwenden
+- [x] `_macOS/dock-apps.sh:48,68` — Arrays sehen aus ShellCheck-Sicht unused aus
+- [x] `_macOS/project-folder-structure.sh:31` — `read` ohne `-r` Flag
+- [x] `_test/vm-test-macos.sh:98` — `SSH_OPTS` sollte ein Array sein
 
 ### bootstrap.sh
-- [ ] `git pull --ff-only` Fehler werden unterdrückt (Zeile 46) — bei divergiertem Repo bleibt stale Checkout
+- [x] `git pull --ff-only` Fehler werden unterdrückt (Zeile 46) — bei divergiertem Repo bleibt stale Checkout
 
 ### Deprecated Brew Packages
-- [ ] `qmk-toolbox` Cask ist upstream deprecated — evaluieren ob noch nötig oder entfernen
+- [x] `qmk-toolbox` Cask ist upstream deprecated — evaluieren ob noch nötig oder entfernen
 
 ## Priority: LOW — Incomplete Features & TODOs
 
