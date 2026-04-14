@@ -19,4 +19,4 @@ brew "lotyp/formulae/dockutil" # Command-line interface for managing dock items.
 
 # Hardware — keyboards, peripherals
 brew "qmk/qmk/qmk" # Quantum Mechanical Keyboard Firmware. [QMK](https://qmk.fm/)
-cask "qmk-toolbox" # QMK Toolbox is a keyboard firmware flashing and key tester tool. [QMK Toolbox](https://qmk.fm/toolbox/)
+# qmk-toolbox removed — deprecated upstream (use QMK MSYS or qmk CLI directly)

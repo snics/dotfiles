@@ -43,7 +43,7 @@ if [[ ! -d "$DOTFILES" ]]; then
     git clone "$REPO" "$DOTFILES"
 else
     echo "==> Dotfiles already cloned at $DOTFILES"
-    cd "$DOTFILES" && git pull --ff-only || true
+    cd "$DOTFILES" && git pull --ff-only 2>/dev/null || echo "WARNING: git pull failed — local checkout may be out of date (diverged branch?)"
 fi
 
 # ── 4. Core tools ──────────────────────────────────────
