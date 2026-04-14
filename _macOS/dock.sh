@@ -121,19 +121,22 @@ source "$(dirname "${BASH_SOURCE[0]}")/dock-apps.sh"
 # Clear dock
 dockutil --no-restart --remove all
 
-# Add apps
+# Add apps (skip missing apps — they may not be installed yet on fresh setups)
 for app in "${DOCK_APPS[@]}"; do
     if [[ "$app" == "SPACER" ]]; then
         defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
-    else
+    elif [[ -d "$app" ]]; then
         dockutil --no-restart --add "$app"
+    else
+        echo "  SKIP (not installed): $app"
     fi
 done
 
-# Add folders
+# Add folders (create missing directories so they appear in the Dock)
 for folder in "${DOCK_FOLDERS[@]}"; do
     IFS='|' read -r path view display sort <<< "$folder"
-    dockutil --add "$path" --view "$view" --display "$display" --sort "$sort" --allhomes
+    [[ ! -d "$path" ]] && mkdir -p "$path"
+    dockutil --no-restart --add "$path" --view "$view" --display "$display" --sort "$sort" --allhomes
 done
 
 # Restart the Dock so all changes take effect immediately
