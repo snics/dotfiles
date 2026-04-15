@@ -193,7 +193,7 @@ echo "==> Installing Homebrew casks..."
 ssh_run "$BREW_ENV && cd ~/.dotfiles && grep -h '^cask ' brew/Brewfile.* | \
   sed 's/cask \"\\([^\"]*\\)\".*/\\1/' | while read -r cask; do
     echo \"  Installing cask: \$cask\"
-    brew install --cask --no-quarantine \"\$cask\" 2>&1 || echo \"  FAIL: \$cask (continuing)\"
+    brew install --cask \"\$cask\" 2>&1 || echo \"  FAIL: \$cask (continuing)\"
   done"
 
 echo "==> Installed casks:"
