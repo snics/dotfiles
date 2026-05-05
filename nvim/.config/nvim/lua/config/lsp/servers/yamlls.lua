@@ -14,16 +14,10 @@ M.config = {
             schemas = (function()
                 local schemas = require("schemastore").yaml.schemas()
 
-                -- kubernetes.nvim: adds cluster-specific schemas (incl. CRDs)
-                local k8s_ok, kubernetes = pcall(require, "kubernetes")
-                if k8s_ok then
-                    local schema_path = kubernetes.yamlls_schema()
-                    if schema_path then
-                        schemas[schema_path] = "*.{yaml,yml}"
-                    end
-                end
-
-                -- K8s content-based detection is handled by yaml-companion.nvim
+                -- K8s schema (kubernetes.nvim) is routed via yaml-companion's
+                -- custom matcher in plugins/yaml-companion.lua, not as a
+                -- wildcard glob here — that would falsely apply the K8s schema
+                -- to every YAML file (Compose, CI configs, etc.).
                 return schemas
             end)(),
             format = { enable = true },

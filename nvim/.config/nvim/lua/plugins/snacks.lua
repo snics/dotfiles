@@ -63,6 +63,7 @@ return {
         },
         picker = {
             enabled = true,
+            ui_select = true, -- route vim.ui.select through Snacks picker
             sources = {
                 files = {
                     hidden = true,
