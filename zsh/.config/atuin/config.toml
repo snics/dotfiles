@@ -137,7 +137,9 @@ common_subcommands = [
   "trivy",
   "reg",
   # Kubernetes
+  "argocd",
   "devspace",
+  "flux",
   "kubectl",
   "kustomize",
   "k",

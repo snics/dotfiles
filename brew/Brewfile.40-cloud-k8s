@@ -1,8 +1,10 @@
 # Cloud, Kubernetes, and infrastructure tools
 brew "ansible" # Automation tool for configuration management, application deployment, and task automation. [Ansible](https://www.ansible.com/)
+brew "argocd" # GitOps continuous delivery for Kubernetes. [Argo CD](https://argo-cd.readthedocs.io/)
 brew "awscli" # Official Amazon AWS command-line interface. [AWS CLI](https://aws.amazon.com/cli/)
 brew "cmctl" # Command-line tool for managing cert-manager Infrastructure resources. [cmctl](https://github.com/cert-manager/cmctl)
 brew "devspace" # CLI helps develop/deploy/debug apps with Docker and Kubernetes. [DevSpace](https://devspace.sh/)
+brew "fluxcd/tap/flux" # GitOps toolkit for Kubernetes (FluxCD CLI). [Flux](https://fluxcd.io/)
 brew "kubeconform" # Kubernetes manifest schema validator (faster kubeval successor). [Kubeconform](https://github.com/yannh/kubeconform)
 brew "kubent" # Kubernetes API deprecation checker (kube-no-trouble). [Kubent](https://github.com/doitintl/kube-no-trouble)
 brew "kustomize" # Customization of Kubernetes YAML configurations. [Kustomize](https://kustomize.io/)

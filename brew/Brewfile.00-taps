@@ -3,6 +3,7 @@ tap "bramstein/webfonttools" # Tools for working with web fonts. [Webfonttools](
 tap "cirruslabs/cli" # Cirrus Labs CLI tools (Tart VM runner). [Cirrus CLI](https://github.com/cirruslabs/homebrew-cli)
 tap "coder/coder" # Developer tools from Coder. [Coder](https://github.com/coder/homebrew-coder)
 tap "derailed/popeye" # A Kubernetes cluster resource sanitizer. [Popeye](https://github.com/derailed/popeye)
+tap "fluxcd/tap" # FluxCD CLI for GitOps on Kubernetes. [Flux](https://fluxcd.io/)
 tap "goodwithtech/r" # Dockle container image linter. [Dockle](https://github.com/goodwithtech/dockle)
 tap "hashicorp/tap" # HashiCorp tools. [HashiCorp](https://developer.hashicorp.com/terraform)
 tap "joshmedeski/sesh" # Sesh: A tool for managing shell sessions. [Sesh](https://github.com/joshmedeski/sesh)
