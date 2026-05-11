@@ -87,7 +87,7 @@ return {
             local schema_uri = kubernetes.yamlls_schema()
             if schema_uri then
                 local schema = {
-                    name = "Kubernetes (cluster, via kubernetes.nvim)",
+                    name = "Kubernetes (cluster)",
                     uri = schema_uri,
                 }
                 local matchers = require("yaml-companion._matchers")._loaded
