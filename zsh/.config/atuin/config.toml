@@ -177,6 +177,9 @@ common_subcommands = [
   # IaC
   "terraform",
   "tofu",
+  # Hardware
+  "qmk",
+  "zapp",
 ]
 
 # Strip wrapper prefixes for accurate counting

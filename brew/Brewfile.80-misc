@@ -19,8 +19,5 @@ brew "lotyp/formulae/dockutil" # Command-line interface for managing dock items.
 
 # Hardware — keyboards, peripherals
 brew "qmk/qmk/qmk" # Quantum Mechanical Keyboard Firmware. [QMK](https://qmk.fm/)
+brew "zapp" # ZSA's official CLI for flashing Voyager/Moonlander/Ergodox EZ/Halfmoon/Planck EZ keyboards. [Zapp](https://github.com/zsa/zapp)
 # qmk-toolbox removed — deprecated upstream (use QMK MSYS or qmk CLI directly)
-# TODO: Add `brew "zapp"` once Homebrew/homebrew-core#280419 is merged.
-#   ZSA's official CLI for flashing Voyager/Moonlander/Ergodox EZ/Halfmoon/Planck EZ.
-#   Tracking: https://github.com/zsa/zapp/issues/4 + https://github.com/Homebrew/homebrew-core/pull/280419
-#   Currently installable only via `cargo install --path zapp` from source.

@@ -15,7 +15,7 @@
 #   using `system_profiler SPUSBDataType -json` and, if found, runs `zapp update`
 #   to fetch the latest Oryx layout revision and flash it automatically.
 #   Notes:
-#     - Requires `zapp` in PATH (see TODO in brew/Brewfile.80-misc).
+#     - `zapp` is now installed via brew/Brewfile.80-misc.
 #     - `zapp update` only works when the keyboard runs Oryx-built firmware
 #       AND is NOT in bootloader mode — should prompt the user to reset
 #       the keyboard once detected, then continue.
