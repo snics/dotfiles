@@ -55,11 +55,11 @@
       // AI — space a — Navigation & UI
       // -------------------------------------------------------------------
       "space a a": "agent::ToggleFocus",
-      "space a h": "agent::OpenHistory",
+      "space a h": "agents_sidebar::ToggleThreadHistory",
       "space a d": "agent::OpenAgentDiff",
       "space a e": "agent::ExpandMessageEditor",
       "space a z": "workspace::ToggleZoom",
-      "space a n": "agent::ToggleNavigationMenu",
+      "space a n": "agents_sidebar::ToggleThreadSwitcher",
       // -------------------------------------------------------------------
       // AI — space a — Model & Profiles
       // -------------------------------------------------------------------

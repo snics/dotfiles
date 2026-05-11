@@ -1,5 +1,13 @@
 {
+  "cli_default_open_behavior": "existing_window",
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
   "git_panel": {
+    "dock": "right",
     "tree_view": true
   },
   "base_keymap": "JetBrains",
@@ -108,6 +116,7 @@
   },
   // Project Panel
   "project_panel": {
+    "dock": "right",
     "starts_open": false,
     "auto_fold_dirs": true, // (default)
     "bold_folder_labels": true, // (default)
@@ -176,6 +185,7 @@
   // AI Agent — OpenRouter
   // =====================================================================
   "agent": {
+    "dock": "left",
     "favorite_models": [],
     "single_file_review": false,
     "inline_assistant_model": {
@@ -311,12 +321,7 @@
       "type": "registry"
     },
     "claude-acp": {
-      "type": "registry",
-      "favorite_config_option_values": {
-        "mode": [
-          "bypassPermissions"
-        ]
-      }
+      "type": "registry"
     },
     "OpenCode": {
       "type": "custom",
