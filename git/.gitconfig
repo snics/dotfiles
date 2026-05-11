@@ -156,6 +156,25 @@
   # Automatically correct and execute mistyped commands
   autocorrect = prompt
 
+# Pre-commit hooks (Git 2.54+ config-based) — each is opt-in per repo:
+# only runs if the repo has a matching tool config (.oxfmtrc.json,
+# dprint.json, .oxlintrc.json, stylua.toml). See
+# ~/.dotfiles/git/hooks/format-staged.
+# Inspect with: git hook list pre-commit
+# Disable individually with: git config hook.<name>.enabled false
+[hook "oxfmt"]
+  event = pre-commit
+  command = ~/.dotfiles/git/hooks/format-staged oxfmt
+[hook "dprint"]
+  event = pre-commit
+  command = ~/.dotfiles/git/hooks/format-staged dprint
+[hook "oxlint"]
+  event = pre-commit
+  command = ~/.dotfiles/git/hooks/format-staged oxlint
+[hook "stylua"]
+  event = pre-commit
+  command = ~/.dotfiles/git/hooks/format-staged stylua
+
 # URL shorthands
 [url "git@github.com:"]
   insteadOf = "gh:"

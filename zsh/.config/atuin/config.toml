@@ -168,8 +168,11 @@ common_subcommands = [
   "jj",
   "but",
   "dlv",
+  "dprint",
   "op",
+  "oxfmt",
   "sesh",
+  "taplo",
   "mc",
   # IaC
   "terraform",

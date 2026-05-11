@@ -1,0 +1,119 @@
+#!/usr/bin/env bash
+# format-staged — pre-commit formatter/linter dispatcher for Git 2.54 hooks.
+#
+# Usage (from [hook "<name>"] command in gitconfig):
+#   format-staged <tool>
+#
+# Tools: oxfmt | dprint | oxlint | stylua
+#
+# Behavior:
+#   - Opt-in per repo: runs only if the repo has a config file for the tool.
+#   - Skips silently if the tool is not installed (so the hook is harmless
+#     on machines without the formatter set up).
+#   - Operates only on fully-staged files. Partially-staged files (with
+#     unstaged hunks) are skipped with a warning to avoid pulling unstaged
+#     changes into the commit when re-staging.
+#   - Formatters (oxfmt, dprint, stylua) re-stage modified files automatically.
+#   - Linters (oxlint) fail the commit on errors; no auto-fix.
+#
+# Scope split:
+#   - oxfmt:  primary multi-format formatter (JS/TS/JSON/MD/MDX/YAML/TOML/...)
+#   - dprint: Dockerfile only (oxfmt has no Dockerfile plugin)
+
+set -euo pipefail
+
+tool="${1:-}"
+if [[ -z "$tool" ]]; then
+  echo "format-staged: missing tool argument" >&2
+  exit 2
+fi
+
+# Validate tool name first (catches typos in gitconfig before silent no-ops).
+case "$tool" in
+  oxfmt|dprint|oxlint|stylua) ;;
+  *)
+    echo "format-staged: unknown tool '$tool'" >&2
+    exit 2
+    ;;
+esac
+
+# Silent no-op if the tool isn't installed (so the hook is harmless on
+# machines without the formatter set up).
+command -v "$tool" >/dev/null 2>&1 || exit 0
+
+# Run from the repo root so config-file lookup and relative paths work.
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+cd "$repo_root"
+
+# Opt-in detection + extension filter per tool.
+case "$tool" in
+  oxfmt)
+    [[ -f .oxfmtrc.json || -f .oxfmtrc.jsonc || -f oxfmt.config.ts ]] || exit 0
+    extensions='\.([cm]?[jt]sx?|json|jsonc|json5|md|mdx|markdown|toml|ya?ml|css|scss|less|html|vue|graphql|gql)$'
+    ;;
+  dprint)
+    [[ -f dprint.json || -f .dprint.json || -f dprint.jsonc || -f .dprint.jsonc ]] || exit 0
+    # Dockerfile only — oxfmt owns all other formats.
+    extensions='(^|/)Dockerfile(\..+)?$|\.dockerfile$'
+    ;;
+  oxlint)
+    [[ -f .oxlintrc.json || -f oxlintrc.json ]] || exit 0
+    extensions='\.([cm]?[jt]sx?)$'
+    ;;
+  stylua)
+    [[ -f stylua.toml || -f .stylua.toml ]] || exit 0
+    extensions='\.lua$'
+    ;;
+esac
+
+# Collect staged files (added/copied/modified/renamed) matching the extension.
+staged=()
+while IFS= read -r f; do
+  [[ -n "$f" ]] && staged+=("$f")
+done < <(git diff --cached --name-only --diff-filter=ACMR | grep -E "$extensions" || true)
+
+(( ${#staged[@]} > 0 )) || exit 0
+
+# Identify partially-staged files (those that also have unstaged changes).
+partial=()
+while IFS= read -r f; do
+  [[ -n "$f" ]] && partial+=("$f")
+done < <(git diff --name-only -- "${staged[@]}" 2>/dev/null || true)
+
+# Split into fully-staged (safe to re-stage) and partial (warn + skip).
+fully_staged=()
+for f in "${staged[@]}"; do
+  is_partial=0
+  if (( ${#partial[@]} > 0 )); then
+    for p in "${partial[@]}"; do
+      [[ "$p" == "$f" ]] && { is_partial=1; break; }
+    done
+  fi
+  if (( is_partial )); then
+    echo "format-staged($tool): skipping partially-staged $f" >&2
+  else
+    fully_staged+=("$f")
+  fi
+done
+
+(( ${#fully_staged[@]} > 0 )) || exit 0
+
+# Run the tool.
+case "$tool" in
+  oxfmt)
+    oxfmt "${fully_staged[@]}"
+    git add -- "${fully_staged[@]}"
+    ;;
+  dprint)
+    dprint fmt "${fully_staged[@]}"
+    git add -- "${fully_staged[@]}"
+    ;;
+  oxlint)
+    # Lint-only — non-zero exit blocks the commit.
+    oxlint "${fully_staged[@]}"
+    ;;
+  stylua)
+    stylua "${fully_staged[@]}"
+    git add -- "${fully_staged[@]}"
+    ;;
+esac
