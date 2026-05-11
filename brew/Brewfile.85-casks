@@ -31,7 +31,7 @@ cask "kaleidoscope" # Powerful compare tool for macOS. [Kaleidoscope](https://ka
 cask "keepingyouawake" # Prevents your Mac from going to sleep. [KeepingYouAwake](https://keepingyouawake.app/)
 cask "kubenav" # Kubernetes and Helm dashboard. [Kubenav](https://kubenav.io/)
 cask "lens" # Kubernetes IDE. [Lens](https://k8slens.dev/)
-cask "linear-linear" # Linear is a project management tool for software teams. [Linear](https://linear.app/)
+cask "linear" # Linear is a project management tool for software teams. [Linear](https://linear.app/)
 cask "macfuse" # File system integration framework. [MacFUSE](https://osxfuse.github.io/)
 cask "microsoft-teams" # Microsoft Teams collaboration and communication platform. [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams/group-chat-software)
 cask "mission-control-plus" # Adds more functionality to Mission Control. [Mission Control Plus](https://fadel.io/missioncontrol/)
@@ -51,7 +51,11 @@ cask "slack" # Team collaboration and messaging app. [Slack](https://slack.com/)
 cask "spotify" # Music streaming service. [Spotify](https://www.spotify.com/)
 cask "stats" if OS.mac? # A utility to get your macOS statistics. [Stats](https://github.com/exelban/stats)
 cask "superhuman" # Fastest email experience ever made. [Superhuman](https://superhuman.com/)
-cask "superset" # Apache Superset data exploration and visualization platform. [Superset](https://superset.apache.org/)
+# TODO: Re-enable when upstream cask is fixed.
+# Homebrew cask points to desktop-v1.8.5 which 404s on GitHub
+# (only canary builds for 1.8.5 exist; latest stable is desktop-v1.8.4).
+# Tracking: https://github.com/superset-sh/superset/releases
+# cask "superset" # Apache Superset data exploration and visualization platform. [Superset](https://superset.apache.org/)
 cask "t3-code" # Minimal GUI for AI code agents. [T3 Code](https://t3.codes/)
 cask "the-unarchiver" # Unarchiving tool for many different archive formats. [The Unarchiver](https://theunarchiver.com/)
 cask "tor-browser" # Anonymity online. [Tor Browser](https://www.torproject.org/)
@@ -62,4 +66,4 @@ cask "zoom" # Video communication and virtual meeting platform. [Zoom](https://z
 
 # Quick Look plugins
 cask "glance-chamburr" # All-in-one Quick Look plugin: source code, Markdown, JSON, YAML, WebP, archives, Jupyter, and more. Modern .appex format. [Glance](https://github.com/chamburr/glance)
-cask "qlvideo" # Quick Look plugin for video files. [QLVideo](https://github.com/Marginal/QLVideo)
+cask "quicklook-video" # Quick Look plugin for video files. [QLVideo](https://github.com/Marginal/QLVideo)
