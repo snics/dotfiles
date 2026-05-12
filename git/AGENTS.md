@@ -9,7 +9,7 @@ git/
 ├── .gitconfig                # Main config (aliases, delta, GPG, hooks, colors)
 ├── catppuccin.gitconfig      # Delta pager themes (all 4 Catppuccin flavors)
 ├── hooks/
-│   └── format-staged         # Pre-commit dispatcher (oxfmt/dprint/oxlint/stylua)
+│   └── format-staged         # Pre-commit dispatcher (oxfmt/dprint/oxlint/stylua/yamllint)
 ├── .config/git/
 │   ├── ignore                # Global gitignore rules
 │   ├── .gitignore            # Git's own ignore
@@ -71,8 +71,9 @@ still run last.
 | `dprint` | dprint | pre-commit | Formats staged **Dockerfiles** only, re-stages |
 | `oxlint` | oxlint | pre-commit | Lints staged JS/TS, blocks commit on errors |
 | `stylua` | stylua | pre-commit | Formats staged Lua, re-stages |
+| `yamllint` | yamllint | pre-commit | Lints staged YAML against per-repo `.yamllint`, blocks commit on errors |
 
-All four dispatch through `git/hooks/format-staged <tool>`.
+All five dispatch through `git/hooks/format-staged <tool>`.
 
 ### Scope split: oxfmt vs dprint
 
@@ -98,11 +99,15 @@ a tool config file:
 | dprint | `dprint.json`, `.dprint.json`, `dprint.jsonc`, `.dprint.jsonc` |
 | oxlint | `.oxlintrc.json`, `oxlintrc.json` |
 | stylua | `stylua.toml`, `.stylua.toml` |
+| yamllint | `.yamllint`, `.yamllint.yaml`, `.yamllint.yml` |
 
 Without the config file, the hook exits silently. An empty `.oxfmtrc.json`
 (`{}`) is enough to opt a repo into oxfmt with sensible defaults; `dprint init`
 is the typical opt-in path for the Dockerfile hook (config must declare the
-Dockerfile plugin).
+Dockerfile plugin). The yamllint opt-in is typically a minimal `.yamllint`
+that copies the `yamllint/.yamllint.example` template from the dotfiles —
+see `yamllint/AGENTS.md` for the default rule set and the recommended
+"forbid non-empty flow sequences" stance for K8s manifests.
 
 ### Partially-staged file safety
 

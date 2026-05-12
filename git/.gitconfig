@@ -158,7 +158,7 @@
 
 # Pre-commit hooks (Git 2.54+ config-based) — each is opt-in per repo:
 # only runs if the repo has a matching tool config (.oxfmtrc.json,
-# dprint.json, .oxlintrc.json, stylua.toml). See
+# dprint.json, .oxlintrc.json, stylua.toml, .yamllint). See
 # ~/.dotfiles/git/hooks/format-staged.
 # Inspect with: git hook list pre-commit
 # Disable individually with: git config hook.<name>.enabled false
@@ -174,6 +174,9 @@
 [hook "stylua"]
   event = pre-commit
   command = ~/.dotfiles/git/hooks/format-staged stylua
+[hook "yamllint"]
+  event = pre-commit
+  command = ~/.dotfiles/git/hooks/format-staged yamllint
 
 # URL shorthands
 [url "git@github.com:"]

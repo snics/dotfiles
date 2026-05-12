@@ -4,7 +4,7 @@
 # Usage (from [hook "<name>"] command in gitconfig):
 #   format-staged <tool>
 #
-# Tools: oxfmt | dprint | oxlint | stylua
+# Tools: oxfmt | dprint | oxlint | stylua | yamllint
 #
 # Behavior:
 #   - Opt-in per repo: runs only if the repo has a config file for the tool.
@@ -14,11 +14,14 @@
 #     unstaged hunks) are skipped with a warning to avoid pulling unstaged
 #     changes into the commit when re-staging.
 #   - Formatters (oxfmt, dprint, stylua) re-stage modified files automatically.
-#   - Linters (oxlint) fail the commit on errors; no auto-fix.
+#   - Linters (oxlint, yamllint) fail the commit on errors; no auto-fix.
 #
 # Scope split:
-#   - oxfmt:  primary multi-format formatter (JS/TS/JSON/MD/MDX/YAML/TOML/...)
-#   - dprint: Dockerfile only (oxfmt has no Dockerfile plugin)
+#   - oxfmt:    primary multi-format formatter (JS/TS/JSON/MD/MDX/YAML/TOML/...)
+#   - dprint:   Dockerfile only (oxfmt has no Dockerfile plugin)
+#   - yamllint: YAML lint pass on top of oxfmt's formatting (e.g. forbid
+#               non-empty flow-style sequences in RBAC manifests). Rule set
+#               is whatever the per-repo `.yamllint` enables.
 
 set -euo pipefail
 
@@ -30,7 +33,7 @@ fi
 
 # Validate tool name first (catches typos in gitconfig before silent no-ops).
 case "$tool" in
-  oxfmt|dprint|oxlint|stylua) ;;
+  oxfmt|dprint|oxlint|stylua|yamllint) ;;
   *)
     echo "format-staged: unknown tool '$tool'" >&2
     exit 2
@@ -63,6 +66,10 @@ case "$tool" in
   stylua)
     [[ -f stylua.toml || -f .stylua.toml ]] || exit 0
     extensions='\.lua$'
+    ;;
+  yamllint)
+    [[ -f .yamllint || -f .yamllint.yaml || -f .yamllint.yml ]] || exit 0
+    extensions='\.ya?ml$'
     ;;
 esac
 
@@ -115,5 +122,9 @@ case "$tool" in
   stylua)
     stylua "${fully_staged[@]}"
     git add -- "${fully_staged[@]}"
+    ;;
+  yamllint)
+    # Lint-only — non-zero exit blocks the commit.
+    yamllint "${fully_staged[@]}"
     ;;
 esac

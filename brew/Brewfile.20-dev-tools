@@ -22,4 +22,5 @@ brew "stylua" # Opinionated Rust-based Lua code formatter. [StyLua](https://gith
 brew "swift" # The Swift programming language. [Swift](https://swift.org/)
 brew "taplo" # Rust-based TOML toolkit (formatter, linter, LSP). [Taplo](https://taplo.tamasfe.dev/)
 brew "uv" # Fast Python package and project manager (for serena/screencap MCP). [uv](https://github.com/astral-sh/uv)
+brew "yamllint" # A linter for YAML files — used by the yamllint pre-commit hook. [Yamllint](https://yamllint.readthedocs.io/)
 brew "yarn" # JavaScript package manager. [Yarn](https://yarnpkg.com/)

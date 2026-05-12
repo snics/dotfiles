@@ -1,0 +1,31 @@
+# yamllint config — minimal rule set that pairs with the global
+# pre-commit hook in ~/.dotfiles/git/hooks/format-staged.
+#
+# Copy or symlink this file into a repo root as `.yamllint` to opt that
+# repo into the yamllint pre-commit hook. Empty `.yamllint` is also a
+# valid opt-in (yamllint will fall back to its built-in defaults), but
+# the explicit shape below documents the project's stance on YAML style.
+#
+# Default stance: forbid non-empty flow-style sequences and mappings.
+# Block-style is the Kubernetes-RBAC idiom and kubectl's canonical
+# output; empty `[]` and `{}` are preserved (kubectl emits them for
+# empty `clusterResourceWhitelist`, `tolerations`, and similar).
+#
+# Add more rules as the repo accumulates conventions. Tighter rules
+# (line-length, indentation, truthy values, …) are deliberately not
+# enabled by default — they generate noise on third-party Helm values
+# files and chart-rendered manifests. Opt in per-repo when the
+# rule earns its keep.
+
+rules:
+  # Block-style mandatory for non-empty list literals. Empty `[]` is
+  # allowed (kubectl-canonical for empty cluster-scoped resources).
+  brackets:
+    forbid: non-empty
+    level: error
+
+  # Same stance for mapping literals — block-style for non-empty maps,
+  # `{}` allowed for empty maps.
+  braces:
+    forbid: non-empty
+    level: error
