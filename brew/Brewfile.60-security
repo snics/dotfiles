@@ -22,5 +22,4 @@ brew "ssh-copy-id" # Add a public key to a remote machine's authorized_keys file
 brew "sysdig" # System-level exploration and troubleshooting tool. [Sysdig](https://sysdig.com/)
 brew "tcpflow" # Captures TCP connections and stores data in a way that is convenient for protocol analysis and debugging. [Tcpflow](https://github.com/simsong/tcpflow)
 brew "tcpreplay" # Suite of free Open Source utilities for editing and replaying previously captured network traffic. [Tcpreplay](https://tcpreplay.appneta.com/)
-brew "tcptrace" # Tool for analyzing tcpdump output. [Tcptrace](http://www.tcptrace.org/)
 brew "ucspi-tcp" # Command-line tools for building TCP client-server applications. [Ucspi-tcp](https://cr.yp.to/ucspi-tcp.html)
