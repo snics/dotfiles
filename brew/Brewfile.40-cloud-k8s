@@ -12,6 +12,7 @@ brew "coder/coder/coder" # Coder CLI tools. [Coder](https://github.com/coder/cod
 brew "hcloud" # Command-line interface for Hetzner Cloud. [hcloud](https://github.com/hetznercloud/cli)
 brew "helm" # The Kubernetes package manager. [Helm](https://helm.sh/)
 brew "hashicorp/tap/terraform" # Tool for building, changing, and versioning infrastructure safely and efficiently. [Terraform](https://www.terraform.io/)
+brew "hashicorp/tap/vault" # Secrets management, encryption as a service, and privileged access management. [Vault](https://www.vaultproject.io/)
 brew "istioctl" # Command-line tool for Istio service mesh. [Istioctl](https://istio.io/latest/docs/ops/diagnostic-tools/istioctl/)
 brew "k9s" # Kubernetes CLI to manage your clusters in style. [K9s](https://k9scli.io/)
 brew "kind" # Kubernetes IN Docker - local clusters for testing Kubernetes. [Kind](https://kind.sigs.k8s.io/)

@@ -161,6 +161,7 @@ common_subcommands = [
   "rancher",
   "rke",
   "limactl",
+  "vault",
   # Dev tools
   "git",
   "gh",
