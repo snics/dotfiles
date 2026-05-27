@@ -319,6 +319,16 @@ Referenziert `docker/Dockerfile.devenv`.
 
 ## Phase 3: Nix-Darwin + Home Manager Migration
 
+> **Refinement 2026-05-27:** Plan in 3 sequentielle Specs aufgeteilt statt tier-based.
+> Concern-Split nutzt dass Nix Paket-Installation und Config-Management trennt.
+> - **Spec 1: Foundation** — `docs/superpowers/specs/2026-05-27-nix-darwin-foundation-design.md` (DESIGN COMPLETE)
+> - **Spec 2: Package Migration** — Nix-first Policy, Brewfile-Files raus, nix-darwin authoritative (PLANNED)
+> - **Spec 3: HM / Config Migration** — Stow-Configs migrieren, Stow am Ende raus (PLANNED)
+> - **Parallel:** `_planning/ideas/unified-formatter.md` (treefmt, eigenes Feature)
+>
+> Die Sub-Sektionen 3.1-3.8 unten beschreiben die ursprüngliche tier-basierte Recherche und
+> bleiben als Referenz/Strategie-Material. Die tatsächliche Ausführung folgt dem 3-Spec-Split.
+
 ### 3.0 Strategie: mkOutOfStoreSymlink + Homebrew NeoVim
 
 **Kernentscheidung:** NeoVim NICHT via Nix installieren. Bei Homebrew lassen.

@@ -59,16 +59,37 @@
 ## Priority: FUTURE — Phase 3 (Nix-Darwin + Home Manager)
 
 > Erst starten wenn alle obigen Items erledigt oder bewusst deferred sind.
+> Plan refined 2026-05-27: 3 sequentielle Specs statt tier-based.
 
+### Spec 1 — Foundation [DESIGN COMPLETE]
+Spec: `docs/superpowers/specs/2026-05-27-nix-darwin-foundation-design.md`
 - [ ] Nix installieren (Determinate Systems Installer)
-- [ ] Flake-Struktur aufsetzen (`nix/flake.nix`, `hosts/darwin.nix`, `home/`)
-- [ ] Tier 1 Migration: git, starship, fzf, zoxide, bat, eza, direnv
-- [ ] Tier 2 Migration: atuin, k9s, lazygit, ghostty, tmux
-- [ ] Tier 3 Migration: NeoVim (mkOutOfStoreSymlink), Zed, Claude
-- [ ] Tier 4 Migration: Zsh Shell Config, Stow entfernen
-- [ ] macOS Settings → `system.defaults` migrieren
-- [ ] Homebrew Casks deklarativ via nix-darwin
-- [ ] VM-Tests für Nix-Migration (Rollback verifizieren)
+- [ ] `nix/` Skelett: `flake.nix`, `lib/mkDarwin.nix`, `hosts/{pikachu,vm-test}.nix`, `users/nico.nix`
+- [ ] `modules/darwin/{touchid,homebrew,system-defaults}.nix`
+- [ ] `modules/home/symlinks.nix` + tier-stubs (alle leer)
+- [ ] `formatter.aarch64-darwin` = nixfmt-rfc-style
+- [ ] VM-Test (Tart) gegen `#vm-test` Host
+- [ ] Lokales Apply auf `#pikachu`
+- [ ] 24-48h Smoke-Test mit Stow + Brewfile parallel aktiv
+
+### Spec 2 — Package Migration [PLANNED]
+- [ ] Inventur-Skript: jedes Brew gegen `nix search` prüfen
+- [ ] Nix-first Policy: nixpkgs → `home.packages`, Rest → `homebrew.{brews,casks,masApps}`
+- [ ] `brew/Brewfile.*` löschen, `zsh/conf.d/15-brew.zsh` Generator löschen
+- [ ] `homebrew.onActivation.cleanup` schrittweise eskalieren ("none" → "uninstall" → "zap")
+- [ ] VM-Test + lokales Apply
+
+### Spec 3 — Home Manager / Config Migration [PLANNED]
+- [ ] Configs tool-by-tool: `programs.*` wo nativ, `mkOutOfStoreSymlink` für Repo-Configs
+- [ ] macOS Settings → `system.defaults` Vollmigration (`_macOS/settings.sh` ablösen)
+- [ ] Stow am Ende: `stow -D */` + Stow-Package aus Brewfile (bzw. Nix nach Spec 2)
+- [ ] VM-Test zwischen jeder Tool-Migration
+
+### Parallel (unabhängiges Timing)
+Spec: `_planning/ideas/unified-formatter.md`
+- [ ] Phase A: Standalone treefmt (vor Nix-Migration möglich)
+- [ ] Phase B: treefmt-nix Integration (nach Spec 1)
+- [ ] Phase C: git-hooks.nix (optional, nach Spec 2/3)
 
 ## Priority: FUTURE — Phase 4 (Dokumentation)
 
