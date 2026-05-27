@@ -61,16 +61,21 @@
 > Erst starten wenn alle obigen Items erledigt oder bewusst deferred sind.
 > Plan refined 2026-05-27: 3 sequentielle Specs statt tier-based.
 
-### Spec 1 — Foundation [DESIGN COMPLETE]
+### Spec 1 — Foundation [DESIGN COMPLETE — Codex-reviewed]
 Spec: `docs/superpowers/specs/2026-05-27-nix-darwin-foundation-design.md`
-- [ ] Nix installieren (Determinate Systems Installer)
+- [ ] Nix installieren (Determinate Systems Installer, `--determinate` flag)
 - [ ] `nix/` Skelett: `flake.nix`, `lib/mkDarwin.nix`, `hosts/{pikachu,vm-test}.nix`, `users/nico.nix`
-- [ ] `modules/darwin/{touchid,homebrew,system-defaults}.nix`
+- [ ] `modules/darwin/{touchid,system-defaults}.nix` (homebrew DEFERRED zu Spec 2)
 - [ ] `modules/home/symlinks.nix` + tier-stubs (alle leer)
+- [ ] `modules/shared/.gitkeep` (Cross-OS Vorbereitung)
 - [ ] `formatter.aarch64-darwin` = nixfmt-rfc-style
-- [ ] VM-Test (Tart) gegen `#vm-test` Host
+- [ ] Host setzt `nix.enable = false` (Determinate ownt nix.conf)
+- [ ] `just nix-{build,switch,rollback,list}` Targets in Justfile + Makefile
+- [ ] `_install/nix.sh` thin wrapper für Determinate-Installer
+- [ ] VM-Test (Tart) gegen `#vm-test` Host (headless-safe Touch-ID-Check)
 - [ ] Lokales Apply auf `#pikachu`
-- [ ] 24-48h Smoke-Test mit Stow + Brewfile parallel aktiv
+- [ ] Post-Checks: Stow + Brewfile + Homebrew unangetastet
+- [ ] 24-48h Smoke-Test
 
 ### Spec 2 — Package Migration [PLANNED]
 - [ ] Inventur-Skript: jedes Brew gegen `nix search` prüfen

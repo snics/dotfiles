@@ -1,12 +1,14 @@
 # Nix-Darwin Foundation Design
 
-Establish a maintainable nix-darwin + home-manager flake skeleton on macOS that future package- and config-migration specs can fill in incrementally. No tools migrate in this spec — the existing Stow + Brewfile setup remains fully active.
+Establish a maintainable nix-darwin + home-manager flake skeleton on macOS that future package- and config-migration specs can fill in incrementally. No tools migrate in this spec — the existing Stow + Brewfile + Homebrew setup remains fully active and **untouched**.
 
 ## Goal
 
 Move from a Stow + Brewfile dotfiles setup to a declarative Nix-managed system in three discrete, session-bounded specs. This first spec establishes only the **architecture** — directory layout, module skeleton, helper functions, host/user parameterization, and Touch ID — so that subsequent specs (packages, then configs) can plug in without touching plumbing.
 
 **Why now:** The user is new to Nix. Migrating both architecture and tools in one spec produces too many unknowns at once. Splitting "where things live" from "what lives there" gives a debuggable, reversible foundation.
+
+**Critical design constraint:** Foundation **does not touch Homebrew**. nix-homebrew, `homebrew = {}` declarations, and the Brewfile transition are all deferred to Spec #2.
 
 ## Multi-Session Roadmap
 
@@ -15,25 +17,25 @@ This spec is **#1 of 3**:
 ```
 Spec #1 — Foundation (this document)
   └─ Flake skeleton, nix-darwin module wired, home-manager wired,
-     nix-homebrew bridge in place (but empty), Touch ID, one proof-setting.
-     Stow + Brewfile fully unchanged.
+     Touch ID, one proof-setting (Dark Mode). Stow + Brewfile + Homebrew
+     FULLY UNCHANGED.
 
-Spec #2 — Package Migration (separate, future spec)
+Spec #2 — Package Migration (future spec)
+  └─ Adds nix-homebrew + nix-darwin's homebrew = {} module
   └─ Nix-first policy:
      - Every tool with a nixpkgs equivalent → home.packages
-     - Casks, MAS apps, Apple-only brews → nix-darwin's homebrew = {} module
+     - Casks, MAS apps, Apple-only brews → nix-darwin's homebrew module
      - brew/Brewfile.* deleted; 15-brew.zsh generator deleted
      - nix-darwin becomes authoritative for ALL package state
 
-Spec #3 — Home Manager / Config Migration (separate, future spec)
+Spec #3 — Home Manager / Config Migration (future spec)
   └─ Configs migrate tool-by-tool via programs.* (native HM) or
      mkOutOfStoreSymlink for configs that stay in ~/.dotfiles/.
      Stow gets uninstalled at the end.
 
 Parallel feature (independent timing): _planning/ideas/unified-formatter.md
-  └─ treefmt-nix unified formatter. Foundation only wires `nix fmt` to
-     nixfmt-rfc-style for Nix files. Full multi-language treefmt is its
-     own feature spec.
+  └─ Foundation only wires `nix fmt` to nixfmt-rfc-style for Nix files.
+     Full multi-language treefmt is its own feature spec.
 ```
 
 Each spec gets its own implementation plan, its own VM test, its own merge gate.
@@ -42,27 +44,26 @@ Each spec gets its own implementation plan, its own VM test, its own merge gate.
 
 ### In scope (this spec)
 
-- `nix/flake.nix` with inputs (nixpkgs-unstable, nix-darwin, home-manager, nix-homebrew)
-- `nix/lib/mkDarwin.nix` host constructor (parameterized by hostname/username)
+- `nix/flake.nix` with inputs (nixpkgs-unstable, nix-darwin, home-manager) — **no nix-homebrew yet**
+- `nix/lib/mkDarwin.nix` host constructor (parameterized by hostname/username/userModule)
 - Two hosts: `pikachu` (daily driver) and `vm-test` (for Tart VM validation)
-- One user: `nico`
-- `nix/modules/darwin/touchid.nix` — Touch ID for sudo
-- `nix/modules/darwin/homebrew.nix` — nix-homebrew bridge, lists empty
+- `nix/users/nico.nix` (also imported by `vm-test` with `username = "admin"`)
+- `nix/modules/darwin/touchid.nix` — Touch ID for sudo via `sudo_local`
 - `nix/modules/darwin/system-defaults.nix` — single proof setting (Dark Mode)
 - `nix/modules/home/symlinks.nix` — empty mkOutOfStoreSymlink buffer
 - `nix/modules/home/migration/{cli,editors,shell}-tier.nix` — empty tier stubs
-- `nix/modules/shared/` — created empty, for future cross-OS modules
+- `nix/modules/shared/` — created empty (with `.gitkeep`), for future cross-OS modules
 - `flake.formatter` exposes `nixfmt-rfc-style` (so `nix fmt nix/` works)
-- VM-test workflow for the foundation (Tart smoke test)
-- Determinate Systems Nix installer instructions
-- Stow and Brewfile remain fully active throughout this spec
+- VM-test workflow for the Foundation (Tart smoke test, headless-safe validation)
+- Determinate Systems Nix installer is the assumed installer; nix-darwin sets `nix.enable = false`
+- Stow + Brewfile + Homebrew remain fully active throughout this spec
 
 ### Out of scope (deferred to later specs)
 
-- Any tool migration (no `home.packages` entries, no `programs.*` enabled)
-- Cask migration (`homebrew.casks` stays `[]`)
-- MAS app migration (`homebrew.masApps` stays `{}`)
-- macOS settings migration from `_macOS/settings.sh` (only Dark Mode as proof)
+- **`nix-homebrew` input and module** — Spec #2 adds it (with `autoMigrate = true` and Brewfile transition steps)
+- **`homebrew = {}` declarations** — Spec #2
+- Tool migration (no `home.packages`, no `programs.*` enabled)
+- macOS settings beyond Dark Mode (`_macOS/settings.sh` migration — Spec #3)
 - Stow uninstall
 - Brewfile deletion or `15-brew.zsh` removal
 - Full treefmt-nix (only Nix-file formatting wired)
@@ -80,17 +81,19 @@ nix/
 ├── flake.nix                              # Inputs + outputs only
 ├── flake.lock                             # Auto-generated
 ├── lib/
-│   └── mkDarwin.nix                       # Host constructor
+│   └── mkDarwin.nix                       # Host constructor (takes userModule param)
 ├── hosts/
 │   ├── pikachu.nix                        # Daily driver
-│   └── vm-test.nix                        # Tart VM test target
+│   └── vm-test.nix                        # Tart VM test target (reuses users/nico.nix)
 ├── users/
 │   └── nico.nix                           # User identity + HM module imports
+│                                          #   (parameterized by username, so admin user
+│                                          #    in vm-test works without a second file)
 └── modules/
     ├── darwin/                            # nix-darwin system modules
     │   ├── touchid.nix
-    │   ├── homebrew.nix                   # nix-homebrew bridge (empty lists)
-    │   └── system-defaults.nix            # Proof setting only
+    │   └── system-defaults.nix            # Proof setting only (Dark Mode)
+    │                                      # NO homebrew.nix — deferred to Spec #2
     ├── home/                              # home-manager user modules
     │   ├── symlinks.nix                   # Empty buffer for mkOutOfStoreSymlink
     │   └── migration/
@@ -104,9 +107,9 @@ nix/
 **Why this shape:**
 
 - `flake.nix` stays under 40 lines — pure dispatch, no devshells/checks/packages inline. This is the "thin-flake discipline" that makes a future upgrade to `flake-parts` a 1-2h refactor instead of a rewrite.
-- `lib/mkDarwin.nix` centralizes host construction — adding a host is "one file in `hosts/` + one line in `flake.nix`".
+- `lib/mkDarwin.nix` centralizes host construction. It takes `userModule` as a parameter (path), so the same module file can be reused across hosts with different usernames.
 - `hosts/` holds machine-specific facts (hostname, hardware). Generic modules in `modules/darwin/` are imported by the host file.
-- `users/nico.nix` is the single import-point for all home-manager modules — Tier specs edit `cli-tier.nix` etc. without touching imports.
+- `users/nico.nix` is parameterized — it reads `username` from `specialArgs`, so the `admin` user in `vm-test` reuses the same file without duplication.
 - `modules/home/migration/` is pre-structured for the future Tier specs. Files exist but are empty — Spec #2/#3 fills them.
 - `modules/shared/` is empty but visible — a contract with the future for cross-OS code if a Linux host appears.
 
@@ -120,9 +123,8 @@ nix/
 
   inputs = {
     nixpkgs.url      = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin.url   = "github:LnL7/nix-darwin";
+    nix-darwin.url   = "github:nix-darwin/nix-darwin/master";
     home-manager.url = "github:nix-community/home-manager";
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 
     nix-darwin.inputs.nixpkgs.follows   = "nixpkgs";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -131,12 +133,14 @@ nix/
   outputs = inputs: {
     darwinConfigurations = {
       pikachu = import ./lib/mkDarwin.nix inputs {
-        hostname = "pikachu";
-        username = "nico";
+        hostname   = "pikachu";
+        username   = "nico";
+        userModule = ./users/nico.nix;
       };
       vm-test = import ./lib/mkDarwin.nix inputs {
-        hostname = "vm-test";
-        username = "admin";
+        hostname   = "vm-test";
+        username   = "admin";
+        userModule = ./users/nico.nix;   # same module, admin reads `username` from specialArgs
       };
     };
 
@@ -147,23 +151,23 @@ nix/
 ```
 
 Notes:
-- `nixpkgs-unstable` is mandatory on Darwin to avoid from-source builds for darwin-specific packages
-- `follows` directives keep input closure deduplicated
-- `nix-homebrew` is wired as an input from day one so the Spec #2 transition is `homebrew.casks = []` → `[...stuff...]`, no input change
-- `formatter` is exposed so `nix fmt nix/` works from day one with RFC-166 style
+- `nix-darwin/nix-darwin/master` — the repo moved away from `LnL7/`. The new canonical location.
+- `nixpkgs-unstable` is mandatory on Darwin to avoid from-source builds for darwin-specific packages.
+- `follows` directives keep input closure deduplicated.
+- **`nix-homebrew` is intentionally not an input.** Spec #2 adds it. Adding it as an unused input would pollute `flake.lock` without benefit.
+- `formatter` is exposed so `nix fmt nix/` works from day one with RFC-166 style.
 
 #### `nix/lib/mkDarwin.nix`
 
 ```nix
-inputs: { hostname, username, system ? "aarch64-darwin" }:
+inputs: { hostname, username, userModule }:
   inputs.nix-darwin.lib.darwinSystem {
-    inherit system;
     specialArgs = { inherit inputs hostname username; };
     modules = [
       ../hosts/${hostname}.nix
       ../modules/darwin/touchid.nix
-      ../modules/darwin/homebrew.nix
       ../modules/darwin/system-defaults.nix
+      # NOTE: modules/darwin/homebrew.nix is intentionally absent — added by Spec #2
 
       inputs.home-manager.darwinModules.home-manager
       {
@@ -171,17 +175,19 @@ inputs: { hostname, username, system ? "aarch64-darwin" }:
         home-manager.useUserPackages     = true;
         home-manager.backupFileExtension = "backup";
         home-manager.extraSpecialArgs    = { inherit inputs hostname username; };
-        home-manager.users.${username}   = import ../users/${username}.nix;
+        home-manager.users.${username}   = import userModule;
       }
     ];
   };
 ```
 
 Notes:
+- **`userModule` is an explicit path parameter.** Solves the `users/${username}.nix` problem from the earlier draft (where `vm-test` with `username = "admin"` would have tried to load a nonexistent `users/admin.nix`).
 - `specialArgs` propagates `inputs`, `hostname`, `username` to all darwin modules
 - `extraSpecialArgs` does the same for all home-manager modules
-- `backupFileExtension = "backup"` is the rollback insurance: any file home-manager would overwrite (e.g., a Stow symlink) is renamed to `.backup` instead of silently lost
+- `backupFileExtension = "backup"` is the rollback insurance: any file home-manager would overwrite is renamed to `.backup` instead of silently lost
 - `useGlobalPkgs + useUserPackages` is the standard integrated-HM mode
+- **`system = "aarch64-darwin"` is intentionally absent** — set in the host via `nixpkgs.hostPlatform` (the modern way).
 
 #### `nix/hosts/pikachu.nix`
 
@@ -190,12 +196,19 @@ Notes:
   networking.hostName     = hostname;
   networking.computerName = "Pikachu";
   system.primaryUser      = username;
-  system.stateVersion     = 5;
+  system.stateVersion     = 7;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.trusted-users         = [ username ];
+  nixpkgs.hostPlatform = "aarch64-darwin";
+
+  # Determinate Systems owns /etc/nix/nix.conf — nix-darwin MUST NOT also manage Nix.
+  nix.enable = false;
 }
 ```
+
+Notes:
+- **`nix.enable = false`** is the key Determinate-compat directive. nix-darwin won't write to `/etc/nix/nix.conf`. Experimental features (`nix-command`, `flakes`) are already enabled by Determinate's default install.
+- `system.stateVersion = 7` matches current nix-darwin (was `5` in earlier draft, bumped).
+- `nixpkgs.hostPlatform` replaces the old `system = "..."` argument to `darwinSystem` — modern style.
 
 #### `nix/hosts/vm-test.nix`
 
@@ -203,13 +216,14 @@ Notes:
 { hostname, username, ... }: {
   networking.hostName = hostname;
   system.primaryUser  = username;
-  system.stateVersion = 5;
+  system.stateVersion = 7;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.hostPlatform = "aarch64-darwin";
+  nix.enable = false;
 }
 ```
 
-Note: VM-test host deliberately omits `computerName` and any non-essential settings. Foundation validation only — not a daily-driver simulation.
+VM-test host deliberately omits `computerName` and any non-essential settings. Foundation validation only — not a daily-driver simulation.
 
 #### `nix/users/nico.nix`
 
@@ -230,6 +244,8 @@ Note: VM-test host deliberately omits `computerName` and any non-essential setti
 }
 ```
 
+This module is parameterized by `username`, so it works for both `nico` (on pikachu) and `admin` (on vm-test) without a second file. If a real per-user override is needed later, add `users/admin.nix` and switch `userModule` in `flake.nix`.
+
 #### `nix/modules/darwin/touchid.nix`
 
 ```nix
@@ -238,35 +254,7 @@ Note: VM-test host deliberately omits `computerName` and any non-essential setti
 }
 ```
 
-#### `nix/modules/darwin/homebrew.nix`
-
-```nix
-{ inputs, username, ... }: {
-  imports = [ inputs.nix-homebrew.darwinModules.nix-homebrew ];
-
-  nix-homebrew = {
-    enable        = true;
-    enableRosetta = false;
-    user          = username;
-    mutableTaps   = true;
-  };
-
-  homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = false;
-      upgrade    = false;
-      cleanup    = "none";
-    };
-    brews    = [];
-    casks    = [];
-    masApps  = {};
-    taps     = [];
-  };
-}
-```
-
-Critical: `cleanup = "none"` ensures nix-darwin **does not uninstall** any brew that isn't declared in Nix. The current Brewfile-managed installation continues to function uninterrupted. Cleanup escalates in Spec #2 (`"uninstall"` → `"zap"`).
+Modern nix-darwin option — writes `/etc/pam.d/sudo_local`. Validated headlessly in the VM via file-content check.
 
 #### `nix/modules/darwin/system-defaults.nix`
 
@@ -276,7 +264,7 @@ Critical: `cleanup = "none"` ensures nix-darwin **does not uninstall** any brew 
 }
 ```
 
-Proof-of-pipeline only. The full migration of `_macOS/settings.sh` (1005 lines) is a separate spec.
+Proof-of-pipeline only. Full migration of `_macOS/settings.sh` (1005 lines) is Spec #3.
 
 #### `nix/modules/home/symlinks.nix`
 
@@ -306,101 +294,171 @@ $ darwin-rebuild switch --flake ~/.dotfiles/nix#pikachu
 flake.nix → outputs.darwinConfigurations.pikachu
        │
        ▼
-lib/mkDarwin.nix { hostname = "pikachu"; username = "nico"; }
+lib/mkDarwin.nix { hostname = "pikachu"; username = "nico"; userModule = ./users/nico.nix; }
        │
        ▼
 nix-darwin.lib.darwinSystem
-       ├─ hosts/pikachu.nix       (host-specific)
-       ├─ modules/darwin/touchid.nix
-       ├─ modules/darwin/homebrew.nix      → nix-homebrew installs brew; empty lists
-       ├─ modules/darwin/system-defaults.nix → Dark Mode
+       ├─ hosts/pikachu.nix       (hostName, primaryUser, nix.enable=false, hostPlatform)
+       ├─ modules/darwin/touchid.nix       (writes /etc/pam.d/sudo_local)
+       ├─ modules/darwin/system-defaults.nix (Dark Mode)
        └─ home-manager.darwinModules.home-manager
-              └─ users/nico.nix
+              └─ import userModule  (= ./users/nico.nix)
                      ├─ modules/home/symlinks.nix       (empty)
                      ├─ modules/home/migration/cli-tier.nix    (empty)
                      ├─ modules/home/migration/editors-tier.nix (empty)
                      └─ modules/home/migration/shell-tier.nix  (empty)
 ```
 
-## Coexistence with Existing System
+**Notable absences:**
+- No nix-homebrew module → Homebrew is untouched
+- No `nix.settings.*` → Determinate owns Nix config
 
-During this spec, **both systems run side-by-side**:
+## Coexistence with Existing System
 
 | System | Owned by | State after Foundation |
 |--------|----------|------------------------|
-| Stow symlinks | `stow */` from `~/.dotfiles/` | unchanged, all 16 packages still stowed |
-| Brewfile generation | `zsh/conf.d/15-brew.zsh` concatenates `brew/Brewfile.*` to `~/.Brewfile` | unchanged |
-| Homebrew packages | `brew bundle install` via `~/.Brewfile` | unchanged — all brews, casks, MAS apps installed via Homebrew |
-| Touch ID for sudo | Now declared in `modules/darwin/touchid.nix` | declarative, but functionally same as before |
-| Dark Mode | Now declared in `modules/darwin/system-defaults.nix` | declarative, but functionally same as before |
+| Stow symlinks | `stow */` from `~/.dotfiles/` | **unchanged**, all 16 packages still stowed |
+| Brewfile generation | `zsh/conf.d/15-brew.zsh` concatenates `brew/Brewfile.*` to `~/.Brewfile` | **unchanged** |
+| Homebrew installation | Existing `/opt/homebrew` | **unchanged** — not touched, not migrated, not managed |
+| Homebrew packages | `brew bundle install` via `~/.Brewfile` | **unchanged** |
+| `/etc/nix/nix.conf` | Determinate Systems | unchanged (nix-darwin has `nix.enable = false`) |
+| Touch ID for sudo | Was manual `/etc/pam.d/sudo` edit (or fresh) | now declarative via `/etc/pam.d/sudo_local` |
+| Dark Mode | Was manual System Settings | now declarative |
 | `~/.config/*` symlinks | Stow | unchanged |
-| `~/.local/state/nix/profile/*` | nix-darwin | only the proof settings |
 
 Translation: applying this Foundation should produce **no behavioral changes** to your daily work other than:
-- Touch ID continues to work (now declaratively)
+- Touch ID continues to work (now declaratively via `sudo_local`)
 - Dark Mode stays on (now declaratively)
 - `darwin-rebuild` is now a meaningful command on your system
 
 ## Testing Strategy (VM-first)
 
-### Test sequence
+### VM bootstrap flow (Tart, headless)
 
-1. **Tart VM is the proving ground.** Reuse the existing `_test/vm-test-macos.sh` infrastructure. Add a new test script (or extend the existing one) that:
-   - Clones the dotfiles repo into the VM
-   - Installs Nix via Determinate Systems installer
-   - Runs `darwin-rebuild switch --flake ~/.dotfiles/nix#vm-test`
-   - Validates: nix-darwin generation created, Touch ID PAM entry exists, Dark Mode is active, home-manager backup-extension is configured, `nix fmt` works.
+The Foundation has **no Homebrew dependency** in the VM, so VM testing is much simpler than the broader dotfiles VM-test. The VM only needs Nix + the flake:
 
-2. **Only if VM-test passes**, apply locally:
-   - `darwin-rebuild switch --flake ~/.dotfiles/nix#pikachu`
-   - Validate the same checks on `pikachu`
-   - Verify Stow + Brewfile remain functional (run `stow --restow */`, `brew bundle check`)
+```bash
+# 1. Clone fresh Tart base macOS image
+tart clone ghcr.io/cirruslabs/macos-sequoia-base:latest nix-foundation-test
 
-3. **Smoke-test daily flows for 24-48h before merging Spec #2:**
-   - Open new terminals, verify Zsh starts cleanly
-   - Run NeoVim, verify plugins load
-   - Verify `brew install <something>` still works (manual brew is not blocked)
-   - Verify `git`, `lazygit`, `k9s` continue to function
+# 2. Boot headless, mount dotfiles
+tart run --no-graphics --dir=dotfiles:~/.dotfiles nix-foundation-test &
+ssh admin@$(tart ip nix-foundation-test)   # default admin/admin
 
-### Validation checklist (per host)
+# Inside VM:
+# 3. Install Determinate Systems Nix
+curl --proto '=https' --tlsv1.2 -sSf -L \
+  https://install.determinate.systems/nix | sh -s -- install --determinate
 
-- [ ] `darwin-rebuild switch` exits 0
-- [ ] `darwin-version` reports a generation number
-- [ ] `sudo -k && sudo true` prompts for Touch ID (not password)
+# 4. First switch (bootstrap — darwin-rebuild not yet on PATH)
+nix run github:nix-darwin/nix-darwin/master#darwin-rebuild -- \
+  switch --flake ~/.dotfiles/nix#vm-test
+
+# 5. Validate (see checklist below)
+
+# 6. Cleanup
+tart delete nix-foundation-test
+```
+
+### Validation checklist (headless-safe)
+
+Run inside the VM (and later on `pikachu`):
+
+- [ ] `darwin-rebuild switch --flake <flake>#<host>` exits 0
+- [ ] `darwin-rebuild --list-generations` shows ≥1 generation
+- [ ] `test -f /etc/pam.d/sudo_local && grep -q pam_tid /etc/pam.d/sudo_local` (Touch ID file-content check, headless-safe — does NOT attempt `sudo`)
 - [ ] `defaults read -g AppleInterfaceStyle` returns `Dark`
-- [ ] `~/.config/*` symlinks created by Stow still exist and resolve
-- [ ] `brew list` returns the expected set of brews (no unexpected uninstalls)
 - [ ] `nix fmt nix/flake.nix` formats without error
-- [ ] `darwin-rebuild --rollback` works (test once, then re-apply)
+- [ ] `nix flake check ~/.dotfiles/nix` passes (evaluates all configs)
+- [ ] `darwin-rebuild build --flake <flake>#<other-host>` also builds (sanity: both hosts evaluate independently)
+- [ ] Inside VM: `which brew` returns "not found" (no Homebrew migration happened — Foundation truly didn't touch it)
+- [ ] `darwin-rebuild --rollback` works (test once in VM, then re-switch to current)
+
+### Local apply on `pikachu`
+
+After the VM validates:
+
+- [ ] `darwin-rebuild switch --flake ~/.dotfiles/nix#pikachu`
+- [ ] All validation-checklist items pass on pikachu
+- [ ] **Critical post-checks** (Foundation must not have broken existing system):
+  - [ ] `stow --restow */` from `~/.dotfiles` exits 0 (Stow still functional)
+  - [ ] `brew bundle check` reports the expected state (no unexpected uninstalls)
+  - [ ] `brew list | wc -l` matches the count before applying Foundation
+  - [ ] Open a fresh terminal — Zsh starts cleanly, prompt renders, atuin history works
+  - [ ] `nvim` launches, plugins load, no errors
+  - [ ] `git status` works (no auth disruption)
+  - [ ] `lazygit`, `k9s` launch normally
+
+### Smoke test (24-48h)
+
+After the local switch and post-checks, use the machine normally for 24-48h before declaring the Foundation done. Watch for:
+- Unexpected `.backup` files appearing in `$HOME` (would indicate HM clashed with Stow)
+- Touch ID prompts failing (would indicate `sudo_local` got disturbed)
+- Brewfile-managed apps misbehaving (would indicate Homebrew got disturbed despite all guarantees)
+
+If anything in that window is wrong → rollback (next section).
 
 ## Rollback Strategy
 
-If the Foundation breaks daily work:
+If the Foundation breaks something:
 
-1. **First-line rollback:** `darwin-rebuild --rollback` — returns to previous nix-darwin generation
-2. **Nix completely off:** Remove `/etc/zshenv` lines added by Determinate Systems installer, restart shells
-3. **Restore any HM-backed-up files:** `find $HOME -name "*.backup" -type l` (or `-type f`) and rename back
-4. **Stow re-restore (if symlinks got disturbed):** `cd ~/.dotfiles && stow */`
-5. **Nuclear:** Determinate Systems uninstall command + remove `nix/` directory in git
+### First-line rollback (Nix-level)
+1. `darwin-rebuild --rollback` — return to previous nix-darwin generation
+   - **Caveat:** this only rolls back what nix-darwin set. Specifically: `/etc/pam.d/sudo_local`, `system.defaults`, the user's home-manager profile. It does NOT roll back the Determinate Nix install itself.
 
-The Foundation is engineered to make rollback rare:
-- `cleanup = "none"` means no brews are uninstalled
+### Full state-list to audit during rollback
+
+State touched by the Foundation:
+- `/etc/pam.d/sudo_local` — written by nix-darwin's TouchID module (rolled back by `darwin-rebuild --rollback`)
+- `/var/db/com.apple.universalaccess.plist`-equivalent for `AppleInterfaceStyle` — set by `system.defaults`
+- nix-darwin profile links: `/etc/static`, `/run/current-system` → rolled back
+- Home-Manager profile + backup files: `find $HOME -name "*.backup"` and rename if any appeared
+- **Determinate-installed state (NOT rolled back by `darwin-rebuild --rollback`):**
+  - `/nix/store` — the entire Nix store
+  - `/etc/nix/nix.conf`, `/etc/determinate/config.json` — Determinate-owned
+  - `/etc/zshrc`, `/etc/bashrc` lines added by the installer
+  - `/etc/synthetic.conf` mount-point entry
+  - APFS volume for `/nix`
+
+### Removing Nix completely (nuclear)
+If the Foundation must be uninstalled entirely (not just rolled back to a previous generation):
+```bash
+/nix/nix-installer uninstall                     # Determinate's reverse installer
+# Then verify:
+ls /nix /etc/nix /etc/synthetic.conf 2>/dev/null  # should be gone
+```
+
+### Restoring Stow / Brewfile if disturbed
+Foundation is engineered so this is unnecessary, but just in case:
+```bash
+cd ~/.dotfiles
+stow */                                  # re-stow everything
+brew bundle check                        # report state
+brew bundle install                      # restore expected brews
+```
+
+### Why the Foundation makes rollback rare
+- Foundation does NOT touch Homebrew (no nix-homebrew imported)
+- Foundation does NOT touch Stow (no symlinks migrated)
+- Foundation does NOT touch daily-use configs (no `programs.*` enabled)
 - `backupFileExtension = "backup"` means no files are silently overwritten
-- No Stow symlinks are touched
-- No daily-use config (zsh, nvim, git, ...) is migrated yet
+- Determinate's installer has its own clean uninstaller
 
 ## Acceptance Criteria
 
 The Foundation is **done** when:
 
 - [ ] `nix/` directory exists at repo root with the file layout above
-- [ ] `nix flake check ./nix` (or `nix flake show`) passes from `~/.dotfiles`
+- [ ] Determinate Systems Nix is installed on `pikachu`
+- [ ] `nix flake check ./nix` passes from `~/.dotfiles`
+- [ ] `nix flake show ./nix` lists both `pikachu` and `vm-test` darwinConfigurations
 - [ ] `darwin-rebuild build --flake ./nix#pikachu` builds without error
 - [ ] `darwin-rebuild build --flake ./nix#vm-test` builds without error
-- [ ] VM-test script validates `vm-test` host successfully
-- [ ] Local apply succeeds on `pikachu`
-- [ ] All validation-checklist items pass (above)
-- [ ] Stow + Brewfile remain fully functional, no symlinks broken
+- [ ] VM-test script validates `vm-test` host successfully (full bootstrap flow above)
+- [ ] Local switch on `pikachu` succeeds
+- [ ] All validation-checklist items pass on `pikachu`
+- [ ] All post-checks pass (Stow + Brewfile + daily tools unaffected)
+- [ ] 24-48h smoke test stable
 - [ ] Spec is reviewed by user
 - [ ] Implementation plan exists (separate document, written via `writing-plans` skill)
 - [ ] `_planning/ideas/roadmap-2026.md` Phase 3 updated to reference the 3-spec split
@@ -412,74 +470,101 @@ Per-session breakdown (designed for `executing-plans` skill):
 
 ### Session 1 — Bootstrap & flake skeleton (1-2h)
 
-1. Install Nix via Determinate Systems on `pikachu`
+1. Install Determinate Systems Nix on `pikachu` (`curl ... determinate.systems/nix | sh -s -- install --determinate`)
 2. Create `nix/` directory with placeholder files
-3. Write `flake.nix`, `lib/mkDarwin.nix`, `hosts/pikachu.nix`, `users/nico.nix`
+3. Write `flake.nix`, `lib/mkDarwin.nix`, `hosts/pikachu.nix`, `hosts/vm-test.nix`, `users/nico.nix`
 4. Add `.gitignore` entry for `nix/result*`
-5. Run `nix flake show` — verify outputs resolve
+5. Run `nix flake show ./nix` — verify outputs resolve
 6. Commit (does not apply yet)
 
 ### Session 2 — Modules wired (1-2h)
 
-1. Write `modules/darwin/touchid.nix`, `homebrew.nix`, `system-defaults.nix`
+1. Write `modules/darwin/touchid.nix`, `system-defaults.nix`
 2. Write `modules/home/symlinks.nix` + tier stubs
-3. `darwin-rebuild build --flake ./nix#pikachu` — verify it builds
-4. Commit
+3. Add `modules/shared/.gitkeep`
+4. `darwin-rebuild build --flake ./nix#pikachu` — verify it builds (no apply yet)
+5. `darwin-rebuild build --flake ./nix#vm-test` — verify both hosts build
+6. Commit
 
 ### Session 3 — VM-test integration (1-2h)
 
-1. Write `hosts/vm-test.nix`
-2. Extend `_test/vm-test-macos.sh` to provision Nix + run `darwin-rebuild switch --flake ... #vm-test`
-3. Run VM test until green
+1. Write a new `_test/vm-test-nix-foundation.sh` (or extend `vm-test-macos.sh` with a `--foundation-only` flag) implementing the headless bootstrap flow above
+2. Add a `just` target: `just test-nix-foundation`
+3. Run VM test until green (all validation checklist items pass)
 4. Commit
 
-### Session 4 — Local apply + smoke test (1-2h)
+### Session 4 — Local apply + smoke test (1-2h apply, then 24-48h watch)
 
 1. `darwin-rebuild switch --flake ./nix#pikachu` on the actual machine
-2. Run validation checklist
+2. Run validation checklist + post-checks on pikachu
 3. Use the machine normally for 24-48h
 4. If stable: spec is done. Move to Spec #2 brainstorming.
 5. If unstable: rollback, debug, retry.
 
-Total estimated: **4-8 hours across 3-4 sessions.**
+Total estimated: **4-8 hours of active work across 3-4 sessions** (plus 24-48h passive smoke window).
 
-## Multi-Session Continuity (where to pick up next time)
+## Multi-Session Handoff Checklist
 
-Each session starts by:
+At the **end** of every session, record this in the commit message (or update `_planning/TODO.md` Foundation section):
 
-1. Reading this spec (`docs/superpowers/specs/2026-05-27-nix-darwin-foundation-design.md`)
-2. Reading the implementation plan (created in next step via `writing-plans` skill)
-3. Reading current state of `nix/` directory
-4. Checking git log for the most recent Foundation commit
-5. Running `darwin-rebuild --list-generations` to see what's already been applied
+```
+SESSION HANDOFF — Nix-Darwin Foundation
+─────────────────────────────────────────
+Last commit:          <git sha>
+Last action:          <e.g., "wrote flake.nix + lib/mkDarwin.nix", "ran darwin-rebuild build successfully">
+darwin-rebuild state: <not run | build only | switch ran on vm-test | switch ran on pikachu>
+Current generation:   <output of `darwin-rebuild --list-generations | tail -1`, or "n/a">
+Installer mode:       Determinate Systems (--determinate flag)
+Homebrew prefix:      /opt/homebrew (untouched, count: <brew list | wc -l>)
+Next command:         <exact command to run on resume, e.g., "darwin-rebuild build --flake ./nix#vm-test">
+Blocking issue:       <none | description if rollback was needed>
+```
 
-The spec, the plan, and `git log` together are the persistent state. No undocumented context required to continue.
+At the **start** of every session:
+1. `cd ~/.dotfiles && git log --oneline -10` — see what's in flight
+2. Read this spec
+3. Read the implementation plan (created via `writing-plans`)
+4. Read the most recent SESSION HANDOFF
+5. If `darwin-rebuild` has run: `darwin-rebuild --list-generations | tail -5`
+6. Resume from "Next command"
 
-## Open Questions
+## Open Questions / Implementation-Time Decisions
 
-1. **Determinate Systems installer URL/version pinning:** Should the installer command be committed to a script in `_install/`? (Recommendation: yes, add `_install/nix.sh` for reproducibility, but defer to the implementation plan.)
+These are NOT spec-blockers — they're flagged for the implementation plan to resolve.
 
-2. **Where does `darwin-rebuild` get invoked from?** Options: ad-hoc command, `justfile` target, or both. (Recommendation: add `just nix-switch` + `just nix-build` targets to match the existing Justfile pattern.)
+1. **`just nix-build` / `just nix-switch` targets.** Recommendation: yes, add to both `justfile` and `Makefile` (per the project's sync rule). Implementation plan should include them. Targets:
+   ```
+   just nix-build           # darwin-rebuild build --flake ./nix#pikachu
+   just nix-switch          # darwin-rebuild switch --flake ./nix#pikachu
+   just nix-rollback        # darwin-rebuild --rollback
+   just nix-list            # darwin-rebuild --list-generations
+   just test-nix-foundation # the VM-test target from Session 3
+   ```
 
-3. **`stateVersion` for nix-darwin:** Pinned to `5` initially. Should be reviewed against latest nix-darwin docs at implementation time.
+2. **`_install/nix.sh`** — committed installer wrapper for reproducibility? Recommendation: yes, thin wrapper that runs the Determinate `curl ... | sh -s -- install --determinate` line. So a fresh machine bootstrap is `bash _install/nix.sh && darwin-rebuild switch ...`.
 
-4. **VM-test host's username:** `admin` matches the default Tart macOS image. Document this so future VM-test changes don't break.
+3. **`stateVersion` review at implementation time.** Pinned to `7` for nix-darwin and `25.11` for home-manager. Re-check at implementation: `nix-darwin` may have bumped further. The rule: pin to whatever is current when you first apply; don't change it after.
 
-5. **`nix flake check` integration with CI:** Foundation doesn't add this — should it? Recommendation: defer to the Unified Formatter Phase B spec.
+4. **VM-test host's username.** `admin` matches the default Tart macOS image. If Tart's default changes, update `vm-test.nix` accordingly.
+
+5. **`nix flake check` integration with GitHub Actions CI.** Foundation doesn't add this — deferred to the Unified Formatter Phase B spec.
 
 ## Related
 
 - [`_planning/ideas/roadmap-2026.md`](../../_planning/ideas/roadmap-2026.md) — Phase 3 (this spec replaces the old tier-based plan with a 3-spec split)
 - [`_planning/ideas/unified-formatter.md`](../../_planning/ideas/unified-formatter.md) — Parallel feature, references nixfmt-rfc-style which this spec wires
-- [Nix-Darwin Manual](https://nix-darwin.github.io/nix-darwin/manual/)
+- [`_planning/TODO.md`](../../_planning/TODO.md) — Updated Foundation status
+- [nix-darwin (new repo location)](https://github.com/nix-darwin/nix-darwin)
+- [nix-darwin Manual](https://nix-darwin.github.io/nix-darwin/manual/)
 - [Home Manager Manual](https://nix-community.github.io/home-manager/)
-- [nix-homebrew](https://github.com/zhaofengli/nix-homebrew)
-- [Determinate Systems Installer](https://install.determinate.systems/)
+- [Determinate Systems Nix Installer](https://docs.determinate.systems/)
+- [Determinate + nix-darwin guide](https://docs.determinate.systems/guides/nix-darwin/)
+- [nix-homebrew](https://github.com/zhaofengli/nix-homebrew) — deferred to Spec #2
 - [RFC 166 — Nix formatting](https://github.com/NixOS/rfcs/pull/166)
 
 ---
 
 **Created:** 2026-05-27
+**Last revised:** 2026-05-27 (Codex review applied — defer nix-homebrew, fix `userModule`, `nix.enable=false`, repo URL, stateVersion=7, headless VM validation, expanded rollback, session handoff checklist)
 **Status:** Design (awaiting user review before writing implementation plan)
 **Priority:** High (foundation for Phase 3)
-**Author:** brainstorming session with codex:rescue, general-purpose research agents
