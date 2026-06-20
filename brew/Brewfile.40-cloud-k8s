@@ -12,6 +12,7 @@ brew "kustomize" # Customization of Kubernetes YAML configurations. [Kustomize](
 brew "coder/coder/coder" # Coder CLI tools. [Coder](https://github.com/coder/coder)
 brew "hcloud" # Command-line interface for Hetzner Cloud. [hcloud](https://github.com/hetznercloud/cli)
 brew "helm" # The Kubernetes package manager. [Helm](https://helm.sh/)
+brew "hashicorp/tap/packer" # Tool for creating identical machine images for multiple platforms from a single source configuration. [Packer](https://www.packer.io/)
 brew "hashicorp/tap/terraform" # Tool for building, changing, and versioning infrastructure safely and efficiently. [Terraform](https://www.terraform.io/)
 brew "hashicorp/tap/vault" # Secrets management, encryption as a service, and privileged access management. [Vault](https://www.vaultproject.io/)
 brew "istioctl" # Command-line tool for Istio service mesh. [Istioctl](https://istio.io/latest/docs/ops/diagnostic-tools/istioctl/)

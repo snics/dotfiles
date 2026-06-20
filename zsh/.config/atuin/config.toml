@@ -176,6 +176,7 @@ common_subcommands = [
   "taplo",
   "mc",
   # IaC
+  "packer",
   "terraform",
   "tofu",
   # Hardware
