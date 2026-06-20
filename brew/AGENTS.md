@@ -35,8 +35,16 @@ All standard `brew bundle` commands work without `--file` because
 `HOMEBREW_BUNDLE_FILE=~/.Brewfile` is set in `zsh/conf.d/00-init.zsh`.
 The `~/.Brewfile` is auto-regenerated when any source file changes.
 
-Additional justfile/Makefile targets: `brew-install`, `brew-list`,
-`brew-check`, `brew-cleanup`, `brew-dump`, `brew-edit`.
+Additional justfile/Makefile targets: `brew-install`, `brew-tap`, `brew-trust`,
+`brew-list`, `brew-check`, `brew-cleanup`, `brew-dump`, `brew-edit`.
+
+Homebrew 6.0+ requires non-official taps to be explicitly trusted
+(`brew trust --tap`) before it will load their formulae/casks, and a tap must
+be added before it can be trusted. So `brew-install` runs `brew-gen` →
+`brew-tap` → `brew-trust` → `brew bundle` in that order. `brew-tap` taps every
+repository declared in `Brewfile.00-taps`; `brew-trust` then trusts every tap
+except the official `homebrew/*` ones. Run `brew-trust` standalone any time
+`brew update` prints "because its tap is not trusted" warnings.
 
 ## Sync Obligation: Brewfile ↔ Atuin Config
 

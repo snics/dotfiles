@@ -134,9 +134,23 @@ brew-gen:
     cat {{ DOTFILES }}/brew/Brewfile.* > ~/.Brewfile
     @echo "Generated ~/.Brewfile from $(ls -1 {{ DOTFILES }}/brew/Brewfile.* | wc -l | tr -d ' ') sources"
 
+# Homebrew 6.0+ refuses to load formulae from untrusted taps, so taps must be
+# added (brew-tap) and trusted (brew-trust) BEFORE bundling. just runs these
+# dependencies in order before the recipe body.
+#
 # Install all packages from split Brewfiles
-brew-install: brew-gen
+brew-install: brew-gen brew-tap brew-trust
     brew bundle --file=~/.Brewfile
+
+# Tap all repositories declared in Brewfile.00-taps (prerequisite for trusting)
+brew-tap:
+    grep -hoE '^tap "[^"]+"' {{ DOTFILES }}/brew/Brewfile.00-taps | sed -E 's/tap "([^"]+)"/\1/' | xargs -L1 brew tap
+    @echo "Tapped all repositories from Brewfile.00-taps"
+
+# Trust all non-official taps (Homebrew 6.0+ tap-trust requirement)
+brew-trust:
+    brew tap | grep -vE '^homebrew/' | xargs brew trust --tap
+    @echo "Trusted all non-homebrew taps"
 
 # List all packages from split Brewfiles
 brew-list:

@@ -5,6 +5,7 @@ brew "awscli" # Official Amazon AWS command-line interface. [AWS CLI](https://aw
 brew "cmctl" # Command-line tool for managing cert-manager Infrastructure resources. [cmctl](https://github.com/cert-manager/cmctl)
 brew "devspace" # CLI helps develop/deploy/debug apps with Docker and Kubernetes. [DevSpace](https://devspace.sh/)
 brew "fluxcd/tap/flux" # GitOps toolkit for Kubernetes (FluxCD CLI). [Flux](https://fluxcd.io/)
+brew "dgunzy/tap/flux9s" # K9s-inspired terminal UI for monitoring Flux resources in real-time. [flux9s](https://github.com/dgunzy/flux9s)
 brew "kubeconform" # Kubernetes manifest schema validator (faster kubeval successor). [Kubeconform](https://github.com/yannh/kubeconform)
 brew "kubent" # Kubernetes API deprecation checker (kube-no-trouble). [Kubent](https://github.com/doitintl/kube-no-trouble)
 brew "kustomize" # Customization of Kubernetes YAML configurations. [Kustomize](https://kustomize.io/)

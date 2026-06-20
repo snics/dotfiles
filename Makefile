@@ -16,7 +16,7 @@ ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 .PHONY: all install link link-cli link-gui unlink relink update macos dock project-folders \
         golang rust asdf check lint test test-symlinks test-configs help \
         zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor obsidian \
-        brew-gen brew-install brew-list brew-check brew-cleanup \
+        brew-gen brew-install brew-tap brew-trust brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
         docker-build docker-build-nvim docker-build-devenv docker-build-web-terminal docker-build-web-desktop \
         docker-test docker-run docker-run-web-terminal docker-run-web-terminal-tmux docker-run-web-terminal-nvim \
@@ -117,7 +117,17 @@ brew-gen: ## Regenerate ~/.Brewfile from split sources
 	@echo "Generated ~/.Brewfile from $$(ls -1 $(DOTFILES)/brew/Brewfile.* | wc -l | tr -d ' ') sources"
 
 brew-install: brew-gen ## Install all packages from split Brewfiles
+	$(MAKE) brew-tap
+	$(MAKE) brew-trust
 	brew bundle --file=~/.Brewfile
+
+brew-tap: ## Tap all repositories declared in Brewfile.00-taps (prerequisite for trusting)
+	grep -hoE '^tap "[^"]+"' $(DOTFILES)/brew/Brewfile.00-taps | sed -E 's/tap "([^"]+)"/\1/' | xargs -L1 brew tap
+	@echo "Tapped all repositories from Brewfile.00-taps"
+
+brew-trust: ## Trust all non-official taps (Homebrew 6.0+ tap-trust requirement)
+	brew tap | grep -vE '^homebrew/' | xargs brew trust --tap
+	@echo "Trusted all non-homebrew taps"
 
 brew-list: ## List all packages from split Brewfiles
 	cat $(DOTFILES)/brew/Brewfile.* | brew bundle list --file=-

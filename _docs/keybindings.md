@@ -372,6 +372,18 @@ Leader: **`Space`** (Vim mode)
 | `Shift+K` | KRR recommendations |
 | `Shift+H` | HolmesGPT troubleshoot |
 
+### Flux (GitOps) Plugin Shortcuts
+
+Scoped to Flux resources ([derailed/k9s flux.yaml](https://github.com/derailed/k9s/blob/master/plugins/flux.yaml)).
+
+| Shortcut | Scope | Action |
+|----------|-------|--------|
+| `Shift+T` | HelmRelease, Kustomization, ResourceSet, InputProvider, FluxInstance | Toggle suspend/resume |
+| `Shift+R` | GitRepository, HelmRelease, Kustomization, ImageRepository, ImageUpdateAutomation, ResourceSet, InputProvider, FluxInstance | Flux reconcile |
+| `Shift+Z` | HelmRepository, OCIRepository | Flux reconcile source |
+| `Shift+S` | HelmRelease, Kustomization | List suspended resources |
+| `Shift+F` | all | Flux trace (remapped from upstream `Shift+Q` to avoid clash with HolmesGPT) |
+
 ---
 
 ## Cross-Tool Consistency
