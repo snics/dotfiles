@@ -181,6 +181,7 @@ common_subcommands = [
   "tofu",
   # Hardware
   "qmk",
+  "ykman",
   "zapp",
 ]
 

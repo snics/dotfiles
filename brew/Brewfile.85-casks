@@ -59,8 +59,10 @@ cask "superhuman" # Fastest email experience ever made. [Superhuman](https://sup
 cask "t3-code" # Minimal GUI for AI code agents. [T3 Code](https://t3.codes/)
 cask "the-unarchiver" # Unarchiving tool for many different archive formats. [The Unarchiver](https://theunarchiver.com/)
 cask "tor-browser" # Anonymity online. [Tor Browser](https://www.torproject.org/)
+cask "tyme" # Time, project, and task tracking with invoicing. [Tyme](https://www.tyme-app.com/)
 cask "vagrant" # Development environments made easy. [Vagrant](https://www.vagrantup.com/)
 cask "vlc" # Open-source cross-platform multimedia player. [VLC](https://www.videolan.org/vlc/)
+cask "yubico-authenticator" # Manage YubiKey and view TOTP codes. [Yubico Authenticator](https://www.yubico.com/products/yubico-authenticator/)
 cask "zed" # Collaborative code editor. [Zed](https://zed.dev/)
 cask "zoom" # Video communication and virtual meeting platform. [Zoom](https://zoom.us/)
 
