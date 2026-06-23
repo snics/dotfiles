@@ -12,6 +12,11 @@ if (( $+commands[atuin] )); then
   ZSH_AUTOSUGGEST_USE_ASYNC=1
 fi
 
+# Pin the autosuggestion ghost color to Catppuccin Surface2 so it stays dim
+# even after ANSI 8 ("bright black") is brightened in the Ghostty palette for
+# general dim-text readability. Decouples ghost suggestions from secondary text.
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#585b70'
+
 # Reduce zsh history to small fallback (Atuin is primary)
 # Override zimfw/environment defaults (HISTSIZE=20000, SAVEHIST=10000)
 HISTSIZE=5000

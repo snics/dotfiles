@@ -2,6 +2,19 @@ font-family = "Lilex Nerd Font"
 font-size = 16
 theme = "Catppuccin Mocha"
 background = "#181825"
+
+# Brighten ANSI 8 ("bright black") from Catppuccin Surface2 (#585b70) to
+# Overlay1 (#7f849c) so dimmed/secondary text stays readable on the dark
+# background across all terminal tools (git/delta, lazygit, k9s, Claude Code).
+# Zsh autosuggestions are pinned back to #585b70 to remain ghosted.
+palette = 8=#7f849c
+
+# Faint/dim text (SGR 2) is used by Claude Code et al. for secondary text;
+# the 0.5 default blends it halfway to the background and tanks readability.
+# Raise it so muted text stays legible. Solid-color "ghost" text (zsh
+# autosuggestions, comments) is unaffected — only the faint attribute.
+faint-opacity = 0.8
+
 background-opacity = 0.9
 background-blur-radius = 50
 cursor-style = "underline"
