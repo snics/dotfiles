@@ -62,7 +62,6 @@
   "enabledPlugins": {
     "clangd-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true,
     "claude-mem@thedotmack": true,
     "superpowers@claude-plugins-official": true,
     "codex@openai-codex": true
@@ -77,7 +76,7 @@
   },
   "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "light-ansi",
+  "theme": "dark-ansi",
   "editorMode": "vim",
   "agentPushNotifEnabled": true
 }
