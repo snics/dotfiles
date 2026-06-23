@@ -51,7 +51,7 @@ DOCK_APPS=(
     "/Applications/Spotify.app"
     "SPACER"
     "/Applications/Google Chrome.app"
-    "/Applications/Arc.app"
+    "/Applications/Dia.app"
     "SPACER"
     "/Applications/Superhuman.app"
     "/Applications/Notion Calendar.app"
