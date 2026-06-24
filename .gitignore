@@ -63,6 +63,9 @@ zsh/.config/zim-modules/**/*.zwc.old
 tmux/.config/tmux/plugins/
 .claude/plans/
 
+# Claude Code git worktrees (ephemeral, managed by git worktree)
+.claude/worktrees/
+
 # Brew: generated composite file and dump output
 .Brewfile
 brew/Brewfile.dump
