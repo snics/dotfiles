@@ -2,7 +2,7 @@
 # One formula name per line (exact match against brew formula name in Brewfile.*).
 # Lines starting with # are comments.
 #
-# See also: docker-exclude (superset — adds base-image-provided packages)
+# See also: docker-exclude
 
 # macOS-only tools (no Linux equivalent)
 mas
