@@ -1,0 +1,17 @@
+# Prefix+. → "Spawn Agent": open another coding agent in a split beside
+# the current pane — e.g. switch to Codex when Claude hits a rate limit.
+name = "Spawn Agent"
+type = "select"
+command = "herdr agent start {{.Value}} --cwd '{{.WorkDir}}' --split right -- {{.Value}}"
+
+[[options]]
+label = "Claude Code"
+value = "claude"
+
+[[options]]
+label = "Codex"
+value = "codex"
+
+[[options]]
+label = "opencode"
+value = "opencode"
