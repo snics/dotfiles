@@ -17,8 +17,8 @@ keymap.set("n", "<leader>W", "<cmd>wq<CR>", { desc = "Save and close" })
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" })
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" })
 
--- Window navigation: Ctrl+hjkl handled by vim-tmux-navigator plugin
--- (see lua/plugins/vim-tmux-navigator.lua)
+-- Window navigation: Ctrl+hjkl handled by herdr-splits.nvim
+-- (see lua/plugins/herdr-splits.lua)
 
 -- Window resize (Ctrl+Arrow)
 keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })

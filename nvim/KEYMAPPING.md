@@ -478,7 +478,8 @@ The keys you'll use every day. Print this page or keep it open as a tab.
 
 | Key | Action | Remember as... |
 |-----|--------|----------------|
-| `<C-h/j/k/l>` | Move to left/down/up/right window | Like h/j/k/l but for windows |
+| `<C-h/j/k/l>` | Move to left/down/up/right window (crosses into herdr panes at split edges) | Like h/j/k/l but for windows |
+| `<M-h/j/k/l>` | Resize window (crosses the nvim/herdr boundary, herdr panes only) | Alt = adjust |
 | `<C-u>` / `<C-d>` | Smooth half-page up/down | |
 | `s` | Flash jump (type 2 chars, jump anywhere) | "Seek" |
 | `S` | Flash treesitter (select syntax node) | "Seek Syntax" |
@@ -557,6 +558,15 @@ Chat with AI, get code suggestions, and manage inline completions.
 | `<leader>ar` | v | Review | Select code → AI reviews it |
 | `<leader>ad` | n | Document | Generate docs for function at cursor |
 | `<leader>ac` | n | Commit message | AI writes commit message from staged diff |
+
+**herd.nvim (herdr agents from within NeoVim):**
+
+| Key | Mode | Action | Example use case |
+|-----|------|--------|------------------|
+| `<leader>\` | n | Toggle agent float | Open/hide this project's agent (Claude/opencode/codex) |
+| `<leader>\` | v | Send selection | Push selected code to the active agent's input |
+| `<leader>ah` | n | Agent picker | Switch agents in this project or spawn a tool |
+| `<leader>aH` | n | Agent dashboard | All agents across projects, with live preview |
 
 **Windsurf/Codeium (Inline Completions):**
 
