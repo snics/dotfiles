@@ -227,6 +227,7 @@ ignored_commands = [
   "codex",
   "gemini",
   "kimi",
+  "herdr",
   # System monitors
   "btop",
   "top",

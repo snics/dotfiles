@@ -23,6 +23,7 @@ minikube
 kind
 
 # No Linux bottle / build fails on Linux
+herdr
 rename
 robusta-dev/holmesgpt/holmesgpt
 robusta-dev/krr/krr
