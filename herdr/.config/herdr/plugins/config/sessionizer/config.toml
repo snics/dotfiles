@@ -1,0 +1,46 @@
+# sessionizer — fuzzy project/worktree picker over the project roots.
+# Docs: https://github.com/andrewchng/herdr-sessionizer
+# Roots use globs, so client/category folders are discovered dynamically —
+# no per-project files and no client names tracked in the repo.
+
+[projects]
+roots = [
+  "~/Projects/Clients/*",
+  "~/Projects/GitHub",
+  "~/Projects/GitLab",
+  "~/Projects/Startups/DevNinjas",
+  "~/Projects/Non-Profit",
+  "~/Projects/Learning",
+  "~/Projects/Tools",
+  "~/Projects/Workshop",
+]
+git_only = true
+depth = 1
+
+# Layout applied when a NEW workspace is created (existing ones are only
+# focused): agent in the first tab, lazygit and a plain shell behind it.
+[layout]
+focus = "agent"
+
+[tabs.agent]
+label = "claude"
+
+[[tabs.agent.panes]]
+id = "agent"
+title = "claude"
+command = "claude"
+
+[tabs.git]
+label = "lazygit"
+
+[[tabs.git.panes]]
+id = "git"
+title = "lazygit"
+command = "lazygit"
+
+[tabs.term]
+label = "terminal"
+
+[[tabs.term.panes]]
+id = "term"
+title = "shell"

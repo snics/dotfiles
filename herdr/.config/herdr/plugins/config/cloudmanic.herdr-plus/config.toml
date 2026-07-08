@@ -1,0 +1,4 @@
+# herdr-plus global settings — worktree branches created from the
+# projects browser (ctrl+g) get this prefix.
+[worktree]
+branch_prefix = "nico/"

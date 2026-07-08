@@ -57,8 +57,12 @@ previous_agent = "prefix+shift+a"
 # Mirror of cmd+1..9 workspaces — shift = one level deeper.
 focus_agent = "cmd+shift+1..9"
 
-# o = open; counterpart to prefix+shift+g (new worktree).
+# o = open; counterpart to prefix+shift+g (worktree picker).
 open_worktree = "prefix+shift+o"
+
+# Built-in worktree prompt unbound — prefix+shift+g runs the sessionizer
+# worktree picker instead (branch selection, layouts).
+new_worktree = ""
 
 # goto moves to ' (tmux index-prompt tradition) — prefix+g is the lazygit
 # launcher, carried over from the tmux popup muscle memory.
@@ -158,6 +162,28 @@ command = "herdr-file-viewer.open-file-viewer"
 key = "cmd+shift+o"
 type = "plugin_action"
 command = "herdr-file-viewer.open-file-viewer-tab"
+
+# p = projects: fuzzy-pick any repo under the project roots (sessionizer)
+# — existing workspaces focus, new ones get the configured layout.
+# herdr-plus' curated template browser stays reachable via the action menu.
+[[keys.command]]
+key = "cmd+p"
+type = "plugin_action"
+command = "sessionizer.open"
+
+# Worktree flow with branch picker (local/remote/new) — replaces the
+# built-in new_worktree prompt on the same key.
+[[keys.command]]
+key = "prefix+shift+g"
+type = "plugin_action"
+command = "sessionizer.worktree-open"
+
+# Quick actions: fuzzy one-off scripts, run in the current directory
+# (mirrors <leader>. scratch semantics in nvim).
+[[keys.command]]
+key = "prefix+."
+type = "plugin_action"
+command = "cloudmanic.herdr-plus.quick-actions"
 
 # Popup launchers — tmux muscle memory carried over (same prefix, same
 # letters): f=files, g=git, s=system, k=kubernetes. type=pane opens a

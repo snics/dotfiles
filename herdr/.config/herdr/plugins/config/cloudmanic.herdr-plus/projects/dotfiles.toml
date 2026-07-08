@@ -1,0 +1,16 @@
+# Starter template — fuzzy-pick "Dotfiles" via cmd+p.
+# One TOML per project in this directory; delete the file to remove it.
+name = "Dotfiles"
+description = "GNU Stow dotfiles repo"
+working_dir = "~/.dotfiles"
+
+[[tabs]]
+name = "claude"
+command = "claude"
+
+[[tabs]]
+name = "lazygit"
+command = "lazygit"
+
+[[tabs]]
+name = "terminal"

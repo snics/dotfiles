@@ -136,7 +136,7 @@ while both are installed, a local tmux inside a herdr pane won't receive it)
 | `Prefix + [` / `]` | Previous / next workspace (bracket navigation) |
 | `Prefix + a` / `Shift+a` | Next / previous agent (attention queue) |
 | `Prefix + Shift+n` | New workspace |
-| `Prefix + Shift+g` | New git-worktree workspace |
+| `Prefix + Shift+g` | Worktree picker (sessionizer): local/remote branch or new, opens with layout |
 | `Prefix + Shift+o` | Open existing worktree |
 | `Prefix + w` | Workspace picker |
 | `Prefix + '` | Goto picker |
@@ -168,6 +168,8 @@ while both are installed, a local tmux inside a herdr pane won't receive it)
 | `Cmd+r` | Toggle reviewr code-review sidebar (auto-opens for new worktrees) |
 | `Cmd+g` | lazygit overlay over the active pane |
 | `Cmd+o` / `Cmd+Shift+o` | File viewer (overview of agent changes) in split / own tab |
+| `Cmd+p` | Project picker (sessionizer) — fuzzy over all repos under ~/Projects, opens with the default layout |
+| `Prefix + .` | Quick actions — fuzzy one-off scripts in the current dir |
 | `Prefix + u` | URL picker (fzf over pane URLs) |
 | `Prefix + $` | Token spend dashboard (Pi/OpenCode sessions) |
 

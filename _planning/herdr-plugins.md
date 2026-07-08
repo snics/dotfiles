@@ -30,8 +30,8 @@ für Momentum als für Reife.
 
 | Plugin | ⭐ | Was es tut |
 |---|---|---|
-| [yuk1ty/herdr-spreader](https://github.com/yuk1ty/herdr-spreader) | 23 | Komplettes Workspace-Layout (Tabs, Panes, Kommandos) aus einer YAML-Datei hochziehen |
-| [andrewchng/herdr-sessionizer](https://github.com/andrewchng/herdr-sessionizer) | 14 | Fuzzy Projekte/Worktrees öffnen, Workspaces aus deklarativen TOML-Layouts bootstrappen |
+| ⏸️ [yuk1ty/herdr-spreader](https://github.com/yuk1ty/herdr-spreader) | 28 | Komplettes Multi-Workspace-Layout aus einer YAML hochziehen (tmuxinator-Prinzip; Split-Ratios, Env-Vars, `wait_for`-Synchronisation). **Bewusst zurückgestellt:** ~80 % Überschneidung mit herdr-plus; nur nachrüsten, wenn ein Projekt echte Service-Startreihenfolgen braucht |
+| ✅ [andrewchng/herdr-sessionizer](https://github.com/andrewchng/herdr-sessionizer) | 15 | Fuzzy Projekte/Worktrees öffnen (`Cmd+p` / `Prefix+Shift+g`), Roots-Globs über ~/Projects, Default-Layout claude+lazygit+terminal; Config versioniert im herdr-Package |
 | [JanTvrdik/herdr-command-palette](https://github.com/JanTvrdik/herdr-command-palette) | 9 | fzf-Kommandopalette über alle Actions aller installierten Plugins |
 | [thanhdat77/herdr-picker-plus](https://github.com/thanhdat77/herdr-picker-plus) | 3 | Ein Overlay für alles: Workspaces, SSH-Server, Agents, Projekte, Verzeichnisse |
 | [nikok6/herdr-mirror](https://github.com/nikok6/herdr-mirror) | 6 | Remote-herdr-Server in die lokale Sidebar spiegeln und über SSH steuern |
@@ -48,7 +48,7 @@ für Momentum als für Reife.
 | [alon-z/herdr-command-palette](https://github.com/alon-z/herdr-command-palette) | 0 | Leichtgewichtiger Workspace-/Verzeichnis-Switcher |
 | [nicolegros/herdr-launcher](https://github.com/nicolegros/herdr-launcher) | 0 | Fuzzy-Verzeichnis-Picker zum Erstellen/Wechseln von Workspaces |
 | [arjenblokzijl/herdr-launcher](https://github.com/arjenblokzijl/herdr-launcher) | 0 | TOML-Workflows per Fuzzy-Picker + Formular, dann Agent in neuem Space starten |
-| [cloudmanic/herdr-plus](https://github.com/cloudmanic/herdr-plus) | 63 | Projekt-Templates (deklarative Workspace-Vorlagen) + Quick-Action-Launcher |
+| ✅ [cloudmanic/herdr-plus](https://github.com/cloudmanic/herdr-plus) | 72 | Projekt-Templates (deklarative Workspace-Vorlagen, `Cmd+p`) + Quick-Action-Launcher (`Prefix+.`); Templates in `plugins/config/cloudmanic.herdr-plus/projects/` |
 
 ## Git-Worktrees
 
@@ -95,7 +95,7 @@ für Momentum als für Reife.
 
 | Plugin | ⭐ | Was es tut |
 |---|---|---|
-| [dcolinmorgan/herdr-remote](https://github.com/dcolinmorgan/herdr-remote) | 31 | Agents vom Handy, aus der Menübar oder via Telegram überwachen und freigeben — ohne SSH |
+| ❌ [dcolinmorgan/herdr-remote](https://github.com/dcolinmorgan/herdr-remote) | 35 | Agents vom Handy/Menübar/Telegram freigeben. **Bewusst nicht installiert:** Remote-Terminal-Input hinter Shared Secret über öffentlichen Cloudflare-Tunnel, Web-App fremdgehostet, keine Lizenz. Bei Bedarf stattdessen Tailscale + collie oder offizielles `herdr --remote` via SSH |
 | [cobanov/herdr-ntfysh](https://github.com/cobanov/herdr-ntfysh) | 8 | ntfy-Push, wenn ein Agent fertig ist oder Input braucht |
 | [zom-2018/herdr-ntfy-notify](https://github.com/zom-2018/herdr-ntfy-notify) | 4 | ntfy-Push in Echtzeit (Alternative) |
 | [horn553/herdr-ntfy](https://github.com/horn553/herdr-ntfy) | 1 | Minimal-ntfy (nur jq, curl, sh) |
