@@ -3,29 +3,16 @@
 echo -e "\\n\\nSetup Dev folder structure..."
 echo ""
 
-# Globle Dev Scope
+# Global Dev Scope
 [ ! -d "$HOME/Projects" ] && mkdir -p "$HOME/Projects"
 
 # Scope for projects at GitHub.
 [ ! -d "$HOME/Projects/GitHub" ] && mkdir -p "$HOME/Projects/GitHub"
-[ ! -d "$HOME/Projects/GitHub/raycast-extensions" ] && mkdir -p "$HOME/Projects/GitHub/raycast-extensions"
 
-# Scope for projects at GitLab.
-[ ! -d "$HOME/Projects/GitLab" ] && mkdir -p "$HOME/Projects/GitLab"
+# Central location for git worktrees (herdr/sessionizer create them here).
+[ ! -d "$HOME/Projects/_worktrees" ] && mkdir -p "$HOME/Projects/_worktrees"
 
-# Scope for things that are not so important (Testing/Git Clone and so on..).
-[ ! -d "$HOME/Projects/Throwaway" ] && mkdir -p "$HOME/Projects/Throwaway"
-
-# Scope for helpful scripts that make life easier.
-[ ! -d "$HOME/Projects/Scripts" ] && mkdir -p "$HOME/Projects/Scripts"
-
-# Scope for helpful tools that make life easier.
-[ ! -d "$HOME/Projects/Tools" ] && mkdir -p "$HOME/Projects/Tools"
-
-# Scope for programming languages or dev things I want to try or learn.
-[ ! -d "$HOME/Projects/Learning" ] && mkdir -p "$HOME/Projects/Learning"
-
-# Scope for Client Project.
+# Scope for Client Projects.
 if [ ! -d "$HOME/Projects/Clients" ]
 then
 	read -r -p"Are you self-employed or do you have customers? (y/n) " -n 1;
@@ -35,22 +22,12 @@ then
 	echo -e "\\n";
 fi
 
-# Scope for Startups Project.
+# Scope for Startup Projects.
 if [ ! -d "$HOME/Projects/Startups" ]
 then
-	read -r -p"Are they involved in start-ups or have shares from companies? (y/n) " -n 1;
+	read -r -p"Are you involved in start-ups or do you hold company shares? (y/n) " -n 1;
   if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p "$HOME/Projects/Startups"
-  fi;
-	echo -e "\\n";
-fi
-
-# Scope for Non-Profit organizations.
-if [ ! -d "$HOME/Projects/Non-Profit" ]
-then
-	read -r -p"Do you work on non-profit organization projects? (y/n) " -n 1;
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-      mkdir -p "$HOME/Projects/Non-Profit"
   fi;
 	echo -e "\\n";
 fi

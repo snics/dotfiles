@@ -294,17 +294,13 @@ I use a well-organized folder structure for all development work. The installati
 
 ```bash
 ~/Projects/           # Root folder for all development
+├── _archive/         # Retired projects (kept out of pickers)
+├── _worktrees/       # Central git worktrees (herdr/sessionizer)
 ├── GitHub/           # GitHub repositories
-├── GitLab/           # GitLab repositories
-├── Scripts/          # Automation scripts and utilities
-├── Tools/            # Tools and utilities in development
-├── Learning/         # Learning projects and experiments
 ├── Clients/          # Client projects (optional)
-├── Startups/         # Startup projects (optional)
-├── Non-Profit/       # Non-profit organization projects (optional)
+├── Startups/         # Startup projects, one folder per org (optional)
 ├── Talks/            # Presentations and talk materials (optional)
-├── Workshop/         # Workshop materials and projects (optional)
-└── Throwaway/        # Temporary projects and experiments
+└── Workshop/         # Workshop materials and projects (optional)
 ```
 
 ## ⚙️ Configuration Details
