@@ -1,0 +1,9 @@
+# Claude Code rewrites ~/.claude/settings.json in place (atomic rename) on every
+# GUI/config change, which destroys any stow symlink and silently leaves the repo
+# copy stale. So we do NOT symlink it — it is bootstrap-copied by _install/claude.sh
+# and synced back with `just claude-sync`. See AGENTS.md.
+settings\.json
+
+# Docs (local ignore overrides the global one, so re-list essentials)
+^/README.*
+AGENTS\.md

@@ -97,6 +97,10 @@ opencode: ## Link opencode config
 claude: ## Link claude config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" claude
 
+claude-sync: ## Sync live ~/.claude/settings.json back into the repo
+	@cp "$(HOME)/.claude/settings.json" $(DOTFILES)/claude/.claude/settings.json
+	@echo "Synced ~/.claude/settings.json -> repo. Review the diff and commit."
+
 cursor: ## Link cursor config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" cursor
 

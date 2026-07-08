@@ -111,6 +111,11 @@ opencode:
 claude:
     @cd {{ DOTFILES }} && stow --restow -t "$HOME" claude
 
+# Sync live ~/.claude/settings.json back into the repo (Claude rewrites it in place, breaking the symlink)
+claude-sync:
+    @cp "$HOME/.claude/settings.json" {{ DOTFILES }}/claude/.claude/settings.json
+    @echo "Synced ~/.claude/settings.json → repo. Review the diff and commit."
+
 # Link cursor config
 cursor:
     @cd {{ DOTFILES }} && stow --restow -t "$HOME" cursor

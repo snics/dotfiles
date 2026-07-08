@@ -48,6 +48,7 @@ Detailed rules live in each package's `AGENTS.md`:
 | `zsh/AGENTS.md` | Zsh config structure, atuin stats maintenance |
 | `nvim/AGENTS.md` | NeoVim config, keybindings, cross-sync with Zed |
 | `zed/AGENTS.md` | Zed editor config, keybindings, cross-sync with NeoVim |
+| `claude/AGENTS.md` | Claude Code settings.json copy/sync (not symlinked) |
 
 ## Justfile / Makefile Sync Rule
 
