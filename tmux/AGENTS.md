@@ -46,9 +46,10 @@ Do not change to `/bin/zsh` — Homebrew zsh has the correct fpath for completio
 
 Prefix: **Ctrl+Space** (changed from default Ctrl+b).
 
-### Navigation (no prefix needed)
+### Navigation
 
-- `Ctrl+h/j/k/l` — navigate panes (via vim-tmux-navigator, seamless with NeoVim)
+- `prefix + h/j/k/l` — navigate panes (plain vim-style; the former
+  vim-tmux-navigator integration was removed with the move to herdr)
 
 ### Splits & Resize
 
