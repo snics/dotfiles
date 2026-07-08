@@ -13,8 +13,6 @@ roots = [
   "~/Projects/Startups/**",
   "~/Projects/Talks",
   "~/Projects/Workshop",
-  "~/Projects/Non-Profit",
-  "~/Projects/Tools",
 ]
 git_only = true
 depth = 1
