@@ -1,0 +1,230 @@
+# herdr — terminal workspace manager for AI coding agents
+# Docs: https://herdr.dev/docs/configuration/
+# Full option reference: `herdr --default-config`
+# Apply changes to a running server: `herdr server reload-config`
+
+# Skip first-run notification onboarding (toast delivery is configured below).
+onboarding = false
+
+[theme]
+# Catppuccin Mocha — matches Ghostty, lazygit, and the rest of the stack.
+name = "catppuccin"
+
+# Token overrides on top of the base theme. Available tokens: accent,
+# panel_bg, surface0, surface1, surface_dim, overlay0, overlay1, text,
+# subtext0, mauve, green, yellow, red, blue, teal, peach.
+[theme.custom]
+# Unfocused pane borders and divider lines — the Catppuccin default is too
+# dark to see; use Nord's polar-night gray-blue (nord3) instead.
+surface_dim = "#4c566a"
+
+# Let the terminal background show through the herdr chrome (tab bar,
+# sidebar) so it picks up Ghostty's translucent/blurred glass look instead
+# of rendering opaque #1e1e2e blocks.
+panel_bg = "reset"
+
+# Run `herdr --default-config` to see all bindable actions.
+
+[keys]
+# Ctrl+Space — carried over from the (being phased out) tmux setup, and
+# free in NeoVim/zsh. The herdr default ctrl+b clashed with nvim-cmp's
+# scroll-docs binding.
+prefix = "ctrl+space"
+# Direct workspace switching like browser tabs, no prefix needed.
+# Ghostty's default cmd+1..9 goto_tab bindings are unbound to let these
+# through (see ghostty config).
+switch_workspace = "cmd+1..9"
+
+# House convention |/- for splits (tmux, Ghostty); frees prefix+v for the
+# scrollback editor (mirrors tmux prefix+v = copy mode).
+split_vertical = "prefix+|"
+edit_scrollback = "prefix+v"
+
+# macOS convention (cmd+,) — frees prefix+s for the future btop launcher.
+settings = "prefix+comma"
+
+# tmux-style jump back to the previous pane.
+last_pane = "prefix+;"
+
+# Bracket navigation like [b/]b in NeoVim.
+previous_workspace = "prefix+["
+next_workspace = "prefix+]"
+
+# a = agent: step through the attention queue (agent_panel_sort = priority).
+next_agent = "prefix+a"
+previous_agent = "prefix+shift+a"
+
+# Mirror of cmd+1..9 workspaces — shift = one level deeper.
+focus_agent = "cmd+shift+1..9"
+
+# o = open; counterpart to prefix+shift+g (new worktree).
+open_worktree = "prefix+shift+o"
+
+# goto moves to ' (tmux index-prompt tradition) — prefix+g is the lazygit
+# launcher, carried over from the tmux popup muscle memory.
+goto = "prefix+'"
+
+# Prefix+hjkl pane focus is redundant with the direct ctrl+hjkl navigation;
+# freeing k for the k9s launcher (and h/j/l for symmetry).
+focus_pane_left = ""
+focus_pane_down = ""
+focus_pane_up = ""
+focus_pane_right = ""
+
+[worktrees]
+# Central, visible worktree location next to the projects (instead of the
+# hidden ~/.herdr/worktrees default) — reachable for zoxide/yazi/fzf.
+directory = "~/Projects/_worktrees"
+
+# Seamless Ctrl+h/j/k/l navigation and Alt+h/j/k/l resizing between herdr
+# panes and NeoVim splits. Plugin: lmilojevicc/herdr-splits.nvim (nvim side
+# lives in nvim/lua/plugins/herdr-splits.lua). Alt chords require
+# macos-option-as-alt in Ghostty.
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "herdr-splits.nav-left"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "herdr-splits.nav-down"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "herdr-splits.nav-up"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "herdr-splits.nav-right"
+
+[[keys.command]]
+key = "alt+h"
+type = "plugin_action"
+command = "herdr-splits.resize-left"
+
+[[keys.command]]
+key = "alt+j"
+type = "plugin_action"
+command = "herdr-splits.resize-down"
+
+[[keys.command]]
+key = "alt+k"
+type = "plugin_action"
+command = "herdr-splits.resize-up"
+
+[[keys.command]]
+key = "alt+l"
+type = "plugin_action"
+command = "herdr-splits.resize-right"
+
+# Toggle the reviewr code-review sidebar (persiyanov/herdr-reviewr).
+# It also auto-opens for newly created worktree workspaces.
+[[keys.command]]
+key = "cmd+r"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+
+# Live token spend dashboard (Davidcreador/herdr-token-dashboard).
+# Note: currently reads Pi and OpenCode sessions only.
+[[keys.command]]
+key = "prefix+$"
+type = "plugin_action"
+command = "dave.token-dashboard.open-dashboard"
+
+# u = URL: scan the pane for URLs, pick one with fzf.
+[[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "url.fzf-picker.pick-url"
+
+# g = git on the cmd plugin-overlay layer (consistent with cmd+r reviewr);
+# leaves prefix+g untouched for the future tmux-launcher migration.
+[[keys.command]]
+key = "cmd+g"
+type = "plugin_action"
+command = "beomjungil.lazygit-overlay.open"
+
+# o = overview: git-aware read-only file viewer beside the agent
+# (smarzban/herdr-file-viewer). cmd+f would shadow Ghostty's search.
+[[keys.command]]
+key = "cmd+o"
+type = "plugin_action"
+command = "herdr-file-viewer.open-file-viewer"
+
+[[keys.command]]
+key = "cmd+shift+o"
+type = "plugin_action"
+command = "herdr-file-viewer.open-file-viewer-tab"
+
+# Popup launchers — tmux muscle memory carried over (same prefix, same
+# letters): f=files, g=git, s=system, k=kubernetes. type=pane opens a
+# temporary pane in the current dir and closes it when the tool exits.
+[[keys.command]]
+key = "prefix+f"
+type = "pane"
+command = "yazi"
+description = "yazi file manager"
+
+[[keys.command]]
+key = "prefix+g"
+type = "plugin_action"
+command = "beomjungil.lazygit-overlay.open"
+
+[[keys.command]]
+key = "prefix+s"
+type = "pane"
+command = "btop"
+description = "btop system monitor"
+
+[[keys.command]]
+key = "prefix+k"
+type = "pane"
+command = "k9s"
+description = "k9s kubernetes TUI"
+
+[ui]
+# Draw borders around split panes and keep them visually separated
+# with gaps instead of shared divider lines.
+pane_borders = true
+pane_gaps = true
+
+# Catppuccin Mocha blue for borders, highlights, and navigation UI.
+accent = "#89b4fa"
+
+show_agent_labels_on_pane_borders = true
+
+# Collapsing the sidebar (prefix+b) hides it entirely instead of leaving
+# a compact icon rail.
+sidebar_collapsed_mode = "hidden"
+
+# Hide the tab row while a workspace has only one tab — most workspaces
+# do, so the top bar disappears entirely until a second tab exists.
+hide_tab_bar_when_single_tab = true
+
+# Create tabs immediately with generated names instead of prompting —
+# the renamer plugin re-titles workspaces from the agent's first prompt.
+prompt_new_tab_name = false
+
+# Sort the agents panel as an attention queue (blocked first) instead of
+# grouping by space.
+agent_panel_sort = "priority"
+[ui.toast]
+# Native macOS notifications for agent activity in background workspaces.
+delivery = "system"
+
+[ui.toast.herdr]
+position = "bottom-right"
+
+# macOS notifications carry the sound now — no extra herdr chime on top.
+[ui.sound]
+enabled = false
+
+[experimental]
+# Kitty graphics passthrough — Ghostty speaks the protocol, so panes can
+# render real images (yazi previews, imgcat, etc.).
+kitty_graphics = true
+# Keep recent pane screen history across full server restarts.
+pane_history = true

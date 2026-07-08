@@ -69,3 +69,7 @@ tmux/.config/tmux/plugins/
 # Brew: generated composite file and dump output
 .Brewfile
 brew/Brewfile.dump
+
+# herdr: runtime files (sockets/logs) in case stow ever folds ~/.config/herdr
+herdr/.config/herdr/*.sock
+herdr/.config/herdr/*.log

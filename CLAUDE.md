@@ -19,6 +19,7 @@ claude/      → ~/.claude/ (Claude Code user config, MCP servers)
 cursor/      → Cursor editor config
 ghostty/     → ~/.config/ghostty/ (terminal emulator)
 git/         → ~/.config/git/ + ~/.gitconfig
+herdr/       → ~/.config/herdr/ (AI agent multiplexer)
 k9s/         → ~/.config/k9s/ (Kubernetes TUI)
 lazygit/     → ~/.config/lazygit/
 nvim/        → ~/.config/nvim/ (NeoVim)
