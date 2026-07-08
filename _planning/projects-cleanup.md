@@ -11,7 +11,28 @@ GitHub: bitnami-chart, payload, meala-app, panache, docker_parser,
 k8s-for-devs (0 unpushed commits verifiziert), AI Agents Library,
 Loop Widget Playground. **~10 GB freigegeben.**
 Explizit BEHALTEN laut Nico: local-nightscout, Workshop/CKA,
-kubernetes-cluster-workshop, cal.com, my-project (ungeklärt).
+kubernetes-cluster-workshop, cal.com.
+
+## ✅ ARCHIVIERT am 2026-07-08 → `~/Projects/_archive/` (25 GB, nur verschoben)
+
+- Clients: RheinNetz GmbH, Impect GmbH, workshops.de, ifok.digital-platform
+  (alter Flach-Checkout)
+- Startups: DataMedis GmbH (komplett), Avoplan/DevOps/helm-charts,
+  DevNinjas/{calcom-infrastructure, infrastructure, DevNinjas.io (alt),
+  dev-workspaces}
+- GitHub: my-project, LoopKit-LoopWorkspace, LoopPowerPack,
+  keycloakify-starter, keycloakify-shadcn-starter, TinderBotz
+- GitLab (komplett)
+
+Nicht verschoben: GFU calculate-/mesh-service (liegen mitten im
+Schulungsmaterial "Microservices mit Docker und Kubernetes" — gehören dort
+hin); gsuite-signature-manager (außerhalb des Archivs nicht mehr auffindbar,
+vermutlich in einem verschobenen Baum).
+
+**Nico-Entscheidung:** `GitHub/k8s-outlet` bleibt wie es ist (kein Remote,
+119 ungepushte Commits — bewusst akzeptiertes Backup-Risiko).
+Offen nur noch: ifok-Token-Fix, K8s-Layout-Overrides
+(dn-k8s-infrastructure, ifok).
 
 ## 🚨 Handlungsbedarf ZUERST (nicht löschen — sichern!)
 
