@@ -9,8 +9,9 @@ Unified keyboard shortcut reference across all tools in this dotfiles setup.
 | Layer | Modifier | Why |
 |-------|----------|-----|
 | Ghostty (terminal) | `Ctrl+Shift+` | Avoids conflicts with tmux and CLI tools |
-| Tmux (multiplexer) | `Ctrl+Space` prefix | Modern standard, ergonomic |
-| Tmux navigation | `Ctrl+` (no prefix) | Seamless with NeoVim via vim-tmux-navigator |
+| herdr (agent multiplexer) | `Ctrl+Space` prefix | Carried over from tmux, free in NeoVim/zsh |
+| herdr navigation | `Ctrl+` (no prefix) | Seamless with NeoVim via herdr-splits.nvim |
+| Tmux (being phased out) | `Ctrl+Space` prefix | Same prefix — herdr wins while both run |
 | NeoVim (editor) | `Space` leader | Standard in LazyVim/AstroNvim |
 | macOS / Raycast | `Super+` (Cmd) | Kept free, no conflicts |
 
@@ -37,25 +38,22 @@ Split management and tab navigation at the terminal level.
 |----------|--------|
 | `Ctrl+Shift+Arrow` | Resize split (10px) |
 
-### Tabs
-
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+Shift+t` | New tab |
-| `Ctrl+Shift+]` | Next tab |
-| `Ctrl+Shift+[` | Previous tab |
+Ghostty runs as a pure herdr host (`command = herdr`): tabs and workspaces
+live in herdr, so Ghostty tab bindings are removed. Splits stay bound but
+show a mirrored view of the same herdr session — prefer herdr splits.
 
 ---
 
 ## Tmux
 
-Prefix: **`Ctrl+Space`**
+Prefix: **`Ctrl+Space`** — same as herdr; while both are installed, herdr
+receives the prefix first inside herdr panes. Tmux is being phased out.
 
-### Navigation (no prefix needed)
+### Navigation
 
 | Shortcut | Action |
 |----------|--------|
-| `Ctrl+h/j/k/l` | Navigate panes (tmux-aware, works across NeoVim splits) |
+| `Prefix + h/j/k/l` | Navigate panes (plain vim-style; vim-tmux-navigator removed with the herdr move) |
 
 ### Splits
 
@@ -103,6 +101,78 @@ Prefix: **`Ctrl+Space`**
 
 ---
 
+## herdr
+
+Prefix: **`Ctrl+Space`** (carried over from tmux, which is being phased out;
+while both are installed, a local tmux inside a herdr pane won't receive it)
+
+### Navigation (no prefix needed)
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+h/j/k/l` | Navigate panes (herdr-aware, works across NeoVim splits via herdr-splits.nvim) |
+| `Alt+h/j/k/l` | Resize panes (also across the NeoVim/herdr boundary) |
+
+### Panes & Tabs
+
+| Shortcut | Action |
+|----------|--------|
+| `Prefix + \|` | Split right |
+| `Prefix + -` | Split down |
+| `Prefix + ;` | Jump back to previous pane |
+| `Prefix + z` | Zoom pane (fullscreen) |
+| `Prefix + x` | Close pane |
+| `Prefix + v` | Edit scrollback in editor (like tmux copy mode) |
+| `Prefix + c` | New tab |
+| `Prefix + 1..9` | Switch tab |
+| `Prefix + n` / `p` | Next / previous tab |
+
+### Workspaces & Agents
+
+| Shortcut | Action |
+|----------|--------|
+| `Cmd+1..9` | Switch workspace directly (no prefix; Ghostty passes these through) |
+| `Cmd+Shift+1..9` | Focus agent directly (mirror of workspace switching) |
+| `Prefix + [` / `]` | Previous / next workspace (bracket navigation) |
+| `Prefix + a` / `Shift+a` | Next / previous agent (attention queue) |
+| `Prefix + Shift+n` | New workspace |
+| `Prefix + Shift+g` | New git-worktree workspace |
+| `Prefix + Shift+o` | Open existing worktree |
+| `Prefix + w` | Workspace picker |
+| `Prefix + '` | Goto picker |
+| `Prefix + o` | Jump to latest agent notification |
+| `Prefix + b` | Toggle sidebar |
+
+### Launchers (tmux muscle memory: letter = function)
+
+| Shortcut | Tool | Mnemonic |
+|----------|------|----------|
+| `Prefix + f` | yazi | **F**iles |
+| `Prefix + g` | lazygit (overlay) | **G**it |
+| `Prefix + s` | btop | **S**ystem monitor |
+| `Prefix + k` | k9s | **K**ubernetes |
+
+### Session
+
+| Shortcut | Action |
+|----------|--------|
+| `Prefix + q` | Detach (agents keep running) |
+| `Prefix + ,` | Settings (macOS convention) |
+| `Prefix + Shift+r` | Reload config |
+| `Prefix + ?` | Help (all bindings) |
+
+### Plugins
+
+| Shortcut | Action |
+|----------|--------|
+| `Cmd+r` | Toggle reviewr code-review sidebar (auto-opens for new worktrees) |
+| `Cmd+g` | lazygit overlay over the active pane |
+| `Cmd+o` / `Cmd+Shift+o` | File viewer (overview of agent changes) in split / own tab |
+| `Prefix + u` | URL picker (fzf over pane URLs) |
+| `Prefix + $` | Token spend dashboard (Pi/OpenCode sessions) |
+
+---
+
 ## NeoVim
 
 Leader: **`Space`**
@@ -111,8 +181,11 @@ Leader: **`Space`**
 
 | Shortcut | Action |
 |----------|--------|
-| `Ctrl+h/j/k/l` | Navigate panes (tmux-aware) |
+| `Ctrl+h/j/k/l` | Navigate panes (herdr-aware via herdr-splits.nvim) |
 | `Ctrl+Arrow` | Resize window (2px) |
+| `Alt+h/j/k/l` | Resize across NeoVim/herdr boundary (herdr panes only) |
+| `Space \` | Toggle herdr agent float (visual: send selection to agent) |
+| `Space ah` / `aH` | herdr agent picker / dashboard (herd.nvim) |
 
 ### File & Buffer
 
@@ -291,11 +364,13 @@ Leader: **`Space`** (Vim mode)
 
 | Shortcut | Action |
 |----------|--------|
-| `Space Space` | File finder |
+| `Space Space` | File finder (with preview, v1.9) |
 | `Space ,` | Tab switcher |
-| `Space /` | Project search |
+| `Space /` | Live grep — Text Finder (with preview, v1.9) |
 | `Space :` | Command palette |
 | `Ctrl+h/j/k/l` | Navigate panes |
+| `Cmd+Alt+p` | Toggle picker preview (in file/text finder) |
+| `Cmd+Alt+→/↓/↑` | Move preview right / below / hide |
 
 ### Code
 
@@ -391,12 +466,12 @@ Scoped to Flux resources ([derailed/k9s flux.yaml](https://github.com/derailed/k
 These bindings use the same key across all layers. Letters map to **function**,
 not tool name (`f` = files, `g` = git, `s` = system, `k` = kubernetes).
 
-| Key | Shell (Zsh) | Tmux | Ghostty | NeoVim | Zed |
-|-----|-------------|------|---------|--------|-----|
-| `hjkl` | — | `Ctrl+hjkl` navigate | `Ctrl+Shift+hjkl` navigate | `Ctrl+hjkl` navigate | `Ctrl+hjkl` navigate |
-| `\|` / `-` | — | `Prefix+\|` / `-` split | `Ctrl+Shift+\` / `-` split | — | — |
-| `z` | — | `Prefix+z` zoom | `Ctrl+Shift+z` zoom | `Space z` zen | `Space z` zen |
-| `f` | `Alt+F` yazi | `Prefix+f` yazi | — | `Space ff` find files | `Space Space` file finder |
-| `g` | `Alt+G` lazygit | `Prefix+g` lazygit | — | `Space gg` lazygit | `Space gs` git panel |
-| `s` | `Alt+S` btop | `Prefix+s` btop | — | — | — |
-| `k` | `Alt+K` k9s | `Prefix+k` k9s | — | — | — |
+| Key | Shell (Zsh) | Tmux | herdr | Ghostty | NeoVim | Zed |
+|-----|-------------|------|-------|---------|--------|-----|
+| `hjkl` | — | `Ctrl+hjkl` navigate | `Ctrl+hjkl` navigate | `Ctrl+Shift+hjkl` navigate | `Ctrl+hjkl` navigate | `Ctrl+hjkl` navigate |
+| `\|` / `-` | — | `Prefix+\|` / `-` split | `Prefix+\|` / `-` split | `Ctrl+Shift+\` / `-` split | — | — |
+| `z` | — | `Prefix+z` zoom | `Prefix+z` zoom | `Ctrl+Shift+z` zoom | `Space z` zen | `Space z` zen |
+| `f` | `Alt+F` yazi | `Prefix+f` yazi | `Prefix+f` yazi | — | `Space ff` find files | `Space Space` file finder |
+| `g` | `Alt+G` lazygit | `Prefix+g` lazygit | `Prefix+g` / `Cmd+g` lazygit overlay | — | `Space gg` lazygit | `Space gs` git panel |
+| `s` | `Alt+S` btop | `Prefix+s` btop | `Prefix+s` btop | — | — | — |
+| `k` | `Alt+K` k9s | `Prefix+k` k9s | `Prefix+k` k9s | — | — | — |
