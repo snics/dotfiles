@@ -4,15 +4,17 @@
 # no per-project files and no client names tracked in the repo.
 
 [projects]
+# Recursive globs: clients nest 2-3 levels deep, Startups holds several
+# orgs (DevNinjas, DataMedis, Avoplan). If cmd+p ever feels slow, narrow
+# these back to explicit org folders.
 roots = [
-  "~/Projects/Clients/*",
+  "~/Projects/Clients/**",
   "~/Projects/GitHub",
-  "~/Projects/GitLab",
-  "~/Projects/Startups/DevNinjas",
-  "~/Projects/Non-Profit",
-  "~/Projects/Learning",
-  "~/Projects/Tools",
+  "~/Projects/Startups/**",
+  "~/Projects/Talks",
   "~/Projects/Workshop",
+  "~/Projects/Non-Profit",
+  "~/Projects/Tools",
 ]
 git_only = true
 depth = 1
