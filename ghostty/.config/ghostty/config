@@ -38,8 +38,10 @@ cursor-style = "underline"
 # no per-tool PATH workarounds (e.g. the `zsh -ilc` k9s launcher) are needed.
 command = /bin/zsh -lic "exec /opt/homebrew/bin/herdr"
 
-# No Ghostty tabs (herdr owns tabs), so hide the titlebar entirely.
-macos-titlebar-style = hidden
+# herdr owns tabs, so there's no Ghostty tab bar to worry about — but keep the
+# native macOS titlebar for the window controls (close / minimise / zoom) and a
+# normal title bar. "hidden" removed those entirely, which is disorienting.
+macos-titlebar-style = native
 
 # Left Option as Alt so left-Option+h/j/k/l (herdr pane resize) reaches herdr
 # as a comfortable two-hand chord — left thumb on Option, right hand on hjkl,
