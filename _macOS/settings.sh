@@ -72,6 +72,10 @@ defaults write NSGlobalDomain NSUseAnimatedFocusRing -bool false
 # Increase window resize speed for Cocoa applications
 defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
 
+# Move any window by holding Ctrl+Cmd and dragging anywhere in its body — a
+# convenient power-user gesture, independent of the titlebar.
+defaults write -g NSWindowShouldDragOnGesture -bool true
+
 # Expand save panel by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
@@ -118,6 +122,15 @@ defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+# Free Ctrl+Space (and Ctrl+Option+Space) for herdr's leader key. macOS binds
+# these system-wide to the input-source switcher (AppleSymbolicHotKeys 60/61),
+# which swallows the keystroke before Ghostty/herdr ever sees it. With a single
+# input source these shortcuts are dead weight, so disable both.
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 60 \
+	'{ enabled = 0; value = { parameters = (32, 49, 262144); type = standard; }; }'
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 61 \
+	'{ enabled = 0; value = { parameters = (32, 49, 786432); type = standard; }; }'
 
 ###############################################################################
 # Appearance / Dark Mode                                                      #
