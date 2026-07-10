@@ -1,4 +1,16 @@
 {
+  "search": {
+    "regex": false,
+    "case_sensitive": false
+  },
+  // File finder — wide modal so the v1.9 preview pane sits to the right
+  // (Telescope-style). Preview toggles with cmd-alt-p; cmd-alt-arrows move it.
+  "file_finder": {
+    "modal_max_width": "xlarge"
+  },
+  "title_bar": {
+    "button_layout": "platform_default"
+  },
   "cli_default_open_behavior": "existing_window",
   "outline_panel": {
     "dock": "right"

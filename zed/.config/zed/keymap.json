@@ -45,7 +45,7 @@
       "space e": "project_panel::ToggleFocus",
       "space space": "file_finder::Toggle",
       "space ,": "tab_switcher::Toggle",
-      "space /": "pane::DeploySearch",
+      "space /": "project_search::OpenTextFinder",
       "space :": "command_palette::Toggle",
       "space z": "workspace::ToggleCenteredLayout",
       "space shift-z": "workspace::ToggleZoom",
@@ -132,7 +132,7 @@
       // -------------------------------------------------------------------
       "space f f": "file_finder::Toggle",
       "space f r": "projects::OpenRecent",
-      "space f s": "pane::DeploySearch",
+      "space f s": "project_search::OpenTextFinder",
       "space f b": "tab_switcher::Toggle",
       "space f w": [
         "workspace::SendKeystrokes",
@@ -212,7 +212,7 @@
       // Search — space s
       // -------------------------------------------------------------------
       "space s b": "buffer_search::Deploy",
-      "space s g": "pane::DeploySearch",
+      "space s g": "project_search::OpenTextFinder",
       "space s r": [
         "pane::DeploySearch",
         {
