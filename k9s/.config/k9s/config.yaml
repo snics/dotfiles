@@ -10,7 +10,11 @@ k9s:
   # Toggles whether k9s should exit when CTRL-C is pressed. When set to true, you will need to exist k9s via the :quit command. Default is false.
   noExitOnCtrlC: false
   ui:
-    skin: catppuccin-mocha-transparent
+    # Non-transparent skin: herdr renders pane CONTENT opaque (only its chrome
+    # honours terminal transparency via panel_bg="reset"), so a -transparent
+    # skin just shows solid black inside a herdr pane. The filled variant paints
+    # explicit Catppuccin backgrounds and looks properly themed in herdr.
+    skin: catppuccin-mocha
     # Enable mouse support. Default false
     enableMouse: true
     # Set to true to hide K9s header. Default false
