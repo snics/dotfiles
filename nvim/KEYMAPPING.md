@@ -448,7 +448,7 @@ Insert Mode
 ├── , . ;      Self + undo breakpoint
 ├── Tab        Smart: completion → snippet → trigger
 ├── S-Tab      Smart: prev completion → jump back
-├── C-b / C-f  Scroll completion docs
+├── C-u / C-d  Scroll completion docs
 ├── C-e        Close completion menu
 └── C-l        Accept Windsurf completion
 ```
@@ -1071,7 +1071,7 @@ These are native Vim keys — Snacks.scroll makes them animated.
 | Key | Action |
 |-----|--------|
 | `<C-u>` / `<C-d>` | Smooth half-page up / down |
-| `<C-b>` / `<C-f>` | Smooth full page up / down |
+| `<C-f>` | Smooth full page down (`<C-b>` full-page-up is now the herdr leader — use `<C-u>` for up) |
 | `<C-y>` / `<C-e>` | Smooth one line up / down |
 | `zt` / `zz` / `zb` | Scroll cursor to top / center / bottom |
 
@@ -1140,5 +1140,5 @@ Example: `daf` = delete around function, `cii` = change inside if-block.
 | `,` / `.` / `;` | Self + undo breakpoint | keymaps.lua |
 | `<Tab>` | Smart: next completion → jump snippet → trigger | nvim-cmp |
 | `<S-Tab>` | Smart: prev completion → jump back | nvim-cmp |
-| `<C-b>` / `<C-f>` | Scroll completion docs up/down | nvim-cmp |
+| `<C-u>` / `<C-d>` | Scroll completion docs up/down | nvim-cmp |
 | `<C-e>` | Close completion menu | nvim-cmp |

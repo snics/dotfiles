@@ -183,8 +183,12 @@ return {
             mapping = cmp.mapping.preset.insert({
                 ["<C-k>"] = cmp.mapping.select_prev_item(),
                 ["<C-j>"] = cmp.mapping.select_next_item(),
-                ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                -- Docs scroll on C-u/C-d (was C-b/C-f): herdr's leader is now
+                -- ctrl+b, which the multiplexer swallows before nvim sees it.
+                -- scroll_docs falls back to the default key when no docs popup
+                -- is open, so insert-mode C-u/C-d stay intact.
+                ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-d>"] = cmp.mapping.scroll_docs(4),
                 ["<C-S-Space>"] = cmp.mapping.complete(),
                 ["<C-e>"] = cmp.mapping.abort(),
                 ["<CR>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
