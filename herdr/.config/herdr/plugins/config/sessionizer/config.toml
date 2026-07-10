@@ -20,6 +20,9 @@ depth = 1
 # Layout applied when a NEW workspace is created (existing ones are only
 # focused): agent in the first tab, lazygit and a plain shell behind it.
 [layout]
+# Required since the schema change: how the picker pane opens.
+# "overlay" = floating picker (like lazygit/reviewr); "split" = split pane.
+placement = "overlay"
 focus = "agent"
 
 [tabs.agent]

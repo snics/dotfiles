@@ -26,14 +26,17 @@ panel_bg = "reset"
 # Run `herdr --default-config` to see all bindable actions.
 
 [keys]
-# Ctrl+Space — carried over from the (being phased out) tmux setup, and
-# free in NeoVim/zsh. The herdr default ctrl+b clashed with nvim-cmp's
-# scroll-docs binding.
-prefix = "ctrl+space"
-# Direct workspace switching like browser tabs, no prefix needed.
-# Ghostty's default cmd+1..9 goto_tab bindings are unbound to let these
-# through (see ghostty config).
-switch_workspace = "cmd+1..9"
+# ctrl+b (tmux default). We wanted ctrl+space (old tmux muscle memory) but it
+# is unusable on macOS + Ghostty: even with the input-source switcher disabled
+# and after a reboot, ctrl+space never reaches Ghostty (macOS text-input claims
+# it; Ghostty #3403) — it can't even be bound to a native Ghostty action.
+# Trade-off: ctrl+b shadows nvim's ctrl+b (nvim-cmp scroll-docs + smooth
+# page-up), which are rebound on the nvim side to keep them reachable.
+prefix = "ctrl+b"
+# Direct workspace switching like browser tabs, no prefix needed — the
+# cmd+1..9 mapping lives in [keys.indexed] below (a bare "cmd+1..9" here is
+# invalid and would discard the whole [keys] block). Ghostty's default
+# cmd+1..9 goto_tab bindings are unbound to let these through (see ghostty).
 
 # House convention |/- for splits (tmux, Ghostty); frees prefix+v for the
 # scrollback editor (mirrors tmux prefix+v = copy mode).
@@ -55,7 +58,7 @@ next_agent = "prefix+a"
 previous_agent = "prefix+shift+a"
 
 # Mirror of cmd+1..9 workspaces — shift = one level deeper.
-focus_agent = "cmd+shift+1..9"
+# The cmd+shift+1..9 mapping lives in [keys.indexed] below.
 
 # o = open; counterpart to prefix+shift+g (worktree picker).
 open_worktree = "prefix+shift+o"
@@ -75,6 +78,14 @@ focus_pane_down = ""
 focus_pane_up = ""
 focus_pane_right = ""
 
+# Direct (prefix-less) indexed shortcuts: a modifier string maps <mod>+1..9.
+# cmd+1..9 → switch workspace; cmd+shift+1..9 → focus agent row. These MUST
+# live here — putting a range like "cmd+1..9" in a [keys] field above makes
+# herdr silently discard the entire [keys] block (no error, just dead keys).
+[keys.indexed]
+workspaces = "cmd"
+agents = "cmd+shift"
+
 [worktrees]
 # Central, visible worktree location next to the projects (instead of the
 # hidden ~/.herdr/worktrees default) — reachable for zoxide/yazi/fzf.
@@ -88,41 +99,49 @@ directory = "~/Projects/_worktrees"
 key = "ctrl+h"
 type = "plugin_action"
 command = "herdr-splits.nav-left"
+description = "Navigate pane left (Neovim-aware)"
 
 [[keys.command]]
 key = "ctrl+j"
 type = "plugin_action"
 command = "herdr-splits.nav-down"
+description = "Navigate pane down (Neovim-aware)"
 
 [[keys.command]]
 key = "ctrl+k"
 type = "plugin_action"
 command = "herdr-splits.nav-up"
+description = "Navigate pane up (Neovim-aware)"
 
 [[keys.command]]
 key = "ctrl+l"
 type = "plugin_action"
 command = "herdr-splits.nav-right"
+description = "Navigate pane right (Neovim-aware)"
 
 [[keys.command]]
 key = "alt+h"
 type = "plugin_action"
 command = "herdr-splits.resize-left"
+description = "Resize pane left"
 
 [[keys.command]]
 key = "alt+j"
 type = "plugin_action"
 command = "herdr-splits.resize-down"
+description = "Resize pane down"
 
 [[keys.command]]
 key = "alt+k"
 type = "plugin_action"
 command = "herdr-splits.resize-up"
+description = "Resize pane up"
 
 [[keys.command]]
 key = "alt+l"
 type = "plugin_action"
 command = "herdr-splits.resize-right"
+description = "Resize pane right"
 
 # Toggle the reviewr code-review sidebar (persiyanov/herdr-reviewr).
 # It also auto-opens for newly created worktree workspaces.
@@ -130,6 +149,7 @@ command = "herdr-splits.resize-right"
 key = "cmd+r"
 type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
+description = "Toggle reviewr code-review sidebar"
 
 # Live token spend dashboard (Davidcreador/herdr-token-dashboard).
 # Note: currently reads Pi and OpenCode sessions only.
@@ -137,12 +157,17 @@ command = "persiyanov.reviewr.toggle"
 key = "prefix+$"
 type = "plugin_action"
 command = "dave.token-dashboard.open-dashboard"
+description = "Token spend dashboard"
 
-# u = URL: scan the pane for URLs, pick one with fzf.
+# u = URL: scan the panes for URLs, pick one with fzf.
+# Bind the PANE entrypoint (url-picker), NOT the pick-url ACTION: the action runs
+# fzf headless (no visible terminal) and just hangs. Opening the plugin's overlay
+# pane gives fzf a real terminal. See x0d7x/herdr-fzf-url README.
 [[keys.command]]
 key = "prefix+u"
-type = "plugin_action"
-command = "url.fzf-picker.pick-url"
+type = "shell"
+command = "herdr plugin pane open --plugin url.fzf-picker --entrypoint url-picker"
+description = "Pick a URL from the panes (fzf)"
 
 # g = git on the cmd plugin-overlay layer (consistent with cmd+r reviewr);
 # leaves prefix+g untouched for the future tmux-launcher migration.
@@ -150,6 +175,7 @@ command = "url.fzf-picker.pick-url"
 key = "cmd+g"
 type = "plugin_action"
 command = "beomjungil.lazygit-overlay.open"
+description = "lazygit overlay"
 
 # o = overview: git-aware read-only file viewer beside the agent
 # (smarzban/herdr-file-viewer). cmd+f would shadow Ghostty's search.
@@ -157,11 +183,13 @@ command = "beomjungil.lazygit-overlay.open"
 key = "cmd+o"
 type = "plugin_action"
 command = "herdr-file-viewer.open-file-viewer"
+description = "File viewer (git-aware)"
 
 [[keys.command]]
 key = "cmd+shift+o"
 type = "plugin_action"
 command = "herdr-file-viewer.open-file-viewer-tab"
+description = "File viewer in a new tab"
 
 # p = projects: fuzzy-pick any repo under the project roots (sessionizer)
 # — existing workspaces focus, new ones get the configured layout.
@@ -170,6 +198,7 @@ command = "herdr-file-viewer.open-file-viewer-tab"
 key = "cmd+p"
 type = "plugin_action"
 command = "sessionizer.open"
+description = "Project / session picker"
 
 # Worktree flow with branch picker (local/remote/new) — replaces the
 # built-in new_worktree prompt on the same key.
@@ -177,6 +206,7 @@ command = "sessionizer.open"
 key = "prefix+shift+g"
 type = "plugin_action"
 command = "sessionizer.worktree-open"
+description = "Worktree picker (branch-aware)"
 
 # Quick actions: fuzzy one-off scripts, run in the current directory
 # (mirrors <leader>. scratch semantics in nvim).
@@ -184,6 +214,18 @@ command = "sessionizer.worktree-open"
 key = "prefix+."
 type = "plugin_action"
 command = "cloudmanic.herdr-plus.quick-actions"
+description = "Quick actions"
+
+# y = yank: tmux-fingers style copy hints. Overlays short labels on visible
+# tokens (URLs, paths, git hashes, IDs); type a label to copy it to the
+# clipboard (Tab = multi-select). The .open action opens the overlay pane
+# itself, so a plain plugin_action binding works (no headless fzf hang).
+# Install: herdr plugin install hotchpotch/herdr-tiny-fingers (just herdr-plugins).
+[[keys.command]]
+key = "prefix+y"
+type = "plugin_action"
+command = "hotchpotch.herdr-tiny-fingers.open"
+description = "Copy-hints (fingers) — yank a token to the clipboard"
 
 # Popup launchers — tmux muscle memory carried over (same prefix, same
 # letters): f=files, g=git, s=system, k=kubernetes. type=pane opens a
@@ -198,6 +240,7 @@ description = "yazi file manager"
 key = "prefix+g"
 type = "plugin_action"
 command = "beomjungil.lazygit-overlay.open"
+description = "lazygit overlay"
 
 [[keys.command]]
 key = "prefix+s"
@@ -210,6 +253,22 @@ key = "prefix+k"
 type = "pane"
 command = "k9s"
 description = "k9s kubernetes TUI"
+
+# e = edit: open NeoVim in a temporary pane at the current dir (TUI, stays until
+# you :q). Counterpart to prefix+z which opens the same project in Zed (GUI).
+[[keys.command]]
+key = "prefix+e"
+type = "pane"
+command = "nvim"
+description = "NeoVim (editor)"
+
+# z = Zed: open the current directory in the Zed GUI app. type=shell launches it
+# detached (no pane) since Zed is a windowed app, not a terminal program.
+[[keys.command]]
+key = "prefix+z"
+type = "shell"
+command = "zed ."
+description = "Open current dir in Zed (GUI)"
 
 [ui]
 # Draw borders around split panes and keep them visually separated
@@ -236,7 +295,7 @@ prompt_new_tab_name = false
 
 # Sort the agents panel as an attention queue (blocked first) instead of
 # grouping by space.
-agent_panel_sort = "priority"
+agent_panel_sort = "spaces"
 [ui.toast]
 # Native macOS notifications for agent activity in background workspaces.
 delivery = "system"
@@ -244,9 +303,10 @@ delivery = "system"
 [ui.toast.herdr]
 position = "bottom-right"
 
-# macOS notifications carry the sound now — no extra herdr chime on top.
+# macOS delivered its notifications silently (per-app sound toggle off), so let
+# herdr play its own chime for background agent state changes instead.
 [ui.sound]
-enabled = false
+enabled = true
 
 [experimental]
 # Kitty graphics passthrough — Ghostty speaks the protocol, so panes can
