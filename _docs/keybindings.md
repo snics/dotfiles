@@ -9,9 +9,9 @@ Unified keyboard shortcut reference across all tools in this dotfiles setup.
 | Layer | Modifier | Why |
 |-------|----------|-----|
 | Ghostty (terminal) | `Ctrl+Shift+` | Avoids conflicts with tmux and CLI tools |
-| herdr (agent multiplexer) | `Ctrl+Space` prefix | Carried over from tmux, free in NeoVim/zsh |
+| herdr (agent multiplexer) | `Ctrl+b` prefix | tmux default; `Ctrl+Space` is unusable on macOS+Ghostty (text-input claims it) |
 | herdr navigation | `Ctrl+` (no prefix) | Seamless with NeoVim via herdr-splits.nvim |
-| Tmux (being phased out) | `Ctrl+Space` prefix | Same prefix — herdr wins while both run |
+| Tmux (being phased out) | `Ctrl+Space` prefix | Different from herdr's `Ctrl+b` now — herdr wins inside herdr panes |
 | NeoVim (editor) | `Space` leader | Standard in LazyVim/AstroNvim |
 | macOS / Raycast | `Super+` (Cmd) | Kept free, no conflicts |
 
@@ -46,8 +46,9 @@ show a mirrored view of the same herdr session — prefer herdr splits.
 
 ## Tmux
 
-Prefix: **`Ctrl+Space`** — same as herdr; while both are installed, herdr
-receives the prefix first inside herdr panes. Tmux is being phased out.
+Prefix: **`Ctrl+Space`** — note this now differs from herdr's `Ctrl+b`.
+Inside a herdr pane, herdr's `Ctrl+b` wins; a local tmux keeps `Ctrl+Space`.
+Tmux is being phased out.
 
 ### Navigation
 
@@ -103,15 +104,16 @@ receives the prefix first inside herdr panes. Tmux is being phased out.
 
 ## herdr
 
-Prefix: **`Ctrl+Space`** (carried over from tmux, which is being phased out;
-while both are installed, a local tmux inside a herdr pane won't receive it)
+Prefix: **`Ctrl+b`** (tmux default). We wanted `Ctrl+Space` (old tmux muscle
+memory) but it is unusable on macOS + Ghostty — the text-input system claims
+`Ctrl+Space` and it never reaches Ghostty, so it can't be bound (Ghostty #3403).
 
 ### Navigation (no prefix needed)
 
 | Shortcut | Action |
 |----------|--------|
 | `Ctrl+h/j/k/l` | Navigate panes (herdr-aware, works across NeoVim splits via herdr-splits.nvim) |
-| `Alt+h/j/k/l` | Resize panes (also across the NeoVim/herdr boundary) |
+| `Alt+h/j/k/l` | Resize panes (also across the NeoVim/herdr boundary) — on macOS this is the **left** Option key (`macos-option-as-alt = left`); right Option stays compose for ö/ä/ü, `{[]}` etc. |
 
 ### Panes & Tabs
 
@@ -151,6 +153,8 @@ while both are installed, a local tmux inside a herdr pane won't receive it)
 | `Prefix + g` | lazygit (overlay) | **G**it |
 | `Prefix + s` | btop | **S**ystem monitor |
 | `Prefix + k` | k9s | **K**ubernetes |
+| `Prefix + e` | NeoVim (in a pane) | **E**dit |
+| `Prefix + z` | Zed (GUI, current dir) | **Z**ed |
 
 ### Session
 
@@ -171,6 +175,7 @@ while both are installed, a local tmux inside a herdr pane won't receive it)
 | `Cmd+p` | Project picker (sessionizer) — fuzzy over all repos under ~/Projects, opens with the default layout |
 | `Prefix + .` | Quick actions — fuzzy one-off scripts in the current dir |
 | `Prefix + u` | URL picker (fzf over pane URLs) |
+| `Prefix + y` | Copy-hints (tiny-fingers) — yank a visible token to the clipboard |
 | `Prefix + $` | Token spend dashboard (Pi/OpenCode sessions) |
 
 ---
