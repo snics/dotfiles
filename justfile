@@ -226,6 +226,10 @@ rust:
 asdf:
     source {{ DOTFILES }}/asdf/plugins.sh
 
+# Install herdr plugins & agent integrations
+herdr-plugins:
+    source {{ DOTFILES }}/_install/herdr-plugins.sh
+
 # ── Validation ──────────────────────────────────────────
 
 # Check installed tools and symlinks

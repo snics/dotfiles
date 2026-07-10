@@ -14,7 +14,7 @@ GUI_PACKAGES := ghostty zed cursor obsidian
 ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
 .PHONY: all install link link-cli link-gui unlink relink update macos dock project-folders \
-        golang rust asdf check lint test test-symlinks test-configs help \
+        golang rust asdf herdr-plugins check lint test test-symlinks test-configs help \
         zsh git nvim ghostty tmux lazygit k9s herdr zed opencode claude cursor obsidian \
         brew-gen brew-install brew-tap brew-trust brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
@@ -187,6 +187,9 @@ rust: ## Install Rust via rustup
 
 asdf: ## Install asdf plugins
 	source $(DOTFILES)/asdf/plugins.sh
+
+herdr-plugins: ## Install herdr plugins & agent integrations
+	source $(DOTFILES)/_install/herdr-plugins.sh
 
 # ── Validation ──────────────────────────────────────────
 
