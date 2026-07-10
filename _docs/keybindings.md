@@ -154,7 +154,7 @@ memory) but it is unusable on macOS + Ghostty — the text-input system claims
 | `Prefix + s` | btop | **S**ystem monitor |
 | `Prefix + k` | k9s | **K**ubernetes |
 | `Prefix + e` | NeoVim (in a pane) | **E**dit |
-| `Prefix + z` | Zed (GUI, current dir) | **Z**ed |
+| `Prefix + Shift+e` | Zed (GUI, current dir) | **E**dit (GUI) |
 
 ### Session
 

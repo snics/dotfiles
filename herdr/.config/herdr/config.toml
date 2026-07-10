@@ -43,6 +43,10 @@ prefix = "ctrl+b"
 split_vertical = "prefix+|"
 edit_scrollback = "prefix+v"
 
+# tmux muscle memory: prefix+z toggles the focused pane to fullscreen (zoom)
+# and back. (Zed moved to prefix+shift+e to free this.)
+zoom = "prefix+z"
+
 # macOS convention (cmd+,) — frees prefix+s for the future btop launcher.
 settings = "prefix+comma"
 
@@ -262,10 +266,11 @@ type = "pane"
 command = "nvim"
 description = "NeoVim (editor)"
 
-# z = Zed: open the current directory in the Zed GUI app. type=shell launches it
-# detached (no pane) since Zed is a windowed app, not a terminal program.
+# shift+e = the GUI editor sibling of prefix+e (nvim): open the current dir in
+# Zed. type=shell launches it detached (windowed app, not a terminal program).
+# (prefix+z is tmux pane-zoom.)
 [[keys.command]]
-key = "prefix+z"
+key = "prefix+shift+e"
 type = "shell"
 command = "zed ."
 description = "Open current dir in Zed (GUI)"
