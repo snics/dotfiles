@@ -89,6 +89,14 @@ keybind = super+digit_7=unbind
 keybind = super+digit_8=unbind
 keybind = super+digit_9=unbind
 
+# herdr owns tabs — keep the native titlebar (window controls) but stop Ghostty
+# from opening its own tabs. Unbind new-tab and Ghostty's tab navigation so the
+# window stays single-surface; tabs live inside herdr.
+keybind = super+t=unbind
+keybind = super+shift+t=unbind
+keybind = super+shift+bracket_left=unbind
+keybind = super+shift+bracket_right=unbind
+
 # Create splits — note: with command = herdr each split is another client
 # attached to the same session (mirrored view). Use herdr splits instead;
 # these stay bound only for the rare second-view-of-the-session case.
