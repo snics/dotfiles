@@ -11,9 +11,11 @@ palette = 8=#7f849c
 
 # Faint/dim text (SGR 2) is used by Claude Code et al. for secondary text;
 # the 0.5 default blends it halfway to the background and tanks readability.
-# Raise it so muted text stays legible. Solid-color "ghost" text (zsh
-# autosuggestions, comments) is unaffected — only the faint attribute.
-faint-opacity = 0.8
+# Claude Code marks plain code/command text in its diffs as faint, so at 0.8 it
+# "disappeared" against the dark background. 1.0 = no dimming at all, so faint
+# text renders at full opacity. Solid-color "ghost" text (zsh autosuggestions,
+# comments) is unaffected — only the faint attribute.
+faint-opacity = 1.0
 
 background-opacity = 0.9
 background-blur-radius = 50
@@ -22,18 +24,41 @@ cursor-style = "underline"
 # Ghostty is a pure herdr host: every window attaches to the persistent
 # herdr session (tabs/panes/workspaces live in herdr, not Ghostty).
 # Closing the window only detaches the client — agents keep running.
-command = /opt/homebrew/bin/herdr
+#
+# Launch herdr through a full login+interactive zsh (-lic) so the herdr SERVER
+# inherits your COMPLETE shell environment — every PATH dir your shell builds up:
+# Homebrew (`brew shellenv`, .zshrc), krew `~/.krew/bin` (conf.d/10-path.zsh),
+# cargo `~/.cargo/bin` (.zshenv), JetBrains (.zprofile), etc. Ghostty is a GUI
+# app launched via launchd with only the minimal /usr/bin:/bin PATH, and it runs
+# `command` via `exec -l`, so the value MUST start with a real executable
+# (a bare `export` builtin fails with `exec: export: not found`). The `-i` flag
+# is the key: brew + krew both live in the .zshrc chain, which only an
+# interactive shell sources. One-time cost at server startup; afterwards every
+# plugin, launcher and pane herdr spawns resolves tools on your full PATH — so
+# no per-tool PATH workarounds (e.g. the `zsh -ilc` k9s launcher) are needed.
+command = /bin/zsh -lic "exec /opt/homebrew/bin/herdr"
 
 # No Ghostty tabs (herdr owns tabs), so hide the titlebar entirely.
 macos-titlebar-style = hidden
 
-# Send Option as Alt so alt+h/j/k/l (herdr pane resize) reaches herdr
-# instead of typing macOS special characters.
-macos-option-as-alt = true
+# Left Option as Alt so left-Option+h/j/k/l (herdr pane resize) reaches herdr
+# as a comfortable two-hand chord — left thumb on Option, right hand on hjkl,
+# mirroring the ctrl+h/j/k/l navigation. Right Option stays a compose key so
+# macOS special characters still work (ö/ä/ü via Option+u, and { [ ] } | @ \ ~
+# on the German/US layout).
+macos-option-as-alt = left
 
 # ============================================================================
 # Keybindings — Vim-style (Ctrl+Shift layer)
 # ============================================================================
+
+# NOTE: no ctrl+space keybind here on purpose. herdr's prefix is ctrl+space;
+# with no Ghostty binding, Ghostty passes ctrl+space straight through to herdr
+# (as a kitty CSI-u sequence under the keyboard protocol herdr negotiates), and
+# herdr matches it natively. A bare `ctrl+space=<action>` binding in Ghostty
+# does NOT fire on macOS (Ghostty #3403), so binding it here would only swallow
+# the key. If this still doesn't work, ctrl+space is unrecoverable in this
+# stack — switch the herdr prefix instead.
 
 # Pane navigation (hjkl)
 keybind = ctrl+shift+h=goto_split:left
