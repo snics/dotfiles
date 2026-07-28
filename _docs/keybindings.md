@@ -38,9 +38,11 @@ Split management and tab navigation at the terminal level.
 |----------|--------|
 | `Ctrl+Shift+Arrow` | Resize split (10px) |
 
-Ghostty runs as a pure herdr host (`command = herdr`): tabs and workspaces
-live in herdr, so Ghostty tab bindings are removed. Splits stay bound but
-show a mirrored view of the same herdr session — prefer herdr splits.
+Ghostty runs as a pure herdr host (`command = herdr-launch`): tabs and
+workspaces live in herdr, so Ghostty tab bindings are removed. Each window
+gets its own herdr session (`default`, then `ghostty2`, `ghostty3`, …) — see
+the herdr Sessions section. Splits stay bound but mirror the window's
+session — prefer herdr splits.
 
 ---
 
@@ -141,36 +143,55 @@ memory) but it is unusable on macOS + Ghostty — the text-input system claims
 | `Prefix + Shift+g` | Worktree picker (sessionizer): local/remote branch or new, opens with layout |
 | `Prefix + Shift+o` | Open existing worktree |
 | `Prefix + w` | Workspace picker |
-| `Prefix + '` | Goto picker |
+| `Prefix + g` | Goto picker (herdr default): tree of workspaces/panes/agents — `/` fuzzy search · `b/w/i/d/a` filter by agent state · `Enter` switch |
 | `Prefix + o` | Jump to latest agent notification |
 | `Prefix + b` | Toggle sidebar |
 
 ### Launchers (tmux muscle memory: letter = function)
 
+yazi/btop/k9s/scratch/herdrctx open as floating popups (tmux display-popup
+style) — the tab layout stays untouched. Popups swallow all input (incl.
+`Esc` and herdr's own keybindings) until the tool exits. Uniform close key:
+**`Ctrl+c`** quits every popup tool (yazi: close-tab-or-quit default; btop/
+k9s: native; scratch: on an empty line). `q` (yazi/btop) and `Esc` (scratch,
+empty line) work too. NeoVim deliberately opens as a real pane.
+
 | Shortcut | Tool | Mnemonic |
 |----------|------|----------|
-| `Prefix + f` | yazi | **F**iles |
-| `Prefix + g` | lazygit (overlay) | **G**it |
-| `Prefix + s` | btop | **S**ystem monitor |
-| `Prefix + k` | k9s | **K**ubernetes |
+| `Prefix + f` | yazi (popup 85%) | **F**iles |
+| `Cmd+g` | lazygit (popup 90%) | **G**it |
+| `Prefix + s` | btop (popup 85%) | **S**ystem monitor |
+| `Prefix + k` | k9s (popup 90%) | **K**ubernetes |
+| `Prefix + t` | Scratch shell (popup 75%) — `Esc` closes | **T**erminal |
+| `Prefix + Shift+s` | herdrctx session overview (popup 70%) — attach needs a detached window | **S**essions |
 | `Prefix + e` | NeoVim (in a pane) | **E**dit |
 | `Prefix + Shift+e` | Zed (GUI, current dir) | **E**dit (GUI) |
 
-### Session
+### Sessions (one per Ghostty window)
+
+Every Ghostty window gets its own herdr session via `herdr-launch`
+(herdr/.local/bin): the first window attaches `default`, further windows take
+`ghostty2`, `ghostty3`, … — detached sessions are re-attached before new ones
+are created. Sessions cannot be renamed (no herdr support), so give deliberate
+sessions their name at creation time in herdrctx (e.g. `workshop` for
+presenting on a second monitor).
 
 | Shortcut | Action |
 |----------|--------|
-| `Prefix + q` | Detach (agents keep running) |
+| `Prefix + q` | Detach (agents keep running) — drops the window into herdrctx, the session manager |
 | `Prefix + ,` | Settings (macOS convention) |
 | `Prefix + Shift+r` | Reload config |
 | `Prefix + ?` | Help (all bindings) |
+
+herdrctx keys (after detach): `Enter`/`a` attach · `n` create here / `N`
+create with directory picker · `s` stop · `d` delete · `/` search · `q` quit
+(closes the window)
 
 ### Plugins
 
 | Shortcut | Action |
 |----------|--------|
 | `Cmd+r` | Toggle reviewr code-review sidebar (auto-opens for new worktrees) |
-| `Cmd+g` | lazygit overlay over the active pane |
 | `Cmd+o` / `Cmd+Shift+o` | File viewer (overview of agent changes) in split / own tab |
 | `Cmd+p` | Project picker (sessionizer) — fuzzy over all repos under ~/Projects, opens with the default layout |
 | `Prefix + .` | Quick actions — fuzzy one-off scripts in the current dir |
@@ -479,6 +500,6 @@ not tool name (`f` = files, `g` = git, `s` = system, `k` = kubernetes).
 | `\|` / `-` | — | `Prefix+\|` / `-` split | `Prefix+\|` / `-` split | `Ctrl+Shift+\` / `-` split | — | — |
 | `z` | — | `Prefix+z` zoom | `Prefix+z` zoom | `Ctrl+Shift+z` zoom | `Space z` zen | `Space z` zen |
 | `f` | `Alt+F` yazi | `Prefix+f` yazi | `Prefix+f` yazi | — | `Space ff` find files | `Space Space` file finder |
-| `g` | `Alt+G` lazygit | `Prefix+g` lazygit | `Prefix+g` / `Cmd+g` lazygit overlay | — | `Space gg` lazygit | `Space gs` git panel |
+| `g` | `Alt+G` lazygit | `Prefix+g` lazygit | `Cmd+g` lazygit popup (`Prefix+g` = goto picker) | — | `Space gg` lazygit | `Space gs` git panel |
 | `s` | `Alt+S` btop | `Prefix+s` btop | `Prefix+s` btop | — | — | — |
 | `k` | `Alt+K` k9s | `Prefix+k` k9s | `Prefix+k` k9s | — | — | — |
