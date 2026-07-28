@@ -1,0 +1,11 @@
+# herdr-reviewr — matches the herdr/Ghostty Catppuccin Mocha setup
+theme = "catppuccin"
+
+# Base ref for the "branch" scope: the first ref in this list that exists in
+# the repo wins. This is repo-wide — reviewr (0.25.1) cannot detect a
+# worktree's actual parent branch (no @{u}, no merge-base heuristic; upstream
+# gap, feature request planned). Order = our repo conventions.
+base_branches = ["origin/development", "origin/develop", "origin/main", "origin/master", "main", "master"]
+
+# Worktree-centric startup: review the whole branch, not just uncommitted.
+default_scope = "branch"
