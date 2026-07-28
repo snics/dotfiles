@@ -221,6 +221,7 @@ ignored_commands = [
   "lazydocker",
   "jjui",
   "dive",
+  "tuicr",
   # AI agents (interactive sessions)
   "claude",
   "opencode",

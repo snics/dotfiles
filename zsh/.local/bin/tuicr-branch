@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+#
+# Open tuicr on the current branch: diff against the merge-base of the first
+# base ref that exists, plus uncommitted changes (-w) — the same worktree-centric
+# scope as reviewr's "branch" mode. Base list mirrors
+# herdr/.config/herdr/plugins/config/persiyanov.reviewr/config.toml.
+#
+# Runs inside a herdr popup, which closes the moment the process exits — so
+# every error path pauses for a keypress to stay readable.
+
+set -uo pipefail
+
+die() {
+    echo "tuicr-branch: $*" >&2
+    read -rsn1 -p "-- press any key to close --"
+    exit 1
+}
+
+git rev-parse --git-dir &>/dev/null || die "not a git repo: $PWD"
+
+base=""
+for ref in origin/development origin/develop origin/main origin/master main master; do
+    if git rev-parse --verify --quiet "$ref" >/dev/null; then
+        base="$ref"
+        break
+    fi
+done
+[[ -n "$base" ]] || die "no base ref found (tried origin/{development,develop,main,master}, main, master)"
+
+# tuicr errors out on an empty -r range even with -w, so only pass the range
+# when the branch actually has commits beyond the merge-base.
+mb="$(git merge-base HEAD "$base")"
+if [[ "$mb" == "$(git rev-parse HEAD)" ]]; then
+    tuicr -w "$@"
+else
+    tuicr -w -r "${mb}..HEAD" "$@"
+fi
+
+status=$?
+if (( status != 0 )); then
+    read -rsn1 -p "-- tuicr exited with ${status}, press any key to close --"
+fi
+exit "$status"

@@ -26,6 +26,7 @@ nvim/        → ~/.config/nvim/ (NeoVim)
 obsidian/    → Obsidian vault structure
 opencode/    → ~/.config/opencode/ (AI coding agent)
 tmux/        → ~/.config/tmux/
+tuicr/       → ~/.config/tuicr/ (code-review TUI)
 zed/         → ~/.config/zed/ (Zed editor)
 zsh/         → Zsh shell config (conf.d/, functions/, themes/)
 ```

@@ -155,6 +155,18 @@ type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 description = "Toggle reviewr code-review sidebar"
 
+# R = deep review: tuicr popup over the whole branch diff (merge-base against
+# the same base list as reviewr, incl. uncommitted) — complement to the cmd+r
+# sidebar for pre-commit/PR passes. Plain popup like lazygit: inherits the
+# focused pane's cwd (worktree-correct). Quitting tuicr (q) closes the popup.
+[[keys.command]]
+key = "cmd+shift+r"
+type = "popup"
+command = "tuicr-branch"
+width = "90%"
+height = "90%"
+description = "tuicr branch review"
+
 # Live token spend dashboard (Davidcreador/herdr-token-dashboard).
 # Note: currently reads Pi and OpenCode sessions only.
 [[keys.command]]

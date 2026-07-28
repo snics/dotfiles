@@ -1,4 +1,5 @@
 # Tap repositories for additional Homebrew formulas
+tap "agavra/tap" # tuicr: code-review TUI for diffs. [tuicr](https://github.com/agavra/tuicr)
 tap "bramstein/webfonttools" # Tools for working with web fonts. [Webfonttools](https://github.com/bramstein/homebrew-webfonttools)
 tap "cirruslabs/cli" # Cirrus Labs CLI tools (Tart VM runner). [Cirrus CLI](https://github.com/cirruslabs/homebrew-cli)
 tap "coder/coder" # Developer tools from Coder. [Coder](https://github.com/coder/homebrew-coder)

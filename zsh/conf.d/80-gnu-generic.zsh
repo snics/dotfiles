@@ -48,6 +48,7 @@
     lazygit       # Git TUI
     lazydocker    # Docker TUI
     jjui          # Jujutsu TUI
+    tuicr         # Code-review TUI
 
     # Utilities
     chafa         # Terminal image renderer

@@ -160,6 +160,7 @@ empty line) work too. NeoVim deliberately opens as a real pane.
 |----------|------|----------|
 | `Prefix + f` | yazi (popup 85%) | **F**iles |
 | `Cmd+g` | lazygit (popup 90%) | **G**it |
+| `Cmd+Shift+r` | tuicr branch review (popup 90%) — merge-base vs. reviewr base list + uncommitted; `q` quits | **R**eview (deep) |
 | `Prefix + s` | btop (popup 85%) | **S**ystem monitor |
 | `Prefix + k` | k9s (popup 90%) | **K**ubernetes |
 | `Prefix + t` | Scratch shell (popup 75%) — `Esc` closes | **T**erminal |
@@ -191,7 +192,7 @@ create with directory picker · `s` stop · `d` delete · `/` search · `q` quit
 
 | Shortcut | Action |
 |----------|--------|
-| `Cmd+r` | Toggle reviewr code-review sidebar (auto-opens for new worktrees) |
+| `Cmd+r` | Toggle reviewr code-review sidebar (auto-opens for new worktrees) — deep pass: `Cmd+Shift+r` tuicr popup |
 | `Cmd+o` / `Cmd+Shift+o` | File viewer (overview of agent changes) in split / own tab |
 | `Cmd+p` | Project picker (sessionizer) — fuzzy over all repos under ~/Projects, opens with the default layout |
 | `Prefix + .` | Quick actions — fuzzy one-off scripts in the current dir |

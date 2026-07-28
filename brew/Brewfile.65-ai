@@ -4,3 +4,4 @@ brew "gemini-cli" # Google's AI coding agent for the terminal. [Gemini CLI](http
 brew "kimi-cli" # Moonshot AI's coding agent for the terminal. [Kimi CLI](https://github.com/MoonshotAI/kimi-cli)
 brew "herdr" # Terminal multiplexer for AI coding agents. [herdr](https://github.com/ogulcancelik/herdr)
 brew "j0urneyk/tap/herdrctx" # TUI session manager for herdr: attach, create, stop, delete. [herdrctx](https://github.com/j0urneyk/herdrctx)
+brew "agavra/tap/tuicr" # GitHub-style code-review TUI for (AI-generated) diffs. [tuicr](https://github.com/agavra/tuicr)

@@ -1,0 +1,40 @@
+# tuicr — code-review TUI (herdr Cmd+Shift+r popup via tuicr-branch)
+# Full reference: https://github.com/agavra/tuicr/blob/main/docs/CONFIG.md
+# Sessions are stored separately in ~/Library/Application Support/tuicr/reviews/
+
+# Match the Ghostty/herdr Catppuccin Mocha setup. Explicit theme instead of
+# appearance = "system": the terminal-bg probe is pointless in an always-dark
+# setup and one probe less on popup startup.
+theme = "catppuccin-mocha"
+
+# brew owns updates (`brew upgrade tuicr`); skip the crates.io check on start.
+no_update_check = true
+
+# Vim-modal editing in the comment box (0.19.0, opt-in) — matches nvim/lazygit
+# muscle memory. Runtime escape hatch: `:novim`.
+comment_vim = true
+
+# Keep context visible around the cursor, same scrolloff feel as nvim.
+scroll_offset = 4
+
+# Author name stamped on locally written comments (undocumented key;
+# default would be "user").
+username = "nico"
+
+# Comment categories for the agent-feedback workflow: Tab cycles them in the
+# comment box, exports carry a legend with the definitions, and `[TYPE]` tags
+# survive into clipboard/stdout markdown for the agent to act on.
+[[comment_types]]
+id = "issue"
+color = "red"
+definition = "Must fix before merge."
+
+[[comment_types]]
+id = "question"
+color = "yellow"
+definition = "Needs an answer before this can be resolved."
+
+[[comment_types]]
+id = "nit"
+color = "blue"
+definition = "Optional polish; apply only if cheap."
