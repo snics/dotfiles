@@ -30,6 +30,21 @@ fi
 alias z="cd"
 alias zi="cdi"
 
+# Guard zoxide's cd: for non-existent paths it jumps to the best database
+# match — great when typed by a human, dangerous for scripts and AI agents
+# (a typo'd `cd` silently lands somewhere else). Non-human shells get the
+# builtin, which errors honestly. Guard: _pretty_tty minus the tty check —
+# cd produces no stdout, so only interactivity and agent markers matter.
+if (( $+functions[__zoxide_z] )); then
+  cd() {
+    if [[ -o interactive ]] && ! _agent_shell; then
+      __zoxide_z "$@"
+    else
+      builtin cd "$@"
+    fi
+  }
+fi
+
 # Clear terminal
 alias cl="clear"
 

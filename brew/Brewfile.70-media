@@ -1,4 +1,5 @@
 # Media, image, and document tools
+brew "chafa" # Terminal graphics renderer, images as character art. [Chafa](https://hpjansson.org/chafa/)
 brew "exiv2" # Image metadata manipulation tool. [Exiv2](https://www.exiv2.org/)
 brew "ghostscript" # An interpreter for the PostScript language and for PDF. [Ghostscript](https://www.ghostscript.com/)
 brew "imagemagick" # Tools and libraries to manipulate images in many formats. [ImageMagick](https://imagemagick.org/)

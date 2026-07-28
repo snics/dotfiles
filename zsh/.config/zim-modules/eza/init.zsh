@@ -49,7 +49,9 @@ function _configure_eza() {
     _EZA_TAIL+=("--time-style='$_val'")
   fi
   if zstyle -t ":zim:plugins:eza" "hyperlink"; then
-    _EZA_TAIL+=("--hyperlink")
+    # eza >= 0.23 made --hyperlink take an optional WHEN value; bare
+    # --hyperlink swallows the next argument, so pin it explicitly.
+    _EZA_TAIL+=("--hyperlink=auto")
   fi
 }
 
@@ -91,3 +93,30 @@ unfunction _alias_eza
 unfunction _configure_eza
 unset _EZA_HEAD
 unset _EZA_TAIL
+
+# Promote the CLASSIC command names to guarded functions: scripts, pipes and
+# AI-agent shells (see _pretty_tty in conf.d/00-init.zsh) get the real
+# system command with untouched semantics; only an interactive human tty
+# gets the eza-flavored version. The custom shortcuts (la, ll, lr, ...)
+# stay plain aliases — no classic tool shares their names.
+() {
+  local _name _body
+  for _name in ls tree; do
+    _body=${aliases[$_name]}
+    [[ -n $_body ]] || continue
+    # `tree` has no system binary on a stock install — only guard it when
+    # a real tree exists to fall back to.
+    if [[ $_name == tree ]] && ! command -v tree >/dev/null 2>&1; then
+      continue
+    fi
+    unalias $_name
+    eval "
+$_name() {
+  if _pretty_tty; then
+    $_body \"\$@\"
+  else
+    command $_name \"\$@\"
+  fi
+}"
+  done
+}

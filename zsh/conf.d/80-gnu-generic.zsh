@@ -50,6 +50,7 @@
     jjui          # Jujutsu TUI
 
     # Utilities
+    chafa         # Terminal image renderer
     pngcheck      # PNG integrity checker
     rlwrap        # Readline wrapper
     vbindiff      # Visual binary diff

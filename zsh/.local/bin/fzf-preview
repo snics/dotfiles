@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+# Unified fzf preview: directory tree, rendered image, or highlighted text.
+# Used by FZF_CTRL_T_OPTS (zsh/conf.d/40-fzf.zsh) and fzf-tab file-command
+# previews (zsh/conf.d/30-fzf-tab.zsh). Sized via FZF_PREVIEW_COLUMNS/LINES,
+# which fzf exports inside the preview subprocess.
+
+target=$1
+[[ -z $target ]] && exit 0
+target=${~target}
+
+# Delete lingering kitty-graphics placements before drawing anything new.
+# fzf only manages such images when it detects kitty itself (KITTY_WINDOW_ID),
+# so without this the previous image overlays every later preview.
+print -n -- $'\e_Ga=d,d=A\e\\'
+
+if [[ -d $target ]]; then
+  eza --tree --level 3 --icons=auto --color=always -a -l -h \
+    --no-permissions --no-time -- "$target"
+elif [[ ${target:l} == *.(png|jpg|jpeg|gif|webp|bmp|tiff|tif|heic|avif|ico|svg) ]]; then
+  # Kitty graphics protocol: pixel-perfect in Ghostty, passes through herdr
+  # panes (verified 2026-07), and fzf >= 0.44 renders it in the preview window.
+  chafa --format kitty --size "${FZF_PREVIEW_COLUMNS:-80}x${FZF_PREVIEW_LINES:-24}" \
+    --animate off -- "$target"
+else
+  bat --style=numbers --color=always --line-range :500 -- "$target"
+fi
