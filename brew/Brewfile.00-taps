@@ -7,6 +7,7 @@ tap "dgunzy/tap" # flux9s: K9s-inspired terminal UI for Flux. [flux9s](https://g
 tap "fluxcd/tap" # FluxCD CLI for GitOps on Kubernetes. [Flux](https://fluxcd.io/)
 tap "goodwithtech/r" # Dockle container image linter. [Dockle](https://github.com/goodwithtech/dockle)
 tap "hashicorp/tap" # HashiCorp tools. [HashiCorp](https://developer.hashicorp.com/terraform)
+tap "j0urneyk/tap" # herdrctx: TUI session manager for herdr. [herdrctx](https://github.com/j0urneyk/herdrctx)
 tap "joshmedeski/sesh" # Sesh: A tool for managing shell sessions. [Sesh](https://github.com/joshmedeski/sesh)
 tap "kubeshark/kubeshark" # API traffic viewer for Kubernetes. [Kubeshark](https://github.com/kubeshark/homebrew-tap)
 tap "lotyp/formulae" # Various useful Homebrew formulas. [Lotyp Formulae](https://github.com/lotyp/homebrew-formulae)

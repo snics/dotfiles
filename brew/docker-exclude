@@ -26,6 +26,8 @@ curl
 
 # No Linux bottle / build fails on Linux
 herdr
+# herdrctx manages herdr sessions — pointless without herdr
+j0urneyk/tap/herdrctx
 krr
 rename
 robusta-dev/holmesgpt/holmesgpt

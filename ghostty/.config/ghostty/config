@@ -21,9 +21,12 @@ background-opacity = 0.9
 background-blur-radius = 50
 cursor-style = "underline"
 
-# Ghostty is a pure herdr host: every window attaches to the persistent
-# herdr session (tabs/panes/workspaces live in herdr, not Ghostty).
-# Closing the window only detaches the client — agents keep running.
+# Ghostty is a pure herdr host: every window attaches to a persistent herdr
+# session (tabs/panes/workspaces live in herdr, not Ghostty). herdr-launch
+# (herdr/.local/bin) gives each window its own session: the first window gets
+# "default", further windows get ghostty2, ghostty3, … — reattaching detached
+# ones first. Detach (prefix+q) drops the window into herdrctx (session
+# manager). Closing the window only detaches — agents keep running.
 #
 # Launch herdr through a full login+interactive zsh (-lic) so the herdr SERVER
 # inherits your COMPLETE shell environment — every PATH dir your shell builds up:
@@ -36,7 +39,7 @@ cursor-style = "underline"
 # interactive shell sources. One-time cost at server startup; afterwards every
 # plugin, launcher and pane herdr spawns resolves tools on your full PATH — so
 # no per-tool PATH workarounds (e.g. the `zsh -ilc` k9s launcher) are needed.
-command = /bin/zsh -lic "exec /opt/homebrew/bin/herdr"
+command = /bin/zsh -lic "exec ~/.local/bin/herdr-launch"
 
 # herdr owns tabs, so there's no Ghostty tab bar to worry about — but keep the
 # native macOS titlebar for the window controls (close / minimise / zoom) and a

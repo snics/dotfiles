@@ -1,0 +1,81 @@
+#!/usr/bin/env zsh
+# herdr-launch — Ghostty startup command: one herdr session per window.
+#
+# The first window attaches the persistent "default" session (previous
+# behaviour). Every further window takes the lowest free numbered session:
+# ghostty2, ghostty3, ... The prefix comes from $TERM_PROGRAM, so another
+# terminal emulator gets its own session namespace automatically.
+#
+# "Free" means no other herdr-launch window is currently attached, tracked
+# via PID lockfiles — detached sessions keep running server-side and are
+# transparently re-attached (scrollback and all). herdr itself cannot report
+# attached clients per session, and sessions cannot be renamed (no CLI or
+# socket-API support), so meaningful names are given at creation time
+# through herdrctx instead.
+#
+# Detach (prefix+q) drops the window into herdrctx, the session manager
+# (attach / create named / stop / delete). Quitting herdrctx closes the
+# window. Without herdrctx installed, detach just closes the window.
+#
+# --print-session prints the session this window would take, then exits.
+
+emulate -L zsh
+set -u
+
+# macOS hands the launching pane's environment to GUI apps: when Ghostty or
+# Terminal.app is started from inside a herdr pane, every new window inherits
+# HERDR_* and herdr aborts with "nested herdr". These windows are genuine
+# top-level clients, so scrub the inherited markers.
+unset HERDR_ENV HERDR_TAB_ID HERDR_PANE_ID HERDR_WORKSPACE_ID HERDR_SOCKET_PATH
+
+HERDR_BIN=${HERDR_BIN:-/opt/homebrew/bin/herdr}
+lock_dir=${XDG_CACHE_HOME:-$HOME/.cache}/herdr-launch
+mkdir -p "$lock_dir"
+
+# Taken while a live herdr-launch window holds the session's lockfile.
+# A dead PID means the window went away without cleanup (crash, force quit).
+session_taken() {
+  local lock=$lock_dir/$1.pid pid
+  [[ -f $lock ]] || return 1
+  pid=$(<"$lock")
+  if [[ $pid == <-> ]] && kill -0 "$pid" 2>/dev/null; then
+    return 0
+  fi
+  rm -f "$lock"
+  return 1
+}
+
+pick_session() {
+  if ! session_taken default; then
+    print -r -- default
+    return
+  fi
+  local prefix=${${TERM_PROGRAM:-term}:l} n=2
+  prefix=${prefix//[^a-z0-9]/}
+  while session_taken "$prefix$n"; do
+    (( n++ ))
+  done
+  print -r -- "$prefix$n"
+}
+
+session=$(pick_session)
+if [[ ${1:-} == --print-session ]]; then
+  print -r -- "$session"
+  exit 0
+fi
+
+lock=$lock_dir/$session.pid
+print -r -- $$ >| "$lock"
+trap 'rm -f "$lock"' EXIT HUP INT TERM
+
+if [[ $session == default ]]; then
+  "$HERDR_BIN"
+else
+  "$HERDR_BIN" --session "$session"
+fi
+rm -f "$lock"
+
+# Reached on detach (prefix+q) — hand the window to the session manager.
+if command -v herdrctx >/dev/null 2>&1; then
+  exec herdrctx
+fi
