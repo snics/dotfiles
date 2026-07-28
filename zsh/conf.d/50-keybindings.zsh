@@ -41,3 +41,34 @@ function _tui-k9s { k9s; zle reset-prompt }
 zle -N _tui-k9s
 bindkey '\ek' _tui-k9s
 bindkey '˚' _tui-k9s
+
+# ============================================================================
+# herdr scratch popup (prefix+t sets HERDR_POPUP=1)
+# ============================================================================
+# herdr popups swallow all input until the command exits, so give the scratch
+# shell the same close keys as the TUI popups: Ctrl+c on an empty line closes
+# the popup (matching yazi/btop/k9s, which all quit on Ctrl+c), and Esc works
+# as well — on a filled line both clear the line first. Safe with KEYTIMEOUT=1
+# — real escape sequences (arrows, Alt chords) arrive within 10ms and still
+# resolve to their bindings. A running foreground command still receives
+# Ctrl+c as a normal interrupt; the trap only fires at the prompt.
+if [[ $HERDR_POPUP == 1 ]]; then
+  TRAPINT() {
+    if [[ -o zle && -z $BUFFER ]]; then
+      exit
+    fi
+    return $(( 128 + $1 ))
+  }
+  function _popup-esc {
+    if [[ -n $BUFFER ]]; then
+      zle kill-buffer
+    else
+      # Run exit as a command instead of calling it inside the widget —
+      # this lets zsh tear down the line editor and tty cleanly.
+      BUFFER="exit"
+      zle accept-line
+    fi
+  }
+  zle -N _popup-esc
+  bindkey '\e' _popup-esc
+fi

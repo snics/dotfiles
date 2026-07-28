@@ -71,9 +71,9 @@ open_worktree = "prefix+shift+o"
 # worktree picker instead (branch selection, layouts).
 new_worktree = ""
 
-# goto moves to ' (tmux index-prompt tradition) — prefix+g is the lazygit
-# launcher, carried over from the tmux popup muscle memory.
-goto = "prefix+'"
+# goto fuzzy picker (floating overlay) on its herdr default — lazygit no
+# longer shadows it here; the overlay lives on cmd+g (plugin layer).
+goto = "prefix+g"
 
 # Prefix+hjkl pane focus is redundant with the direct ctrl+hjkl navigation;
 # freeing k for the k9s launcher (and h/j/l for symmetry).
@@ -173,13 +173,17 @@ type = "shell"
 command = "herdr plugin pane open --plugin url.fzf-picker --entrypoint url-picker"
 description = "Pick a URL from the panes (fzf)"
 
-# g = git on the cmd plugin-overlay layer (consistent with cmd+r reviewr);
-# leaves prefix+g untouched for the future tmux-launcher migration.
+# g = git on the cmd layer (consistent with cmd+r reviewr); the only lazygit
+# binding — prefix+g is the built-in goto fuzzy picker. Plain popup instead
+# of the lazygit-overlay plugin: popups inherit the focused pane's cwd
+# (worktree-correct), which was the plugin's whole job.
 [[keys.command]]
 key = "cmd+g"
-type = "plugin_action"
-command = "beomjungil.lazygit-overlay.open"
-description = "lazygit overlay"
+type = "popup"
+command = "lazygit"
+width = "90%"
+height = "90%"
+description = "lazygit"
 
 # o = overview: git-aware read-only file viewer beside the agent
 # (smarzban/herdr-file-viewer). cmd+f would shadow Ghostty's search.
@@ -231,35 +235,67 @@ type = "plugin_action"
 command = "hotchpotch.herdr-tiny-fingers.open"
 description = "Copy-hints (fingers) — yank a token to the clipboard"
 
-# Popup launchers — tmux muscle memory carried over (same prefix, same
-# letters): f=files, g=git, s=system, k=kubernetes. type=pane opens a
-# temporary pane in the current dir and closes it when the tool exits.
+# Popup launchers — tmux display-popup muscle memory (same prefix, same
+# letters): f=files, s=system, k=kubernetes, t=terminal (g=git lives on
+# cmd+g; prefix+g is the goto picker). type=popup floats a session-modal
+# terminal over the layout and closes it when the tool exits. Popups swallow
+# ALL input incl. Esc until exit — herdr's own keybindings do NOT fire while
+# a popup has focus (user-tested; a cmd+esc → socket popup.close binding was
+# tried and removed), so the uniform close key is ctrl+c IN the tools:
+# yazi (default close-tab-or-quit), btop/k9s (native), scratch shell (TRAPINT
+# in zsh/conf.d/50-keybindings.zsh, empty line only). The popup border label
+# is hard-coded ("popup") — OSC terminal titles are ignored, verified 0.7.5.
 [[keys.command]]
 key = "prefix+f"
-type = "pane"
+type = "popup"
 command = "yazi"
+width = "85%"
+height = "85%"
 description = "yazi file manager"
 
 [[keys.command]]
-key = "prefix+g"
-type = "plugin_action"
-command = "beomjungil.lazygit-overlay.open"
-description = "lazygit overlay"
-
-[[keys.command]]
 key = "prefix+s"
-type = "pane"
+type = "popup"
 command = "btop"
+width = "85%"
+height = "85%"
 description = "btop system monitor"
 
 [[keys.command]]
 key = "prefix+k"
-type = "pane"
+type = "popup"
 command = "k9s"
+width = "90%"
+height = "90%"
 description = "k9s kubernetes TUI"
 
+# t = terminal: scratch shell popup for quick one-off commands without
+# touching the tab layout (the tmux scratch popup we never replaced).
+# Login shell to match herdr's macOS shell_mode = "auto" convention;
+# HERDR_POPUP=1 arms the Esc-to-close zsh widget.
+[[keys.command]]
+key = "prefix+t"
+type = "popup"
+command = "HERDR_POPUP=1 zsh -l"
+width = "75%"
+height = "70%"
+description = "Scratch terminal"
+
+# shift+s = session manager: herdrctx in a popup for an overview of all herdr
+# sessions (create/stop/delete work). Caveat: attaching (Enter/a) can NOT work
+# from inside a popup — nested herdr is disabled and clients can't switch
+# sessions in place; attach via a detached window (prefix+q) as before.
+[[keys.command]]
+key = "prefix+shift+s"
+type = "popup"
+command = "herdrctx"
+width = "70%"
+height = "70%"
+description = "Session manager (herdrctx)"
+
 # e = edit: open NeoVim in a temporary pane at the current dir (TUI, stays until
-# you :q). Counterpart to prefix+z which opens the same project in Zed (GUI).
+# you :q). Deliberately type=pane, not popup — editing next to the agent is a
+# side-by-side activity, not a quick visit.
 [[keys.command]]
 key = "prefix+e"
 type = "pane"

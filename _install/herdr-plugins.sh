@@ -23,7 +23,6 @@ PLUGINS=(
     "persiyanov/herdr-reviewr"           # cmd+r   code-review sidebar
     "Davidcreador/herdr-token-dashboard" # prefix+$ token spend dashboard
     "x0d7x/herdr-fzf-url"                # prefix+u URL picker
-    "beomjungil/herdr-lazygit-overlay"   # cmd+g / prefix+g lazygit overlay
     "smarzban/herdr-file-viewer"         # cmd+o   git-aware file viewer
     "andrewchng/herdr-sessionizer"       # cmd+p   project/session + worktree picker
     "cloudmanic/herdr-plus"              # prefix+. quick actions + projects
