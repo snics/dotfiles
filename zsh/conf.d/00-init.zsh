@@ -19,6 +19,17 @@ _agent_shell() {
   [[ -n ${CLAUDECODE-}${AI_AGENT-}${AGENT-}${OPENCODE-}${CODEX_THREAD_ID-}${CODEX_SANDBOX-}${CODEX_SANDBOX_NETWORK_DISABLED-}${GEMINI_CLI-}${CURSOR_AGENT-} ]]
 }
 
+# Claude Code tags sessions it spawns itself with CLAUDE_CODE_CHILD_SESSION=1,
+# which turns off transcript persistence (no --resume, no memory hooks). The
+# marker can leak into human terminals through the launch chain (seen 2026-08:
+# a herdr server started from inside an agent session passed it to every
+# pane). A shell that sources .zshrc is never itself a spawned child session,
+# and real child sessions get the marker injected directly into their process
+# environment, so dropping it here is always safe. CLAUDECODE deliberately
+# stays untouched: _agent_shell relies on it and genuine agent shells do
+# source .zshrc.
+unset CLAUDE_CODE_CHILD_SESSION
+
 # True when a human is looking at this terminal — only then may replacement
 # tools (bat, eza, chafa, zoxide) take over classic command names. False for
 # pipes, redirects, scripts, and AI-agent shells. Checked at RUNTIME by the

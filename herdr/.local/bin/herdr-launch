@@ -28,6 +28,15 @@ set -u
 # top-level clients, so scrub the inherited markers.
 unset HERDR_ENV HERDR_TAB_ID HERDR_PANE_ID HERDR_WORKSPACE_ID HERDR_SOCKET_PATH
 
+# Same leak for AI-agent session markers: a herdr server started from inside
+# a Claude Code session passes them to every pane, so human panes look like
+# agent shells and CLAUDE_CODE_CHILD_SESSION silently disables transcript
+# persistence for any `claude` started there. Panes are human terminals;
+# scrub the whole set before the server can inherit it.
+unset CLAUDECODE CLAUDE_CODE_CHILD_SESSION CLAUDE_CODE_SESSION_ID \
+  CLAUDE_CODE_ENTRYPOINT CLAUDE_CODE_EXECPATH CLAUDE_PID CLAUDE_EFFORT \
+  CLAUDE_PLUGIN_DATA AI_AGENT
+
 HERDR_BIN=${HERDR_BIN:-/opt/homebrew/bin/herdr}
 lock_dir=${XDG_CACHE_HOME:-$HOME/.cache}/herdr-launch
 mkdir -p "$lock_dir"
