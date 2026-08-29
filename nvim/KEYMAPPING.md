@@ -479,10 +479,10 @@ The keys you'll use every day. Print this page or keep it open as a tab.
 | Key | Action | Remember as... |
 |-----|--------|----------------|
 | `<C-h/j/k/l>` | Move to left/down/up/right window (crosses into herdr panes at split edges) | Like h/j/k/l but for windows |
-| `<M-h/j/k/l>` | Resize window (crosses the nvim/herdr boundary, herdr panes only) | Alt = adjust |
+| `<M-S-h/j/k/l>` | Resize window (crosses the nvim/herdr boundary, herdr panes only) | Alt+Shift = adjust |
 | `<C-u>` / `<C-d>` | Smooth half-page up/down | |
 | `s` | Flash jump (type 2 chars, jump anywhere) | "Seek" |
-| `S` | Flash treesitter (select syntax node) | "Seek Syntax" |
+| `S` | Flash treesitter (select syntax node; in visual mode `S` adds a surround instead) | "Seek Syntax" |
 | `gd` | Go to definition | "Go Definition" |
 | `gr` | Find references | "Go References" |
 | `K` | Hover documentation | |
@@ -557,13 +557,22 @@ Chat with AI, get code suggestions, and manage inline completions.
 | `<leader>at` | v | Tests | Select function → AI writes tests |
 | `<leader>ar` | v | Review | Select code → AI reviews it |
 | `<leader>ad` | n | Document | Generate docs for function at cursor |
-| `<leader>ac` | n | Commit message | AI writes commit message from staged diff |
+| `<leader>ax` | n | Chat with Codex (ACP) | Codex via codex-acp, ChatGPT subscription auth |
+
+**claudecode.nvim (Claude Code IDE bridge — agent runs in a herdr pane, connects via `/ide`):**
+
+| Key | Mode | Action | Example use case |
+|-----|------|--------|------------------|
+| `<leader>aC` | n | Bridge status | Check whether the claude CLI is connected |
+| `<leader>as` | v | Send selection | Push selected code as context to Claude Code |
+| `<leader>ay` | n | Accept diff | Accept the change Claude proposes in the diff view |
+| `<leader>an` | n | Deny diff | Reject the proposed change |
 
 **herd.nvim (herdr agents from within NeoVim):**
 
 | Key | Mode | Action | Example use case |
 |-----|------|--------|------------------|
-| `<leader>\` | n | Toggle agent float | Open/hide this project's agent (Claude/opencode/codex) |
+| `<leader>\` | n | Toggle agent float | Open/hide this project's agent (Claude Code/Codex) |
 | `<leader>\` | v | Send selection | Push selected code to the active agent's input |
 | `<leader>ah` | n | Agent picker | Switch agents in this project or spawn a tool |
 | `<leader>aH` | n | Agent dashboard | All agents across projects, with live preview |
@@ -572,9 +581,7 @@ Chat with AI, get code suggestions, and manage inline completions.
 
 | Key | Mode | Action | Example use case |
 |-----|------|--------|------------------|
-| `<leader>av` | n | Toggle virtual text | Turn ghost text on/off |
-| `<leader>aV` | n | Virtual text ON | Force enable ghost text |
-| `<leader>ax` | n | Virtual text OFF | Disable for focused editing |
+| `<leader>aw` | n | Toggle virtual text | Turn ghost text on/off |
 | `<C-l>` | i | Accept suggestion | Accept the ghost text completion |
 | `<M-]>` / `<M-[>` | i | Next/prev suggestion | Cycle through alternatives |
 | `<M-c>` | i | Clear suggestion | Dismiss current ghost text |
@@ -1002,7 +1009,7 @@ All bracket pairs follow the same pattern: `[` = previous, `]` = next.
 | Key | Mode | Action |
 |-----|------|--------|
 | `s` | n,x,o | Flash jump — type 2 chars to jump anywhere visible |
-| `S` | n,x,o | Flash treesitter — select by syntax node |
+| `S` | n,o | Flash treesitter — select by syntax node (visual `S` = nvim-surround) |
 | `f`/`F`/`t`/`T` | n,x,o | Enhanced motions with labels |
 | `r` | o | Remote flash (operate on distant text) |
 | `R` | o,x | Treesitter search |
@@ -1110,7 +1117,7 @@ Example: `daf` = delete around function, `cii` = change inside if-block.
 | `as` / `is` | Assignment (key: value / value) | line/char | `dis` deletes value only |
 | `ak` | Assignment key (left side) | charwise | `yak` yanks the key |
 | `av` | Assignment value (right side) | charwise | `cav` changes the value |
-| `an` | Number | charwise | `dan` deletes a number |
+| `aN` | Number | charwise | `daN` deletes a number (remapped from `an`, now the native node textobject) |
 | `at` / `it` | Comment (around / inside) | line/char | `dat` deletes comment |
 | `aS` | Statement (outer) | linewise | `daS` deletes YAML statement |
 | `ih` | Git hunk | charwise | `dih` deletes unstaged change |

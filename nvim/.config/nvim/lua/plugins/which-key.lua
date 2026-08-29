@@ -76,11 +76,18 @@ return {
             { "<leader>at", desc = "Generate tests", icon = "󰙨", mode = "v" },
             { "<leader>ar", desc = "Review code", icon = "󰯂", mode = "v" },
             { "<leader>ad", desc = "Document code", icon = "󰈙" },
-            { "<leader>ac", desc = "Commit message", icon = { cat = "filetype", name = "git" } },
+            -- ACP agent chat (CodeCompanion)
+            { "<leader>ax", desc = "Chat with Codex (ACP)", icon = "󰭹" },
+            -- Claude Code IDE bridge (claudecode.nvim, agent runs in herdr pane)
+            { "<leader>aC", desc = "Claude Code bridge status", icon = "󰚩" },
+            { "<leader>as", desc = "Send selection to Claude Code", icon = "󰚩", mode = "v" },
+            { "<leader>ay", desc = "Accept Claude Code diff", icon = "󰄬" },
+            { "<leader>an", desc = "Deny Claude Code diff", icon = "󰅖" },
+            -- herdr agents (herd.nvim)
+            { "<leader>ah", desc = "herdr agent picker", icon = "󰒋" },
+            { "<leader>aH", desc = "herdr agent dashboard", icon = "󰒋" },
             -- Windsurf/Codeium (completions)
-            { "<leader>av", desc = "Toggle virtual text", icon = "󰄛" },
-            { "<leader>aV", desc = "Virtual text ON", icon = "󰄛" },
-            { "<leader>ax", desc = "Virtual text OFF", icon = "󰄛" },
+            { "<leader>aw", desc = "Toggle Windsurf virtual text", icon = "󰄛" },
 
             ---------------------------------------------------------------
             -- BUFFER — <leader>b
@@ -230,12 +237,14 @@ return {
             { "<leader>sm", desc = "Marks", icon = "󰃀" },
             { "<leader>sM", desc = "Man Pages", icon = "󰗚" },
             { "<leader>sp", desc = "Plugin Spec", icon = "󰏗" },
+            { "<leader>sP", desc = "Resume last picker", icon = "󰐊" },
             { "<leader>sq", desc = "Quickfix List", icon = "󰁨" },
             { "<leader>ss", desc = "LSP Symbols", icon = "󰅪" },
             { "<leader>sS", desc = "LSP Workspace Symbols", icon = "󰅩" },
             { "<leader>st", desc = "Todo Comments", icon = "󰄲" },
             { "<leader>sT", desc = "Todo/Fix/Fixme", icon = "󰄱" },
             { "<leader>su", desc = "Undo History", icon = "󰕌" },
+            { "<leader>sU", desc = "Undo Tree (native)", icon = "󰕌" },
 
             ---------------------------------------------------------------
             -- TEST — <leader>t (neotest)
@@ -265,9 +274,11 @@ return {
             ---------------------------------------------------------------
             -- UI TOGGLES — <leader>u
             ---------------------------------------------------------------
+            { "<leader>uC", desc = "Colorschemes", icon = "󰏘" },
             { "<leader>uH", desc = "Toggle colorizer", icon = "󰙵" },
             { "<leader>ua", desc = "Toggle animations", icon = "󰙵" },
-            { "<leader>uh", desc = "Toggle Vim training", icon = "󰗎" },
+            { "<leader>uh", desc = "Toggle inlay hints", icon = "󰗎" },
+            { "<leader>un", desc = "Dismiss notifications", icon = "󰎟" },
 
             ---------------------------------------------------------------
             -- SAVE + SESSION — <leader>w
@@ -432,7 +443,7 @@ return {
             { "is", desc = "Inside assignment (value)", icon = "󰈙", mode = { "o", "x" } },
             { "ak", desc = "Assignment key (left)", icon = "󰌌", mode = { "o", "x" } },
             { "av", desc = "Assignment value (right)", icon = "󰅌", mode = { "o", "x" } },
-            { "an", desc = "Around number", icon = "󰩥", mode = { "o", "x" } },
+            { "aN", desc = "Around number", icon = "󰩥", mode = { "o", "x" } },
             { "at", desc = "Around comment", icon = "󰨱", mode = { "o", "x" } },
             { "it", desc = "Inside comment", icon = "󰨱", mode = { "o", "x" } },
             { "aS", desc = "Around statement", icon = "󰈙", mode = { "o", "x" } },
@@ -448,7 +459,7 @@ return {
             -- NON-LEADER: Flash Navigation
             ---------------------------------------------------------------
             { "s", desc = "Flash Jump", icon = "⚡", mode = { "n", "x", "o" } },
-            { "S", desc = "Flash Treesitter", icon = "⚡", mode = { "n", "x", "o" } },
+            { "S", desc = "Flash Treesitter", icon = "⚡", mode = { "n", "o" } },
             { "r", desc = "Remote Flash", icon = "⚡", mode = "o" },
             { "R", desc = "Treesitter Search", icon = "⚡", mode = { "o", "x" } },
             { "<C-s>", desc = "Toggle Flash Search", icon = "⚡", mode = "c" },
@@ -479,7 +490,6 @@ return {
             ---------------------------------------------------------------
             { "<C-u>", desc = "Half-page up (smooth)", icon = "󰒭" },
             { "<C-d>", desc = "Half-page down (smooth)", icon = "󰒮" },
-            { "<C-b>", desc = "Page up (smooth)", icon = "󰁌" },
             { "<C-f>", desc = "Page down (smooth)", icon = "󰁎" },
             { "<C-y>", desc = "Line up (smooth)", icon = "󰁝" },
             { "<C-e>", desc = "Line down (smooth)", icon = "󰁅" },

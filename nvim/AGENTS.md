@@ -17,12 +17,12 @@ nvim/
     lua/config/
       keymaps.lua            # Global keybindings
       options.lua            # Editor options
-      autocmds.lua           # Autocommands
+      lazy.lua               # lazy.nvim bootstrap
       lsp/                   # LSP configuration (see lsp/AGENTS.md)
         init.lua             # LSP orchestrator
         servers/             # Per-server configs (jsonls, yamlls, gopls, ...)
-        none-ls/             # Null-ls formatters, linters, code actions
-      plugins/               # Plugin specs (one per file)
+      none-ls/               # Null-ls formatters, linters, code actions, hovers
+    lua/plugins/             # Plugin specs (one per file)
 ```
 
 ## Related Instruction Files

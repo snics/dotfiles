@@ -115,7 +115,7 @@ memory) but it is unusable on macOS + Ghostty — the text-input system claims
 | Shortcut | Action |
 |----------|--------|
 | `Ctrl+h/j/k/l` | Navigate panes (herdr-aware, works across NeoVim splits via herdr-splits.nvim) |
-| `Alt+h/j/k/l` | Resize panes (also across the NeoVim/herdr boundary) — on macOS this is the **left** Option key (`macos-option-as-alt = left`); right Option stays compose for ö/ä/ü, `{[]}` etc. |
+| `Alt+Shift+h/j/k/l` | Resize panes (also across the NeoVim/herdr boundary) — on macOS this is the **left** Option key (`macos-option-as-alt = left`); right Option stays compose for ö/ä/ü, `{[]}` etc. Plain `Alt+j/k` stays free for NeoVim move-line. |
 
 ### Panes & Tabs
 
@@ -196,9 +196,9 @@ create with directory picker · `s` stop · `d` delete · `/` search · `q` quit
 | `Cmd+o` / `Cmd+Shift+o` | File viewer (overview of agent changes) in split / own tab |
 | `Cmd+p` | Project picker (sessionizer) — fuzzy over all repos under ~/Projects, opens with the default layout |
 | `Prefix + .` | Quick actions — fuzzy one-off scripts in the current dir |
-| `Prefix + u` | URL picker (fzf over pane URLs) |
+| `Prefix + u` / `Prefix + Shift+u` | Open a visible URL / file path (termscope, Television popup) |
 | `Prefix + y` | Copy-hints (tiny-fingers) — yank a visible token to the clipboard |
-| `Prefix + $` | Token spend dashboard (Pi/OpenCode sessions) |
+| `Prefix + Shift+l` | Manage plugins (herdr-lazy — declarative bundle in `herdr/.config/herdr/plugins.list`, `update herdr` / `just herdr-plugins-update` from the shell) |
 
 ---
 
@@ -212,7 +212,7 @@ Leader: **`Space`**
 |----------|--------|
 | `Ctrl+h/j/k/l` | Navigate panes (herdr-aware via herdr-splits.nvim) |
 | `Ctrl+Arrow` | Resize window (2px) |
-| `Alt+h/j/k/l` | Resize across NeoVim/herdr boundary (herdr panes only) |
+| `Alt+Shift+h/j/k/l` | Resize across NeoVim/herdr boundary (herdr panes only) |
 | `Space \` | Toggle herdr agent float (visual: send selection to agent) |
 | `Space ah` / `aH` | herdr agent picker / dashboard (herd.nvim) |
 
@@ -297,11 +297,10 @@ Leader: **`Space`**
 
 | Shortcut | Action |
 |----------|--------|
-| `Space aC` | Claude Code Terminal (claudecode.nvim, floating window) |
-| `Space ac` | Chat with Claude Code (ACP, via codecompanion) |
-| `Space ag` | Chat with Gemini (ACP, via codecompanion) |
-| `Space ax` | Chat with Codex (ACP, via codecompanion) |
-| `Space ao` | Chat with OpenCode (ACP, via codecompanion) |
+| `Space aC` | Claude Code bridge status (claudecode.nvim; claude runs in a herdr pane, connects via `/ide`) |
+| `Space as` | Send selection to Claude Code (visual) |
+| `Space ay` / `an` | Accept / deny Claude Code diff |
+| `Space ax` | Chat with Codex (ACP via codex-acp, ChatGPT auth, via codecompanion) |
 | `Space aw` | Toggle Windsurf Virtual Text |
 | `Space aa` | Toggle chat (CodeCompanion) |
 | `Space ap` | Action palette |
@@ -311,7 +310,7 @@ Leader: **`Space`**
 
 | Shortcut | Action |
 |----------|--------|
-| `s` / `S` | Flash jump / treesitter |
+| `s` / `S` | Flash jump / treesitter (visual `S` = add surround) |
 | `Alt+j` / `Alt+k` | Move line(s) down / up |
 | `jj` / `jk` | Exit insert mode |
 | `Ctrl+u` / `Ctrl+d` | Half-page up / down (smooth) |
