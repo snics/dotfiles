@@ -1,0 +1,22 @@
+# herdr plugin bundle — managed by herdr-lazy (natori-hrj/herdr-lazy).
+# One owner/repo per line; pin with @tag or @commit. HERDR_LAZY_LIST (zsh/.zprofile)
+# points here, so plugins.lock is written next to this file and both are versioned.
+# Sync:   herdr-lazy sync --prune   (install missing, remove unlisted)
+# Update: herdr-lazy update         (all unpinned plugins) — or `update herdr`
+
+# The plugin manager itself
+natori-hrj/herdr-lazy
+
+# Workspace & navigation
+cloudmanic/herdr-plus
+andrewchng/herdr-sessionizer
+lmilojevicc/herdr-splits.nvim
+
+# Code review
+persiyanov/herdr-reviewr
+smarzban/herdr-file-viewer
+
+# Quality of life
+wyattjoh/herdr-plugin-renamer
+hotchpotch/herdr-tiny-fingers
+iurysza/termscope

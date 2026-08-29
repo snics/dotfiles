@@ -73,3 +73,6 @@ brew/Brewfile.dump
 # herdr: runtime files (sockets/logs) in case stow ever folds ~/.config/herdr
 herdr/.config/herdr/*.sock
 herdr/.config/herdr/*.log
+
+# herdr-lazy lockfile backups (plugins.lock.1-3) — only the active lock is versioned
+herdr/.config/herdr/plugins.lock.[0-9]

@@ -168,23 +168,28 @@ width = "90%"
 height = "90%"
 description = "tuicr branch review"
 
-# Live token spend dashboard (Davidcreador/herdr-token-dashboard).
-# Note: currently reads Pi and OpenCode sessions only.
-[[keys.command]]
-key = "prefix+$"
-type = "plugin_action"
-command = "dave.token-dashboard.open-dashboard"
-description = "Token spend dashboard"
-
-# u = URL: scan the panes for URLs, pick one with fzf.
-# Bind the PANE entrypoint (url-picker), NOT the pick-url ACTION: the action runs
-# fzf headless (no visible terminal) and just hangs. Opening the plugin's overlay
-# pane gives fzf a real terminal. See x0d7x/herdr-fzf-url README.
+# u = URL: scan the focused pane for visible URLs, pick one in a Television
+# popup (iurysza/termscope — replaced the abandoned x0d7x/herdr-fzf-url).
 [[keys.command]]
 key = "prefix+u"
-type = "shell"
-command = "herdr plugin pane open --plugin url.fzf-picker --entrypoint url-picker"
-description = "Pick a URL from the panes (fzf)"
+type = "plugin_action"
+command = "termscope.open-links"
+description = "Open a visible URL (termscope)"
+
+# shift+u = files: same scan, but for visible file paths — opens in a split.
+[[keys.command]]
+key = "prefix+shift+u"
+type = "plugin_action"
+command = "termscope.open"
+description = "Open a visible file path (termscope)"
+
+# L = lazy: herdr-lazy manage pane (declarative plugin bundle — plugins.list/
+# plugins.lock live in the dotfiles repo via HERDR_LAZY_LIST in zsh/.zprofile).
+[[keys.command]]
+key = "prefix+shift+l"
+type = "plugin_action"
+command = "herdr-lazy.manage"
+description = "Manage plugins (herdr-lazy)"
 
 # g = git on the cmd layer (consistent with cmd+r reviewr); the only lazygit
 # binding — prefix+g is the built-in goto fuzzy picker. Plain popup instead

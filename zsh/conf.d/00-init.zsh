@@ -4,6 +4,11 @@
 # Editor
 export EDITOR="nvim"
 
+# herdr-lazy declarative plugin list (primary export in zsh/.zprofile so the
+# herdr server inherits it; repeated here so non-login interactive shells get
+# it too).
+export HERDR_LAZY_LIST="${HERDR_LAZY_LIST:-$HOME/.dotfiles/herdr/.config/herdr/plugins.list}"
+
 # True when this shell executes on behalf of an AI coding agent. One marker
 # per tool (verified against installed binaries/source 2026-07):
 #   CLAUDECODE / AI_AGENT        Claude Code (snapshots interactive zsh state!)
