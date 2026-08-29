@@ -25,7 +25,7 @@ return {
                 "pkl", "powershell", "python", "regex", "rust", "scss", "sql",
                 "toml", "tsx", "typescript", "yaml",
                 -- Utility parsers
-                "comment", "tmux",
+                "comment",
                 -- Git-related parsers
                 "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore",
             }
