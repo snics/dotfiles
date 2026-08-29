@@ -3,6 +3,10 @@
 # Added by Toolbox App
 export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
 
+# >>> Codex installer >>>
+export PATH="/Users/nico/.local/bin:$PATH"
+# <<< Codex installer <<<
+
 # herdr-lazy: declarative plugin list lives in the dotfiles repo (stowed copy at
 # ~/.config/herdr/plugins.list); the lockfile is written next to it, so both are
 # versioned. Set in .zprofile so the herdr server (launched from Ghostty's login
