@@ -95,10 +95,11 @@ agents = "cmd+shift"
 # hidden ~/.herdr/worktrees default) — reachable for zoxide/yazi/fzf.
 directory = "~/Projects/_worktrees"
 
-# Seamless Ctrl+h/j/k/l navigation and Alt+h/j/k/l resizing between herdr
-# panes and NeoVim splits. Plugin: lmilojevicc/herdr-splits.nvim (nvim side
-# lives in nvim/lua/plugins/herdr-splits.lua). Alt chords require
-# macos-option-as-alt in Ghostty.
+# Seamless Ctrl+h/j/k/l navigation and Alt+Shift+h/j/k/l resizing between
+# herdr panes and NeoVim splits. Plugin: lmilojevicc/herdr-splits.nvim (nvim
+# side lives in nvim/lua/plugins/herdr-splits.lua). Alt chords require
+# macos-option-as-alt in Ghostty. Resize sits on Alt+Shift so plain Alt+j/k
+# stays free for NeoVim's move-line mappings.
 [[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"
@@ -124,25 +125,25 @@ command = "herdr-splits.nav-right"
 description = "Navigate pane right (Neovim-aware)"
 
 [[keys.command]]
-key = "alt+h"
+key = "alt+shift+h"
 type = "plugin_action"
 command = "herdr-splits.resize-left"
 description = "Resize pane left"
 
 [[keys.command]]
-key = "alt+j"
+key = "alt+shift+j"
 type = "plugin_action"
 command = "herdr-splits.resize-down"
 description = "Resize pane down"
 
 [[keys.command]]
-key = "alt+k"
+key = "alt+shift+k"
 type = "plugin_action"
 command = "herdr-splits.resize-up"
 description = "Resize pane up"
 
 [[keys.command]]
-key = "alt+l"
+key = "alt+shift+l"
 type = "plugin_action"
 command = "herdr-splits.resize-right"
 description = "Resize pane right"

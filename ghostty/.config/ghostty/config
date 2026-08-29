@@ -46,9 +46,9 @@ command = /bin/zsh -lic "exec ~/.local/bin/herdr-launch"
 # normal title bar. "hidden" removed those entirely, which is disorienting.
 macos-titlebar-style = native
 
-# Left Option as Alt so left-Option+h/j/k/l (herdr pane resize) reaches herdr
-# as a comfortable two-hand chord — left thumb on Option, right hand on hjkl,
-# mirroring the ctrl+h/j/k/l navigation. Right Option stays a compose key so
+# Left Option as Alt so left-Option+Shift+h/j/k/l (herdr pane resize) and
+# Option+j/k (NeoVim move-line) reach the terminal as Alt chords — left thumb
+# on Option, right hand on hjkl, mirroring the ctrl+h/j/k/l navigation. Right Option stays a compose key so
 # macOS special characters still work (ö/ä/ü via Option+u, and { [ ] } | @ \ ~
 # on the German/US layout).
 macos-option-as-alt = left
