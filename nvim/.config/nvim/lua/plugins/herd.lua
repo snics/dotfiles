@@ -7,9 +7,9 @@ return {
   "MomePP/herd.nvim",
   event = "VeryLazy",
   opts = {
+    -- Only the two agents actually in use: Claude Code and Codex
     tools = {
       claude = { cmd = { "claude" } },
-      opencode = { cmd = { "opencode" } },
       codex = { cmd = { "codex" } },
     },
     keys = {
