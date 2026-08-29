@@ -35,7 +35,8 @@ return {
     keys = {
         -- Core navigation
         { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end,       desc = "Flash" },
-        { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+        -- No "x" mode: visual S belongs to nvim-surround (add surround to selection)
+        { "S", mode = { "n", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
 
         -- Enhanced f/F/t/T — custom jump() calls that bypass modes.char for max_length=1 behavior
         {
