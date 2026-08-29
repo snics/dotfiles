@@ -226,9 +226,17 @@ rust:
 asdf:
     source {{ DOTFILES }}/asdf/plugins.sh
 
-# Install herdr plugins & agent integrations
+# Sync herdr plugins to plugins.list (herdr-lazy) & agent integrations
 herdr-plugins:
-    source {{ DOTFILES }}/_install/herdr-plugins.sh
+    bash {{ DOTFILES }}/_install/herdr-plugins.sh
+
+# Update all unpinned herdr plugins (herdr-lazy update)
+herdr-plugins-update:
+    bash {{ DOTFILES }}/_install/herdr-plugins.sh --update
+
+# Restore herdr plugins to the exact commits in plugins.lock
+herdr-plugins-restore:
+    bash {{ DOTFILES }}/_install/herdr-plugins.sh --restore
 
 # ── Validation ──────────────────────────────────────────
 

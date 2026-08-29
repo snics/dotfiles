@@ -264,6 +264,22 @@ _update_krew() {
   _update_success "Krew"
 }
 
+_update_herdr() {
+  if ! command -v herdr &>/dev/null; then
+    _update_not_found "herdr Plugins"
+    return
+  fi
+  _update_header "🐑" "herdr Plugins"
+  echo "Syncing plugin bundle (plugins.list)..."
+  herdr-lazy sync --prune
+  echo "Updating all unpinned plugins..."
+  herdr-lazy update
+  echo "Reloading herdr server config..."
+  herdr server reload-config &>/dev/null || true
+  echo "Note: updated plugins with running services need a herdr restart to pick them up."
+  _update_success "herdr Plugins"
+}
+
 _update_zsh() {
   _update_header "🐚" "Zsh/Zim"
   echo "Updating Zim modules..."
@@ -284,6 +300,7 @@ _update_run() {
     rust)   _update_rust ;;
     nvim)   _update_nvim ;;
     tmux)   _update_tmux ;;
+    herdr)  _update_herdr ;;
     krew)   _update_krew ;;
     zsh)    _update_zsh ;;
     *)      echo "Unknown target: $1. Run 'update help' for available targets." ;;
@@ -305,6 +322,7 @@ _UPDATE_TARGETS+=(
   "rust:🦀:Rust"
   "nvim:📝:Neovim Plugins"
   "tmux:🖥️:Tmux Plugins"
+  "herdr:🐑:herdr Plugins"
   "krew:☸️:Krew"
   "zsh:🐚:Zsh/Zim"
 )
@@ -332,6 +350,7 @@ _update_help() {
   echo "  rust         Rust toolchain (rustup)"
   echo "  nvim         Neovim plugins (lazy.nvim)"
   echo "  tmux         Tmux plugins (TPM)"
+  echo "  herdr        herdr plugins (herdr-lazy bundle)"
   echo "  krew         kubectl plugins (krew)"
   echo "  zsh          Zsh/Zim framework + plugins"
   echo ""
@@ -349,6 +368,7 @@ _update_help() {
   command -v rustup &>/dev/null && echo "  rustup       $(rustup --version 2>/dev/null | head -1)"
   command -v nvim &>/dev/null   && echo "  nvim         $(nvim --version 2>/dev/null | head -1)"
   command -v tmux &>/dev/null   && echo "  tmux         $(tmux -V 2>/dev/null)"
+  command -v herdr &>/dev/null  && echo "  herdr        $(herdr --version 2>/dev/null | head -1)"
   command -v kubectl &>/dev/null && echo "  kubectl      $(kubectl version --client --short 2>/dev/null || kubectl version --client 2>/dev/null | head -1)"
   command -v zimfw &>/dev/null  && echo "  zimfw        $(zimfw version 2>/dev/null)"
   echo ""
