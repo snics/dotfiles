@@ -108,7 +108,12 @@ done
 # Run the tool.
 case "$tool" in
   oxfmt)
-    oxfmt "${fully_staged[@]}"
+    # --no-error-on-unmatched-pattern: when every staged file falls under
+    # the repo's own ignorePatterns (e.g. helm/ templates), oxfmt would
+    # otherwise exit 1 with "Expected at least one target file" and block
+    # a perfectly fine commit. Matches how repos invoke oxfmt in their
+    # own lefthook format jobs.
+    oxfmt --no-error-on-unmatched-pattern "${fully_staged[@]}"
     git add -- "${fully_staged[@]}"
     ;;
   dprint)
