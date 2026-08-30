@@ -15,6 +15,7 @@ lmilojevicc/herdr-splits.nvim
 # Code review
 persiyanov/herdr-reviewr
 smarzban/herdr-file-viewer
+jhochenbaum/herdr-hunk-diff
 
 # Quality of life
 wyattjoh/herdr-plugin-renamer

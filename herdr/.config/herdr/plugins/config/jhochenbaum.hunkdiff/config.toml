@@ -1,0 +1,27 @@
+# herdr-hunk-diff — hunk review panes + comment round-trip to the agent.
+# Docs: https://github.com/jhochenbaum/herdr-hunk-diff
+# Hunk itself (theme, layout, keybindings) is configured in
+# hunk/.config/hunk/config.toml — this file only shapes the herdr side.
+
+[review]
+# Explicit target instead of "auto": upstream #15 reports review:branch
+# diffing against origin/main instead of the real base — the same
+# base-detection trap that hit reviewr. The working tree is unambiguous;
+# switch to "branch" (or "auto") once #15 is resolved.
+default_target = "working"
+
+# Refresh the worktree's existing review pane instead of stacking new ones.
+reuse_pane = true
+
+# Split pane, not a popup: upstream excludes herdr's modal popup placement
+# because popups return no pane id (needed for reuse/close/reload).
+placement = "split"
+
+# Manual opening only — the event hooks still record the agent↔worktree
+# association, so send-review knows where to deliver comments.
+auto_open = false
+
+[hunk]
+# Prefer the brew-installed hunk (0.20.1) over the plugin's bundled 0.19.0,
+# which predates the session-reload Git flag injection fix (0.19.2/0.20.1).
+bin = "/opt/homebrew/bin/hunk"

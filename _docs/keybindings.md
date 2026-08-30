@@ -193,6 +193,10 @@ create with directory picker · `s` stop · `d` delete · `/` search · `q` quit
 | Shortcut | Action |
 |----------|--------|
 | `Cmd+r` | Toggle reviewr code-review sidebar (auto-opens for new worktrees) — deep pass: `Cmd+Shift+r` tuicr popup |
+| `Prefix + Shift+h` | Hunk review of the worktree in a split pane (herdr-hunk-diff) — comments round-trip to the agent |
+| `Prefix + Shift+c` | Hunk review of the last commit |
+| `Prefix + Shift+i` | Hunk review of staged changes (i = index) |
+| `Prefix + Shift+m` | Send collected Hunk comments to the agent (m = message) |
 | `Cmd+o` / `Cmd+Shift+o` | File viewer (overview of agent changes) in split / own tab |
 | `Cmd+p` | Project picker (sessionizer) — fuzzy over all repos under ~/Projects, opens with the default layout |
 | `Prefix + .` | Quick actions — fuzzy one-off scripts in the current dir |
