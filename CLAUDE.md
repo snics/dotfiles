@@ -108,6 +108,35 @@ automatically be included in the next Docker build. To exclude a formula from
 Docker (macOS-only, hardware-dependent, or too large), add it to
 `brew/docker-exclude`.
 
+## Cargo Tool Management
+
+Rust crates are inventoried in two places, and the split is a rule, not a
+preference:
+
+- **A Homebrew formula exists** → the crate belongs in `brew/Brewfile.*`
+  (currently `cargo-binstall`, `cargo-edit`, `cargo-nextest`, `cargo-watch`,
+  `cargo-zigbuild` in `Brewfile.20-dev-tools`). Only then can
+  `brew bundle cleanup` account for it.
+- **No formula exists** → declare it in `_install/cargo-tools.list`, one crate
+  per line, `crate@1.2.3` to pin. `_install/cargo-tools.sh` installs from that
+  manifest via `cargo binstall` (prebuilt binary) and falls back to
+  `cargo install` when no artifact matches.
+
+Always run `brew info <crate>` before adding to the list — the manifest is for
+the remainder, not the default.
+
+`_install/rust.sh` installs **no** cargo tools; it only sets up rustup,
+toolchains, and components. That separation exists because the old imperative
+`cargo install` lines in it silently drifted — none of the three tools they
+claimed to install were ever present.
+
+| Command | Description |
+|---------|-------------|
+| `just cargo-tools` | Install missing crates from the manifest |
+| `just cargo-tools-update` | Upgrade every unpinned crate |
+| `just cargo-dump` | List installed crates for drift comparison |
+| `update rust` | rustup update + cargo-tools update in one go |
+
 ## Keybindings Cheatsheet Sync Rule
 
 A unified keybindings reference lives at `_docs/keybindings.md`. When adding,

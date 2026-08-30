@@ -275,6 +275,7 @@ This dotfiles repository uses the following structure:
 ├── _docs/             # Documentation and screenshots
 ├── _images/           # Docker build files (nvim, devenv, web-terminal, web-desktop)
 ├── _install/          # Setup scripts for optional tools (golang, rust, claude, obsidian)
+│                      #   + cargo-tools.list: crates with no Homebrew formula
 ├── _lib/              # Shared shell libraries (platform detection)
 ├── _macOS/            # macOS system settings and dock scripts
 ├── _planning/         # Project planning and roadmap
