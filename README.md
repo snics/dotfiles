@@ -95,6 +95,10 @@ This setup works perfectly for developers and software architects who work with 
   - Real-time cluster monitoring
   - Pod and container management
   - Log viewing and resource editing
+- 🔍 [hunk](https://github.com/modem-dev/hunk) - Review-first terminal diff viewer
+  - Whole changeset as one scrollable stream
+  - Agent comments via local session daemon
+  - Git, Jujutsu, and Sapling support
 - 🦎 [lazygit](https://github.com/jesseduffield/lazygit) - Simple terminal UI for git
   - Visual git workflow
   - 14 Catppuccin color variants included
@@ -276,6 +280,7 @@ This dotfiles repository uses the following structure:
 ├── cursor/            # Cursor editor config
 ├── ghostty/           # Ghostty terminal configuration
 ├── git/               # Git configuration and themes
+├── hunk/              # Hunk diff-viewer config
 ├── k9s/               # Kubernetes CLI configuration
 ├── lazygit/           # Lazygit themes and settings
 ├── nvim/              # Neovim configuration

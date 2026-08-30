@@ -49,6 +49,7 @@
     lazydocker    # Docker TUI
     jjui          # Jujutsu TUI
     tuicr         # Code-review TUI
+    hunk          # Diff-review TUI
 
     # Utilities
     chafa         # Terminal image renderer

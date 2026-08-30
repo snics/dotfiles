@@ -489,6 +489,49 @@ Scoped to Flux resources ([derailed/k9s flux.yaml](https://github.com/derailed/k
 
 ---
 
+## Hunk
+
+Review-first diff viewer (`hunk diff` / `hunk show`, `git hd` / `git hs`).
+Defaults plus three custom bindings; remappable via `[keybindings]` in
+`hunk/.config/hunk/config.toml`. Mouse works everywhere in parallel.
+
+### Navigation
+
+| Shortcut | Action |
+|----------|--------|
+| `j` / `k` | Scroll one row |
+| `d` / `u` | Half page down/up |
+| `g` / `G` | Jump to start / end |
+| `[` / `]` | Previous / next hunk |
+| `{` / `}` | Previous / next annotated hunk |
+| `(` / `)` | Previous / next annotated file (custom) |
+| `,` / `.` | Previous / next file |
+| `Z` | Center current line, vim `zz` (custom) |
+| `/` | Focus file filter |
+| `Tab` | Switch focus files ↔ filter |
+
+### View
+
+| Shortcut | Action |
+|----------|--------|
+| `0` / `1` / `2` | Auto / split / stack layout |
+| `s` | Toggle files pane |
+| `a` | Toggle agent notes |
+| `l` / `w` / `m` / `M` | Line numbers / wrap / hunk headers / menu bar |
+| `t` | Theme selector |
+| `z` | Expand/collapse selected context |
+
+### Actions
+
+| Shortcut | Action |
+|----------|--------|
+| `c` | Add review note |
+| `e` | Open selected file in `$EDITOR` (nvim jumps to line) |
+| `r` | Refresh review |
+| `?` / `q` | Help / quit |
+
+---
+
 ## Cross-Tool Consistency
 
 These bindings use the same key across all layers. Letters map to **function**,

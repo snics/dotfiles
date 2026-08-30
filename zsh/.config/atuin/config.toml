@@ -222,6 +222,7 @@ ignored_commands = [
   "jjui",
   "dive",
   "tuicr",
+  "hunk",
   # AI agents (interactive sessions)
   "claude",
   "opencode",
