@@ -280,6 +280,19 @@ _update_herdr() {
   _update_success "herdr Plugins"
 }
 
+_update_skills() {
+  if ! command -v npx &>/dev/null; then
+    _update_not_found "Agent Skills"
+    return
+  fi
+  _update_header "🧩" "Agent Skills"
+  echo "Updating installed agent skills (skills.sh CLI)..."
+  # Non-interactive: updates every tracked skill (global + project scopes);
+  # upstream-deleted skills are reported but never auto-removed.
+  npx -y skills update
+  _update_success "Agent Skills"
+}
+
 _update_zsh() {
   _update_header "🐚" "Zsh/Zim"
   echo "Updating Zim modules..."
@@ -301,6 +314,7 @@ _update_run() {
     nvim)   _update_nvim ;;
     tmux)   _update_tmux ;;
     herdr)  _update_herdr ;;
+    skills) _update_skills ;;
     krew)   _update_krew ;;
     zsh)    _update_zsh ;;
     *)      echo "Unknown target: $1. Run 'update help' for available targets." ;;
@@ -323,6 +337,7 @@ _UPDATE_TARGETS+=(
   "nvim:📝:Neovim Plugins"
   "tmux:🖥️:Tmux Plugins"
   "herdr:🐑:herdr Plugins"
+  "skills:🧩:Agent Skills"
   "krew:☸️:Krew"
   "zsh:🐚:Zsh/Zim"
 )
@@ -351,6 +366,7 @@ _update_help() {
   echo "  nvim         Neovim plugins (lazy.nvim)"
   echo "  tmux         Tmux plugins (TPM)"
   echo "  herdr        herdr plugins (herdr-lazy bundle)"
+  echo "  skills       Agent skills for Claude/Codex (skills.sh CLI)"
   echo "  krew         kubectl plugins (krew)"
   echo "  zsh          Zsh/Zim framework + plugins"
   echo ""
@@ -369,6 +385,7 @@ _update_help() {
   command -v nvim &>/dev/null   && echo "  nvim         $(nvim --version 2>/dev/null | head -1)"
   command -v tmux &>/dev/null   && echo "  tmux         $(tmux -V 2>/dev/null)"
   command -v herdr &>/dev/null  && echo "  herdr        $(herdr --version 2>/dev/null | head -1)"
+  command -v npx &>/dev/null    && echo "  skills       $(npx -y skills --version 2>/dev/null | head -1)"
   command -v kubectl &>/dev/null && echo "  kubectl      $(kubectl version --client --short 2>/dev/null || kubectl version --client 2>/dev/null | head -1)"
   command -v zimfw &>/dev/null  && echo "  zimfw        $(zimfw version 2>/dev/null)"
   echo ""

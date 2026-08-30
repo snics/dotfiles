@@ -165,5 +165,9 @@
   "skipWorkflowUsageWarning": true,
   "syntaxHighlightingDisabled": false,
   "theme": "dark-ansi",
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "statusLine": {
+    "type": "command",
+    "command": "wt list statusline --format=claude-code"
+  }
 }
