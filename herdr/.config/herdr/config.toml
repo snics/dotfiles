@@ -203,6 +203,16 @@ type = "plugin_action"
 command = "jhochenbaum.hunkdiff.review:staged"
 description = "hunk: review staged changes"
 
+# b = branch: everything on this branch vs. its base — "the whole session"
+# in the worktree workflow. Caveat: upstream #15 reports the base always
+# resolving to origin/main; on this setup that is usually the wanted base
+# anyway. Revisit once #15 is settled.
+[[keys.command]]
+key = "prefix+shift+b"
+type = "plugin_action"
+command = "jhochenbaum.hunkdiff.review:branch"
+description = "hunk: review branch vs base"
+
 # u = URL: scan the focused pane for visible URLs, pick one in a Television
 # popup (iurysza/termscope — replaced the abandoned x0d7x/herdr-fzf-url).
 [[keys.command]]

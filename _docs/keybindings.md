@@ -196,6 +196,7 @@ create with directory picker · `s` stop · `d` delete · `/` search · `q` quit
 | `Prefix + Shift+h` | Hunk review of the worktree in a split pane (herdr-hunk-diff) — comments round-trip to the agent |
 | `Prefix + Shift+c` | Hunk review of the last commit |
 | `Prefix + Shift+i` | Hunk review of staged changes (i = index) |
+| `Prefix + Shift+b` | Hunk review of the branch vs its base (b = branch; upstream #15 may pin the base to origin/main) |
 | `Prefix + Shift+m` | Send collected Hunk comments to the agent (m = message) |
 | `Cmd+o` / `Cmd+Shift+o` | File viewer (overview of agent changes) in split / own tab |
 | `Cmd+p` | Project picker (sessionizer) — fuzzy over all repos under ~/Projects, opens with the default layout |
