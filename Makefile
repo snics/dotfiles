@@ -15,7 +15,7 @@ ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
 .PHONY: all install link link-cli link-gui unlink relink update macos dock project-folders \
         golang rust asdf herdr-plugins herdr-plugins-update herdr-plugins-restore check lint test test-symlinks test-configs help \
-        zsh git nvim ghostty tmux lazygit k9s tuicr hunk herdr zed opencode claude cursor obsidian \
+        zsh git nvim ghostty tmux lazygit k9s tuicr hunk hunk-skill herdr zed opencode claude cursor obsidian \
         brew-gen brew-install brew-tap brew-trust brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
         docker-build docker-build-nvim docker-build-devenv docker-build-web-terminal docker-build-web-desktop \
@@ -93,6 +93,9 @@ tuicr: ## Link tuicr config
 
 hunk: ## Link hunk config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" hunk
+
+hunk-skill: ## Register Hunk's hunk-review skill for Claude Code and Codex
+	bash $(DOTFILES)/_install/hunk-skill.sh
 
 herdr: ## Link herdr config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" herdr

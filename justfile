@@ -107,6 +107,10 @@ tuicr:
 hunk:
     @cd {{ DOTFILES }} && stow --restow -t "$HOME" hunk
 
+# Register Hunk's hunk-review skill for Claude Code and Codex
+hunk-skill:
+    bash {{ DOTFILES }}/_install/hunk-skill.sh
+
 # Link herdr config
 herdr:
     @cd {{ DOTFILES }} && stow --restow -t "$HOME" herdr
