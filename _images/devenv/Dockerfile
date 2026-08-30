@@ -101,6 +101,7 @@ RUN --mount=type=bind,source=zsh,target=/tmp/src/zsh \
     --mount=type=bind,source=git,target=/tmp/src/git \
     --mount=type=bind,source=lazygit,target=/tmp/src/lazygit \
     --mount=type=bind,source=k9s,target=/tmp/src/k9s \
+    --mount=type=bind,source=tuicr,target=/tmp/src/tuicr \
     mkdir -p /home/developer/.dotfiles/zsh/conf.d /home/developer/.dotfiles/zsh/themes \
     /home/developer/.dotfiles/zsh/functions /home/developer/.dotfiles/git \
     /home/developer/.config/zim /home/developer/.config/zim-modules \
@@ -108,7 +109,7 @@ RUN --mount=type=bind,source=zsh,target=/tmp/src/zsh \
     /home/developer/.config/btop /home/developer/.config/atuin \
     /home/developer/.config/yazi /home/developer/.config/tmux \
     /home/developer/.config/lazygit /home/developer/.config/k9s \
-    /home/developer/.config/git \
+    /home/developer/.config/tuicr /home/developer/.config/git \
     && cp /tmp/src/zsh/.zshrc /home/developer/.zshrc \
     && cp /tmp/src/zsh/.config/zim/.zimrc /home/developer/.config/zim/.zimrc \
     && cp -r /tmp/src/zsh/conf.d/. /home/developer/.dotfiles/zsh/conf.d/ \
@@ -127,6 +128,7 @@ RUN --mount=type=bind,source=zsh,target=/tmp/src/zsh \
     && cp /tmp/src/git/.config/git/ignore /home/developer/.config/git/ignore \
     && cp -r /tmp/src/lazygit/.config/lazygit/. /home/developer/.config/lazygit/ \
     && cp -r /tmp/src/k9s/.config/k9s/. /home/developer/.config/k9s/ \
+    && cp -r /tmp/src/tuicr/.config/tuicr/. /home/developer/.config/tuicr/ \
     && chown -R developer:developer /home/developer/.dotfiles /home/developer/.config /home/developer/.zshrc /home/developer/.gitconfig
 
 USER developer

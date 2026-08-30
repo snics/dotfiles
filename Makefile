@@ -9,13 +9,13 @@ SHELL := /bin/bash
 DOTFILES := $(HOME)/.dotfiles
 
 # Stow package lists (CLI = universal, GUI = macOS only)
-CLI_PACKAGES := zsh git nvim tmux lazygit k9s herdr opencode claude
+CLI_PACKAGES := zsh git nvim tmux lazygit k9s tuicr herdr opencode claude
 GUI_PACKAGES := ghostty zed cursor obsidian
 ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
 .PHONY: all install link link-cli link-gui unlink relink update macos dock project-folders \
         golang rust asdf herdr-plugins herdr-plugins-update herdr-plugins-restore check lint test test-symlinks test-configs help \
-        zsh git nvim ghostty tmux lazygit k9s herdr zed opencode claude cursor obsidian \
+        zsh git nvim ghostty tmux lazygit k9s tuicr herdr zed opencode claude cursor obsidian \
         brew-gen brew-install brew-tap brew-trust brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
         docker-build docker-build-nvim docker-build-devenv docker-build-web-terminal docker-build-web-desktop \
@@ -87,6 +87,9 @@ lazygit: ## Link lazygit config
 
 k9s: ## Link k9s config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" k9s
+
+tuicr: ## Link tuicr config
+	@cd $(DOTFILES) && stow --restow -t "$(HOME)" tuicr
 
 herdr: ## Link herdr config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" herdr
