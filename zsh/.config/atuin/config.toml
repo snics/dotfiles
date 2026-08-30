@@ -167,6 +167,7 @@ common_subcommands = [
   "gh",
   "glab",
   "jj",
+  "wt",
   "but",
   "dlv",
   "dprint",

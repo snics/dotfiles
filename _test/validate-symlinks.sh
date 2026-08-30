@@ -3,7 +3,8 @@
 set -euo pipefail
 
 DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
-CLI_PACKAGES="zsh git nvim tmux lazygit k9s opencode claude"
+# Keep in sync with CLI_PACKAGES in justfile / Makefile.
+CLI_PACKAGES="zsh git nvim tmux lazygit k9s tuicr hunk worktrunk herdr opencode claude"
 GUI_PACKAGES="ghostty zed cursor obsidian"
 ALL_PACKAGES="$CLI_PACKAGES $GUI_PACKAGES"
 

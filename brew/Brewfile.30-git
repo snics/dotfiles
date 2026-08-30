@@ -9,3 +9,4 @@ brew "hunk" # Review-first terminal diff viewer for agent-authored changesets. [
 brew "jj" # Git-compatible version control system with automatic rebasing, undo, and conflict-as-data. [Jujutsu](https://github.com/jj-vcs/jj)
 brew "jjui" # TUI for jujutsu (jj) — log, diff, rebase, split, absorb, bookmarks. [jjui](https://github.com/idursun/jjui)
 brew "lazygit" # Simple terminal UI for git commands. [Lazygit](https://github.com/jesseduffield/lazygit)
+brew "worktrunk" # Git worktree manager (wt) for parallel AI-agent workflows. [Worktrunk](https://github.com/max-sixty/worktrunk)

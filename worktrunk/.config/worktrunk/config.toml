@@ -1,0 +1,105 @@
+# Worktrunk (wt) user configuration — stowed from ~/.dotfiles/worktrunk/
+# Docs: https://worktrunk.dev/config/
+
+# Central, visible worktree tree — one place for all repos, outside every
+# repo working tree, and inside ~/Projects so fzf/yazi/nvim project pickers
+# cover it.
+#
+# {{ repo }} is the on-disk directory name, deliberately chosen over
+# {{ remote_repo }}: the latter collides in practice. DevNinjas.io-next and
+# devninjas-old-seite both resolve to "www.devninjas.io" because worktrunk's
+# primary-remote heuristic picks the GitHub mirror over origin, which is also
+# the old repo's origin. On-disk names stay unique and are under our control.
+# The only repo whose directory name starts with a dot gets an override below.
+worktree-path = "~/Projects/_worktrees/{{ repo }}/{{ branch | sanitize }}"
+
+# Shell integration lives in zsh/conf.d (dotfiles-managed), not ~/.zshrc —
+# suppress the first-run installer prompt.
+skip-shell-integration-prompt = true
+
+[commit.generation]
+# Claude Haiku one-shot over subscription auth. The env -u guard is
+# load-bearing: in headless mode (-p) a present ANTHROPIC_API_KEY is ALWAYS
+# used and bills the API per token; --safe-mode does not protect against
+# that. The keys are no longer exported globally, but the guard survives
+# any future env regression.
+command = "env -u ANTHROPIC_API_KEY -u ANTHROPIC_AUTH_TOKEN MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --safe-mode --setting-sources='user' --system-prompt=''"
+# --safe-mode reads no CLAUDE.md/AGENTS.md, so the house style has to be
+# stated here. Deliberately generic: repo-specific rules belong in that
+# repo's [projects] entry, not in every foreign repo's commits.
+template-append = """
+- Match the repo's existing prefix convention exactly (gitmoji + conventional commits where recent commits use it)
+"""
+
+[list]
+# Envelope JSON output (schema 2); leaving it unset emits deprecated v1
+# with a warning.
+json-schema = 2
+# LLM branch summaries in `wt list --full` — one Haiku call per branch,
+# cached in .git until the branch diff changes (measured: ~6 s cold, 0.1 s
+# warm). Plain `wt list` and the statusline never trigger it.
+summary = true
+
+[list.custom-columns.Task]
+# "What is this branch actually doing?" — fed by `git branch --edit-description`.
+# Empty cells drop out automatically, so it costs nothing when unused.
+template = "{{ git.branch.description | lines | first }}"
+width = 40
+
+[switch.picker]
+# In the pager process COLUMNS is the preview pane width (~40), not the
+# terminal width. Passing --features without "wide-diff" turns side-by-side
+# off for this call only — see the [delta] block in git/.gitconfig.
+pager = "delta --paging=never --width=$COLUMNS --features catppuccin-mocha"
+
+# Global post-create hook. --require-include makes it a no-op in repos
+# without a .worktreeinclude file, which is the only form that is safe
+# everywhere: a bare `wt step copy-ignored` would clone every gitignored
+# file (secrets, 14 GB build dirs, broken venvs) in every repo ever touched.
+[post-start]
+copy = "wt step copy-ignored --require-include"
+
+[step.copy-ignored]
+# Cheap to regenerate, expensive or wrong to carry over.
+exclude = [".venv/", ".direnv/", ".turbo/", ".next/cache/", ".DS_Store"]
+
+# Repo-specific settings live here (user-level [projects] blocks) instead of
+# committed .config/wt.toml files: the dotfiles repo keeps its root clean
+# (top level = stow packages only), and user-config needs no approval gate.
+[projects."github.com/snics/dotfiles"]
+# Without this the tree would live in a hidden ~/Projects/_worktrees/.dotfiles/,
+# invisible to Finder, Spotlight and bare fd/rg.
+worktree-path = "~/Projects/_worktrees/dotfiles/{{ branch | sanitize }}"
+commit.generation.template-append = """
+- Use gitmoji + conventional commits: <gitmoji> <type>(scope): <description>
+- Scopes match package directories: zsh, nvim, zed, brew, git, herdr, claude, hunk, worktrunk, ...
+- Gitmoji as in recent commits: 🟣 feat, 🔴 fix, 🔧 chore, 🔄 refactor, ✨ style, 📚 docs
+"""
+
+# GitHub Enterprise Cloud: "ghe.com" carries no forge name, so auto-detection
+# falls back to "unknown" (no CI column, no --prs). Self-hosted GitLab needs
+# no pin — "gitlab" in the hostname is detected since 0.72.0.
+[projects."ifok.ghe.com/*"]
+forge.platform = "github"
+
+[aliases]
+# Views — kept as aliases so the defaults of plain `wt list` stay fast
+# (no forge round-trips, no summaries).
+ll = "wt --config-set 'list.branches=true' list --full"
+gone = "wt list --format=json | jq -r '.items[] | select(.display.state==\"integrated\" or .display.state==\"empty\") | .branch'"
+
+# Pre-merge review: `what` lists every path that would land in the squash
+# commit (untracked included — agents leave scratch files behind), `rev`
+# shows the full branch diff.
+what = "wt step diff -- --name-status"
+rev = "wt step diff | delta"
+
+# Forge shortcuts (GitLab first, GitHub fallback).
+mr = "glab mr view --web 2>/dev/null || gh pr view --web"
+
+# Housekeeping — dry-run only; actual pruning stays a conscious act.
+prune-check = "wt step prune --dry-run"
+
+# Per-worktree dev server port (deterministic 10000-19999 from the branch).
+url = "echo http://localhost:{{ branch | hash_port }}"
+open = "open http://localhost:{{ branch | hash_port }}"

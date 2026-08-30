@@ -9,13 +9,13 @@ SHELL := /bin/bash
 DOTFILES := $(HOME)/.dotfiles
 
 # Stow package lists (CLI = universal, GUI = macOS only)
-CLI_PACKAGES := zsh git nvim tmux lazygit k9s tuicr hunk herdr opencode claude
+CLI_PACKAGES := zsh git nvim tmux lazygit k9s tuicr hunk worktrunk herdr opencode claude
 GUI_PACKAGES := ghostty zed cursor obsidian
 ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
 .PHONY: all install link link-cli link-gui unlink relink update macos dock project-folders \
         golang rust asdf herdr-plugins herdr-plugins-update herdr-plugins-restore check lint test test-symlinks test-configs help \
-        zsh git nvim ghostty tmux lazygit k9s tuicr hunk hunk-skill herdr zed opencode claude cursor obsidian \
+        zsh git nvim ghostty tmux lazygit k9s tuicr hunk hunk-skill worktrunk worktrunk-plugins wt-issue-skill herdr zed opencode claude cursor obsidian \
         brew-gen brew-install brew-tap brew-trust brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
         docker-build docker-build-nvim docker-build-devenv docker-build-web-terminal docker-build-web-desktop \
@@ -96,6 +96,16 @@ hunk: ## Link hunk config
 
 hunk-skill: ## Register Hunk's hunk-review skill for Claude Code and Codex
 	bash $(DOTFILES)/_install/hunk-skill.sh
+
+worktrunk: ## Link worktrunk (wt) config
+	@cd $(DOTFILES) && stow --restow -t "$(HOME)" worktrunk
+
+worktrunk-plugins: ## Install Worktrunk's Claude Code plugin + Codex marketplace
+	yes | wt config plugins claude install
+	yes | wt config plugins codex install
+
+wt-issue-skill: ## Register the wt-issue skill (GitLab issue → worktree) for Claude Code and Codex
+	bash $(DOTFILES)/_install/wt-issue-skill.sh
 
 herdr: ## Link herdr config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" herdr
@@ -358,5 +368,5 @@ vm-clean: ## Clean up all test VMs and cached images
 # ── Help ────────────────────────────────────────────────
 
 help: ## Show this help
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'

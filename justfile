@@ -8,7 +8,7 @@ DOTFILES := env_var("HOME") / ".dotfiles"
 
 # Stow package lists (CLI = universal, GUI = macOS only)
 
-CLI_PACKAGES := "zsh git nvim tmux lazygit k9s tuicr hunk herdr opencode claude"
+CLI_PACKAGES := "zsh git nvim tmux lazygit k9s tuicr hunk worktrunk herdr opencode claude"
 GUI_PACKAGES := "ghostty zed cursor obsidian"
 ALL_PACKAGES := CLI_PACKAGES + " " + GUI_PACKAGES
 
@@ -110,6 +110,19 @@ hunk:
 # Register Hunk's hunk-review skill for Claude Code and Codex
 hunk-skill:
     bash {{ DOTFILES }}/_install/hunk-skill.sh
+
+# Link worktrunk (wt) config
+worktrunk:
+    @cd {{ DOTFILES }} && stow --restow -t "$HOME" worktrunk
+
+# Install Worktrunk's Claude Code plugin + Codex marketplace
+worktrunk-plugins:
+    yes | wt config plugins claude install
+    yes | wt config plugins codex install
+
+# Register the wt-issue skill (GitLab issue → worktree) for Claude Code and Codex
+wt-issue-skill:
+    bash {{ DOTFILES }}/_install/wt-issue-skill.sh
 
 # Link herdr config
 herdr:
