@@ -99,6 +99,10 @@ This setup works perfectly for developers and software architects who work with 
   - Whole changeset as one scrollable stream
   - Agent comments via local session daemon
   - Git, Jujutsu, and Sapling support
+- 🌳 [worktrunk](https://github.com/max-sixty/worktrunk) - Git worktree manager (`wt`) for parallel agent workflows
+  - Central worktree layout under `~/Projects/_worktrees/<repo-dir>/<branch>`
+  - Claude Code / Codex plugins (activity markers, worktree isolation)
+  - LLM commit messages via Claude Haiku (subscription-only, guarded)
 - 🦎 [lazygit](https://github.com/jesseduffield/lazygit) - Simple terminal UI for git
   - Visual git workflow
   - 14 Catppuccin color variants included
@@ -267,6 +271,7 @@ This dotfiles repository uses the following structure:
 
 ```
 ~/.dotfiles/
+├── _agents/           # Shared agent skills (linked into ~/.agents/skills)
 ├── _docs/             # Documentation and screenshots
 ├── _images/           # Docker build files (nvim, devenv, web-terminal, web-desktop)
 ├── _install/          # Setup scripts for optional tools (golang, rust, claude, obsidian)
@@ -287,6 +292,7 @@ This dotfiles repository uses the following structure:
 ├── obsidian/          # Obsidian vault structure and settings
 ├── opencode/          # OpenCode AI agent config
 ├── tmux/              # tmux configuration and plugins
+├── worktrunk/         # Worktrunk (wt) worktree-manager config
 ├── zed/               # Zed editor config
 ├── zsh/               # ZSH configuration, themes, and functions
 ├── bootstrap.sh       # Curl-pipeable first-run installer

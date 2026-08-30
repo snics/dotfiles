@@ -13,12 +13,15 @@ zsh/
 ├── conf.d/
 │   ├── 00-init.zsh           # Pre-Zimfw: ENV + zstyles (explicit source)
 │   ├── 10-path.zsh           # PATH additions
+│   ├── 15-brew.zsh          # Regenerate ~/.Brewfile from brew/Brewfile.*
 │   ├── 20-aliases.zsh        # Shell aliases
 │   ├── 30-fzf-tab.zsh       # fzf-tab format + directory preview
 │   ├── 40-fzf.zsh           # fzf Ctrl+T / Alt+C previews
 │   ├── 50-keybindings.zsh   # Emacs mode + macOS Alt+C fix
 │   ├── 60-atuin.zsh         # Atuin init + autosuggestions strategy
+│   ├── 65-worktrunk.zsh     # Worktrunk (wt) shell function + completions
 │   ├── 70-functions.zsh     # Functions auto-loader
+│   ├── 75-herdr-claude-session.zsh # Unset inherited agent session markers
 │   ├── 80-gnu-generic.zsh  # _gnu_generic fallback for tools without completions
 │   └── 90-completions.zsh   # bashcompinit + gcloud
 ├── functions/                # Auto-loaded shell functions (one per file)
@@ -54,8 +57,8 @@ variables and zstyles that plugins read during initialization.
 | 20    | Aliases |
 | 30-40 | Tool configs (fzf-tab, fzf) |
 | 50    | Keybindings |
-| 60    | Atuin (history) |
-| 70    | Functions auto-loader |
+| 60-65 | Tool shell integrations (atuin, worktrunk) |
+| 70-75 | Functions auto-loader, agent session hygiene |
 | 80    | _gnu_generic fallback completions |
 | 90    | Completions (bashcompinit + gcloud) |
 

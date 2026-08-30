@@ -140,7 +140,7 @@ memory) but it is unusable on macOS + Ghostty — the text-input system claims
 | `Prefix + [` / `]` | Previous / next workspace (bracket navigation) |
 | `Prefix + a` / `Shift+a` | Next / previous agent (attention queue) |
 | `Prefix + Shift+n` | New workspace |
-| `Prefix + Shift+g` | Worktree picker (sessionizer): local/remote branch or new, opens with layout |
+| `Prefix + Shift+g` | Worktree picker (worktrunk): local/remote branch, new, or `mr:N` — creates via `wt switch` into `~/Projects/_worktrees/<repo-dir>/<branch>` and runs its hooks |
 | `Prefix + Shift+o` | Open existing worktree |
 | `Prefix + w` | Workspace picker |
 | `Prefix + g` | Goto picker (herdr default): tree of workspaces/panes/agents — `/` fuzzy search · `b/w/i/d/a` filter by agent state · `Enter` switch |
@@ -198,6 +198,8 @@ create with directory picker · `s` stop · `d` delete · `/` search · `q` quit
 | `Prefix + Shift+i` | Hunk review of staged changes (i = index) |
 | `Prefix + Shift+b` | Hunk review of the branch vs its base (b = branch; upstream #15 may pin the base to origin/main) |
 | `Prefix + Shift+m` | Send collected Hunk comments to the agent (m = message) |
+| `Prefix + Shift+g` | Worktrunk worktree picker (see Workspaces & Agents) — replaced the sessionizer picker so only one tool creates worktrees |
+| `Prefix + m` | Worktrunk merge — `wt merge` the workspace's worktree into the default branch (squash → rebase → hooks → cleanup). Not `Prefix + w`/`Shift+w`: herdr built-ins (workspace picker / rename workspace) |
 | `Cmd+o` / `Cmd+Shift+o` | File viewer (overview of agent changes) in split / own tab |
 | `Cmd+p` | Project picker (sessionizer) — fuzzy over all repos under ~/Projects, opens with the default layout |
 | `Prefix + .` | Quick actions — fuzzy one-off scripts in the current dir |
@@ -491,6 +493,42 @@ Scoped to Flux resources ([derailed/k9s flux.yaml](https://github.com/derailed/k
 | `Shift+Z` | HelmRepository, OCIRepository | Flux reconcile source |
 | `Shift+S` | HelmRelease, Kustomization | List suspended resources |
 | `Shift+F` | all | Flux trace (remapped from upstream `Shift+Q` to avoid clash with HolmesGPT) |
+
+---
+
+## Worktrunk
+
+Git worktree manager (`wt`) for parallel agent workflows. Worktrees live
+centrally in `~/Projects/_worktrees/<repo-dir>/<branch>` (`<repo-dir>` = the
+repo's on-disk directory name; `~/.dotfiles` maps to `dotfiles` via a
+per-project override so the tree is not hidden); config stowed from
+`worktrunk/.config/worktrunk/config.toml`, per-repo hooks in `.config/wt.toml`.
+
+### CLI essentials
+
+| Command | Action |
+|---------|--------|
+| `wt switch <branch>` | Switch to a worktree (creates dir on demand, cds there) |
+| `wt switch -c <branch>` | Create branch + worktree, run hooks |
+| `wt switch -c <branch> -x claude` | Create worktree and launch Claude Code in it |
+| `wt switch mr:<N>` | Check out a GitLab MR's branch as a worktree |
+| `wt switch` | Interactive picker (see below) |
+| `wt list` | Worktree table for the CURRENT repo: status, diff, CI, agent markers 🤖/💬 |
+| `wt issue <N>` | GitLab issue → `<N>-<slug>` branch + worktree + agent (see the wt-issue skill) |
+| `wt merge` | Squash → rebase → hooks → fast-forward into default branch → cleanup |
+| `wt remove` | Remove worktree + branch (recognizes GitLab squash merges) |
+| `wt step commit` | Stage + commit with Claude-Haiku-generated message |
+
+### Picker (inside `wt switch`)
+
+| Shortcut | Action |
+|----------|--------|
+| `↑`/`↓`, type | Navigate / filter |
+| `Enter` | Switch to selection |
+| `Alt+c` | Create branch from typed text |
+| `Alt+x` | Remove selected worktree |
+| `Alt+o` | Open PR/MR URL |
+| `Alt+p` / `Alt+1`–`8` | Toggle preview / preview tabs (diff, log, remote, MR, …) |
 
 ---
 
