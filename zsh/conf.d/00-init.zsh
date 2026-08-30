@@ -32,8 +32,21 @@ _agent_shell() {
 # and real child sessions get the marker injected directly into their process
 # environment, so dropping it here is always safe. CLAUDECODE deliberately
 # stays untouched: _agent_shell relies on it and genuine agent shells do
-# source .zshrc.
+# source .zshrc. (Exception: herdr pane shells, see below.)
 unset CLAUDE_CODE_CHILD_SESSION
+
+# A herdr server that was once started from inside an agent session leaks
+# CLAUDECODE and AI_AGENT into every pane it spawns, so _agent_shell misfires
+# in human panes and the bat/eza/zoxide wrappers stay plain (seen 2026-08-30).
+# Pane shells are direct children of the herdr server; genuine agent shells
+# never are (their parent is the agent process), so scrubbing only when the
+# parent is herdr leaves real agent shells — including ones running inside
+# herdr panes — untouched. herdr-launch already scrubs before starting new
+# servers; this covers panes of an already-dirty long-running server.
+if [[ "$(ps -o comm= -p $PPID 2>/dev/null)" == *herdr* ]]; then
+  unset CLAUDECODE AI_AGENT CLAUDE_CODE_SESSION_ID CLAUDE_CODE_ENTRYPOINT \
+    CLAUDE_CODE_EXECPATH CLAUDE_PID CLAUDE_EFFORT CLAUDE_PLUGIN_DATA
+fi
 
 # True when a human is looking at this terminal — only then may replacement
 # tools (bat, eza, chafa, zoxide) take over classic command names. False for
