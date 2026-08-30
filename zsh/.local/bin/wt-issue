@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+# wt-issue — GitLab issue → worktrunk worktree → agent, in one command.
+#
+# Invoked as `wt issue …` (worktrunk custom subcommand: any wt-<name> on PATH)
+# or directly as `wt-issue …`.
+#
+# Usage:
+#   wt issue <N> [--agent claude|codex] [--no-agent] [--branch-only] [--base <ref>]
+#
+#   <N>            GitLab issue number (repo derived from the git remote via glab)
+#   --agent        Agent to exec inside the worktree (default: claude)
+#   --no-agent     Only create/switch the worktree (humans, herdr quick actions)
+#   --branch-only  Print the derived branch name (<N>-<slug>) and exit —
+#                  used by the wt-issue agent skill so Claude Code can create
+#                  the worktree through its EnterWorktree tool instead
+#   --base <ref>   Base ref for a new branch (default: repo default branch)
+#
+# The branch name follows GitLab's own %{id}-%{title} pattern, so MRs created
+# from it link back to the issue automatically. Label/MR policy is deliberately
+# NOT touched here — that stays in the per-project workflow skill.
+set -euo pipefail
+
+die() { printf 'wt-issue: %s\n' "$*" >&2; exit 1; }
+
+issue="" agent="claude" no_agent=false branch_only=false base=""
+while (( $# )); do
+  case "$1" in
+    --agent)       agent="${2:?--agent needs a value}"; shift 2 ;;
+    --no-agent)    no_agent=true; shift ;;
+    --branch-only) branch_only=true; shift ;;
+    --base)        base="${2:?--base needs a value}"; shift 2 ;;
+    -h|--help)     sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -*)            die "unknown flag: $1" ;;
+    *)             issue="$1"; shift ;;
+  esac
+done
+[[ "$issue" =~ ^[0-9]+$ ]] || die "usage: wt issue <N> [--agent claude|codex] [--no-agent] (got: '${issue:-}')"
+# Allowlist: --agent ends up as `wt switch --execute`, so an arbitrary value
+# would be an arbitrary command — including when an agent calls this script.
+case "$agent" in
+  claude|codex|opencode) ;;
+  *) die "unsupported --agent '$agent' (allowed: claude, codex, opencode)" ;;
+esac
+
+command -v glab >/dev/null || die "glab is required"
+command -v jq   >/dev/null || die "jq is required"
+command -v wt   >/dev/null || die "worktrunk (wt) is required"
+git rev-parse --git-dir >/dev/null 2>&1 || die "not inside a git repository"
+
+json="$(glab issue view "$issue" -F json 2>/dev/null)" \
+  || die "could not fetch issue #$issue (glab auth for this host? inside the right repo?)"
+title="$(jq -r '.title // empty' <<<"$json")"
+state="$(jq -r '.state // empty' <<<"$json")"
+[[ -n "$title" ]] || die "issue #$issue has no title (unexpected glab output)"
+[[ "$state" == "closed" ]] && printf 'wt-issue: warning: issue #%s is closed\n' "$issue" >&2
+
+# GitLab-style slug: lowercase, non-alnum → '-', squeezed, trimmed, capped.
+slug="$(printf '%s' "$title" \
+  | tr '[:upper:]' '[:lower:]' \
+  | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')"
+if (( ${#slug} > 48 )); then
+  # Cap without cutting mid-word: truncate, then drop the partial last segment.
+  slug="$(printf '%s' "${slug:0:48}" | sed -E 's/-[^-]*$//; s/-+$//')"
+fi
+# A title made purely of non-ASCII or symbols sanitizes to nothing, which would
+# yield a trailing-dash branch like "142-".
+[[ -n "$slug" ]] || slug="issue"
+branch="${issue}-${slug}"
+
+if $branch_only; then
+  printf '%s\n' "$branch"
+  exit 0
+fi
+
+# Re-entry: drop --create when the branch already exists. Built without ever
+# expanding an empty array — "${arr[@]}" on an empty array aborts under
+# `set -u` in bash 3.2, which is what /bin/bash is on macOS.
+wt_args=(switch)
+if git show-ref --verify --quiet "refs/heads/$branch"; then
+  creating=false
+else
+  wt_args+=(--create)
+  creating=true
+fi
+if $creating && [[ -n "$base" ]]; then
+  wt_args+=(--base "$base")
+fi
+wt_args+=("$branch")
+
+if $no_agent; then
+  exec wt "${wt_args[@]}"
+fi
+
+# Short opening prompt; braces stripped so worktrunk's template engine never
+# sees {{ … }}. The agent pulls the full description/comments itself — always
+# fresh, no escaping hazards.
+safe_title="$(printf '%s' "$title" | sed 's/{/(/g; s/}/)/g')"
+prompt="Work on GitLab issue #${issue}: ${safe_title}. First run 'glab issue view ${issue}' and 'glab issue view ${issue} --comments' to load the description, acceptance criteria and discussion. Then, BEFORE writing any code: run a brainstorming/alignment round with the user (use the superpowers:brainstorming skill if available) — summarize your understanding of the issue, ask whether anything has changed since it was written, and clarify open questions and acceptance criteria. Only start implementing after the user confirms the direction. If a project workflow skill exists (e.g. gitlab-workflow), follow it for labels, draft MR and 'Refs #${issue}'."
+exec wt "${wt_args[@]}" -x "$agent" -- "$prompt"
