@@ -1,0 +1,12 @@
+# herdr-worktrunk plugin config (devashish2203/herdr-worktrunk).
+# Worktree checkouts open as herdr workspaces (matches the sessionizer
+# worktree flow). Picker runs as a split — the plugin styles fzf as a
+# dialog there; in popup mode herdr's pane frame doubles the fzf chrome
+# (tried 2026-08-30, looked off).
+open_mode = "workspace"
+picker_placement = "split"
+
+# The picker is the single worktree entry point (prefix+shift+g), so it has to
+# offer remote branches too — otherwise checking out a colleague's branch means
+# dropping to the CLI.
+show_remote_branches = true

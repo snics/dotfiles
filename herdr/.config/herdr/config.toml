@@ -181,6 +181,21 @@ type = "plugin_action"
 command = "jhochenbaum.hunkdiff.review"
 description = "hunk: review changes"
 
+# Worktrunk (devashish2203/herdr-worktrunk): delegates worktree create/switch
+# to the wt CLI, so worktrunk's worktree-path template (central
+# ~/Projects/_worktrees/<repo>/<branch>) is the single source of truth and
+# wt hooks run on every checkout herdr opens. Complements prefix+shift+g
+# (sessionizer picker, branch-aware) and prefix+shift+o (open existing).
+# No upstream setup-keys exist; keys are ours. The picker sits on
+# prefix+shift+g (see the worktree-flow block above); merge gets prefix+m
+# (m = merge, free). Deliberately NOT prefix+w / prefix+shift+w — those are
+# herdr built-ins (workspace_picker / rename_workspace).
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "worktrunk.merge"
+description = "worktrunk: merge worktree into default branch (wt merge)"
+
 [[keys.command]]
 key = "prefix+shift+c"
 type = "plugin_action"
@@ -271,13 +286,18 @@ type = "plugin_action"
 command = "sessionizer.open"
 description = "Project / session picker"
 
-# Worktree flow with branch picker (local/remote/new) — replaces the
-# built-in new_worktree prompt on the same key.
+# Worktree flow with branch picker (local/remote/new/mr:N) — replaces the
+# built-in new_worktree prompt on the same key. Driven by worktrunk, not
+# sessionizer: both can create worktrees, but sessionizer derives the path
+# from the on-disk repo name while worktrunk uses its worktree-path template
+# ({{ remote_repo }}), so running both would scatter a repo's worktrees over
+# two directories and skip worktrunk's hooks for half of them. Sessionizer
+# stays the project picker on cmd+p.
 [[keys.command]]
 key = "prefix+shift+g"
 type = "plugin_action"
-command = "sessionizer.worktree-open"
-description = "Worktree picker (branch-aware)"
+command = "worktrunk.open"
+description = "Worktree picker (worktrunk: switch/create, mr:N)"
 
 # Quick actions: fuzzy one-off scripts, run in the current directory
 # (mirrors <leader>. scratch semantics in nvim).
