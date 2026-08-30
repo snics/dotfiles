@@ -79,3 +79,9 @@ herdr/.config/herdr/plugins.lock.[0-9]
 
 # hunk: runtime state (extension trust, last seen version) written through the stow symlink
 hunk/.config/hunk/state.json
+
+# Resolved secrets — the tracked file is zsh/.secrets.tpl (op:// references only).
+# Anything that ever renders it must never be committed.
+.secrets
+.secrets.zsh
+.secrets-cache.*

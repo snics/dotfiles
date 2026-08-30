@@ -49,11 +49,13 @@ Die `mcp-servers.json` definiert globale MCP-Server, die beim Install in `~/.cla
 
 **Wichtig:** API-Keys und andere Secrets sollten **nicht** direkt in `settings.json` gespeichert werden.
 
-- API-Keys über Umgebungsvariable `ANTHROPIC_API_KEY` setzen
-- In `~/.secrets` exportieren: `export ANTHROPIC_API_KEY="dein-key"`
-- `~/.zshrc` lädt `~/.secrets` automatisch
-
-Siehe auch `.secrets.example` für weitere Informationen.
+- **Kein `ANTHROPIC_API_KEY` in der Umgebung exportieren**: Claude Code läuft
+  über das Abo-Login (`claude login`). Ein exportierter Key würde headless-
+  Aufrufe (`claude -p`) stillschweigend auf Pay-per-Token-API-Abrechnung
+  umstellen.
+- Tools, die wirklich einen API-Key brauchen, holen ihn on-demand aus
+  1Password (`op read "op://Employee/…"`), statt ihn global zu exportieren —
+  siehe `zsh/.secrets.tpl`.
 
 ## Bestehende Config übernehmen
 

@@ -8,7 +8,9 @@
 --
 -- Only two agents are in use: Codex (chat, here) and Claude Code (claudecode.lua).
 -- Inline/cmd strategies need an HTTP adapter (ACP cannot do inline) — they run
--- on the anthropic adapter and require ANTHROPIC_API_KEY to be set.
+-- on the anthropic adapter. The API key is fetched on demand from 1Password
+-- (`cmd:op read`), NOT from ANTHROPIC_API_KEY: that env var is deliberately
+-- no longer exported anywhere, so headless CLI calls stay on subscription auth.
 return {
     "olimorris/codecompanion.nvim",
     dependencies = {
@@ -55,6 +57,11 @@ return {
                 -- HTTP API (for inline edits — ACP doesn't support inline)
                 anthropic = function()
                     return require("codecompanion.adapters").resolve("anthropic", {
+                        env = {
+                            -- On-demand from 1Password; requires an unlocked op
+                            -- session (first shell of the day triggers Touch ID).
+                            api_key = 'cmd:op read "op://Employee/Anthropic API Key/credential" --no-newline',
+                        },
                         schema = {
                             model = {
                                 default = "claude-sonnet-4-5-20250929",
