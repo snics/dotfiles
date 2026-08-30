@@ -225,6 +225,13 @@ _update_rust() {
   _update_header "🦀" "Rust"
   echo "Updating Rust toolchain..."
   rustup update
+  # Crates without a Homebrew formula (declared in _install/cargo-tools.list);
+  # the ones that do have a formula are covered by the brew target.
+  local cargo_tools="$HOME/.dotfiles/_install/cargo-tools.sh"
+  if [[ -x "$cargo_tools" ]]; then
+    echo "Updating cargo tools (cargo-tools.list)..."
+    bash "$cargo_tools" --update
+  fi
   _update_success "Rust"
 }
 
@@ -362,7 +369,7 @@ _update_help() {
     echo "  mas          Mac App Store apps"
   fi
   echo "  asdf         asdf version manager plugins"
-  echo "  rust         Rust toolchain (rustup)"
+  echo "  rust         Rust toolchain (rustup) + cargo tools (cargo-tools.list)"
   echo "  nvim         Neovim plugins (lazy.nvim)"
   echo "  tmux         Tmux plugins (TPM)"
   echo "  herdr        herdr plugins (herdr-lazy bundle)"

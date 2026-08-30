@@ -14,7 +14,8 @@ GUI_PACKAGES := ghostty zed cursor obsidian
 ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
 .PHONY: all install link link-cli link-gui unlink relink update macos dock project-folders \
-        golang rust asdf herdr-plugins herdr-plugins-update herdr-plugins-restore check lint test test-symlinks test-configs help \
+        golang rust cargo-tools cargo-tools-update cargo-dump asdf \
+        herdr-plugins herdr-plugins-update herdr-plugins-restore check lint test test-symlinks test-configs help \
         zsh git nvim ghostty tmux lazygit k9s tuicr hunk hunk-skill worktrunk worktrunk-plugins wt-issue-skill herdr zed opencode claude cursor obsidian \
         brew-gen brew-install brew-tap brew-trust brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
@@ -203,6 +204,18 @@ golang: ## Install Go via g version manager
 
 rust: ## Install Rust via rustup
 	source $(DOTFILES)/_install/rust.sh
+
+cargo-tools: ## Install cargo crates from cargo-tools.list (no Homebrew formula)
+	bash $(DOTFILES)/_install/cargo-tools.sh
+
+cargo-tools-update: ## Update all unpinned crates in cargo-tools.list
+	bash $(DOTFILES)/_install/cargo-tools.sh --update
+
+cargo-dump: ## List cargo-installed crates for drift comparison
+	@cargo install --list
+	@echo ""
+	@echo "Compare with $(DOTFILES)/_install/cargo-tools.list — anything extra"
+	@echo "either belongs in the list, or in brew/Brewfile.* if a formula exists."
 
 asdf: ## Install asdf plugins
 	source $(DOTFILES)/asdf/plugins.sh

@@ -1,0 +1,14 @@
+# Cargo tool inventory — crates that are NOT available as Homebrew formulae.
+# One crate per line; pin a version with `crate@1.2.3`, leave bare to track latest.
+# Installed by _install/cargo-tools.sh via `cargo binstall` (prebuilt binary,
+# no compile) with a `cargo install` fallback.
+#
+# Install: just cargo-tools        Update: just cargo-tools-update
+# Drift:   just cargo-dump         (compares against `cargo install --list`)
+#
+# BEFORE ADDING: check `brew info <name>` first. Everything that exists in
+# Homebrew belongs in brew/Brewfile.* instead, so `brew bundle cleanup` sees it.
+
+# Multi-account manager for Claude Code (profiles, usage limits, herdr plugin).
+# https://github.com/uwuclxdy/clauth
+clauth

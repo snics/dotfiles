@@ -247,6 +247,21 @@ golang:
 rust:
     source {{ DOTFILES }}/_install/rust.sh
 
+# Install cargo crates from cargo-tools.list (the ones Homebrew has no formula for)
+cargo-tools:
+    bash {{ DOTFILES }}/_install/cargo-tools.sh
+
+# Update all unpinned crates in cargo-tools.list
+cargo-tools-update:
+    bash {{ DOTFILES }}/_install/cargo-tools.sh --update
+
+# List cargo-installed crates for drift comparison against cargo-tools.list
+cargo-dump:
+    @cargo install --list
+    @echo ""
+    @echo "Compare with {{ DOTFILES }}/_install/cargo-tools.list — anything extra"
+    @echo "either belongs in the list, or in brew/Brewfile.* if a formula exists."
+
 # Install asdf plugins
 asdf:
     source {{ DOTFILES }}/asdf/plugins.sh
