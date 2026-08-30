@@ -30,6 +30,8 @@
     hadolint      # Dockerfile linter
     pkgx          # Package runner
     gemini        # Google Gemini CLI
+    claude        # Claude Code CLI (no official generator; cc/ccy aliases
+                  # inherit this via zsh alias expansion, like k -> kubectl)
 
     # Security / Pentest
     aircrack-ng   # WiFi security suite
