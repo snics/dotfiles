@@ -52,6 +52,8 @@
   d = diff                          # diff unstaged changes
   dc = diff --cached                # diff staged changes
   last = diff HEAD^                 # diff last committed change
+  hd = !git -c core.pager='hunk pager' diff   # diff in hunk TUI
+  hs = !git -c core.pager='hunk pager' show   # show commit in hunk TUI
 
   # log
   l = log --graph --date=short
@@ -96,6 +98,10 @@
   pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
 [mergetool]
   prompt = false
+[difftool]
+  prompt = false
+[difftool "hunk"]
+  cmd = hunk difftool \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 [merge]
   conflictstyle = diff3
   summary = true
@@ -146,6 +152,7 @@
   colorMoved = default
   mnemonicprefix = true
   algorithm = patience
+  tool = hunk
 [rerere]
   # Remember my merges
   # http://gitfu.wordpress.com/2008/04/20/git-rerere-rereremember-what-you-did-last-time/

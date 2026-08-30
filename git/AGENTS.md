@@ -37,6 +37,16 @@ Delta with Catppuccin Mocha theme. Requires `delta` from `brew/Brewfile`.
 `catppuccin.gitconfig` contains themes for all 4 flavors. Only edit this file
 to update the Delta color scheme — do not add other git settings here.
 
+Delta stays the global `core.pager` — do not replace it with `hunk pager`.
+Hunk is opt-in via the `hd`/`hs` aliases and the difftool slot (below).
+
+## Difftool (Hunk)
+
+`git difftool` opens [Hunk](https://github.com/modem-dev/hunk), the review
+TUI from the `hunk/` stow package (`diff.tool = hunk`). Git invokes it once
+per file. For a whole-changeset stream use `git hd` / `git hs` or `hunk diff`
+directly. Requires `hunk` from `brew/Brewfile.30-git`.
+
 ## GPG Signing
 
 - Commit signing enabled (`commit.gpgsign = true`)
