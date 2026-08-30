@@ -16,9 +16,15 @@
     diffFilter = delta --color-only
 [delta]
    navigate = true
-   side-by-side = true
    line-numbers = true
-   features = catppuccin-mocha
+   # side-by-side lives in the wide-diff feature, not here: delta has no
+   # --no-side-by-side, and CLI flags cannot override this main section. As a
+   # feature it can be dropped per call (worktrunk's ~40-column picker preview
+   # passes --features catppuccin-mocha only). Normal git diffs keep both.
+   features = catppuccin-mocha wide-diff
+
+[delta "wide-diff"]
+   side-by-side = true
 [alias]
   # add
   a = add                           # add

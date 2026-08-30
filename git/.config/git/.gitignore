@@ -17,3 +17,8 @@ Thumbs.db
 
 # Claude Code local settings
 **/.claude/settings.local.json
+
+# In-repo git worktrees (Claude Code isolation:worktree and similar tools
+# nest them inside the repo; never let them reach git add -A / status)
+.worktrees/
+.claude/worktrees/
