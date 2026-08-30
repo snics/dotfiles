@@ -21,6 +21,10 @@ agent_notes = true
 # (it would write through the stow symlink into the repo).
 prompt_save_view_preferences = false
 
+# Let the Ghostty/herdr background show through neutral surfaces;
+# added/removed tints stay.
+transparent_background = true
+
 # Working-tree reviews reload live while the agent keeps writing.
 # (`hunk diff` reads [vcs], not [diff] — upstream naming.)
 [vcs]
