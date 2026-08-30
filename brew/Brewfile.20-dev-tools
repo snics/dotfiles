@@ -1,6 +1,11 @@
 # Development tools — languages, compilers, runtimes, package managers
 brew "asdf" # Extendable version manager with support for Ruby, Node.js, Elixir, Erlang & more. [ASDF](https://asdf-vm.com/)
 brew "oven-sh/bun/bun" # Incredibly fast JavaScript runtime, bundler, test runner, and package manager. [Bun](https://bun.sh/)
+brew "cargo-binstall" # Installs Rust crates as prebuilt binaries — used by _install/cargo-tools.sh. [cargo-binstall](https://github.com/cargo-bins/cargo-binstall)
+brew "cargo-edit" # `cargo add`, `cargo rm`, `cargo upgrade` subcommands. [cargo-edit](https://github.com/killercup/cargo-edit)
+brew "cargo-nextest" # Faster Rust test runner. [cargo-nextest](https://nexte.st/)
+brew "cargo-watch" # Auto-rebuild Rust projects on file changes. [cargo-watch](https://github.com/watchexec/cargo-watch)
+brew "cargo-zigbuild" # Compile Cargo projects with the zig linker for easy cross-compilation. [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild)
 brew "cloc" # Count lines of code in many programming languages. [Cloc](https://github.com/AlDanial/cloc)
 brew "delve" # Debugger for the Go programming language. [Delve](https://github.com/go-delve/delve)
 brew "deno" # A secure runtime for JavaScript and TypeScript. [Deno](https://deno.land/)

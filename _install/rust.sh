@@ -26,12 +26,15 @@ rustup component add \
     rust-src \
     --toolchain nightly
 
-# Install commonly used cargo tools
-cargo install cargo-watch   # Auto-rebuild on file changes
-cargo install cargo-edit    # `cargo add`, `cargo rm`, `cargo upgrade`
-cargo install cargo-nextest # Faster test runner
+# Cargo tools are NOT installed here.
+#   - Everything available as a formula (cargo-watch, cargo-edit, cargo-nextest,
+#     cargo-zigbuild, cargo-binstall) lives in brew/Brewfile.20-dev-tools, so
+#     `brew bundle cleanup` can account for it.
+#   - Crates with no formula are declared in _install/cargo-tools.list and
+#     installed by _install/cargo-tools.sh (`just cargo-tools`).
 
 echo "Install Rust done!"
 echo "  Default toolchain: stable"
 echo "  Nightly available: rustup run nightly cargo build"
 echo "  Per-project override: rustup override set nightly"
+echo "  Cargo tools: brew bundle (formulae) + just cargo-tools (the rest)"
