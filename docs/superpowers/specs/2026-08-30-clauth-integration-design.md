@@ -1,101 +1,135 @@
 # clauth Integration — Design
 
-**Date:** 2026-08-30
-**Status:** Approved, ready for implementation planning
+**Date:** 2026-08-30 (revised 2026-08-31 after review)
+**Status:** Revised, awaiting review
 **Tool:** [uwuclxdy/clauth](https://github.com/uwuclxdy/clauth) — multi-account manager for Claude Code
 
 ## Goal
 
 Run two Claude accounts side by side from herdr, see each account's usage
 windows without leaving the terminal, and delegate work to the second account
-from inside a chat — without clauth writing into any config this repository
-manages.
+from inside a chat — while keeping clauth out of the config this repository
+manages, as far as the tool actually allows.
+
+That last clause is deliberate. The first revision of this document claimed
+the isolation was total. It is not, and the exceptions are named below rather
+than designed around.
 
 ## Decisions
 
 ### Side-car, not owner
 
-clauth manages only `~/.clauth/`. Secondary accounts run exclusively through
+clauth manages `~/.clauth/`. Secondary accounts run through
 `clauth start <profile>`, which spawns `claude` against that session's own
-runtime directory. The primary account is never touched: plain `claude` does
-not go through clauth, and the global profile pointer is never relinked.
+runtime directory. Plain `claude` never goes through clauth, and no global
+profile switch is ever performed after setup.
 
-This is a deliberate trade. Auto-fallback is **dropped**, and three findings
-from the source justify that:
+Auto-fallback is **dropped**, because on this machine it cannot work:
 
-1. `switch_profile` (`src/actions.rs`) is the only auto-switch mechanism —
-   it relinks the live credentials globally. There is no per-account path.
-2. Per-session fallback (`clauth start --with-fallback`) is refused on macOS
-   unconditionally. `swap_support()` in `src/runtime.rs` returns
-   `SwapUnsupported::KeychainFirst` because Claude Code resolves credentials
-   keychain-first there, so swapping the file under a live session does
-   nothing.
-3. Therefore auto-fallback can never rescue a running session on this machine.
-   Its best case is "the next session starts on a fresh account" — a benefit
-   paid for by clauth rewriting `model`, `env` and `apiKeyHelper` into
-   `~/.claude/settings.json` on every switch (documented in
-   `src/settings_sync.rs`), and by read-modify-write surgery on the login
-   Keychain item that also holds every MCP server's OAuth login
-   (`src/keychain.rs`).
+`clauth start --with-fallback` is refused unconditionally on macOS —
+`swap_support()` (`src/runtime.rs`) returns `SwapUnsupported::KeychainFirst`
+because Claude Code resolves credentials keychain-first, so repointing a
+session's credential file changes nothing. The per-session mechanism itself
+exists (`SessionSwap`, `src/runtime.rs`, driven by the daemon's
+`intended_member`); macOS is what blocks it, not its absence.
 
-The inverse is what makes the side-car clean: those rewrites happen *only* on
-switch, and the cross-profile settings sync short-circuits with no live
-isolated session. With no global switches, the drift is not small — it is zero.
+That leaves the global relink (`switch_profile`, `src/actions.rs`) as the only
+usable switch, and it rewrites the active profile's managed env keys,
+`apiKeyHelper` and `model` into `~/.claude/settings.json` on every switch
+(`src/settings_sync.rs`) while performing read-modify-write surgery on the
+login Keychain item that also holds every MCP server's OAuth login
+(`src/keychain.rs`). For a benefit that, on macOS, amounts to "the next
+session starts on a fresh account", that is not worth it.
 
-### clauth writes nothing this repo manages
+### What clauth still writes — the honest list
 
-Every integration point is hand-authored into the repository and applied by
-stow or an install script. This mirrors the guardrail already in place for
-Hunk, whose `setup-keys` action writes through the stow symlink.
+Avoiding switches removes the per-switch rewrite. It does **not** make the
+integration write-free:
 
-| Surface | Mechanism |
-|---------|-----------|
-| herdr keybinding + sidebar row | hand-written into the stowed `config.toml` |
-| clauth's own knobs | `clauth/` stow package, copy-not-symlink |
-| MCP server registration | entry in `claude/mcp-servers.json` |
+1. **The first `clauth login` links credentials globally.** `src/actions.rs`
+   activates the new profile when `active_profile` is empty. Mitigated by
+   enrollment order (below), not eliminated.
+2. **Live `clauth start` sessions sync settings back.** `settings_sync::sync_once()`
+   runs from every live session's watchdog `config()` leg (`src/runtime.rs`),
+   not only on switch. The operator's `~/.claude/settings.json` is a sync
+   member and the write-back target, so a shared setting changed inside a
+   clauth session propagates into the global file. With no live session the
+   engine short-circuits and nothing happens.
+3. **Active-profile edits reapply managed fields** (endpoint, model, preset,
+   env) without a switch (`src/actions.rs`). Avoided by not editing profiles
+   through clauth once they are set up.
+
+Point 2 matters because `claude/AGENTS.md` defines `~/.claude/settings.json`
+as copied into the repo by `just claude-sync`: a later sync can import
+clauth-influenced changes. This is drift the repository can see and review —
+unlike the per-switch rewrite, which would recur silently — but it is drift,
+and the previous "zero drift" claim was wrong.
+
+### Enrollment order
+
+The first login seeds the active profile. Therefore:
+
+1. Enroll the **primary** account first. The global pointer ends up on the
+   account it already effectively points at, so the steady state is unchanged.
+2. Enroll the secondary account second. `active_profile` is now set, so it is
+   not activated.
+
+One-time cost, stated plainly: step 1 is a real browser OAuth flow that mints
+fresh tokens and replaces the live credentials for that same account,
+including a read-modify-write of the Keychain item shared with MCP logins.
+There is no adoption path — a bare `clauth login` always runs OAuth. Verify
+MCP servers still authenticate after this step.
 
 ## Components
 
 ### 1. Install
 
 `clauth` is declared in `_install/cargo-tools.list` and installed by
-`_install/cargo-tools.sh` via `cargo binstall`. No separate mechanism —
-this is what the cargo inventory was built for.
+`_install/cargo-tools.sh`. No separate mechanism.
 
 ### 2. Plugin registration — `_install/clauth.sh`
 
-Runs `clauth herdr install --no-config -y`. The `--no-config` flag installs
-the plugin and leaves herdr's `config.toml` untouched, which is precisely the
-separation this design needs. Idempotent; exposed as `just clauth` /
-`make clauth`.
+`clauth herdr install --no-config -y` installs the plugin and leaves herdr's
+`config.toml` untouched (`src/herdr.rs` returns before resolving or writing
+the config). Idempotent; exposed as `just clauth` / `make clauth`.
+
+Because `--no-config` also skips clauth's own `herdr config check`, a
+keybinding conflict in the hand-authored block is **not** caught by the tool.
+The key below was therefore checked by hand against both binding syntaxes.
 
 The plugin ships inside the clauth binary rather than as a GitHub repository,
-so it does **not** appear in `herdr/.config/herdr/plugins.list`. That list
-would otherwise read as a complete inventory of installed plugins, so its
-header must name clauth as a known exception.
+so it does not appear in `herdr/.config/herdr/plugins.list`. That list would
+otherwise read as a complete inventory, so its header must name the exception.
 
 ### 3. herdr configuration — hand-written
 
 In `herdr/.config/herdr/config.toml`:
 
-- `[[keys.command]]` binding `prefix+a` to the `clauth.open` plugin action.
-  The key is free: it is neither a herdr built-in (verified against the
-  binary's default list) nor bound by any existing plugin.
+- `[[keys.command]]` binding **`prefix+d`** to the `clauth.open` plugin action.
+  Not clauth's default (`prefix+a`), which is already bound to `next_agent`
+  in this config. `prefix+d` and `prefix+i` are the only free single-letter
+  prefix keys once herdr's built-in defaults and every existing binding are
+  accounted for; `d` is taken for "dashboard".
 - `[ui.sidebar.agents.rows_by_agent]` with `$clauth` in the claude row. No
-  such table exists in the config today, so it is added whole.
+  such table exists today, so it is added whole.
 
-`_docs/keybindings.md` gains a clauth section per the repository's sync rule.
+`_docs/keybindings.md` gains a clauth entry per the repository's sync rule.
 
 ### 4. `clauth/` stow package
 
-`~/.clauth/profiles.toml` holds profile ordering, the active marker, and the
-`[herdr]` knobs — no secrets (tokens live in the macOS Keychain). clauth
-rewrites the file in place, which would break a stow symlink on first write,
-exactly as Claude Code's `settings.json` does.
+Scope: **`profiles.toml` only.** The package must never reach
+`~/.clauth/profiles/<name>/credentials.json`, which holds OAuth tokens, nor
+per-profile `config.toml`, which may hold API keys.
 
-The package therefore follows the `claude/` precedent: the file is listed in
-`.stow-local-ignore`, copied into place by `_install/clauth.sh` only when
-absent, and copied back by `just clauth-sync` for review before committing.
+`profiles.toml` itself is secret-free but holds more than configuration:
+profile ordering, the active marker, fallback chains, thresholds, refresh
+cadence, quarantine state, theme and display settings, plus the `[herdr]`
+knobs. clauth rewrites it in place, so a stow symlink would break on first
+write — the same failure mode as Claude Code's `settings.json`.
+
+It therefore follows the `claude/` precedent: listed in `.stow-local-ignore`,
+copied into place by `_install/clauth.sh` only when absent, copied back by
+`just clauth-sync` for review before committing.
 
 Template values for `[herdr]`:
 
@@ -106,17 +140,37 @@ Template values for `[herdr]`:
 | `tag_watch_secs` | `3600` | see below |
 
 The plugin spawns a detached watcher per Claude pane that re-publishes the tag
-on a timer, defaulting to every 5 seconds. Its only purpose is to catch
-account changes that fire no herdr event — a `--with-fallback` session moving
-along the chain, or a bare `claude` after a global switch. Neither can occur
-in this design, so the interval is raised to the maximum the plugin accepts.
-The watcher cannot be disabled separately: it is gated on `pane_tag`, the same
-knob that enables the tag itself.
+every 5 seconds by default. Its only purpose is catching account changes that
+fire no herdr event — a `--with-fallback` session, or a bare `claude` after a
+global switch — neither of which can occur here. The interval is raised to the
+watcher's clamp ceiling. It cannot be disabled separately: it is gated on
+`pane_tag`, the knob that enables the tag itself.
 
-A `clauth/AGENTS.md` records the guardrails so they survive the next person
-(or agent) who touches this.
+**No fallback chain is configured.** This is load-bearing, not incidental —
+see the daemon below.
 
-### 5. MCP — declarative
+`clauth/AGENTS.md` records the guardrails.
+
+### 5. Daemon — kept, and inert by construction
+
+`clauth daemon`, started with the first herdr session and ended with the last,
+guarded by a PID lockfile in the manner of the existing `herdr-launch` wrapper.
+
+The first revision dropped it. That was wrong: besides executing switches, the
+daemon bootstraps usage caches, runs the same background refresher as the TUI,
+and performs rolling-token maintenance that keeps session tokens from expiring
+while idle (`src/daemon/mod.rs`, `src/usage/scheduler.rs`, `src/oauth.rs`).
+Without it, usage figures are fresh only while the popup is open and no token
+maintenance happens unattended — which directly undercuts "see usage without
+leaving the terminal".
+
+Its switching job stays inert without a feature flag:
+`next_auto_switch_target` (`src/fallback.rs`) locates the active profile in
+the chain with `position(...)?` and returns `None` when it is not a member.
+With no chain configured, no switch can ever be produced. This is why §4 fixes
+the empty chain as a requirement.
+
+### 6. MCP — declarative
 
 `claude/mcp-servers.json` gains:
 
@@ -124,24 +178,31 @@ A `clauth/AGENTS.md` records the guardrails so they survive the next person
 "clauth": { "type": "stdio", "command": "clauth", "args": ["mcp"] }
 ```
 
-This is the canonical stdio entry clauth would otherwise write itself
-(`src/plugin_probe.rs`), and `_install/claude.sh` merges it with jq like every
-other server. It replaces the TUI's plugin install, which registers a
-`SessionStart` hook that re-writes its own registration on every session start.
+The canonical stdio entry (`src/plugin_probe.rs`), merged by
+`_install/claude.sh` with jq like every other server. This avoids the Claude
+plugin install and its `SessionStart` self-heal hook.
 
-Exposed tools: `profiles`, `switch_profile`, `delegate`, `monitor`. Only
-`delegate` and `profiles` are useful here — `switch_profile` relinks globally
-and must not be called.
+Two capabilities are given up with that hook, and they are a real cost:
+
+- **Background delegates no longer re-wake the conversation** — the plugin's
+  `mcp-await-job` / `asyncRewake` hook is what does that. Blocking delegates
+  work; a backgrounded one must be polled with the `monitor` tool.
+- **Account-change and headroom notifications disappear.**
+
+Also note `clauth start` runs a plugin preflight on every launch
+(`src/start.rs`), which can self-heal a *previously installed* plugin. On a
+machine that never installed it there is nothing to heal; if one was ever
+installed, it must be removed explicitly for this to hold.
+
+Of the four exposed tools — `profiles`, `switch_profile`, `delegate`,
+`monitor` — `switch_profile` performs the global relink this design forbids
+and must not be called. Nothing enforces that.
 
 ## Explicitly out of scope
 
-- **`clauth daemon`.** Its jobs are executing queued auto-switches (dropped),
-  publishing `status.json` as an external read feed (nothing consumes it — the
-  sidebar tag is a profile name and the popup is the live TUI), and picking up
-  external config changes. Nothing here needs a background process.
-- **Global profile switching** (`clauth <profile>`), for the Keychain and
-  `settings.json` reasons above.
+- **Global profile switching** after enrollment.
 - **`clauth start --with-fallback`**, refused on macOS.
+- **A configured fallback chain**, which would arm the daemon's switching.
 
 ## Verification
 
@@ -149,21 +210,33 @@ and must not be called.
 |-------|-------------|
 | `herdr plugin list` | lists clauth |
 | `git diff herdr/.config/herdr/config.toml` after install | empty — proves `--no-config` holds |
-| `prefix+a` | opens the clauth popup |
+| `prefix+d` | opens the clauth popup |
+| `prefix+a` | still steps the agent queue (proves no clobber) |
 | sidebar after `clauth start <profile>` | shows the `clauth=<profile>` tag |
 | `clauth mcp` | answers a `server/discover` handshake |
-| `git status` after a clauth session | clean — proves zero drift |
+| MCP servers after enrollment step 1 | still authenticate |
+| `git status` after a clauth session | reviewed, not assumed clean — see the honest list |
 | `just check` | the new stow package links without conflict |
 
 ## Requires the user
 
-`clauth login <profile>` per account — an interactive browser OAuth flow that
-cannot be automated.
+`clauth login <profile>` per account, primary first — an interactive browser
+OAuth flow that cannot be automated.
+
+## Review provenance
+
+The first revision of this document contained four errors found by an
+independent review: `prefix+a` was claimed free while bound to `next_agent`;
+the first login's global activation was missed; per-session fallback was
+claimed not to exist; and "zero drift" was asserted from a partial reading of
+`settings_sync.rs`. Every source claim here was re-verified against
+github.com/uwuclxdy/clauth branch `mommy`.
 
 ## Open follow-ups
 
-- Revisit auto-fallback if clauth ever gains a macOS path (the blocker is
-  Claude Code's keychain-first resolution, not clauth's design).
-- `tag_watch_secs = 3600` is a workaround for a watcher that has no job in a
-  side-car setup. A `pane_tag`-without-watcher knob would be a reasonable
-  upstream feature request.
+- Revisit auto-fallback if Claude Code's keychain-first resolution on macOS
+  ever changes; clauth's side is already built.
+- `tag_watch_secs = 3600` works around a watcher with no job in a side-car
+  setup. A `pane_tag`-without-watcher knob is a reasonable upstream request.
+- Background-delegate re-wake without the plugin hook has no workaround today
+  beyond polling `monitor`.
