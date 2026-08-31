@@ -59,6 +59,32 @@ integration write-free:
    env) without a switch (`src/actions.rs`). Avoided by not editing profiles
    through clauth once they are set up.
 
+**Addendum, 2026-09-01 — the list above was incomplete.** Two further write
+paths only surfaced during implementation, and both had already fired before
+they were noticed:
+
+4. **`clauth completions --install` appends to `~/.zshrc`** (`src/completions.rs`),
+   which is a stow symlink, so the line landed in the repository complete with
+   an absolute `/Users/<name>/…` path. It is offered automatically on the first
+   interactive launch and gated by a sentinel at `~/.clauth/.completions_installed`,
+   so it asks once. Decline it; completions are sourced from
+   `zsh/conf.d/66-clauth.zsh` using `$HOME`.
+5. **The TUI populates `fallback_chain`**, which is the one thing arming the
+   daemon's auto-switch. It does not fill itself — `fallback_chain.push` has a
+   single call site (`add_chain_candidate`) reached from one TUI action — but
+   it filled twice during setup.
+
+An enumeration afterwards showed there is no sixth path: of every file clauth
+can write outside `~/.clauth`, exactly two are stow symlinks into this
+repository (`~/.zshrc` and herdr's `config.toml`), and both are now defended.
+`~/.claude/settings.json` and `~/.claude.json` are regular files, so writes
+there reach the repository only through an explicit sync.
+
+The lesson generalizing beyond clauth: a tool that promises not to touch your
+config can still reach it through paths you did not enumerate. Diffing the
+tool's write targets against the symlink set is what settles the question —
+reading its documentation is not.
+
 Point 2 matters because `claude/AGENTS.md` defines `~/.claude/settings.json`
 as copied into the repo by `just claude-sync`: a later sync can import
 clauth-influenced changes. This is drift the repository can see and review —
