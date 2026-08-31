@@ -262,6 +262,10 @@ cargo-dump:
     @echo "Compare with {{ DOTFILES }}/_install/cargo-tools.list — anything extra"
     @echo "either belongs in the list, or in brew/Brewfile.* if a formula exists."
 
+# Register the clauth herdr plugin (never writes herdr's config)
+clauth:
+    bash {{ DOTFILES }}/_install/clauth.sh
+
 # Install asdf plugins
 asdf:
     source {{ DOTFILES }}/asdf/plugins.sh

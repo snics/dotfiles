@@ -3,6 +3,10 @@
 # points here, so plugins.lock is written next to this file and both are versioned.
 # Sync:   herdr-lazy sync --prune   (install missing, remove unlisted)
 # Update: herdr-lazy update         (all unpinned plugins) — or `update herdr`
+#
+# NOT a complete inventory of installed plugins: the clauth plugin ships inside
+# the clauth binary rather than as a standalone repo, so it is registered by
+# _install/clauth.sh (`just clauth`) and never appears here.
 
 # The plugin manager itself
 natori-hrj/herdr-lazy

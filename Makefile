@@ -14,7 +14,7 @@ GUI_PACKAGES := ghostty zed cursor obsidian
 ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
 .PHONY: all install link link-cli link-gui unlink relink update macos dock project-folders \
-        golang rust cargo-tools cargo-tools-update cargo-dump asdf \
+        golang rust cargo-tools cargo-tools-update cargo-dump clauth asdf \
         herdr-plugins herdr-plugins-update herdr-plugins-restore check lint test test-symlinks test-configs help \
         zsh git nvim ghostty tmux lazygit k9s tuicr hunk hunk-skill worktrunk worktrunk-plugins wt-issue-skill herdr zed opencode claude cursor obsidian \
         brew-gen brew-install brew-tap brew-trust brew-list brew-check brew-cleanup \
@@ -216,6 +216,9 @@ cargo-dump: ## List cargo-installed crates for drift comparison
 	@echo ""
 	@echo "Compare with $(DOTFILES)/_install/cargo-tools.list — anything extra"
 	@echo "either belongs in the list, or in brew/Brewfile.* if a formula exists."
+
+clauth: ## Register the clauth herdr plugin (never writes herdr's config)
+	bash $(DOTFILES)/_install/clauth.sh
 
 asdf: ## Install asdf plugins
 	source $(DOTFILES)/asdf/plugins.sh
