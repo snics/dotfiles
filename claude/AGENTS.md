@@ -42,6 +42,26 @@ Do **not** re-add `settings.json` to the stow symlink set, and do not
 - `includeCoAuthoredBy: false` — enforces the "no Co-Authored-By trailers" rule
   from the global CLAUDE.md at the harness level.
 
+## `autoMode.environment` is stripped on sync — do not re-add it
+
+Claude Code auto-generates `autoMode.environment` from whatever repository it
+was last run in. In this case it captured an employer's infrastructure: the
+self-hosted GitLab host and project paths, where secrets live in that repo,
+internal services, branch-protection rules, and an absolute worktree path. No
+credentials, but a map to them — and this repository is public.
+
+It reached GitHub on 2026-08-29 via `bc9d20b6`, an ordinary `claude-sync`, and
+was removed again on 2026-09-01. Removing it does not un-publish it; the git
+history on the remote still carries it. What the removal stops is further
+exposure, and the `jq 'del(.autoMode.environment)'` filter in `claude-sync` is
+what stops it coming straight back on the next sync.
+
+The block stays in the LIVE `~/.claude/settings.json` — Claude Code needs it,
+and it is fine there. It is only kept out of the repository.
+
+`autoMode.allow` and `soft_deny` are deliberately left in: generic CLI patterns
+(`glab issue view`, `npm run doctor`) with no hostnames or paths.
+
 ## Sync obligation
 
 When you change Claude Code settings and want them tracked, run `just claude-sync`

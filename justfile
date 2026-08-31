@@ -142,8 +142,9 @@ claude:
 
 # Sync live ~/.claude/settings.json back into the repo (Claude rewrites it in place, breaking the symlink)
 claude-sync:
-    @cp "$HOME/.claude/settings.json" {{ DOTFILES }}/claude/.claude/settings.json
-    @echo "Synced ~/.claude/settings.json → repo. Review the diff and commit."
+    @jq 'del(.autoMode.environment)' "$HOME/.claude/settings.json" > {{ DOTFILES }}/claude/.claude/settings.json
+    @echo "Synced ~/.claude/settings.json → repo (autoMode.environment stripped)."
+    @echo "Review the diff and commit."
 
 # Sync live ~/.clauth/profiles.toml back into the repo
 clauth-sync:

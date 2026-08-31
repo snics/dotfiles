@@ -120,9 +120,10 @@ opencode: ## Link opencode config
 claude: ## Link claude config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" claude
 
-claude-sync: ## Sync live ~/.claude/settings.json back into the repo
-	@cp "$(HOME)/.claude/settings.json" $(DOTFILES)/claude/.claude/settings.json
-	@echo "Synced ~/.claude/settings.json -> repo. Review the diff and commit."
+claude-sync: ## Sync live ~/.claude/settings.json back into the repo (strips autoMode.environment)
+	@jq 'del(.autoMode.environment)' "$(HOME)/.claude/settings.json" > $(DOTFILES)/claude/.claude/settings.json
+	@echo "Synced ~/.claude/settings.json -> repo (autoMode.environment stripped)."
+	@echo "Review the diff and commit."
 
 clauth-sync: ## Sync live ~/.clauth/profiles.toml back into the repo
 	@cp "$(HOME)/.clauth/profiles.toml" $(DOTFILES)/clauth/.clauth/profiles.toml

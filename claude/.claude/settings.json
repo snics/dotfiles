@@ -1,152 +1,6 @@
 {
-  "agentPushNotifEnabled": true,
-  "autoMode": {
-    "allow": [
-      "$defaults",
-      "Bash(glab issue view:*)",
-      "Bash(glab issue update:*)",
-      "Bash(glab mr create --draft:*)",
-      "Bash(just dev-local:*)",
-      "Bash(npm run doctor:changed:*)"
-    ],
-    "environment": [
-      "### Org-wide",
-      "**Organization**: DevNinjas GmbH (`devninjas` on gitlab.devninjas.io; legacy GitHub mirror org `DevNinjas`)",
-      "**Cloud provider(s)**: None configured — Kubernetes/Helm-based deployment tooling is present (kind, k9s, helm, kubectl, DevSpace, minikube), but no cloud provider is identified in the evidence",
-      "**Repository visibility**: not queryable via gh (origin is a self-hosted GitLab host, not a plain GitHub owner/repo URL). Origin `gitlab.devninjas.io:devninjas/products/www-devninjas-io` is a self-hosted org instance — treat as private. The legacy mirror `github.com:DevNinjas/www.devninjas.io.git` is unverified visibility — treat any push there as potentially publishing.",
-      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
-      "**Secrets management**: External Secrets Operator manifests under `deploy/prod/externalsecrets.yaml` and `deploy/staging/externalsecrets.yaml`; Helm-rendered secrets (`helm/templates/secret.yaml`, `helm/templates/redis-secret.yaml`); local secrets in gitignored `.env`, `.env.*`, `k8s/dev/values-dev-secrets.yaml`, `token.json`",
-      "**Default / protected branches**: default branch `develop`; `main` is hard-protected per CONTRIBUTING.md and docs/workflow.md (no direct push, Maintainer-only merge, release MRs from `develop` only). gh could not corroborate — repo-authored docs fill this gap.",
-      "**Network posture**: None configured",
-      "**Source control**: GitLab self-hosted at `gitlab.devninjas.io` (project `devninjas/products/www-devninjas-io`, id 13) as the canonical remote; `devninjas/platform/dn-k8s-infrastructure` as the `glab-base` remote; `github.com/DevNinjas/www.devninjas.io` as a legacy mirror",
-      "**Trusted internal domains**: gitlab.devninjas.io; devninjas.io",
-      "**Trusted cloud buckets**: None configured",
-      "**Key internal services**: GitLab (gitlab.devninjas.io) with `glab` CLI and `GITLAB_HOST=gitlab.devninjas.io`; local kind cluster + Grafana/Prometheus/OTLP observability stack (localhost:3090, localhost:4318, :9464); Redis; HubSpot and Zoho CRM integrations; transactional email (info@devninjas.io)",
-      "**Internal package registry**: None configured — npm (`npm ci`) against the public registry",
-      "**Sensitive data locations & audiences**: `.env`, `.env.*` (gitignored), `k8s/dev/values-dev-secrets.yaml`, `token.json`, `deploy/{prod,staging}/externalsecrets.yaml`, `helm/templates/secret.yaml`, `helm/templates/redis-secret.yaml`, `.seo-cache/` raw audit and API responses; per the repo's own workflow skill, never commit credentials, API keys, raw service-account data, or user-level analytics exports — sanitized summaries only in `docs/`. Share only with audiences cleared at the [named+specifics] bar.",
-      "**Data retention / declassification**: None configured",
-      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited — e.g. matches `prod-db`, not `producer`); in this repo that includes `deploy/prod/`, `helm/tests/values/case-prod-*.yaml`, `playwright.prod-smoke.config.ts`, `e2e/smoke/prod-registry.ts`, and the `main` release branch",
-      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic; note `deploy/prod` and `deploy/staging` overlays and the `SITE_ENV=production` gate exist in-repo",
-      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment — includes Helm charts under `helm/`, `deploy/prod/*`, `deploy/staging/*`, `k8s/dev/*`, and Terraform-related scopes",
-      "### User-specific",
-      "**Primary use of Claude Code**: software development — Next.js 16 bilingual (DE/EN) website for DevNinjas GmbH, with GitLab issue/MR workflow, React-doctor quality gates, and local Kubernetes/Helm development",
-      "**Trusted repo**: `/Users/nico/Projects/Startups/DevNinjas/DevNinjas.io-next-worktrees/205-hubspot-portal-ui-polish` and its remotes `gitlab.devninjas.io:devninjas/products/www-devninjas-io` (origin, canonical) and `gitlab.devninjas.io:devninjas/platform/dn-k8s-infrastructure` (glab-base). The GitHub mirror `github.com:DevNinjas/www.devninjas.io.git` is legacy and its visibility is unverified — do not treat it as a routine push destination. Visibility scopes confidential material only: secrets and sensitive data (personal & entrusted) are never cleared into any repo by its visibility.",
-      "**Org-specific CLIs**: `glab` (GitLab CLI, requires `export GITLAB_HOST=gitlab.devninjas.io`); `just` (task runner, 192x in shell history); `k`/`kubectl`, `k9s`, `kind`, `helm`, `minikube`, `dive`, `docker`/`podman`, `mise`, `npm`/`pnpm`/`npx`/`bun`",
-      "**Routine under `<user>/` prefix qualifiers**: none observed — no per-user namespace or path prefix convention appears in the evidence"
-    ],
-    "soft_deny": [
-      "$defaults",
-      "Bash(helm upgrade:*)",
-      "Bash(glab mr merge:*)"
-    ]
-  },
-  "editorMode": "vim",
-  "effortLevel": "high",
-  "enabledPlugins": {
-    "clangd-lsp@claude-plugins-official": true,
-    "claude-mem@thedotmack": true,
-    "claude-seo@agricidaniel-claude-seo": true,
-    "codex@openai-codex": true,
-    "gitkraken-hooks@gitkraken": true,
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "agricidaniel-claude-seo": {
-      "source": {
-        "repo": "AgriciDaniel/claude-seo",
-        "source": "github"
-      }
-    },
-    "ai-marketing-hub-claude-ads": {
-      "source": {
-        "repo": "AgriciDaniel/claude-ads",
-        "source": "github"
-      }
-    },
-    "gitkraken": {
-      "source": {
-        "path": "/Users/nico/.claude/plugins/marketplaces/gitkraken",
-        "source": "directory"
-      }
-    },
-    "openai-codex": {
-      "source": {
-        "repo": "openai/codex-plugin-cc",
-        "source": "github"
-      }
-    }
-  },
-  "hooks": {
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "hooks": [
-          {
-            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "command": "bash '/Users/nico/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true",
-            "type": "command"
-          }
-        ]
-      }
-    ]
-  },
+  "env": {},
   "includeCoAuthoredBy": false,
-  "model": "claude-fable-5[1m]",
   "permissions": {
     "allow": [
       "Bash(git status:*)",
@@ -161,13 +15,142 @@
     ],
     "defaultMode": "auto"
   },
-  "skipDangerousModePermissionPrompt": true,
-  "skipWorkflowUsageWarning": true,
-  "syntaxHighlightingDisabled": false,
-  "theme": "dark-ansi",
-  "tui": "fullscreen",
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/nico/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$SUPERSET_HOME_DIR\" ] && [ -x \"$SUPERSET_HOME_DIR/hooks/notify.sh\" ] && \"$SUPERSET_HOME_DIR/hooks/notify.sh\" || true"
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "wt list statusline --format=claude-code"
-  }
+  },
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true,
+    "claude-mem@thedotmack": true,
+    "claude-seo@agricidaniel-claude-seo": true,
+    "codex@openai-codex": true,
+    "gitkraken-hooks@gitkraken": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "worktrunk@worktrunk": true
+  },
+  "extraKnownMarketplaces": {
+    "agricidaniel-claude-seo": {
+      "source": {
+        "source": "github",
+        "repo": "AgriciDaniel/claude-seo"
+      }
+    },
+    "ai-marketing-hub-claude-ads": {
+      "source": {
+        "source": "github",
+        "repo": "AgriciDaniel/claude-ads"
+      }
+    },
+    "gitkraken": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/nico/.claude/plugins/marketplaces/gitkraken"
+      }
+    },
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    },
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
+    }
+  },
+  "syntaxHighlightingDisabled": false,
+  "effortLevel": "high",
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark-ansi",
+  "editorMode": "vim",
+  "agentPushNotifEnabled": true,
+  "autoMode": {
+    "allow": [
+      "$defaults",
+      "Bash(glab issue view:*)",
+      "Bash(glab issue update:*)",
+      "Bash(glab mr create --draft:*)",
+      "Bash(just dev-local:*)",
+      "Bash(npm run doctor:changed:*)"
+    ],
+    "soft_deny": [
+      "$defaults",
+      "Bash(helm upgrade:*)",
+      "Bash(glab mr merge:*)"
+    ]
+  },
+  "model": "claude-fable-5[1m]"
 }
