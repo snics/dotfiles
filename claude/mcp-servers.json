@@ -24,5 +24,13 @@
     "headers": {
       "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
     }
+  },
+  "clauth": {
+    "type": "stdio",
+    "command": "clauth",
+    "args": [
+      "mcp"
+    ],
+    "env": {}
   }
 }
