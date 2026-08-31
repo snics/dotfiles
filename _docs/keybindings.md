@@ -200,6 +200,7 @@ create with directory picker · `s` stop · `d` delete · `/` search · `q` quit
 | `Prefix + Shift+m` | Send collected Hunk comments to the agent (m = message) |
 | `Prefix + Shift+g` | Worktrunk worktree picker (see Workspaces & Agents) — replaced the sessionizer picker so only one tool creates worktrees |
 | `Prefix + m` | Worktrunk merge — `wt merge` the workspace's worktree into the default branch (squash → rebase → hooks → cleanup). Not `Prefix + w`/`Shift+w`: herdr built-ins (workspace picker / rename workspace) |
+| `Prefix + d` | clauth accounts — usage windows and profile switcher in a popup (d = dashboard). Not clauth's default `Prefix + a`: that is the `next_agent` built-in |
 | `Cmd+o` / `Cmd+Shift+o` | File viewer (overview of agent changes) in split / own tab |
 | `Cmd+p` | Project picker (sessionizer) — fuzzy over all repos under ~/Projects, opens with the default layout |
 | `Prefix + .` | Quick actions — fuzzy one-off scripts in the current dir |

@@ -394,6 +394,16 @@ type = "shell"
 command = "zed ."
 description = "Open current dir in Zed (GUI)"
 
+# clauth herdr plugin — accounts, usage windows, profile switcher in a popup.
+# d = dashboard. NOT clauth's default prefix+a, which is next_agent above;
+# `clauth herdr install --no-config` skips its own conflict check, so this key
+# was verified by hand against both binding syntaxes.
+[[keys.command]]
+key = "prefix+d"
+type = "plugin_action"
+command = "clauth.open"
+description = "clauth accounts"
+
 [ui]
 # Draw borders around split panes and keep them visually separated
 # with gaps instead of shared divider lines.
@@ -431,6 +441,13 @@ position = "bottom-right"
 # herdr play its own chime for background agent state changes instead.
 [ui.sound]
 enabled = true
+
+# clauth herdr plugin: `$clauth` renders the account each Claude Code pane burns.
+# Placement is load-bearing — this is a sub-table of [ui], so putting it among
+# [ui]'s bare keys would silently reassign every following key to it. It has to
+# sit after the last of them, and before [experimental] for the same reason.
+[ui.sidebar.agents.rows_by_agent]
+claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent", "$clauth"]]
 
 [experimental]
 # Kitty graphics passthrough — Ghostty speaks the protocol, so panes can
