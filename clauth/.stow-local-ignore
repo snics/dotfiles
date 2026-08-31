@@ -1,0 +1,16 @@
+# This package is NOT meant to be stowed, and this file is the guard.
+#
+# clauth rewrites ~/.clauth/profiles.toml in place (profile ordering, the
+# active marker), which destroys a stow symlink and leaves the repo copy
+# stale — the same failure mode as Claude Code's settings.json. The file is
+# bootstrap-copied by _install/clauth.sh and synced back with
+# `just clauth-sync`.
+#
+# Without this ignore, an accidental `stow clauth` would symlink profiles.toml
+# into the repo and cause exactly the breakage the copy pattern avoids, since
+# ~/.clauth already exists as a real directory and stow would descend into it.
+profiles\.toml
+
+# Docs (local ignore overrides the global one, so re-list essentials)
+^/README.*
+AGENTS\.md

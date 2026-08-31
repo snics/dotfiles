@@ -31,5 +31,19 @@ fi
 echo "  → registering the clauth herdr plugin (config left untouched)"
 clauth herdr install --no-config -y
 
+# profiles.toml is intentionally NOT symlinked: clauth rewrites it in place
+# (profile ordering, the active marker), which destroys a stow symlink and
+# leaves the repo copy stale. Bootstrap-copy the template if none exists;
+# afterwards sync the live file back with `just clauth-sync`.
+PROFILES_SRC="$(dirname "${BASH_SOURCE[0]}")/../clauth/.clauth/profiles.toml"
+PROFILES_DST="$HOME/.clauth/profiles.toml"
+mkdir -p "$HOME/.clauth"
+if [ ! -e "$PROFILES_DST" ]; then
+    cp "$PROFILES_SRC" "$PROFILES_DST"
+    echo "  profiles.toml copied to ~/.clauth/"
+else
+    echo "  profiles.toml already exists — left untouched (use 'just clauth-sync' to update the repo)"
+fi
+
 echo "Done. Verify with: herdr plugin list | grep clauth"
 echo "Reminder: never run 'clauth herdr install' without --no-config."

@@ -14,7 +14,7 @@ GUI_PACKAGES := ghostty zed cursor obsidian
 ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
 .PHONY: all install link link-cli link-gui unlink relink update macos dock project-folders \
-        golang rust cargo-tools cargo-tools-update cargo-dump clauth asdf \
+        golang rust cargo-tools cargo-tools-update cargo-dump clauth clauth-sync asdf \
         herdr-plugins herdr-plugins-update herdr-plugins-restore check lint test test-symlinks test-configs help \
         zsh git nvim ghostty tmux lazygit k9s tuicr hunk hunk-skill worktrunk worktrunk-plugins wt-issue-skill herdr zed opencode claude cursor obsidian \
         brew-gen brew-install brew-tap brew-trust brew-list brew-check brew-cleanup \
@@ -123,6 +123,10 @@ claude: ## Link claude config
 claude-sync: ## Sync live ~/.claude/settings.json back into the repo
 	@cp "$(HOME)/.claude/settings.json" $(DOTFILES)/claude/.claude/settings.json
 	@echo "Synced ~/.claude/settings.json -> repo. Review the diff and commit."
+
+clauth-sync: ## Sync live ~/.clauth/profiles.toml back into the repo
+	@cp "$(HOME)/.clauth/profiles.toml" $(DOTFILES)/clauth/.clauth/profiles.toml
+	@echo "Synced ~/.clauth/profiles.toml -> repo. Review the diff and commit."
 
 cursor: ## Link cursor config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" cursor

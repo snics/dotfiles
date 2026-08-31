@@ -17,6 +17,8 @@ _planning/   → Project planning docs (not a stow package)
 asdf/        → asdf version manager plugins
 brew/        → Split Brewfiles (Brewfile.00-taps … Brewfile.90-mas, not a stow package)
 claude/      → ~/.claude/ (Claude Code user config, MCP servers)
+clauth/      → ~/.clauth/ (multi-account manager for Claude Code; NOT stowed —
+               copied like claude/settings.json, see clauth/AGENTS.md)
 cursor/      → Cursor editor config
 ghostty/     → ~/.config/ghostty/ (terminal emulator)
 git/         → ~/.config/git/ + ~/.gitconfig
@@ -54,6 +56,7 @@ Detailed rules live in each package's `AGENTS.md`:
 | `nvim/AGENTS.md` | NeoVim config, keybindings, cross-sync with Zed |
 | `zed/AGENTS.md` | Zed editor config, keybindings, cross-sync with NeoVim |
 | `claude/AGENTS.md` | Claude Code settings.json copy/sync (not symlinked) |
+| `clauth/AGENTS.md` | clauth profiles.toml copy/sync, guardrails, git pin |
 
 ## Justfile / Makefile Sync Rule
 

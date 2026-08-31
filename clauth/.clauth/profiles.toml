@@ -1,0 +1,17 @@
+active_profile = "work"
+profiles = [
+    "work",
+    "private",
+]
+fallback_chain = []
+wrap_off = false
+theme = "full"
+refresh_interval_ms = 90000
+
+[herdr]
+popup_width = "fit"
+pane_tag = true
+tag_watch_secs = 3600
+border_label = false
+delegate_dot = true
+delegate_row_text = false

@@ -283,6 +283,7 @@ This dotfiles repository uses the following structure:
 ├── asdf/              # asdf version manager configuration
 ├── brew/              # Split Brewfiles (13 categories, concatenated at shell startup)
 ├── claude/            # Claude Code config and MCP servers
+├── clauth/            # Multi-account manager for Claude Code (copied, not stowed)
 ├── cursor/            # Cursor editor config
 ├── ghostty/           # Ghostty terminal configuration
 ├── git/               # Git configuration and themes
