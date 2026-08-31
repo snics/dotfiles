@@ -48,24 +48,40 @@ else
     echo "  ! cargo-binstall missing — falling back to source builds (brew bundle installs it)."
 fi
 
-# Snapshot what is currently installed: "name v1.2.3:" lines from cargo's own list.
-INSTALLED="$(cargo install --list 2>/dev/null | grep -E '^[^ ].* v[0-9]' || true)"
+# Snapshot what is currently installed. A FAILING `cargo install --list` must not
+# read as "nothing is installed" — that would silently reinstall every crate in
+# the manifest over a corrupt or unreadable cargo state instead of reporting it.
+if ! INSTALLED_RAW="$(cargo install --list 2>&1)"; then
+    echo "  ERROR: \`cargo install --list\` failed — refusing to assume nothing is installed."
+    printf '%s\n' "$INSTALLED_RAW" | sed 's/^/    /'
+    exit 1
+fi
+INSTALLED="$(printf '%s\n' "$INSTALLED_RAW" | grep -E '^[^[:space:]].* v[0-9]' || true)"
 
 installed_version() {
     # $1 = crate name → prints the installed version, or nothing when absent.
-    echo "$INSTALLED" | sed -n "s/^$1 v\([^:]*\):.*/\1/p" | head -1
+    # awk on whole fields rather than a regex with the name interpolated into it:
+    # a locally-sourced crate prints `name v1.2.3 (/path):`, where a "everything
+    # up to the first colon" capture would return the path along with the version.
+    printf '%s\n' "$INSTALLED" | awk -v n="$1" '
+        $1 == n && $2 ~ /^v[0-9]/ { v = substr($2, 2); sub(/:$/, "", v); print v; exit }'
 }
 
 install_crate() {
-    # $1 = crate name, $2 = pinned version (may be empty)
-    local name="$1" version="$2"
+    # $1 = crate name, $2 = pinned version (may be empty).
+    # Returns non-zero on failure; every caller runs it as an `if` condition so a
+    # single unbuildable crate does not abort the rest of the manifest under -e.
+    local name="$1" version="$2" spec="$1"
+    [[ -n "$version" ]] && spec="${name}@${version}"
     if [[ "$HAVE_BINSTALL" == "1" ]]; then
-        if [[ -n "$version" ]]; then
-            cargo binstall --no-confirm "${name}@${version}" && return 0
-        else
-            cargo binstall --no-confirm "$name" && return 0
+        if cargo binstall --no-confirm "$spec"; then
+            return 0
         fi
-        echo "    binstall found no prebuilt artifact — building from source"
+        # Deliberately vague: binstall exits non-zero for a missing artifact and
+        # for network, checksum and argument errors alike, and it does not
+        # distinguish them in its status. Claiming "no prebuilt artifact" here
+        # would misreport the other three.
+        echo "    binstall did not succeed — falling back to a source build"
     fi
     if [[ -n "$version" ]]; then
         cargo install --locked --version "$version" "$name"
@@ -76,36 +92,64 @@ install_crate() {
 
 changed=0
 skipped=0
+failed=0
 
-while IFS= read -r line; do
-    # Strip comments and surrounding whitespace, skip blanks.
+# `|| [[ -n "$line" ]]` so a manifest whose last line lacks a trailing newline
+# still yields that crate instead of dropping it.
+while IFS= read -r line || [[ -n "$line" ]]; do
     entry="${line%%#*}"
-    entry="$(echo "$entry" | tr -d '[:space:]')"
+    # Trim leading and trailing whitespace ONLY. Deleting all whitespace would
+    # turn a typo like `foo bar` into the single crate `foobar` and install it.
+    entry="${entry#"${entry%%[![:space:]]*}"}"
+    entry="${entry%"${entry##*[![:space:]]}"}"
     [[ -z "$entry" ]] && continue
+
+    case "$entry" in
+        *[[:space:]]*)
+            echo "  ERROR: malformed entry '${entry}' in ${LIST} (embedded whitespace)."
+            exit 1
+            ;;
+        *@*@*)
+            echo "  ERROR: malformed entry '${entry}' in ${LIST} (more than one '@')."
+            exit 1
+            ;;
+    esac
 
     name="${entry%%@*}"
     version=""
     [[ "$entry" == *"@"* ]] && version="${entry#*@}"
+    if [[ -z "$name" ]] || { [[ "$entry" == *"@"* ]] && [[ -z "$version" ]]; }; then
+        echo "  ERROR: malformed entry '${entry}' in ${LIST} (empty crate name or version)."
+        exit 1
+    fi
 
     current="$(installed_version "$name")"
+    action=""
 
     if [[ -z "$current" ]]; then
         echo "  → installing ${entry}"
-        install_crate "$name" "$version"
-        changed=$((changed + 1))
+        action="install"
     elif [[ -n "$version" && "$current" != "$version" ]]; then
         echo "  → ${name}: pinned ${version}, installed ${current} — converging"
-        install_crate "$name" "$version"
-        changed=$((changed + 1))
+        action="install"
     elif [[ -z "$version" && "$MODE" == "update" ]]; then
         echo "  → updating ${name} (currently ${current})"
-        install_crate "$name" ""
-        changed=$((changed + 1))
+        action="install"
     else
         echo "  ○ ${name} ${current} already present"
         skipped=$((skipped + 1))
     fi
+
+    if [[ "$action" == "install" ]]; then
+        if install_crate "$name" "$version"; then
+            changed=$((changed + 1))
+        else
+            echo "  ✗ ${entry} failed — continuing with the rest of the manifest"
+            failed=$((failed + 1))
+        fi
+    fi
 done < "$LIST"
 
-echo "Done. ${changed} installed/updated, ${skipped} already current."
+echo "Done. ${changed} installed/updated, ${skipped} already current, ${failed} failed."
 echo "Verify with: cargo install --list"
+[[ "$failed" -eq 0 ]] || exit 1
