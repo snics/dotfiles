@@ -20,6 +20,8 @@ zsh/
 │   ├── 50-keybindings.zsh   # Emacs mode + macOS Alt+C fix
 │   ├── 60-atuin.zsh         # Atuin init + autosuggestions strategy
 │   ├── 65-worktrunk.zsh     # Worktrunk (wt) shell function + completions
+│   ├── 66-clauth.zsh        # Starts `clauth daemon` in herdr panes (PID lockfile,
+│   │                        #   skipped until an account is enrolled)
 │   ├── 70-functions.zsh     # Functions auto-loader
 │   ├── 75-herdr-claude-session.zsh # Unset inherited agent session markers
 │   ├── 80-gnu-generic.zsh  # _gnu_generic fallback for tools without completions
