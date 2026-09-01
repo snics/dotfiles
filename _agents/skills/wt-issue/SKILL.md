@@ -65,12 +65,29 @@ Nobody is ever prompted. The chosen mode is printed to stderr on every run.
 `wt publish` pushes the current branch and, in MR mode, opens the draft MR in
 the same round-trip via GitLab's merge-request push options: draft, target =
 the remote's default branch, source branch removed on merge, title
-`Resolve "<issue title>"`, description `Closes #<N>` taken from the branch
-name. A merge request that is already open is detected and left alone.
+`Resolve "<issue title>"`, and a reference to the issue whose number is in the
+branch name. A merge request that is already open is detected and left alone.
 
 - `wt publish` — push, opening the draft MR if MR mode says so
 - `wt publish --no-mr` — push this branch bare, and remember that
+- `wt publish --closes` / `--refs` — force the issue keyword
 - `wt publish --dry-run` — print the git command instead of running it
+
+### Closes or Refs
+
+GitLab closes an issue the moment a closing pattern reaches the **default**
+branch — and the default branch is not always the finish line. In a
+develop-flow project it is `develop`, where a merge means "integrated", not
+"released and tested". So the keyword follows the MR target:
+
+| Target | Keyword | Effect |
+|---|---|---|
+| `main` / `master` | `Closes #<N>` | the merge finishes the ticket |
+| anything else, or unknown | `Refs #<N>` | links issue and MR, closes nothing |
+
+With `Refs`, the ticket closes on the `develop` → `main` merge (put the closing
+pattern in that merge commit's message) or by hand. `--closes` / `--refs`
+override the rule per push.
 
 worktrunk itself has no remote push: `wt step push` fast-forwards a *local*
 branch ("no commits leave the repository", per its own help). `wt publish` is

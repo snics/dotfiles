@@ -5,11 +5,12 @@
 # PATH) or directly as `wt-publish …`.
 #
 # Usage:
-#   wt publish [--mr|--no-mr] [--remote <name>] [--dry-run]
+#   wt publish [--mr|--no-mr] [--closes|--refs] [--remote <name>] [--dry-run]
 #
 #   --mr/--no-mr   Force MR mode on/off for this branch, overriding the stored
 #                  decision and the repo heuristic (last one wins). The new
 #                  value is stored, so later pushes follow it too.
+#   --closes/--refs  Force the issue keyword, overriding the target-branch rule
 #   --remote       Remote to push to (default: origin, else the only remote)
 #   --dry-run      Print the git command instead of running it
 #
@@ -20,10 +21,16 @@
 #
 # In MR mode the first push carries GitLab's merge-request push options, so the
 # draft MR is created by the push itself — no glab round-trip, no second call
-# that can half-fail. `Closes #<N>` comes from the issue number in the branch
-# name (the <N>-<slug> shape wt-issue creates); GitLab would infer it from that
-# prefix anyway, but stating it explicitly makes the result independent of the
-# project's closing-pattern configuration.
+# that can half-fail. The issue number comes from the branch name (the
+# <N>-<slug> shape wt-issue creates).
+#
+# Which keyword it gets depends on where the MR lands, because GitLab closes an
+# issue as soon as the closing pattern reaches the DEFAULT branch — and a
+# default branch is not always the finish line. In a develop-flow project it is
+# `develop`, where a merge means "integrated", not "released and tested":
+#   target main/master → `Closes #<N>`  the merge finishes the ticket
+#   target anything else → `Refs #<N>`  links both, closes nothing
+# The ticket then closes on the develop → main merge, or by hand.
 #
 # MR mode is read from branch.<branch>.wtIssueMr, written by wt-issue. For a
 # branch that never went through wt issue, the same heuristic applies here:
@@ -33,13 +40,17 @@ set -euo pipefail
 die() { printf 'wt-publish: %s\n' "$*" >&2; exit 1; }
 
 mr_flag="" remote="" dry_run=false
+# Empty means "not given" — the target branch then decides.
+keyword_flag=""
 while (( $# )); do
   case "$1" in
     --mr)      mr_flag=true;  shift ;;
     --no-mr)   mr_flag=false; shift ;;
+    --closes)  keyword_flag="Closes"; shift ;;
+    --refs)    keyword_flag="Refs";   shift ;;
     --remote)  remote="${2:?--remote needs a value}"; shift 2 ;;
     --dry-run) dry_run=true; shift ;;
-    -h|--help) sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help) sed -n '2,37p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)         die "unknown argument: $1" ;;
   esac
 done
@@ -60,11 +71,14 @@ if [[ -z "$remote" ]]; then
 fi
 
 # MR mode — flag > stored decision > heuristic (same chain as wt-issue).
+# A dry run answers the question without answering it permanently: it must not
+# write config into a repository it was only asked to inspect.
+remember() { $dry_run || git config --local "$mr_key" "$1"; }
 mr_key="branch.${branch}.wtIssueMr"
 mr_stored="$(git config --get --bool "$mr_key" 2>/dev/null || true)"
 if [[ -n "$mr_flag" ]]; then
   mr_mode="$mr_flag"
-  git config --local "$mr_key" "$mr_mode"
+  remember "$mr_mode"
 elif [[ -n "$mr_stored" ]]; then
   mr_mode="$mr_stored"
 else
@@ -74,7 +88,7 @@ else
   else
     mr_mode=false
   fi
-  git config --local "$mr_key" "$mr_mode"
+  remember "$mr_mode"
 fi
 
 # Push options only make sense for a merge request that does not exist yet.
@@ -102,7 +116,18 @@ if [[ "$mr_mode" == true && -z "$open_mr" ]]; then
   issue=""
   [[ "$branch" =~ ^([0-9]+)- ]] && issue="${BASH_REMATCH[1]}"
   if [[ -n "$issue" ]]; then
-    args+=(-o "merge_request.description=Closes #${issue}")
+    # Only a merge into main/master is the end of the ticket. Without a known
+    # target (no remote HEAD) stay on the safe side and merely reference it: a
+    # missed close is a click, a premature one loses the tested-before-closed
+    # step the develop flow exists for.
+    if [[ -n "$keyword_flag" ]]; then
+      keyword="$keyword_flag"
+    elif [[ "$target" == main || "$target" == master ]]; then
+      keyword="Closes"
+    else
+      keyword="Refs"
+    fi
+    args+=(-o "merge_request.description=${keyword} #${issue}")
     if command -v glab >/dev/null && command -v jq >/dev/null; then
       # GitLab's own wording for an MR opened from an issue.
       issue_title="$(glab issue view "$issue" -F json 2>/dev/null \
