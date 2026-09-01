@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+# wt-publish — push the current branch to the remote, opening its draft MR.
+#
+# Invoked as `wt publish …` (worktrunk custom subcommand: any wt-<name> on
+# PATH) or directly as `wt-publish …`.
+#
+# Usage:
+#   wt publish [--mr|--no-mr] [--remote <name>] [--dry-run]
+#
+#   --mr/--no-mr   Force MR mode on/off for this branch, overriding the stored
+#                  decision and the repo heuristic (last one wins). The new
+#                  value is stored, so later pushes follow it too.
+#   --remote       Remote to push to (default: origin, else the only remote)
+#   --dry-run      Print the git command instead of running it
+#
+# Why this exists: worktrunk has no remote push. `wt step push` fast-forwards a
+# local branch — its own help says "no commits leave the repository". So the one
+# step that does talk to the forge lives here, as a wt subcommand, which keeps
+# the whole worktree lifecycle behind a single CLI.
+#
+# In MR mode the first push carries GitLab's merge-request push options, so the
+# draft MR is created by the push itself — no glab round-trip, no second call
+# that can half-fail. `Closes #<N>` comes from the issue number in the branch
+# name (the <N>-<slug> shape wt-issue creates); GitLab would infer it from that
+# prefix anyway, but stating it explicitly makes the result independent of the
+# project's closing-pattern configuration.
+#
+# MR mode is read from branch.<branch>.wtIssueMr, written by wt-issue. For a
+# branch that never went through wt issue, the same heuristic applies here:
+# a pushable remote plus merge_request_event in .gitlab-ci.yml.
+set -euo pipefail
+
+die() { printf 'wt-publish: %s\n' "$*" >&2; exit 1; }
+
+mr_flag="" remote="" dry_run=false
+while (( $# )); do
+  case "$1" in
+    --mr)      mr_flag=true;  shift ;;
+    --no-mr)   mr_flag=false; shift ;;
+    --remote)  remote="${2:?--remote needs a value}"; shift 2 ;;
+    --dry-run) dry_run=true; shift ;;
+    -h|--help) sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    *)         die "unknown argument: $1" ;;
+  esac
+done
+
+git rev-parse --git-dir >/dev/null 2>&1 || die "not inside a git repository"
+branch="$(git symbolic-ref --quiet --short HEAD)" \
+  || die "detached HEAD — check out a branch before publishing"
+
+if [[ -z "$remote" ]]; then
+  if git remote get-url origin >/dev/null 2>&1; then
+    remote=origin
+  else
+    # Exactly one remote is unambiguous; more than one needs --remote.
+    remote="$(git remote)"
+    [[ -n "$remote" ]] || die "no remote configured"
+    (( $(git remote | wc -l) == 1 )) || die "several remotes — pick one with --remote"
+  fi
+fi
+
+# MR mode — flag > stored decision > heuristic (same chain as wt-issue).
+mr_key="branch.${branch}.wtIssueMr"
+mr_stored="$(git config --get --bool "$mr_key" 2>/dev/null || true)"
+if [[ -n "$mr_flag" ]]; then
+  mr_mode="$mr_flag"
+  git config --local "$mr_key" "$mr_mode"
+elif [[ -n "$mr_stored" ]]; then
+  mr_mode="$mr_stored"
+else
+  root="$(git rev-parse --show-toplevel)"
+  if [[ -f "$root/.gitlab-ci.yml" ]] && grep -q 'merge_request_event' "$root/.gitlab-ci.yml"; then
+    mr_mode=true
+  else
+    mr_mode=false
+  fi
+  git config --local "$mr_key" "$mr_mode"
+fi
+
+# Push options only make sense for a merge request that does not exist yet.
+# Asking glab is optional: without it we simply push with the create option,
+# which GitLab answers with a "already exists" notice rather than an error.
+open_mr=""
+if [[ "$mr_mode" == true ]] && command -v glab >/dev/null && command -v jq >/dev/null; then
+  open_mr="$(glab mr list --source-branch "$branch" -F json 2>/dev/null \
+             | jq -r '(.[0].iid // empty)' 2>/dev/null || true)"
+fi
+
+# Never expand an empty array: "${arr[@]}" under `set -u` aborts in bash 3.2,
+# which is what /bin/bash is on macOS.
+args=(push)
+
+if [[ "$mr_mode" == true && -z "$open_mr" ]]; then
+  args+=(-o merge_request.create -o merge_request.draft -o merge_request.remove_source_branch)
+
+  # Target the branch the remote itself calls default, when it is known.
+  target="$(git symbolic-ref --quiet --short "refs/remotes/${remote}/HEAD" 2>/dev/null || true)"
+  target="${target#"${remote}/"}"
+  [[ -n "$target" ]] && args+=(-o "merge_request.target=${target}")
+
+  # Issue number from the <N>-<slug> branch name wt-issue produces.
+  issue=""
+  [[ "$branch" =~ ^([0-9]+)- ]] && issue="${BASH_REMATCH[1]}"
+  if [[ -n "$issue" ]]; then
+    args+=(-o "merge_request.description=Closes #${issue}")
+    if command -v glab >/dev/null && command -v jq >/dev/null; then
+      # GitLab's own wording for an MR opened from an issue.
+      issue_title="$(glab issue view "$issue" -F json 2>/dev/null \
+                     | jq -r '.title // empty' 2>/dev/null || true)"
+      # Push options are single-line: a newline would break the protocol.
+      issue_title="$(printf '%s' "$issue_title" | tr '\n' ' ')"
+      [[ -n "$issue_title" ]] && args+=(-o "merge_request.title=Resolve \"${issue_title}\"")
+    fi
+  fi
+fi
+
+args+=(--set-upstream "$remote" HEAD)
+
+if $dry_run; then
+  printf 'git'; printf ' %q' "${args[@]}"; printf '\n'
+  exit 0
+fi
+
+if [[ "$mr_mode" == true && -n "$open_mr" ]]; then
+  printf 'wt-publish: MR !%s already open for %s — pushing without MR options\n' \
+    "$open_mr" "$branch" >&2
+fi
+git "${args[@]}"

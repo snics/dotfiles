@@ -9,8 +9,9 @@
 #   ~/.claude/skills/wt-issue    -> ../../.agents/skills/wt-issue
 #   ~/.codex/skills/wt-issue     -> ../../.agents/skills/wt-issue
 #
-# The engine itself is zsh/.local/bin/wt-issue (stowed → ~/.local/bin,
-# reachable as `wt issue` via worktrunk's custom-subcommand mechanism).
+# The engines themselves are zsh/.local/bin/wt-issue and zsh/.local/bin/wt-publish
+# (stowed → ~/.local/bin, reachable as `wt issue` / `wt publish` via worktrunk's
+# custom-subcommand mechanism).
 #
 # Usage: wt-issue-skill.sh   (idempotent — safe to re-run)
 

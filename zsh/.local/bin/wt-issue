@@ -6,6 +6,7 @@
 #
 # Usage:
 #   wt issue <N> [--agent claude|codex] [--no-agent] [--branch-only] [--base <ref>]
+#                [--mr|--no-mr]
 #
 #   <N>            GitLab issue number (repo derived from the git remote via glab)
 #   --agent        Agent to exec inside the worktree (default: claude)
@@ -14,22 +15,35 @@
 #                  used by the wt-issue agent skill so Claude Code can create
 #                  the worktree through its EnterWorktree tool instead
 #   --base <ref>   Base ref for a new branch (default: repo default branch)
+#   --mr/--no-mr   Force MR mode on/off, overriding the stored decision and the
+#                  repo heuristic (last one wins). Deliberately not --no-merge:
+#                  `wt merge` is worktrunk's local squash-merge, a different act
 #
 # The branch name follows GitLab's own %{id}-%{title} pattern, so MRs created
-# from it link back to the issue automatically. Label/MR policy is deliberately
-# NOT touched here — that stays in the per-project workflow skill.
+# from it link back to the issue automatically.
+#
+# MR mode decides whether `wt publish` opens a draft MR on the first push.
+# Precedence: explicit flag > decision stored at the branch > repo heuristic.
+# The heuristic is deliberately narrow — a pushable remote plus a .gitlab-ci.yml
+# that mentions merge_request_event, i.e. exactly the case where no MR means no
+# pipeline at all. Repos without MR pipelines get nothing they have to clean up.
+# Label policy stays out of here; this is only about the MR existing.
 set -euo pipefail
 
 die() { printf 'wt-issue: %s\n' "$*" >&2; exit 1; }
 
 issue="" agent="claude" no_agent=false branch_only=false base=""
+# Empty means "not given" — the stored decision or the heuristic then answers.
+mr_flag=""
 while (( $# )); do
   case "$1" in
     --agent)       agent="${2:?--agent needs a value}"; shift 2 ;;
     --no-agent)    no_agent=true; shift ;;
     --branch-only) branch_only=true; shift ;;
     --base)        base="${2:?--base needs a value}"; shift 2 ;;
-    -h|--help)     sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --mr)          mr_flag=true; shift ;;
+    --no-mr)       mr_flag=false; shift ;;
+    -h|--help)     sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     -*)            die "unknown flag: $1" ;;
     *)             issue="$1"; shift ;;
   esac
@@ -67,6 +81,39 @@ fi
 [[ -n "$slug" ]] || slug="issue"
 branch="${issue}-${slug}"
 
+# MR mode — flag > stored decision > heuristic. Stored at the branch rather
+# than in the worktree: worktrees share one .git/config, so a --local key would
+# be repo-wide and every ticket would overwrite the previous one. git drops the
+# whole branch.<name> section when the branch is deleted, so `wt remove` cleans
+# up after itself.
+mr_key="branch.${branch}.wtIssueMr"
+mr_stored="$(git config --get --bool "$mr_key" 2>/dev/null || true)"
+if [[ -n "$mr_flag" ]]; then
+  mr_mode="$mr_flag"
+  if [[ "$mr_flag" == true ]]; then mr_why="--mr"; else mr_why="--no-mr"; fi
+  git config --local "$mr_key" "$mr_mode"
+elif [[ -n "$mr_stored" ]]; then
+  # Re-entry: never re-run the heuristic. A .gitlab-ci.yml edited in the
+  # meantime must not silently flip a decision the branch already carries.
+  mr_mode="$mr_stored"
+  mr_why="stored"
+else
+  root="$(git rev-parse --show-toplevel)"
+  if [[ -n "$(git remote)" ]] && [[ -f "$root/.gitlab-ci.yml" ]] \
+     && grep -q 'merge_request_event' "$root/.gitlab-ci.yml"; then
+    mr_mode=true;  mr_why="MR pipelines in .gitlab-ci.yml"
+  else
+    mr_mode=false; mr_why="no MR pipelines detected"
+  fi
+  git config --local "$mr_key" "$mr_mode"
+fi
+# stderr: --branch-only writes the branch name to stdout for callers to read.
+if [[ "$mr_mode" == true ]]; then
+  printf 'wt-issue: MR mode on (%s) — publish with: wt publish\n' "$mr_why" >&2
+else
+  printf 'wt-issue: MR mode off (%s)\n' "$mr_why" >&2
+fi
+
 if $branch_only; then
   printf '%s\n' "$branch"
   exit 0
@@ -95,5 +142,9 @@ fi
 # sees {{ … }}. The agent pulls the full description/comments itself — always
 # fresh, no escaping hazards.
 safe_title="$(printf '%s' "$title" | sed 's/{/(/g; s/}/)/g')"
-prompt="Work on GitLab issue #${issue}: ${safe_title}. First run 'glab issue view ${issue}' and 'glab issue view ${issue} --comments' to load the description, acceptance criteria and discussion. Then, BEFORE writing any code: run a brainstorming/alignment round with the user (use the superpowers:brainstorming skill if available) — summarize your understanding of the issue, ask whether anything has changed since it was written, and clarify open questions and acceptance criteria. Only start implementing after the user confirms the direction. If a project workflow skill exists (e.g. gitlab-workflow), follow it for labels, draft MR and 'Refs #${issue}'."
+mr_note="MR mode is off for this branch: publish with 'wt publish' when you need the branch on the remote, and merge locally with 'wt merge'."
+if [[ "$mr_mode" == true ]]; then
+  mr_note="MR mode is on for this branch: publish with 'wt publish' (never a raw 'git push') — the first push opens a draft MR that closes #${issue}. Do NOT run 'wt merge' on this branch; it merges locally and bypasses the MR."
+fi
+prompt="Work on GitLab issue #${issue}: ${safe_title}. First run 'glab issue view ${issue}' and 'glab issue view ${issue} --comments' to load the description, acceptance criteria and discussion. Then, BEFORE writing any code: run a brainstorming/alignment round with the user (use the superpowers:brainstorming skill if available) — summarize your understanding of the issue, ask whether anything has changed since it was written, and clarify open questions and acceptance criteria. Only start implementing after the user confirms the direction. ${mr_note} If a project workflow skill exists, follow it for labels and reviewers."
 exec wt "${wt_args[@]}" -x "$agent" -- "$prompt"

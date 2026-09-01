@@ -516,6 +516,8 @@ per-project override so the tree is not hidden); config stowed from
 | `wt switch` | Interactive picker (see below) |
 | `wt list` | Worktree table for the CURRENT repo: status, diff, CI, agent markers 🤖/💬 |
 | `wt issue <N>` | GitLab issue → `<N>-<slug>` branch + worktree + agent (see the wt-issue skill) |
+| `wt issue <N> --no-mr` | Same, but this branch gets no draft MR on publish |
+| `wt publish` | Push the branch; opens the draft MR in MR mode (`--no-mr` to skip, `--dry-run`) |
 | `wt merge` | Squash → rebase → hooks → fast-forward into default branch → cleanup |
 | `wt remove` | Remove worktree + branch (recognizes GitLab squash merges) |
 | `wt step commit` | Stage + commit with Claude-Haiku-generated message |
