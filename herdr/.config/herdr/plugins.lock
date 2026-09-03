@@ -2,14 +2,15 @@
 # Each `owner/repo@commit` reproduces exactly via `plugin install --ref`.
 # Commits come from herdr's own `source.resolved_commit`.
 
-natori-hrj/herdr-lazy@58ff156766ecd6a3a0eac4fbf32e1e1e62aa7dc4
+natori-hrj/herdr-lazy@c4ca5dab79c5c741e2278a77e01eea1679a6a5cb
 cloudmanic/herdr-plus@0ede9c763e0feb7800b6d2e3a7401f9198684caf
-andrewchng/herdr-sessionizer@df519d50379cdc0def9db134d215aa607923e98f
+andrewchng/herdr-sessionizer@5e74076cf60fa2b216f7dc27c76d7597558cd14b
 devashish2203/herdr-worktrunk@9cde723b7c6ea5d3f4de94760888de0e4090727b
 lmilojevicc/herdr-splits.nvim@94f30cf4e9ac76ddf185a3acd0977be728fa4106
-persiyanov/herdr-reviewr@4fc80835699e293f0608c243028f8513557d7c77
+persiyanov/herdr-reviewr@4c090225af706bf3aaa24b39fea890a72994f40f
 smarzban/herdr-file-viewer@647f03236d9aa20de0b07c9de0a951e13a1e59bf
 jhochenbaum/herdr-hunk-diff@ad6f670b78887cd0becb473fd486945e5255c062
 wyattjoh/herdr-plugin-renamer@fadec8f1cadcae8e0b4abdeaf84ceede2990b2e1
 hotchpotch/herdr-tiny-fingers@2270f872d22297806a92f72ddb76b10f5983fce0
 iurysza/termscope@328a777796e3e1a214da1bb6da79e4bfdf6dfabe
+uwuclxdy/clauth/herdr-plugin@558b1fcbc8ed2a9b22f2fc2f44c343e6cf2edde9

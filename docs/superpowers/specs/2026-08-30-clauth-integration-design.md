@@ -123,9 +123,11 @@ Because `--no-config` also skips clauth's own `herdr config check`, a
 keybinding conflict in the hand-authored block is **not** caught by the tool.
 The key below was therefore checked by hand against both binding syntaxes.
 
-The plugin ships inside the clauth binary rather than as a GitHub repository,
-so it does not appear in `herdr/.config/herdr/plugins.list`. That list would
-otherwise read as a complete inventory, so its header must name the exception.
+The installer resolves the plugin from the `herdr-plugin` subdirectory of the
+clauth repository. `uwuclxdy/clauth/herdr-plugin` also appears in
+`herdr/.config/herdr/plugins.list`: `_install/clauth.sh` remains responsible
+for the guarded `--no-config` registration, while the declarative entry keeps
+`herdr-lazy sync --prune` from removing the plugin afterwards.
 
 ### 3. herdr configuration — hand-written
 

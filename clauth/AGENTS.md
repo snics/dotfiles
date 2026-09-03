@@ -44,6 +44,9 @@ failure:
   keybinding and sidebar row to herdr's `config.toml`, which is a stow symlink,
   so the write lands in this repository unreviewed. `_install/clauth.sh` always
   passes the flag.
+- **Keep `uwuclxdy/clauth/herdr-plugin` in Herdr Lazy's `plugins.list`.** The
+  installer still registers the plugin with `--no-config`, while the
+  declarative entry prevents `herdr-lazy sync --prune` from removing it again.
 - **Keep `fallback_chain` empty.** It was tried with `private` in it on
   2026-09-01 and deliberately removed again, because the trade turned out to be
   bad on this platform:
