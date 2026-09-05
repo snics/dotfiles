@@ -185,7 +185,8 @@ _update_brew() {
   fi
   _update_header "🍺" "Homebrew"
   echo "Updating Homebrew..."
-  brew update
+  local -a _brew_failed=()
+  brew update || _brew_failed+=("brew update exit $?")
   _sudo_refresh
   echo "Regenerating Brewfile..."
   cat "$HOME/.dotfiles/brew"/Brewfile.* >| "${HOMEBREW_BUNDLE_FILE:-$HOME/.Brewfile}"
@@ -196,14 +197,13 @@ _update_brew() {
   # outdated entry as "Upgrading <x> has failed!" — dozens of red lines for
   # one root cause, with the real error buried in the batch output. Keep the
   # exit code so the summary stops claiming success.
-  local -a _brew_failed=()
   brew bundle || _brew_failed+=("brew bundle exit $?")
   _sudo_refresh
   echo "Upgrading Cask apps (greedy)..."
   brew upgrade --cask --greedy || _brew_failed+=("brew upgrade --cask exit $?")
   _sudo_refresh
   echo "Cleaning up..."
-  brew cleanup
+  brew cleanup || _brew_failed+=("brew cleanup exit $?")
   if (( ${#_brew_failed} )); then
     _update_fail "Homebrew (${(j:, :)_brew_failed})"
     echo "    Re-run 'brew bundle --verbose' to see the error that aborted the batch."

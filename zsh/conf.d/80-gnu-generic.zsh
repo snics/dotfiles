@@ -14,6 +14,7 @@
     # DevOps / Cloud
     dockle        # Container image linter
     dockutil      # macOS dock management
+    krunkit       # libkrun VM provider for podman
     mackup        # macOS app settings backup
     mas           # Mac App Store CLI
     podman-compose # Podman Compose
