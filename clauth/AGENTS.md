@@ -124,6 +124,56 @@ Note also that comments do **not** survive: clauth rewrites `profiles.toml`
 without them, so every `just clauth-sync` strips whatever was written there.
 That is why these rules live in this file and not in the config.
 
+## The rolling token — why Claude Code stopped logging out
+
+Armed on 2026-09-05 for both profiles after a run of twelve `Login expired`
+events in five days (zero in the whole period before clauth was installed).
+
+**The mechanism it fixes.** Anthropic's refresh token is single-use: each
+refresh mints a new pair and kills the old one, so exactly one party can carry
+a chain. clauth deliberately rotates ~15 minutes ahead of expiry to stay ahead
+of Claude Code's own 5-minute threshold, which makes clauth the carrier — and
+it then has to hand the new pair to Claude Code through the login Keychain.
+That handoff is skipped whenever `live_login_is_foreign` fires
+(`src/oauth.rs:1623`): it tolerates a live `.credentials.json` exactly one
+rotation behind, and treats anything older as a real re-login it must not
+overwrite. Ours drifted several rotations behind, because Claude Code rewrites
+that file as a plain regular file on every run and only on every run. So clauth
+spent the refresh token, kept the new pair to itself, and left the Keychain
+holding a dead one. Next refresh: `invalid_grant`, session signed out.
+
+**What the rolling token changes.** `clauth rolling-token <profile>` serves
+sessions a bearer from the usage chain with **no refresh token**, re-stamped by
+the daemon before it expires (`restamp_rolling_token`, `src/oauth.rs:2359`).
+For the *active* profile it is also mirrored into the login Keychain, guarded
+by `creds.refresh_token().is_none()` — so bare `claude` sessions get it too,
+not just `clauth start` ones. Claude Code then has nothing to refresh and
+cannot hit `invalid_grant`. The rotating chain stays clauth-private in
+`profiles/<name>/credentials.json`. It removes the handoff instead of trying to
+make it reliable.
+
+**This is not reproducible from this repo.** `rolling_token = true` lives in
+`~/.clauth/profiles/<name>/config.toml`, which is deliberately untracked (it
+can hold API keys). After `clauth login <name>` on a new machine, run
+`clauth rolling-token <name>` by hand, per profile. Nothing in `_install/` does
+it for you.
+
+**Three consequences to keep in mind:**
+
+- **The daemon is now load-bearing.** The bearer dies in hours and only the
+  daemon re-stamps it. Before this it merely kept usage numbers fresh; now
+  stopping it eventually stops the sessions. `zsh/conf.d/66-clauth.zsh` starts
+  it with the first herdr pane and logs to `~/.clauth/daemon.log`.
+- **It widens scopes.** The rolling bearer carries five scopes
+  (`user:file_upload`, `user:inference`, `user:mcp_servers`, `user:profile`,
+  `user:sessions:claude_code`) where the `claude setup-token` mint it
+  supersedes carried two. Anything that can read the session credential can use
+  all five.
+- **`clauth static-token <profile>` reverts it**, restoring the mint.
+
+Requires v0.15.0+ for the rolling token and v0.15.1 for `fa5f4ed`, which stops
+a rotation re-stamping a cleared rolling token. Do not move the pin below that.
+
 ## Editing profiles.toml by hand
 
 Two traps, both hit during the initial setup:

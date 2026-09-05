@@ -27,4 +27,12 @@
 # the same version number. The herdr integration is the reason this is
 # installed, so the branch is the only usable source today. Revisit when a
 # crates.io release ships the plugin.
-clauth git=https://github.com/uwuclxdy/clauth rev=eb6cbb87aaad578792896fbf2c6dfd8e8f0becf1
+#
+# Pin moved eb6cbb8 -> 85d28a1 (tag v0.15.1) on 2026-09-05, to get off the
+# refresh-token race that was signing Claude Code out (upstream #52). Carries
+# b71a2d8 (publish the credential link by rename, never unlink first),
+# 7f7fc36 (bound a session start's rotation-lock wait) and fa5f4ed (stop a
+# rotation re-stamping a cleared rolling token) — the last one is why the
+# rolling token needs this version and not the old pin. Verified before the
+# bump that the herdr subcommand and herdr-plugin/ still exist at this tag.
+clauth git=https://github.com/uwuclxdy/clauth rev=85d28a1eb6526e705bf02981a2a41782e13da249

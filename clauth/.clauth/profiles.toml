@@ -6,6 +6,7 @@ profiles = [
 fallback_chain = []
 wrap_off = false
 theme = "full"
+count_cache = true
 refresh_interval_ms = 90000
 
 [herdr]
