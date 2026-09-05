@@ -27,7 +27,7 @@ brew "rlwrap" # Readline wrapper, allowing the use of readline features with arb
 brew "joshmedeski/sesh/sesh" # A tool for managing shell sessions. [Source](https://github.com/joshmedeski/sesh)
 brew "starship" # The minimal, blazing-fast, and infinitely customizable prompt for any shell! [Starship](https://starship.rs/)
 brew "stow" # Manage installation of multiple software packages in the same directory tree. [Stow](https://www.gnu.org/software/stow/)
-brew "tldr" # Simplified and community-driven man pages. [Tldr](https://tldr.sh/)
+brew "tlrc" # Official Rust tldr client; provides the `tldr` command (the old `tldr` formula was disabled upstream). [Tlrc](https://tldr.sh/tlrc/)
 brew "tmux" # Terminal multiplexer. [Tmux](https://github.com/tmux/tmux)
 brew "trash" # Command line interface to the macOS Trash. [Trash](https://hasseg.org/trash/)
 brew "tree" # Display directories as trees (with optional color/HTML output). [Tree](http://mama.indstate.edu/users/ice/tree/)

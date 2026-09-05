@@ -116,7 +116,7 @@ This setup works perfectly for developers and software architects who work with 
 - 🔎 [ripgrep](https://github.com/BurntSushi/ripgrep) - Ultra-fast recursive search tool
 - 🔍 [fd](https://github.com/sharkdp/fd) - Fast, user-friendly alternative to find
 - 🌐 [glow](https://github.com/charmbracelet/glow) - Render markdown in the terminal
-- 📚 [tldr](https://tldr.sh/) - Simplified, practical man pages
+- 📚 [tldr](https://tldr.sh/) (via [tlrc](https://tldr.sh/tlrc/)) - Simplified, practical man pages
 - 🗑️ [trash](https://hasseg.org/trash/) - Move files to macOS Trash from CLI
 - 🔄 [zoxide](https://github.com/ajeetdsouza/zoxide) - Smarter cd command
 - 🎯 [direnv](https://direnv.net/) - Environment switcher for the shell
