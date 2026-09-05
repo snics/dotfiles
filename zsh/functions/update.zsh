@@ -294,9 +294,11 @@ _update_skills() {
   fi
   _update_header "🧩" "Agent Skills"
   echo "Updating installed agent skills (skills.sh CLI)..."
-  # Non-interactive: updates every tracked skill (global + project scopes);
-  # upstream-deleted skills are reported but never auto-removed.
-  npx -y skills update
+  # -g pins the scope to global: `update` runs from whatever directory the
+  # shell happens to be in, and the project scope would otherwise be picked
+  # up from that cwd. -y skips the remaining deletion prompt, so the target
+  # stays non-interactive; upstream-deleted skills are reported, never removed.
+  npx -y skills update -g -y
   _update_success "Agent Skills"
 }
 
