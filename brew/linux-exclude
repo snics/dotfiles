@@ -13,6 +13,7 @@ lotyp/formulae/dockutil
 
 # macOS-only VM / virtualization tools
 cirruslabs/cli/tart
+libkrun/krun/krunkit
 
 # Requires hardware, VM hypervisor, or Docker daemon on host
 aircrack-ng

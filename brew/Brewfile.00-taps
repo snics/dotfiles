@@ -11,6 +11,7 @@ tap "hashicorp/tap" # HashiCorp tools. [HashiCorp](https://developer.hashicorp.c
 tap "j0urneyk/tap" # herdrctx: TUI session manager for herdr. [herdrctx](https://github.com/j0urneyk/herdrctx)
 tap "joshmedeski/sesh" # Sesh: A tool for managing shell sessions. [Sesh](https://github.com/joshmedeski/sesh)
 tap "kubeshark/kubeshark" # API traffic viewer for Kubernetes. [Kubeshark](https://github.com/kubeshark/homebrew-tap)
+tap "libkrun/krun" # libkrun VM stack; provides krunkit for podman on Apple Silicon. [libkrun](https://github.com/containers/libkrun)
 tap "lotyp/formulae" # Various useful Homebrew formulas. [Lotyp Formulae](https://github.com/lotyp/homebrew-formulae)
 tap "molovo/revolver" # Revolver: A simple command-line tool for rotating text. [Revolver](https://github.com/molovo/revolver)
 tap "oven-sh/bun" # Bun JavaScript runtime. [Bun](https://bun.sh/)

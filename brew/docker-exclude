@@ -18,6 +18,9 @@ qemu
 minikube
 kind
 aircrack-ng
+# krunkit is a macOS/Apple Silicon VM provider; the docker CLI itself is
+# intentionally NOT excluded (docker-compose is already in the image).
+libkrun/krun/krunkit
 
 # Already provided by base image (properly compiled, no Homebrew deps)
 neovim
