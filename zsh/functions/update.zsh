@@ -129,6 +129,11 @@ _update_success() {
   _update_results+=("\033[1;32m ✓\033[0m  $1")
 }
 
+_update_fail() {
+  echo " \033[1;31m✗\033[0m  $1"
+  _update_results+=("\033[1;31m ✗\033[0m  $1")
+}
+
 _update_skip() {
   echo ""
   echo "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -185,14 +190,26 @@ _update_brew() {
   echo "Regenerating Brewfile..."
   cat "$HOME/.dotfiles/brew"/Brewfile.* >| "${HOMEBREW_BUNDLE_FILE:-$HOME/.Brewfile}"
   echo "Upgrading from Brewfile..."
-  brew bundle
+  # Since Homebrew 6.0 `brew bundle` batches every formula and cask into a
+  # single `brew install`. A single bad entry (tap conflict, keg-only clash)
+  # aborts that batch in pre-flight, and bundle then reports *every* still
+  # outdated entry as "Upgrading <x> has failed!" — dozens of red lines for
+  # one root cause, with the real error buried in the batch output. Keep the
+  # exit code so the summary stops claiming success.
+  local -a _brew_failed=()
+  brew bundle || _brew_failed+=("brew bundle exit $?")
   _sudo_refresh
   echo "Upgrading Cask apps (greedy)..."
-  brew upgrade --cask --greedy
+  brew upgrade --cask --greedy || _brew_failed+=("brew upgrade --cask exit $?")
   _sudo_refresh
   echo "Cleaning up..."
   brew cleanup
-  _update_success "Homebrew"
+  if (( ${#_brew_failed} )); then
+    _update_fail "Homebrew (${(j:, :)_brew_failed})"
+    echo "    Re-run 'brew bundle --verbose' to see the error that aborted the batch."
+  else
+    _update_success "Homebrew"
+  fi
 }
 
 _update_mas() {
