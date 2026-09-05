@@ -36,7 +36,6 @@
     # Security / Pentest
     aircrack-ng   # WiFi security suite
     binwalk       # Firmware analysis
-    hashpump      # Hash length extension
     lynis         # Security auditing
     sqlmap        # SQL injection tool
     sysdig        # System exploration
@@ -44,7 +43,6 @@
     # Network / Analysis
     tcpflow       # TCP connection capture
     tcpreplay     # Network traffic replay
-    tcptrace      # tcpdump analyzer
 
     # TUIs (minimal flags, but still nice to complete)
     lazygit       # Git TUI

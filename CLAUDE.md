@@ -117,8 +117,8 @@ Rust crates are inventoried in two places, and the split is a rule, not a
 preference:
 
 - **A Homebrew formula exists** → the crate belongs in `brew/Brewfile.*`
-  (currently `cargo-binstall`, `cargo-edit`, `cargo-nextest`, `cargo-watch`,
-  `cargo-zigbuild` in `Brewfile.20-dev-tools`). Only then can
+  (currently `cargo-binstall`, `cargo-edit`, `cargo-nextest`, `cargo-zigbuild`
+  in `Brewfile.20-dev-tools`). Only then can
   `brew bundle cleanup` account for it.
 - **No formula exists** → declare it in `_install/cargo-tools.list`, one crate
   per line, `crate@1.2.3` to pin. `_install/cargo-tools.sh` installs from that

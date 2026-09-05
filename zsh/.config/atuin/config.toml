@@ -181,7 +181,6 @@ common_subcommands = [
   "terraform",
   "tofu",
   # Hardware
-  "qmk",
   "ykman",
   "zapp",
 ]

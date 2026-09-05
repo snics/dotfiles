@@ -16,7 +16,6 @@ cirruslabs/cli/tart
 
 # Requires hardware, VM hypervisor, or Docker daemon on host
 aircrack-ng
-qmk/qmk/qmk
 lima
 qemu
 minikube
@@ -32,6 +31,5 @@ robusta-dev/krr/krr
 
 # Too large for standard installs (install on demand if needed)
 swift
-qt@5
 numpy
 imagemagick

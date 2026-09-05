@@ -18,7 +18,6 @@ qemu
 minikube
 kind
 aircrack-ng
-qmk/qmk/qmk
 
 # Already provided by base image (properly compiled, no Homebrew deps)
 neovim
@@ -34,6 +33,5 @@ robusta-dev/holmesgpt/holmesgpt
 
 # Too large for container image (install on demand if needed)
 swift
-qt@5
 imagemagick
 numpy
