@@ -70,6 +70,23 @@ failure:
   The empty chain is what keeps the daemon inert: `next_auto_switch_target`
   returns `None` when the active profile is not a chain member.
 
+  **"Inert" covers account switching only.** Verified against the pinned
+  commit on 2026-09-05 while investigating repeated logouts:
+
+  - `Daemon::boot` calls `link_profile_credentials(active)` on every start
+    (`src/daemon/mod.rs:433-435`) — the same read-modify-write of the login
+    Keychain item this file warns about for switches, performed once per
+    herdr session start without any switch.
+  - Its scheduler wins `usage-fetch.lock` and holds it for the process
+    lifetime, making the daemon the machine's only routine token rotator.
+    With `preemptive_rotation` defaulting to true, it rotates the active
+    token ~15 minutes ahead of expiry, deliberately ahead of Claude Code's
+    own 5-minute threshold.
+  - `clauth mcp` runs **no** scheduler (`src/mcp/mod.rs:5111-5122`) and
+    refreshes nothing, however many sessions are open. The recurring
+    "another instance holds the usage-fetch lease" lines in `clauth.log`
+    are TUI launches losing the lease to the daemon — expected, not a fault.
+
   Two operational notes if this is ever revisited: `fallback_chain.push` has
   exactly one call site (`add_chain_candidate`, one TUI action), so it never
   fills itself — but it is one keystroke away, and it filled twice during
