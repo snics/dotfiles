@@ -24,9 +24,11 @@ cursor/
 ## MCP & Secrets
 
 - In `mcp.json` **keine** echten API-Keys oder Tokens eintragen.
-- Stattdessen: `${env:VAR_NAME}` verwenden (z.B. `"Authorization": "Bearer ${env:CONTEXT7_API_KEY}"`).
-- Die Variablen in `~/.secrets` exportieren; `~/.zshrc` lädt `~/.secrets`.
-- Siehe `docs/opencode-cursor-mcp.md` und `.secrets.example`.
+- Remote-Server laufen ohne Auth (context7 Free-Tier, grep_app) oder mit
+  eigenem OAuth-Flow (linear). Einen Shell-Secrets-Mechanismus gibt es nicht
+  mehr — wo ein Tool wirklich einen Key braucht, holt es ihn on-demand aus
+  1Password (`op read "op://Employee/…"`), siehe nvim/codecompanion als Muster.
+- Siehe `docs/opencode-cursor-mcp.md`.
 
 ## Bestehende Config übernehmen
 
@@ -36,9 +38,6 @@ Die aktuellen Configs (Settings, Keybindings, MCP) sind bereits aus Cursor über
 - `~/Library/Application Support/Cursor/User/keybindings.json`
 - `~/.cursor/mcp.json`, `~/.cursor/cli-config.json`
 
-**Context7 in mcp.json:** Der API-Key steht als `${env:CONTEXT7_API_KEY}`. Bitte in `~/.secrets` eintragen:  
-`export CONTEXT7_API_KEY="dein-key"`
-
 ---
 
 ## MCP-Server (Hinweise)
@@ -46,9 +45,9 @@ Die aktuellen Configs (Settings, Keybindings, MCP) sind bereits aus Cursor über
 | Server | Typ | Hinweis |
 |--------|-----|---------|
 | **linear** | Remote via mcp-remote | OAuth/Token-Flow kann beim ersten Aufruf aufpoppen. |
-| **exa** | Lokal (npx) | `EXA_API_KEY` in `~/.secrets`. |
+| **exa** | Lokal (npx) | Braucht `EXA_API_KEY` — on-demand via 1Password (`op read`), falls genutzt. |
 | **grep_app** | Remote (HTTP) | Kein Auth. |
-| **context7** (remote) | Remote | `CONTEXT7_API_KEY` in `~/.secrets`. |
+| **context7** (remote) | Remote | Kein Auth (Free-Tier ohne Key). |
 | **serena** | Lokal (uvx) | Braucht `uv`/`uvx` (z. B. `pip install uv` oder Installer von astral.sh). |
 | **playwright** | Lokal (npx) | Ggf. `npx playwright install` für Browsers. |
 | **screencap** | Lokal (uv) | `SCREENCAP_PATH` = absoluter Pfad zum screencap-Projekt (inkl. `.venv`). |
@@ -58,10 +57,9 @@ Die aktuellen Configs (Settings, Keybindings, MCP) sind bereits aus Cursor über
 
 ## Checkliste: Secrets & Tools
 
-### Secrets (in `~/.secrets` eintragen)
+### Secrets
 
-- [ ] `EXA_API_KEY` — Exa / exa-mcp-server
-- [ ] `CONTEXT7_API_KEY` — Context7 (remote)
+- Keine Env-Secrets mehr nötig: context7 läuft keyless (Free-Tier), grep_app ohne Auth.
 - [ ] `SCREENCAP_PATH` — Absoluter Pfad zum screencap-Projekt (nur bei Nutzung von screencap)
 
 ### Tools (vor Nutzung der jeweiligen MCP-Server)

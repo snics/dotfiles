@@ -274,18 +274,6 @@ plugins:
       - --context
       - $CONTEXT
 
-  crd-wizard-ai:
-    shortCut: Shift-A
-    confirm: false
-    description: CRD Wizard TUI (AI)
-    scopes:
-      - crd
-    command: bash
-    background: false
-    args:
-      - -c
-      - "kubectl crd-wizard tui --context $CONTEXT --enable-ai --ai-provider gemini --gemini-api-key $GOOGLE_API_KEY"
-
   crd-wizard-web:
     shortCut: Shift-X
     confirm: false

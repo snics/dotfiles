@@ -43,7 +43,7 @@ Die `mcp-servers.json` definiert globale MCP-Server, die beim Install in `~/.cla
 
 - **serena** — Semantische Code-Analyse via LSP (stdio/uvx)
 - **grep** — Code-Suche via [grep.app](https://grep.app) (http)
-- **context7** — Aktuelle Library-Dokumentation (http, benötigt `CONTEXT7_API_KEY`)
+- **context7** — Aktuelle Library-Dokumentation (http, Free-Tier ohne Key)
 
 ## Secrets
 
@@ -55,7 +55,7 @@ Die `mcp-servers.json` definiert globale MCP-Server, die beim Install in `~/.cla
   umstellen.
 - Tools, die wirklich einen API-Key brauchen, holen ihn on-demand aus
   1Password (`op read "op://Employee/…"`), statt ihn global zu exportieren —
-  siehe `zsh/.secrets.tpl`.
+  siehe nvim/codecompanion als Muster.
 
 ## Bestehende Config übernehmen
 

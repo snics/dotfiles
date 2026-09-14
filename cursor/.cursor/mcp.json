@@ -5,10 +5,7 @@
       "url": "http://127.0.0.1:3845/mcp"
     },
     "context7": {
-      "url": "https://mcp.context7.com/mcp",
-      "headers": {
-        "CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}"
-      }
+      "url": "https://mcp.context7.com/mcp"
     },
     "linear": {
       "command": "npx",

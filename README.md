@@ -330,21 +330,13 @@ nvim +PlugInstall
 
 ![NeoVim.png](_docs/NeoVim.png)
 
-### Setup ~/.secrets
+### Secrets
 
-For sensitive information like API keys and tokens, create a `~/.secrets` file. An example template is provided:
-
-```bash
-cp -f ~/.dotfiles/.secrets.example ~/.secrets
-```
-
-Edit the file and add your secrets:
-
-```bash
-vim ~/.secrets
-```
-
-The `.secrets` file is sourced by ZSH and should contain bash-compatible environment variable exports.
+There is deliberately **no** shell secrets file and no API keys exported into
+the environment. Tools that genuinely need a key fetch it on demand from
+1Password via `op read "op://…"` (see the nvim codecompanion adapter for the
+pattern). Everything else — MCP servers like context7 or grep — runs keyless
+or with its own OAuth flow.
 
 ### Customizing the Setup
 

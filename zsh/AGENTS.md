@@ -42,9 +42,8 @@ zsh/
 .zshrc:
   1. conf.d/00-init.zsh       ← Explicit source (before Zimfw)
   2. Homebrew shellenv
-  3. ~/.secrets
-  4. Zimfw init               ← Plugin manager
-  5. conf.d/[1-9]*.zsh        ← Glob loop (after Zimfw, sorted by number)
+  3. Zimfw init               ← Plugin manager
+  4. conf.d/[1-9]*.zsh        ← Glob loop (after Zimfw, sorted by number)
 ```
 
 `00-init.zsh` is the ONLY file sourced before Zimfw. It contains environment
