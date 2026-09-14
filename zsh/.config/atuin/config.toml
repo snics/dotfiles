@@ -166,6 +166,7 @@ common_subcommands = [
   "git",
   "gh",
   "glab",
+  "gum",
   "jj",
   "wt",
   "but",
@@ -233,6 +234,7 @@ ignored_commands = [
   "herdrctx",
   # System monitors
   "btop",
+  "htop",
   "top",
   "ctop",
   # Terminal housekeeping
