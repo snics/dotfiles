@@ -13,7 +13,7 @@ CLI_PACKAGES := zsh git nvim tmux lazygit k9s tuicr hunk worktrunk herdr opencod
 GUI_PACKAGES := ghostty zed cursor obsidian
 ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
-.PHONY: all install link link-cli link-gui unlink relink update macos dock project-folders \
+.PHONY: all install link link-cli link-gui unlink relink update macos dock touchid-sudo project-folders \
         golang rust cargo-tools cargo-tools-update cargo-dump clauth clauth-sync asdf \
         herdr-plugins herdr-plugins-update herdr-plugins-restore check lint test test-symlinks test-configs help \
         zsh git nvim ghostty tmux lazygit k9s tuicr hunk hunk-skill worktrunk worktrunk-plugins wt-issue-skill herdr zed opencode claude cursor obsidian \
@@ -192,12 +192,16 @@ macos: ## Apply macOS system settings and dock
 		echo "==> Applying macOS settings..."; \
 		source $(DOTFILES)/_macOS/settings.sh; \
 		source $(DOTFILES)/_macOS/dock.sh; \
+		bash $(DOTFILES)/_macOS/touchid-sudo.sh; \
 	else \
 		echo "==> Skipping macOS settings (CI mode)"; \
 	fi
 
 dock: ## Configure dock apps
 	source $(DOTFILES)/_macOS/dock.sh
+
+touchid-sudo: ## Enable Touch ID for sudo (/etc/pam.d/sudo_local)
+	bash $(DOTFILES)/_macOS/touchid-sudo.sh
 
 project-folders: ## Create development project folder structure
 	source $(DOTFILES)/_macOS/project-folder-structure.sh

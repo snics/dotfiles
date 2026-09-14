@@ -7,6 +7,7 @@
 # macOS-only tools (no Linux equivalent)
 mas
 mackup
+pam-reattach
 reattach-to-user-namespace
 trash
 lotyp/formulae/dockutil

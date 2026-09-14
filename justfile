@@ -20,6 +20,7 @@ all: install link
         echo "==> Applying macOS settings..."; \
         source {{ DOTFILES }}/_macOS/settings.sh; \
         source {{ DOTFILES }}/_macOS/dock.sh; \
+        bash {{ DOTFILES }}/_macOS/touchid-sudo.sh; \
     elif [[ "$(uname -s)" != "Darwin" ]]; then \
         echo "==> Skipping macOS settings (not macOS)"; \
     else \
@@ -229,6 +230,7 @@ macos:
         echo "==> Applying macOS settings..."; \
         source {{ DOTFILES }}/_macOS/settings.sh; \
         source {{ DOTFILES }}/_macOS/dock.sh; \
+        bash {{ DOTFILES }}/_macOS/touchid-sudo.sh; \
     else \
         echo "==> Skipping macOS settings (CI mode)"; \
     fi
@@ -237,6 +239,11 @@ macos:
 [macos]
 dock:
     source {{ DOTFILES }}/_macOS/dock.sh
+
+# Enable Touch ID for sudo (/etc/pam.d/sudo_local)
+[macos]
+touchid-sudo:
+    bash {{ DOTFILES }}/_macOS/touchid-sudo.sh
 
 # Create development project folder structure
 [macos]
