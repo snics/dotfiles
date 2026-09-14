@@ -29,88 +29,15 @@
 #   update brew         Only update Homebrew
 #   update brew zsh     Update Homebrew and Zsh
 #   update -y -d        Update everything + rebuild dock
+#   update -y -r        Update everything + restart herdr server if outdated
 #   update help         Show help with available targets
 #
 
-# ── Sudo Keepalive ──────────────────────────────────────────
-# Asks for password once, stores it securely in a temp file (mode 600),
-# and re-authenticates automatically when Homebrew resets the sudo cache.
-# See: https://github.com/Homebrew/brew/issues/17912
-#
-# How it works:
-# 1. Prompt for password once, verify it, store base64-encoded in a temp file
-# 2. Background keepalive refreshes the sudo cache every 50s
-# 3. _sudo_refresh re-authenticates via `sudo -S` after Homebrew resets
-# 4. Everything is cleaned up securely on exit
-
-typeset -g _SUDO_KEEPALIVE_PID=""
-typeset -g _SUDO_PW_FILE=""
-
-_update_sudo_start() {
-  # Read the password once (hidden input)
-  local _pw
-  read -rs "_pw?Password: "
-  echo ""
-
-  # Verify the password works
-  if ! echo "$_pw" | sudo -S true 2>/dev/null; then
-    echo "sudo: authentication failed" >&2
-    return 1
-  fi
-
-  # Store password base64-encoded in a secure temp file (owner-only)
-  # Use >| to bypass noclobber (mktemp already creates the file)
-  _SUDO_PW_FILE="$(mktemp "${TMPDIR:-/tmp}/.upd_auth.XXXXXX")"
-  chmod 600 "$_SUDO_PW_FILE"
-  echo -n "$_pw" | base64 >| "$_SUDO_PW_FILE"
-  unset _pw
-
-  # Background keepalive: inline script via /bin/sh -c (no temp file needed)
-  # PID is captured via a temp file to avoid zsh subshell/pipe variable scoping issues
-  local _pw_file="$_SUDO_PW_FILE"
-  local _parent_pid="$$"
-  local _pid_file="$(mktemp "${TMPDIR:-/tmp}/.upd_proc.XXXXXX")"
-  (
-    /bin/sh -c '
-      while true; do
-        sleep 50
-        if ! sudo -n -v 2>/dev/null; then
-          base64 -d < "'"$_pw_file"'" | sudo -S -v 2>/dev/null || exit 0
-        fi
-        kill -0 '"$_parent_pid"' 2>/dev/null || exit 0
-      done
-    ' &>/dev/null &
-    echo $! >| "$_pid_file"
-  )
-  _SUDO_KEEPALIVE_PID=$(<"$_pid_file")
-  rm -f "$_pid_file"
-}
-
-# Re-authenticate after Homebrew resets the sudo timestamp
-_sudo_refresh() {
-  if ! sudo -n -v 2>/dev/null; then
-    base64 -d < "$_SUDO_PW_FILE" | sudo -S -v 2>/dev/null
-  fi
-}
-
-_update_sudo_stop() {
-  # Kill keepalive process
-  if [[ -n "$_SUDO_KEEPALIVE_PID" ]] && kill -0 "$_SUDO_KEEPALIVE_PID" 2>/dev/null; then
-    kill -TERM "$_SUDO_KEEPALIVE_PID" 2>/dev/null
-  fi
-  _SUDO_KEEPALIVE_PID=""
-
-  # Securely remove password file
-  if [[ -n "$_SUDO_PW_FILE" ]]; then
-    rm -Pf "$_SUDO_PW_FILE" 2>/dev/null || rm -f "$_SUDO_PW_FILE"
-    _SUDO_PW_FILE=""
-  fi
-
-  # Invalidate sudo cache on exit
-  sudo -k 2>/dev/null
-
-  trap - EXIT INT TERM HUP
-}
+# ── Privileges ──────────────────────────────────────────────
+# No password caching here: only the `system` target needs sudo, and
+# /etc/pam.d/sudo_local makes every sudo prompt a Touch ID tap (pam_tid,
+# with pam_reattach for tmux/herdr sessions). Casks that need elevated
+# rights prompt on their own the same way.
 
 # ── UI Helpers ──────────────────────────────────────────────
 
@@ -187,7 +114,6 @@ _update_brew() {
   echo "Updating Homebrew..."
   local -a _brew_failed=()
   brew update || _brew_failed+=("brew update exit $?")
-  _sudo_refresh
   echo "Regenerating Brewfile..."
   cat "$HOME/.dotfiles/brew"/Brewfile.* >| "${HOMEBREW_BUNDLE_FILE:-$HOME/.Brewfile}"
   echo "Upgrading from Brewfile..."
@@ -198,10 +124,15 @@ _update_brew() {
   # one root cause, with the real error buried in the batch output. Keep the
   # exit code so the summary stops claiming success.
   brew bundle || _brew_failed+=("brew bundle exit $?")
-  _sudo_refresh
-  echo "Upgrading Cask apps (greedy)..."
-  brew upgrade --cask --greedy || _brew_failed+=("brew upgrade --cask exit $?")
-  _sudo_refresh
+  # `brew bundle` only upgrades formulae declared in the Brewfile. Transitive
+  # dependencies (openssl, python@x, …) are not declared, so without this step
+  # they stay outdated forever — including security-relevant libraries.
+  echo "Upgrading remaining formulae (dependencies)..."
+  brew upgrade --formula || _brew_failed+=("brew upgrade exit $?")
+  # --greedy-auto-updates covers self-updating apps but skips `version :latest`
+  # casks (fonts etc.), which plain --greedy re-downloads on every single run.
+  echo "Upgrading Cask apps (auto-updating ones included)..."
+  brew upgrade --cask --greedy-auto-updates || _brew_failed+=("brew upgrade --cask exit $?")
   echo "Cleaning up..."
   brew cleanup || _brew_failed+=("brew cleanup exit $?")
   if (( ${#_brew_failed} )); then
@@ -263,18 +194,6 @@ _update_nvim() {
   _update_success "Neovim Plugins"
 }
 
-_update_tmux() {
-  local tpm_update="$HOME/.tmux/plugins/tpm/bin/update_plugins"
-  if [[ ! -f "$tpm_update" ]]; then
-    _update_not_found "Tmux Plugins"
-    return
-  fi
-  _update_header "🖥️" "Tmux Plugins"
-  echo "Updating TPM plugins..."
-  "$tpm_update" all
-  _update_success "Tmux Plugins"
-}
-
 _update_krew() {
   if ! command -v kubectl &>/dev/null || ! kubectl krew version &>/dev/null 2>&1; then
     _update_not_found "Krew"
@@ -294,14 +213,19 @@ _update_herdr() {
     return
   fi
   _update_header "🐑" "herdr Plugins"
+  local -a _herdr_failed=()
   echo "Syncing plugin bundle (plugins.list)..."
-  herdr-lazy sync --prune
+  herdr-lazy sync --prune || _herdr_failed+=("sync exit $?")
   echo "Updating all unpinned plugins..."
-  herdr-lazy update
+  herdr-lazy update || _herdr_failed+=("update exit $?")
   echo "Reloading herdr server config..."
   herdr server reload-config &>/dev/null || true
-  echo "Note: updated plugins with running services need a herdr restart to pick them up."
-  _update_success "herdr Plugins"
+  if (( ${#_herdr_failed} )); then
+    _update_fail "herdr Plugins (${(j:, :)_herdr_failed})"
+  else
+    echo "Note: updated plugins with running services need a herdr restart to pick them up."
+    _update_success "herdr Plugins"
+  fi
 }
 
 _update_skills() {
@@ -328,6 +252,50 @@ _update_zsh() {
   _update_success "Zsh/Zim"
 }
 
+# ── herdr Server Check ──────────────────────────────────────
+# After upgrades the herdr CLI can be newer than the still-running server
+# (protocol mismatch: plugin/agent commands fail until a restart). Restarting
+# kills every pane process — running Claude/Codex sessions included — and
+# herdr's live handoff is disabled for package-manager (brew) installs.
+# So this only warns or asks; it never restarts the server on its own.
+_update_herdr_server_check() {
+  command -v herdr &>/dev/null || return 0
+  local st
+  st=$(herdr status server --json 2>/dev/null) || return 0
+  [[ "$st" == *'"restart_needed":true'* ]] || return 0
+
+  echo ""
+  echo "\033[1;33m ⚠  herdr: CLI was updated but the old server is still running\033[0m"
+  echo "    (protocol mismatch — plugin/agent commands fail until a restart)."
+  if [[ "${_restart_herdr:-false}" == true ]]; then
+    if [[ "${HERDR_ENV:-}" == 1 ]]; then
+      echo "    --restart-herdr: stopping the server now — this pane closes with it."
+      echo "    Start herdr again afterwards; resume agents via 'claude --resume'"
+      echo "    or 'codex resume'."
+    else
+      echo "    --restart-herdr: stopping the server (all pane processes exit)."
+    fi
+    herdr server stop && echo "    Server stopped — the next 'herdr' launch starts the new version."
+    return 0
+  fi
+  if [[ "${HERDR_ENV:-}" == 1 ]]; then
+    echo "    This shell runs inside herdr, so update can't restart it (that would"
+    echo "    kill this very pane). When your sessions are done, run from a plain"
+    echo "    terminal:  herdr server stop   — then start herdr again."
+    echo "    Note: stopping exits ALL pane processes; agent sessions can be"
+    echo "    resumed afterwards (claude --resume / codex resume)."
+    return 0
+  fi
+  local answer
+  echo -n "    Restart herdr server now? This exits ALL pane processes [y/N] "
+  read -r answer
+  if [[ "$answer" =~ ^[Yy] ]]; then
+    herdr server stop && echo "    Server stopped — the next 'herdr' launch starts the new version."
+  else
+    echo "    Skipped. Restart later with: herdr server stop"
+  fi
+}
+
 # ── Dispatch ────────────────────────────────────────────────
 
 _update_run() {
@@ -338,7 +306,6 @@ _update_run() {
     asdf)   _update_asdf ;;
     rust)   _update_rust ;;
     nvim)   _update_nvim ;;
-    tmux)   _update_tmux ;;
     herdr)  _update_herdr ;;
     skills) _update_skills ;;
     krew)   _update_krew ;;
@@ -361,7 +328,6 @@ _UPDATE_TARGETS+=(
   "asdf:🔌:asdf"
   "rust:🦀:Rust"
   "nvim:📝:Neovim Plugins"
-  "tmux:🖥️:Tmux Plugins"
   "herdr:🐑:herdr Plugins"
   "skills:🧩:Agent Skills"
   "krew:☸️:Krew"
@@ -375,9 +341,11 @@ _update_help() {
   echo "\033[1;37mUsage:\033[0m update [options] [targets...]"
   echo ""
   echo "\033[1;37mOptions:\033[0m"
-  echo "  -y, --all    Update all without prompting"
-  echo "  -d, --dock   Rebuild dock after updates"
-  echo "  help         Show this help message"
+  echo "  -y, --all            Update all without prompting"
+  echo "  -d, --dock           Rebuild dock after updates"
+  echo "  -r, --restart-herdr  Restart the herdr server at the end if it is"
+  echo "                       outdated (exits all pane processes!)"
+  echo "  help                 Show this help message"
   echo ""
   echo "\033[1;37mTargets:\033[0m"
   if [[ "$(uname -s)" == "Darwin" ]]; then
@@ -390,7 +358,6 @@ _update_help() {
   echo "  asdf         asdf version manager plugins"
   echo "  rust         Rust toolchain (rustup) + cargo tools (cargo-tools.list)"
   echo "  nvim         Neovim plugins (lazy.nvim)"
-  echo "  tmux         Tmux plugins (TPM)"
   echo "  herdr        herdr plugins (herdr-lazy bundle)"
   echo "  skills       Agent skills for Claude/Codex (skills.sh CLI)"
   echo "  krew         kubectl plugins (krew)"
@@ -409,7 +376,6 @@ _update_help() {
   command -v asdf &>/dev/null   && echo "  asdf         $(asdf version 2>/dev/null)"
   command -v rustup &>/dev/null && echo "  rustup       $(rustup --version 2>/dev/null | head -1)"
   command -v nvim &>/dev/null   && echo "  nvim         $(nvim --version 2>/dev/null | head -1)"
-  command -v tmux &>/dev/null   && echo "  tmux         $(tmux -V 2>/dev/null)"
   command -v herdr &>/dev/null  && echo "  herdr        $(herdr --version 2>/dev/null | head -1)"
   command -v npx &>/dev/null    && echo "  skills       $(npx -y skills --version 2>/dev/null | head -1)"
   command -v kubectl &>/dev/null && echo "  kubectl      $(kubectl version --client --short 2>/dev/null || kubectl version --client 2>/dev/null | head -1)"
@@ -422,22 +388,20 @@ _update_help() {
 update() {
   local _update_all=false
   local _dock=false
+  local _restart_herdr=false
   local -a _targets=()
   _update_results=()
 
   # Parse arguments
   for arg in "$@"; do
     case $arg in
-      -y|--all)  _update_all=true ;;
-      -d|--dock) _dock=true ;;
-      help)      _update_help; return 0 ;;
-      *)         _targets+=("$arg") ;;
+      -y|--all)           _update_all=true ;;
+      -d|--dock)          _dock=true ;;
+      -r|--restart-herdr) _restart_herdr=true ;;
+      help)               _update_help; return 0 ;;
+      *)                  _targets+=("$arg") ;;
     esac
   done
-
-  # Start sudo keepalive
-  _update_sudo_start || return 1
-  trap '_update_sudo_stop' EXIT INT TERM HUP
 
   if (( ${#_targets} > 0 )); then
     # Direct targets: run without prompting
@@ -468,7 +432,7 @@ update() {
   fi
 
   _update_summary
-  _update_sudo_stop
+  _update_herdr_server_check
 }
 
 # ── Tab Completion ─────────────────────────────────────────
@@ -479,6 +443,7 @@ _update() {
   _arguments -s \
     '(-y --all)'{-y,--all}'[Update all without prompting]' \
     '(-d --dock)'{-d,--dock}'[Rebuild dock after updates]' \
+    '(-r --restart-herdr)'{-r,--restart-herdr}'[Restart herdr server at the end if outdated]' \
     '*:target:->targets'
 
   if [[ "$state" == "targets" ]]; then
@@ -501,5 +466,5 @@ outdated() {
   brew outdated --formula
   echo ""
   echo "\033[1;37mCasks:\033[0m"
-  brew outdated --cask --greedy
+  brew outdated --cask --greedy-auto-updates
 }
