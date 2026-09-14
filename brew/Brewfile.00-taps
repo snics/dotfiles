@@ -1,6 +1,9 @@
 # Tap repositories for additional Homebrew formulas
-tap "agavra/tap" # tuicr: code-review TUI for diffs. [tuicr](https://github.com/agavra/tuicr)
 tap "bramstein/webfonttools" # Tools for working with web fonts. [Webfonttools](https://github.com/bramstein/homebrew-webfonttools)
+# NOTE: cirruslabs/cli is abandoned (Cirrus Labs joined OpenAI 2026-04; tart moved
+# to openai/tools). Kept tapped so the installed tart 2.32.1 + softnet kegs stay
+# attributable, but its tart formula no longer loads under Homebrew 7 — see the
+# commented-out tart entry in Brewfile.50-containers.
 tap "cirruslabs/cli" # Cirrus Labs CLI tools (Tart VM runner). [Cirrus CLI](https://github.com/cirruslabs/homebrew-cli)
 tap "coder/coder" # Developer tools from Coder. [Coder](https://github.com/coder/homebrew-coder)
 tap "derailed/popeye" # A Kubernetes cluster resource sanitizer. [Popeye](https://github.com/derailed/popeye)
