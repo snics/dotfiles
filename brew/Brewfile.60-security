@@ -7,6 +7,7 @@ brew "dex2jar" # Tools to work with Android .dex and Java .class files. [Dex2jar
 brew "dns2tcp" # TCP over DNS tunnel tool. [Dns2tcp](https://github.com/alex-sector/dns2tcp)
 brew "fcrackzip" # A ZIP password cracker. [Fcrackzip](https://github.com/hyc/fcrackzip)
 brew "foremost" # A console program to recover files based on their headers and footers. [Foremost](http://foremost.sourceforge.net/)
+brew "gitleaks" # Audit git repos and staged changes for secrets. [Gitleaks](https://gitleaks.io/)
 brew "gnupg" # GNU Pretty Good Privacy (PGP) package. [GnuPG](https://gnupg.org/)
 brew "hydra" # Very fast network logon cracker which supports many different services. [Hydra](https://github.com/vanhauser-thc/thc-hydra)
 brew "john" # John the Ripper password cracker. [John the Ripper](https://www.openwall.com/john/)

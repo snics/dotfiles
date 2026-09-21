@@ -152,6 +152,7 @@ common_subcommands = [
   "kubescape",
   "kubeshark",
   "polaris",
+  "kubebuilder",
   # Cloud & Infra
   "aws",
   "gcloud",
@@ -177,6 +178,9 @@ common_subcommands = [
   "sesh",
   "taplo",
   "mc",
+  "golangci-lint",
+  "gitleaks",
+  "lefthook",
   # IaC
   "packer",
   "terraform",

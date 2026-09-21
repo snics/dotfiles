@@ -11,6 +11,7 @@ brew "deno" # A secure runtime for JavaScript and TypeScript. [Deno](https://den
 brew "direnv" # Unclutter your .profile. [Direnv](https://direnv.net/)
 brew "dprint" # Rust-based code formatter, kept for Dockerfile only (oxfmt handles the rest). [dprint](https://dprint.dev/)
 brew "go" # The Go programming language. [Go](https://golang.org/)
+brew "golangci-lint" # Fast linters runner for Go. [golangci-lint](https://golangci-lint.run/)
 brew "gopls" # Go language server for the Go programming language. [Gopls](https://github.com/golang/tools/tree/master/gopls)
 brew "lua" # Powerful, efficient, lightweight, embeddable scripting language. [Lua](https://www.lua.org/)
 brew "node" # JavaScript runtime built on Chrome's V8 JavaScript engine. [Node.js](https://nodejs.org/)
