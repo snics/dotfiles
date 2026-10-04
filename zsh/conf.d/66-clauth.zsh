@@ -43,18 +43,14 @@
     # don't spawn a scheduler that would idle until the first `clauth login`.
     [[ -n "$(ls -A "$HOME/.clauth/profiles" 2>/dev/null)" ]] || return
 
-    local lock="${TMPDIR:-/tmp}/clauth-daemon.pid"
+    # clauth enforces a single instance itself ("already running (pid N);
+    # exiting"), so it is the only lock needed. A PID lockfile used to sit in
+    # front of it and broke itself: a pane that lost the race wrote the PID of
+    # its own short-lived, immediately-exiting daemon, so every later pane saw
+    # a dead PID and spawned again. Ask the process table instead, so a normal
+    # new pane spawns nothing.
+    pgrep -qf '^clauth daemon' && return
 
-    # Claim the lockfile atomically: two panes starting together both see it
-    # missing, so the create itself has to be the gate rather than a preceding
-    # existence check. A lockfile left behind by a killed daemon self-heals via
-    # the liveness check below.
-    if ( umask 077; set -o noclobber; echo $$ > "$lock" ) 2>/dev/null; then
-        clauth daemon >>| "$HOME/.clauth/daemon.log" 2>&1 &
-        echo $! >| "$lock"
-    elif ! kill -0 "$(<"$lock" 2>/dev/null)" 2>/dev/null; then
-        rm -f "$lock"
-        clauth daemon >>| "$HOME/.clauth/daemon.log" 2>&1 &
-        echo $! >| "$lock"
-    fi
+    # `&!` disowns the daemon: no "[n] pid" on start, no "done" on exit.
+    clauth daemon >>| "$HOME/.clauth/daemon.log" 2>&1 &!
 }
