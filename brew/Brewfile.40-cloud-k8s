@@ -26,6 +26,7 @@ brew "kubernetes-cli" # Kubernetes command-line tool, kubectl. [Kubectl](https:/
 brew "kubeshark/kubeshark/kubeshark" # API traffic viewer for Kubernetes. [Kubeshark](https://kubeshark.co/)
 brew "minikube" # Run Kubernetes locally. [Minikube](https://minikube.sigs.k8s.io/docs/)
 brew "openshift-cli" # Command-line tool for OpenShift. [OpenShift CLI](https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html)
+brew "rosa-cli" # Red Hat OpenShift Service on AWS (ROSA) command-line interface. [ROSA CLI](https://github.com/openshift/rosa)
 brew "opentofu" # OpenTofu, an open source fork of Terraform. [OpenTofu](https://opentofu.org/)
 brew "derailed/popeye/popeye" # A Kubernetes cluster resource sanitizer. [Popeye](https://github.com/derailed/popeye)
 brew "rancher-cli" # Command-line tool for Rancher, a container management platform. [Rancher CLI](https://rancher.com/docs/rancher/v2.x/en/cli/)

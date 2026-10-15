@@ -159,6 +159,7 @@ common_subcommands = [
   "hcloud",
   "coder",
   "oc",
+  "rosa",
   "rancher",
   "rke",
   "limactl",
