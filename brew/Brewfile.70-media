@@ -4,9 +4,11 @@ brew "exiv2" # Image metadata manipulation tool. [Exiv2](https://www.exiv2.org/)
 brew "ghostscript" # An interpreter for the PostScript language and for PDF. [Ghostscript](https://www.ghostscript.com/)
 brew "imagemagick" # Tools and libraries to manipulate images in many formats. [ImageMagick](https://imagemagick.org/)
 brew "netpbm" # Toolkit for manipulation of graphic images. [Netpbm](http://netpbm.sourceforge.net/)
+brew "pdfcraft-cli" # Headless PdfCraft CLI and MCP server to create, edit, inspect and fill PDFs (`pdfcraft-cli mcp`). [PdfCraft](https://getartcraft.com/apps/pdfcraft)
+brew "photocraft-cli" # Headless PhotoCraft engine to convert, inspect and batch-edit images, with MCP server. [PhotoCraft](https://getartcraft.com/apps/photocraft)
 brew "pngcheck" # Verifies the integrity of PNG and dump information about PNG image files. [Pngcheck](http://www.libpng.org/pub/png/apps/pngcheck.html)
+brew "poppler" # PDF rendering library and CLI tools (pdftotext, pdftoppm, pdfinfo, ...). [Poppler](https://poppler.freedesktop.org/)
 brew "vbindiff" # Visual binary diff, visually compare binary files. [Vbindiff](https://www.cjmweb.net/vbindiff/)
-brew "xpdf" # PDF viewer. [Xpdf](https://www.xpdfreader.com/)
 
 # Web font tools
 brew "bramstein/webfonttools/sfnt2woff" # Convert sfnt (TrueType/OpenType) fonts to WOFF. [Sfnt2woff](https://github.com/bramstein/sfnt2woff)

@@ -186,6 +186,10 @@ common_subcommands = [
   "packer",
   "terraform",
   "tofu",
+  # Media & documents (ArtCraft headless CLIs)
+  "pdfcraft-cli",
+  "photocraft-cli",
+  "figcraft-cli",
   # Hardware
   "ykman",
   "zapp",

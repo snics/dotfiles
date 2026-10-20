@@ -36,3 +36,22 @@
 # rolling token needs this version and not the old pin. Verified before the
 # bump that the herdr subcommand and herdr-plugin/ still exist at this tag.
 clauth git=https://github.com/uwuclxdy/clauth rev=85d28a1eb6526e705bf02981a2a41782e13da249
+
+# ArtCraft headless CLIs + MCP servers (`<app>-cli mcp`), https://getartcraft.com/apps
+#
+# pdfcraft-cli and photocraft-cli ship as homebrew/core formulae and live in
+# brew/Brewfile.70-media. The others exist only as GitHub release zips — no
+# formula, not on crates.io (`publish = false`; the crates.io crate named
+# `figcraft` is an unrelated project) — so they build from the workspace at the
+# commit of their release tag. Bump rev= together with the cask version.
+#
+# Only figcraft is enabled. The rest mirror the casks disabled in
+# brew/Brewfile.85-casks on 2026-10-20 (not usable yet): re-enable app and CLI
+# together, after refreshing rev= to the then-current release tag.
+figcraft-cli git=https://github.com/storytold/figcraft rev=47438dd4a2e8b49a7e6bb3dfd480262dadc37f12 # v0.7.0
+# deckcraft-cli git=https://github.com/storytold/deckcraft rev=22db9261f9d1a214c296fd390173130c45d76d66 # v0.8.0
+# filmcraft-cli git=https://github.com/storytold/filmcraft rev=4a69a038d32761f604b3c7e4845b21fb40b3cbe4 # v0.9.0
+# gridcraft-cli git=https://github.com/storytold/gridcraft rev=a2cc4b42cac6e2c41bae71fba4607300755a0b47 # v0.9.0
+# lightcraft-cli git=https://github.com/storytold/lightcraft rev=4f0b110bcbd2e350c6d97b47f1d824c2222295c4 # v0.9.1
+# vectorcraft-cli git=https://github.com/storytold/vectorcraft rev=904f0fe5227bd987d55319e89a38b4b8f046998c # v0.13.1
+# wordcraft-cli git=https://github.com/storytold/wordcraft rev=f2e15cf8f899a79899a2d9595ca4ce7df1e5ea22 # v0.8.0
