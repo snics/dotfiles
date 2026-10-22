@@ -16,7 +16,6 @@ git/         → Git config + aliases
 k9s/         → Kubernetes TUI
 lazygit/     → Lazygit config
 nvim/        → NeoVim config
-opencode/    → OpenCode AI config
 tmux/        → tmux config
 zed/         → Zed editor config
 zsh/         → Zsh shell (conf.d/, functions/, themes/)

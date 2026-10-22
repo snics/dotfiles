@@ -235,7 +235,6 @@ ignored_commands = [
   "hunk",
   # AI agents (interactive sessions)
   "claude",
-  "opencode",
   "codex",
   "gemini",
   "kimi",

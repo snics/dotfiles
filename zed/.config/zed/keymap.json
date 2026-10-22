@@ -91,20 +91,6 @@
         "agent::NewExternalAgentThread",
         { "agent": { "custom": { "name": "codex" } } }
       ],
-      "space a o": [
-        "agent::NewExternalAgentThread",
-        {
-          "agent": {
-            "custom": {
-              "name": "OpenCode",
-              "command": {
-                "command": "opencode",
-                "args": ["acp"]
-              }
-            }
-          }
-        }
-      ],
       // -------------------------------------------------------------------
       // Buffer — space b
       // -------------------------------------------------------------------

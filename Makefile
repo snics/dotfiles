@@ -9,14 +9,14 @@ SHELL := /bin/bash
 DOTFILES := $(HOME)/.dotfiles
 
 # Stow package lists (CLI = universal, GUI = macOS only)
-CLI_PACKAGES := zsh git nvim tmux lazygit k9s tuicr hunk worktrunk herdr opencode claude
+CLI_PACKAGES := zsh git nvim tmux lazygit k9s tuicr hunk worktrunk herdr claude
 GUI_PACKAGES := ghostty zed cursor obsidian
 ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
 .PHONY: all install link link-cli link-gui unlink relink update macos dock touchid-sudo project-folders \
         golang rust cargo-tools cargo-tools-update cargo-dump clauth clauth-sync asdf \
         herdr-plugins herdr-plugins-update herdr-plugins-restore check lint test test-symlinks test-configs help \
-        zsh git nvim ghostty tmux lazygit k9s tuicr hunk hunk-skill worktrunk worktrunk-plugins wt-issue-skill herdr zed opencode claude cursor obsidian \
+        zsh git nvim ghostty tmux lazygit k9s tuicr hunk hunk-skill worktrunk worktrunk-plugins wt-issue-skill git-skills codex-marketing-skills legal-skills herdr zed claude cursor obsidian \
         brew-gen brew-install brew-tap brew-trust brew-list brew-check brew-cleanup \
         brew-cleanup-force brew-dump brew-edit \
         docker-build docker-build-nvim docker-build-devenv docker-build-web-terminal docker-build-web-desktop \
@@ -122,9 +122,6 @@ herdr: ## Link herdr config
 
 zed: ## Link zed config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" zed
-
-opencode: ## Link opencode config
-	@cd $(DOTFILES) && stow --restow -t "$(HOME)" opencode
 
 claude: ## Link claude config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" claude

@@ -15,7 +15,7 @@ lsp/
 │   └── graphql.lua      # GraphQL Language Server
 ├── docs/                # Documentation
 ├── .cursor/rules        # Cursor AI configuration
-└── AGENTS.md           # OpenCode AI configuration
+└── AGENTS.md           # AI agent instructions
 ```
 
 ## 🔧 How to Work with This Configuration

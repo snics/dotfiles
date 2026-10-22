@@ -28,7 +28,6 @@ k9s/         → ~/.config/k9s/ (Kubernetes TUI)
 lazygit/     → ~/.config/lazygit/
 nvim/        → ~/.config/nvim/ (NeoVim)
 obsidian/    → Obsidian vault structure
-opencode/    → ~/.config/opencode/ (AI coding agent)
 tmux/        → ~/.config/tmux/
 tuicr/       → ~/.config/tuicr/ (code-review TUI)
 worktrunk/   → ~/.config/worktrunk/ (wt — git worktree manager)

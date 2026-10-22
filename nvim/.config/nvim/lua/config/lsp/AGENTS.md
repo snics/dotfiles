@@ -1,6 +1,6 @@
 # LSP Configuration Agents
 
-OpenCode AI agent instructions for working with this modular LSP configuration.
+AI agent instructions for working with this modular LSP configuration.
 
 ## 🎯 Project Overview
 
@@ -25,7 +25,7 @@ config/lsp/
 │   └── graphql.lua      # GraphQL + Multi-framework
 ├── docs/                # 📚 Documentation
 ├── .cursor/rules        # 🤖 Cursor AI instructions
-└── AGENTS.md           # 🤖 OpenCode AI instructions (this file)
+└── AGENTS.md           # 🤖 AI agent instructions (this file)
 ```
 
 ## 🔧 Core Components

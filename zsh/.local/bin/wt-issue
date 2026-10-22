@@ -52,8 +52,8 @@ done
 # Allowlist: --agent ends up as `wt switch --execute`, so an arbitrary value
 # would be an arbitrary command — including when an agent calls this script.
 case "$agent" in
-  claude|codex|opencode) ;;
-  *) die "unsupported --agent '$agent' (allowed: claude, codex, opencode)" ;;
+  claude|codex) ;;
+  *) die "unsupported --agent '$agent' (allowed: claude, codex)" ;;
 esac
 
 command -v glab >/dev/null || die "glab is required"

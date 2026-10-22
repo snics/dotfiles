@@ -28,7 +28,7 @@ cursor/
   eigenem OAuth-Flow (linear). Einen Shell-Secrets-Mechanismus gibt es nicht
   mehr — wo ein Tool wirklich einen Key braucht, holt es ihn on-demand aus
   1Password (`op read "op://Employee/…"`), siehe nvim/codecompanion als Muster.
-- Siehe `docs/opencode-cursor-mcp.md`.
+- Siehe `_docs/cursor-mcp.md`.
 
 ## Bestehende Config übernehmen
 

@@ -11,7 +11,3 @@ value = "claude"
 [[options]]
 label = "Codex"
 value = "codex"
-
-[[options]]
-label = "opencode"
-value = "opencode"

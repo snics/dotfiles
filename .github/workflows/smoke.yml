@@ -90,7 +90,7 @@ jobs:
       - name: Stow dry-run (all packages)
         run: |
           cd "$GITHUB_WORKSPACE"
-          for pkg in zsh git nvim ghostty tmux lazygit k9s zed opencode claude cursor obsidian; do
+          for pkg in zsh git nvim ghostty tmux lazygit k9s zed claude cursor obsidian; do
             echo -n "  $pkg: "
             if stow --simulate --restow -t "$HOME" "$pkg" 2>&1 | grep -q "ERROR"; then
               echo "FAIL"

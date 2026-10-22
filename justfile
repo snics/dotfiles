@@ -8,7 +8,7 @@ DOTFILES := env_var("HOME") / ".dotfiles"
 
 # Stow package lists (CLI = universal, GUI = macOS only)
 
-CLI_PACKAGES := "zsh git nvim tmux lazygit k9s tuicr hunk worktrunk herdr opencode claude"
+CLI_PACKAGES := "zsh git nvim tmux lazygit k9s tuicr hunk worktrunk herdr claude"
 GUI_PACKAGES := "ghostty zed cursor obsidian"
 ALL_PACKAGES := CLI_PACKAGES + " " + GUI_PACKAGES
 
@@ -144,10 +144,6 @@ herdr:
 # Link zed config
 zed:
     @cd {{ DOTFILES }} && stow --restow -t "$HOME" zed
-
-# Link opencode config
-opencode:
-    @cd {{ DOTFILES }} && stow --restow -t "$HOME" opencode
 
 # Link claude config
 claude:

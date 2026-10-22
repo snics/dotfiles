@@ -25,7 +25,7 @@ cd "$DOTFILES"
 source "$DOTFILES/_lib/platform.sh"
 
 # ── CLI packages (linked in all environments) ──────────
-CLI_PACKAGES="zsh git nvim tmux lazygit k9s opencode claude"
+CLI_PACKAGES="zsh git nvim tmux lazygit k9s claude"
 
 # ── Container fast-path ─────────────────────────────────
 # Codespaces, DevPod, VS Code Dev Containers, or plain Docker:

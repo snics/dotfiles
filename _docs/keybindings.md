@@ -385,7 +385,6 @@ Leader: **`Space`** (Vim mode)
 | `Space a c` | New Claude Code thread |
 | `Space a g` | New Gemini CLI thread |
 | `Space a x` | New Codex thread |
-| `Space a o` | New OpenCode thread |
 
 ### Agent Panel
 
