@@ -188,6 +188,44 @@ Two traps, both hit during the initial setup:
 There is no CLI setter for the `[herdr]` knobs — only `clauth herdr config get`.
 Edit the file, or use the TUI's Setup tab.
 
+## Logouts and the "live login no longer matches" banner
+
+Diagnosed 2026-10-23 — evidence and timeline in
+`_planning/clauth-relogin-diagnosis.md`.
+
+- **The banner is expected at the pinned rev.** Quitting the TUI freezes
+  `~/.claude/.credentials.json` as a plain copy; the daemon later re-stamps
+  the bearer into the Keychain only, so the file drifts and the TUI flags it.
+  It also makes `clauth which` print `unknown` and silently blocks the
+  daemon's boot relink. Fixed upstream after v0.17.0 (#104), not released.
+- **Resolve it with `d` → "discard this login and restore '<active>'".**
+  Never choose the first row, "overwrite '<active>' with this login": it
+  stores the expired, refresh-less bearer as the profile's credentials and
+  breaks that profile's chain, so `clauth login` becomes necessary. Never set
+  `default_divergence = Overwrite`.
+- **Real logouts come from the daemon not running.** The rolling bearer lives
+  ~8 h and only the daemon re-stamps it. Its watchdog exits after sleep/wake
+  "for a clean launchd restart", and it has died silently too; the herdr-pane
+  spawn only brings it back with the next new pane.
+  `_install/clauth-daemon.sh` (`just clauth-daemon`) installs a launchd agent
+  (`com.dotfiles.clauth-daemon`, `KeepAlive`, `clauth daemon --standby`) —
+  loading it starts a daemon, so it is a deliberate step, not part of
+  bootstrap. The herdr-pane spawn stays as fallback; the singleton lock and
+  `--standby` handle duplicates.
+- `clauth login` is only needed when `daemon.log` shows `auth_broken` or an
+  HTTP 400 on refresh; a merely expired bearer recovers on the daemon's next
+  tick.
+- **The clauth Claude Code plugin is installed** (since 2026-10-07), contrary
+  to earlier notes. Its hooks run on every prompt and tool use and
+  `self-heal` on SessionStart (upstream #134). Uninstall from the TUI's Plugin
+  tab if unwanted.
+- **Upgrade caveat:** never land the pin on v0.15.2 — its `clauth mcp`
+  deletes Keychain items it did not create (#81), which would include T3
+  Code's per-instance logins (`t3/AGENTS.md`). v0.16.0+ fixes that and adds
+  the sleep watchdog and the `security -i` truncation fix (`be5c39e2`, which
+  superseded PR #66). Until the pin moves, keep the "no global OAuth MCP
+  servers" rule.
+
 ## Version pinning
 
 clauth is installed from a **git commit**, not crates.io: the published 0.14.1

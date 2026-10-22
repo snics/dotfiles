@@ -48,8 +48,9 @@
     # front of it and broke itself: a pane that lost the race wrote the PID of
     # its own short-lived, immediately-exiting daemon, so every later pane saw
     # a dead PID and spawned again. Ask the process table instead, so a normal
-    # new pane spawns nothing.
-    pgrep -qf '^clauth daemon' && return
+    # new pane spawns nothing. The pattern also matches the launchd agent from
+    # _install/clauth-daemon.sh, which runs it by absolute path.
+    pgrep -qf '(^|/)clauth daemon' && return
 
     # `&!` disowns the daemon: no "[n] pid" on start, no "done" on exit.
     clauth daemon >>| "$HOME/.clauth/daemon.log" 2>&1 &!

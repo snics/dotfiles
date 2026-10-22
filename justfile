@@ -287,6 +287,10 @@ cargo-dump:
 clauth:
     bash {{ DOTFILES }}/_install/clauth.sh
 
+# Keep the clauth daemon alive via a launchd agent (loads it; touches the Keychain)
+clauth-daemon:
+    bash {{ DOTFILES }}/_install/clauth-daemon.sh
+
 # Wire T3 Code to both Claude accounts and Codex (config dirs + settings overlay)
 t3:
     bash {{ DOTFILES }}/_install/t3.sh
