@@ -130,7 +130,7 @@ dangling=$(grep -rhoE '\]\(\.\./[^/)]+/SKILL\.md' "$BUNDLE"/*/SKILL.md \
     | sed -E 's#.*\.\./([^/]+)/SKILL\.md#\1#' | sort -u \
     | while read -r target; do [[ -d "$BUNDLE/$target" ]] || echo "$target"; done)
 if [[ -n "$dangling" ]]; then
-    echo "  note: links to skills not installed:" $dangling
+    echo "  note: links to skills not installed: ${dangling//$'\n'/ }"
 fi
 
 npx -y skills@latest add "$BUNDLE" --global --yes --skill '*' --agent "${AGENTS[@]}"
