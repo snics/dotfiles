@@ -218,11 +218,23 @@ the only signal.
 
 ### 6.4 Open decisions (user)
 
-1. **Worktrees in `~/Projects/_worktrees`?** Pro: one visible tree, `wt list`
-   sees T3 worktrees. Contra: wt hooks don't run for T3 worktrees (no env-file
-   copies), `.dotfiles` vs `dotfiles` dir name differs, `wt remove` on a T3
-   thread's worktree breaks the thread. Alternative: keep T3's hidden
-   `~/.t3/worktrees`.
+1. **Worktrees — hybrid with Worktrunk** (research: `_planning/t3code/research-worktrunk.md`).
+   T3 cannot delegate worktree creation to `wt` (hard-coded `git worktree add`),
+   but both tools produce the same path layout, and T3 can attach a thread to
+   any existing worktree via the branch picker. Proposed:
+   - Overlay: `worktreesDirectory: ~/Projects/_worktrees`,
+     `worktreeCleanup: {mode: "off"}`, plus one global `defaultProjectScripts`
+     entry (`runOnWorktreeCreate`, `async: false`) running
+     `wt hook pre-start && wt hook post-start`, so wt's hooks also run for
+     T3-created worktrees. Hook approvals stay manual
+     (`wt config approvals add`).
+   - GitLab tickets and `~/.dotfiles`: create with `wt issue --no-agent` /
+     `wt switch --create`, then attach the T3 thread via the branch picker.
+   - Removal always: delete the T3 thread first, then `wt remove` / `wt merge`.
+   - Later, after a live test: `wt issue --t3` via
+     `t3 thread start . --worktree <base> --branch <N>-<slug>`.
+   - Caveat: auto-named T3 branches are renamed but keep the `t3-<hex>` dir,
+     so they show a path-mismatch flag in `wt list`; `.dotfiles` dir name differs.
 2. **`followUpBehavior`:** `queue` (current) or `steer` (CLI-like).
 
 ### 6.5 Steps
