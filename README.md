@@ -129,7 +129,6 @@ This setup works perfectly for developers and software architects who work with 
 - 📦 [Node.js](https://nodejs.org/) - JavaScript runtime
   - Managed via asdf
   - npm, yarn, and pnpm support
-- 🦕 [Deno](https://deno.land/) - Secure JavaScript/TypeScript runtime
 - 🦀 [Rust](https://www.rust-lang.org/) - Systems programming language
   - Rustup toolchain manager
   - Cargo package manager
@@ -185,8 +184,6 @@ This setup works perfectly for developers and software architects who work with 
 - 🌐 [Arc Browser](https://arc.net/) - Modern, feature-rich browser
 - 💬 [Raycast](https://www.raycast.com/) - Extendable launcher and productivity tool
 - 📊 [Linear](https://linear.app/) - Project management for software teams
-- 💼 [Notion](https://www.notion.so/) - All-in-one workspace
-- 📅 [Notion Calendar](https://www.notion.so/calendar) - Calendar integration
 - 🎬 [CleanShot](https://cleanshot.com/) - Advanced screenshot and recording tool
 
 ### Additional Tools & Utilities

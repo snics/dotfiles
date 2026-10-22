@@ -8,7 +8,6 @@ brew "krb5" # Network authentication protocol. [Krb5](https://web.mit.edu/kerber
 brew "mackup" # Keep your application settings in sync (OS X/Linux). [Mackup](https://github.com/lra/mackup)
 brew "mas" # Mac App Store command line interface. [Mas](https://github.com/mas-cli/mas)
 brew "minio-mc" # MinIO Client (mc) provides a modern alternative to UNIX commands like ls, cat, cp, mirror, diff, find etc. [MinIO Client](https://min.io/docs/minio/linux/reference/minio-mc.html)
-brew "mysql-client" # MySQL client tools. [MySQL](https://dev.mysql.com/downloads/shell/)
 brew "pkl" # Tool for working with PKL files. [PKL](https://github.com/irmen/pickletools)
 brew "qemu" # Open source machine emulator and virtualizer. [QEMU](https://www.qemu.org/)
 brew "pam-reattach" # PAM module so Touch ID works for sudo inside tmux/herdr sessions; wired up in /etc/pam.d/sudo_local. [pam_reattach](https://github.com/fabianishere/pam_reattach)

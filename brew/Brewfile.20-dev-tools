@@ -7,7 +7,6 @@ brew "cargo-nextest" # Faster Rust test runner. [cargo-nextest](https://nexte.st
 brew "cargo-zigbuild" # Compile Cargo projects with the zig linker for easy cross-compilation. [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild)
 brew "cloc" # Count lines of code in many programming languages. [Cloc](https://github.com/AlDanial/cloc)
 brew "delve" # Debugger for the Go programming language. [Delve](https://github.com/go-delve/delve)
-brew "deno" # A secure runtime for JavaScript and TypeScript. [Deno](https://deno.land/)
 brew "direnv" # Unclutter your .profile. [Direnv](https://direnv.net/)
 brew "dprint" # Rust-based code formatter, kept for Dockerfile only (oxfmt handles the rest). [dprint](https://dprint.dev/)
 brew "go" # The Go programming language. [Go](https://golang.org/)
