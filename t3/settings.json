@@ -1,0 +1,34 @@
+{
+  "defaultRuntimeMode": "auto",
+  "providerInstances": {
+    "claudeAgent": {
+      "driver": "claudeAgent",
+      "displayName": "Claude Privat",
+      "accentColor": "#D97757",
+      "enabled": true,
+      "config": {
+        "binaryPath": "claude",
+        "homePath": "~/.claude-t3/private"
+      }
+    },
+    "claudeWork": {
+      "driver": "claudeAgent",
+      "displayName": "Claude Work",
+      "accentColor": "#5B8DEF",
+      "enabled": true,
+      "config": {
+        "binaryPath": "claude",
+        "homePath": "~/.claude-t3/work"
+      }
+    },
+    "codex": {
+      "driver": "codex",
+      "displayName": "Codex",
+      "enabled": true,
+      "config": {
+        "setupMode": "existing",
+        "binaryPath": "codex"
+      }
+    }
+  }
+}

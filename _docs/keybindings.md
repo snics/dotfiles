@@ -535,6 +535,43 @@ per-project override so the tree is not hidden); config stowed from
 
 ---
 
+## T3 Code
+
+GUI for Claude Code and Codex threads (`t3-code@nightly`). These are T3's
+defaults; `~/.t3/userdata/keybindings.json` is deliberately not tracked (see
+`t3/AGENTS.md`). `Cmd` = `mod`.
+
+### Threads & Composer
+
+| Shortcut | Action |
+|----------|--------|
+| `Cmd+n` / `Cmd+Shift+o` | New thread |
+| `Cmd+Shift+n` | New thread in the current project |
+| `Cmd+Shift+m` | Model picker — choose the account (Claude Privat / Work, Codex) |
+| `Cmd+Shift+↑` / `Cmd+Shift+↓` | Previous / next provider (in model picker) |
+| `Cmd+Shift+a` | Composer mode (default / plan) |
+| `Cmd+Shift+e` | Reasoning effort |
+| `Cmd+Enter` | Send in background (new draft) / send alternate (turn running) |
+| `Cmd+Shift+Enter` | Steer with the queued message |
+| `Cmd+Shift+[` / `Cmd+Shift+]` | Previous / next thread |
+| `Cmd+1`–`9` | Jump to thread 1–9 |
+| `Cmd+u` | Usage page (per-account limits: `l`, tokens: `t`, cost: `c`) |
+
+### Panels
+
+| Shortcut | Action |
+|----------|--------|
+| `Cmd+k` | Command palette |
+| `Cmd+p` | File picker |
+| `Cmd+Shift+f` | Project search |
+| `Cmd+b` | Toggle sidebar |
+| `Cmd+Shift+b` | Toggle thread panel |
+| `Cmd+d` | Toggle diff |
+| `Cmd+j` | Toggle terminal (inside: `Cmd+d` split, `Cmd+n` new, `Cmd+w` close) |
+| `Cmd+Shift+j` | Toggle preview |
+
+---
+
 ## Hunk
 
 Review-first diff viewer (`hunk diff` / `hunk show`, `git hd` / `git hs`).

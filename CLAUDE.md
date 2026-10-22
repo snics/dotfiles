@@ -28,6 +28,8 @@ k9s/         → ~/.config/k9s/ (Kubernetes TUI)
 lazygit/     → ~/.config/lazygit/
 nvim/        → ~/.config/nvim/ (NeoVim)
 obsidian/    → Obsidian vault structure
+t3/          → ~/.t3/userdata/settings.json overlay for T3 Code (NOT stowed —
+               merged by _install/t3.sh, see t3/AGENTS.md)
 tmux/        → ~/.config/tmux/
 tuicr/       → ~/.config/tuicr/ (code-review TUI)
 worktrunk/   → ~/.config/worktrunk/ (wt — git worktree manager)
@@ -56,6 +58,7 @@ Detailed rules live in each package's `AGENTS.md`:
 | `zed/AGENTS.md` | Zed editor config, keybindings, cross-sync with NeoVim |
 | `claude/AGENTS.md` | Claude Code settings.json copy/sync (not symlinked) |
 | `clauth/AGENTS.md` | clauth profiles.toml copy/sync, guardrails, git pin |
+| `t3/AGENTS.md` | T3 Code settings overlay, per-account Claude config dirs |
 
 ## Justfile / Makefile Sync Rule
 

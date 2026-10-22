@@ -287,6 +287,10 @@ cargo-dump:
 clauth:
     bash {{ DOTFILES }}/_install/clauth.sh
 
+# Wire T3 Code to both Claude accounts and Codex (config dirs + settings overlay)
+t3:
+    bash {{ DOTFILES }}/_install/t3.sh
+
 # Install asdf plugins
 asdf:
     source {{ DOTFILES }}/asdf/plugins.sh

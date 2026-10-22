@@ -289,6 +289,7 @@ This dotfiles repository uses the following structure:
 ├── lazygit/           # Lazygit themes and settings
 ├── nvim/              # Neovim configuration
 ├── obsidian/          # Obsidian vault structure and settings
+├── t3/                # T3 Code settings overlay (merged, not stowed)
 ├── tmux/              # tmux configuration and plugins
 ├── worktrunk/         # Worktrunk (wt) worktree-manager config
 ├── zed/               # Zed editor config

@@ -286,6 +286,12 @@ _update_skills() {
     echo "Mirroring Claude marketing plugins into Codex..."
     bash "$HOME/.dotfiles/_install/codex-marketing-skills.sh" >/dev/null || _skills_failed+=("codex-marketing-skills")
   fi
+  # T3 Code's Claude config dirs link top-level ~/.claude entries, so new
+  # ones (and the mcpServers block) only appear there after a re-run.
+  if [[ -d "$HOME/.claude-t3" ]]; then
+    echo "Refreshing T3 Code config dirs..."
+    bash "$HOME/.dotfiles/_install/t3.sh" >/dev/null || _skills_failed+=("t3")
+  fi
   if (( ${#_skills_failed} )); then
     _update_fail "Agent Skills (${(j:, :)_skills_failed})"
   else
@@ -412,7 +418,7 @@ _update_help() {
   echo "  nvim         Neovim plugins (lazy.nvim)"
   echo "  herdr        herdr plugins (herdr-lazy bundle)"
   echo "  plugins      Claude Code plugins from GitHub marketplaces"
-  echo "  skills       Agent skills (skills.sh CLI, German-law bundle, Codex ads/seo)"
+  echo "  skills       Agent skills (skills.sh CLI, German-law bundle, Codex ads/seo, T3 dirs)"
   echo "  krew         kubectl plugins (krew)"
   echo "  zsh          Zsh/Zim framework + plugins"
   echo ""

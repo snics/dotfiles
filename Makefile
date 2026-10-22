@@ -14,7 +14,7 @@ GUI_PACKAGES := ghostty zed cursor obsidian
 ALL_PACKAGES := $(CLI_PACKAGES) $(GUI_PACKAGES)
 
 .PHONY: all install link link-cli link-gui unlink relink update macos dock touchid-sudo project-folders \
-        golang rust cargo-tools cargo-tools-update cargo-dump clauth clauth-sync asdf \
+        golang rust cargo-tools cargo-tools-update cargo-dump clauth clauth-sync t3 asdf \
         herdr-plugins herdr-plugins-update herdr-plugins-restore check lint test test-symlinks test-configs help \
         zsh git nvim ghostty tmux lazygit k9s tuicr hunk hunk-skill worktrunk worktrunk-plugins wt-issue-skill git-skills codex-marketing-skills legal-skills herdr zed claude cursor obsidian \
         brew-gen brew-install brew-tap brew-trust brew-list brew-check brew-cleanup \
@@ -234,6 +234,9 @@ cargo-dump: ## List cargo-installed crates for drift comparison
 
 clauth: ## Register the clauth herdr plugin (never writes herdr's config)
 	bash $(DOTFILES)/_install/clauth.sh
+
+t3: ## Wire T3 Code to both Claude accounts and Codex (config dirs + settings overlay)
+	bash $(DOTFILES)/_install/t3.sh
 
 asdf: ## Install asdf plugins
 	source $(DOTFILES)/asdf/plugins.sh
