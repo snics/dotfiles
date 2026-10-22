@@ -125,6 +125,18 @@ worktrunk-plugins:
 wt-issue-skill:
     bash {{ DOTFILES }}/_install/wt-issue-skill.sh
 
+# Register self-written git skills (secret audits, Gitmoji commits) for all agents
+git-skills:
+    bash {{ DOTFILES }}/_install/git-skills.sh
+
+# Mirror Claude marketing plugins (claude-ads, claude-seo) into Codex
+codex-marketing-skills:
+    bash {{ DOTFILES }}/_install/codex-marketing-skills.sh
+
+# Install/update curated German-law skills (contracts, AGB, GDPR) for all agents
+legal-skills:
+    bash {{ DOTFILES }}/_install/legal-skills.sh
+
 # Link herdr config
 herdr:
     @cd {{ DOTFILES }} && stow --restow -t "$HOME" herdr

@@ -108,6 +108,15 @@ worktrunk-plugins: ## Install Worktrunk's Claude Code plugin + Codex marketplace
 wt-issue-skill: ## Register the wt-issue skill (GitLab issue → worktree) for Claude Code and Codex
 	bash $(DOTFILES)/_install/wt-issue-skill.sh
 
+git-skills: ## Register self-written git skills (secret audits, Gitmoji commits) for all agents
+	bash $(DOTFILES)/_install/git-skills.sh
+
+codex-marketing-skills: ## Mirror Claude marketing plugins (claude-ads, claude-seo) into Codex
+	bash $(DOTFILES)/_install/codex-marketing-skills.sh
+
+legal-skills: ## Install/update curated German-law skills (contracts, AGB, GDPR) for all agents
+	bash $(DOTFILES)/_install/legal-skills.sh
+
 herdr: ## Link herdr config
 	@cd $(DOTFILES) && stow --restow -t "$(HOME)" herdr
 
