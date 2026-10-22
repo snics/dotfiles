@@ -157,3 +157,97 @@ Remaining manual steps (interactive, cannot be scripted):
 6. **Pre-1.0 software:**
    - Issue #3530: Max-plan 401s in T3 only. Also check #15073.
    - Pin the nightly cask or switch to stable `t3-code` if regressions appear.
+
+## 6. Plan v2 — one T3 folder, full settings (2026-10-22)
+
+Feedback on v1: the extra top-level `~/.claude-t3/` dirs are unwanted; everything
+should live in one T3 folder, ideally one the vendor uses. Two research passes
+(source at `2c8bdf61`) are in `_planning/t3code/research-layout.md` and
+`_planning/t3code/research-settings.md`.
+
+### 6.1 Folder layout — use T3's own provider namespace
+
+T3 already keeps per-instance provider state at
+`~/.t3/userdata/providers/<driver>/<instanceId>/<role>` (managed Codex shadow
+homes: `providers/codex/<id>/shadow`; Antigravity: `providers/antigravity/…`).
+Nothing in T3 deletes, scans, migrates or watches that subtree, and
+`t3 uninstall` keeps `userdata`. **[V]**
+
+```
+~/.t3/userdata/providers/claudeAgent/claudeAgent/home   # private (instance claudeAgent)
+~/.t3/userdata/providers/claudeAgent/claudeWork/home    # work    (instance claudeWork)
+```
+
+- Codex needs no folder: `setupMode: existing` uses `~/.codex` directly.
+  Avoid `shadowHomePath` (loses bundled plugins, #23652).
+- The forest content stays as in v1 (T3 has no skills/plugins sharing for
+  Claude). Its justification becomes "same pattern T3 uses for Codex shadow
+  homes".
+- Migration cost is zero right now: neither `~/.claude-t3` dir is logged in
+  yet. Move first, log in afterwards.
+- Caveat to document: `rm -rf ~/.t3/userdata` now also removes both Claude
+  logins.
+
+### 6.2 Settings overlay additions (`t3/settings.json`)
+
+| Key | Value | Why |
+|---|---|---|
+| `defaultRuntimeMode` | `auto` | already set; = CLI `defaultMode: auto` |
+| `defaultModelSelection` | `codex` / `gpt-6.1-sol`, no options | CLI default; effort/tier then come from `config.toml` [I] |
+| `autoResumeLimitedThreads` | `true` | resumes the **same** account at reset — no account hopping |
+| `snoozeLimitedThreads` | `true` | pairs with auto-resume |
+| `removeAgentCreditsOnMerge` | `true` | never Co-Authored-By (covers Codex + T3 writer) |
+| `branchNamingMode` | `semantic` | readable `t3/<topic>` branches |
+| `addProjectBaseDirectory` | `~/Projects` | |
+| `enableProviderUpdateChecks` | `false` | CLIs are updated by brew/`update`, not in-app [I] |
+| `worktreesDirectory` | `~/Projects/_worktrees` **(decision)** | one tree with Worktrunk; see 6.4 |
+
+Left out on purpose: `customModels`, `environment` (arrays replace), project-
+scoped keys, Claude `launchArgs` (`--permission-mode` overrides T3, `--settings`
+is replaced #15073), `defaultThreadEnvMode` (worktree bugs #23639/#23151).
+
+### 6.3 Client settings overlay (`t3/client-settings.json`) — new
+
+`client-settings.json` is the desktop app's source of truth, read once per app
+start and rewritten in full on every UI change. A second overlay is merged by
+`t3.sh` **only while T3 is not running** (skip with a hint otherwise):
+`notificationMode: notifications`, `inAppNotificationsEnabled: true`,
+`planModeEnabled: true`, `contextWindowMeterEnabled: true`,
+`timestampFormat: 24-hour`. herdr notifications no-op in T3, so T3's own are
+the only signal.
+
+### 6.4 Open decisions (user)
+
+1. **Worktrees in `~/Projects/_worktrees`?** Pro: one visible tree, `wt list`
+   sees T3 worktrees. Contra: wt hooks don't run for T3 worktrees (no env-file
+   copies), `.dotfiles` vs `dotfiles` dir name differs, `wt remove` on a T3
+   thread's worktree breaks the thread. Alternative: keep T3's hidden
+   `~/.t3/worktrees`.
+2. **`followUpBehavior`:** `queue` (current) or `steer` (CLI-like).
+
+### 6.5 Steps
+
+1. `t3.sh`: new root `~/.t3/userdata/providers/claudeAgent/<instanceId>/home`,
+   remove `~/.claude-t3` (only links + seeded `.claude.json`, no logins).
+2. `t3/settings.json`: new `homePath`s + 6.2 keys.
+3. `t3/client-settings.json` + merge-when-closed logic in `t3.sh`.
+4. `update.zsh`: guard on the new root instead of `~/.claude-t3`.
+5. Docs: `t3/AGENTS.md` (layout, env correction below, worktrees, Auto-mode
+   bugs), `CLAUDE.md` row, this file, memory.
+6. User: two logins
+   (`CLAUDE_CONFIG_DIR=~/.t3/userdata/providers/claudeAgent/<id>/home claude auth login`),
+   restart T3.
+7. Smoke test per instance: short thread; provider log shows
+   `permissionMode=auto` (#22483 can start it in `default`); `/` lists skills;
+   one MCP tool call; Codex thread runs with subagents.
+
+**Correction to v1 docs:** on a Dock launch T3 imports PATH, SSH_AUTH_SOCK,
+locale, HOMEBREW_*, XDG_* and CA vars from `zsh -ilc` (5 s timeout) — not
+"only PATH and JAVA_HOME"; JAVA_HOME is *not* imported on the desktop path.
+
+### 6.6 Watch list (open upstream issues)
+
+#22483 / #15353 (Auto mode), #19025 (restart agent session after `just t3`),
+#18762 / #23086 (instance switching), #23151 (SessionStart hook > 90 s in fresh
+worktrees — check claude-mem), #23507 (plugin skills missing in `$` picker),
+#12300 (glab in T3 worktrees), #3530 (Max 401 only in T3).
