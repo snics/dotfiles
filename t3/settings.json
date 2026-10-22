@@ -1,5 +1,29 @@
 {
   "defaultRuntimeMode": "auto",
+  "defaultModelSelection": {
+    "instanceId": "codex",
+    "model": "gpt-6.1-sol"
+  },
+  "autoResumeLimitedThreads": true,
+  "snoozeLimitedThreads": true,
+  "removeAgentCreditsOnMerge": true,
+  "branchNamingMode": "semantic",
+  "addProjectBaseDirectory": "~/Projects",
+  "enableProviderUpdateChecks": false,
+  "worktreesDirectory": "~/Projects/_worktrees",
+  "worktreeCleanup": {
+    "mode": "off"
+  },
+  "defaultProjectScripts": [
+    {
+      "id": "wt-hooks",
+      "name": "Worktrunk hooks",
+      "command": "wt hook pre-start && wt hook post-start --foreground",
+      "icon": "configure",
+      "runOnWorktreeCreate": true,
+      "async": false
+    }
+  ],
   "providerInstances": {
     "claudeAgent": {
       "driver": "claudeAgent",
@@ -8,7 +32,7 @@
       "enabled": true,
       "config": {
         "binaryPath": "claude",
-        "homePath": "~/.claude-t3/private"
+        "homePath": "~/.t3/userdata/providers/claudeAgent/claudeAgent/home"
       }
     },
     "claudeWork": {
@@ -18,7 +42,7 @@
       "enabled": true,
       "config": {
         "binaryPath": "claude",
-        "homePath": "~/.claude-t3/work"
+        "homePath": "~/.t3/userdata/providers/claudeAgent/claudeWork/home"
       }
     },
     "codex": {

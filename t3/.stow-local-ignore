@@ -1,10 +1,11 @@
 # This package is NOT meant to be stowed, and this file is the guard.
 #
 # T3 Code keeps runtime state next to its settings in ~/.t3/userdata (SQLite
-# databases, secrets/, clerk-tokens.json, logs/). settings.json here is an
-# overlay that _install/t3.sh merges into the live file, so linking it would
+# databases, secrets/, clerk-tokens.json, logs/). The JSON files here are
+# overlays that _install/t3.sh merges into the live files, so linking them would
 # let T3 write its full, machine-specific settings back into this public repo.
 settings\.json
+client-settings\.json
 
 # Docs (local ignore overrides the global one, so re-list essentials)
 ^/README.*

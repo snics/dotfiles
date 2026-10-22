@@ -235,7 +235,7 @@ the only signal.
      `t3 thread start . --worktree <base> --branch <N>-<slug>`.
    - Caveat: auto-named T3 branches are renamed but keep the `t3-<hex>` dir,
      so they show a path-mismatch flag in `wt list`; `.dotfiles` dir name differs.
-2. **`followUpBehavior`:** `queue` (current) or `steer` (CLI-like).
+2. **`followUpBehavior`:** decided `steer` (CLI-like), in the client overlay.
 
 ### 6.5 Steps
 
@@ -263,3 +263,28 @@ locale, HOMEBREW_*, XDG_* and CA vars from `zsh -ilc` (5 s timeout) — not
 #18762 / #23086 (instance switching), #23151 (SessionStart hook > 90 s in fresh
 worktrees — check claude-mem), #23507 (plugin skills missing in `$` picker),
 #12300 (glab in T3 worktrees), #3530 (Max 401 only in T3).
+
+### 6.7 Codex review and implementation (2026-10-23)
+
+Codex reviewed plan v2 read-only against the source. Its findings and how they
+were handled:
+
+| # | Finding | Resolution |
+|---|---|---|
+| 1 | `jq` piped into the writer could replace a file with empty output on error | `jq_replace` writes to a temp file, validates it is a JSON object, and only then renames |
+| 2 | Reconciliation could `rm -rf` real directories | never deletes directories; warns and skips |
+| 3 | Seeding `.claude.json` minus `oauthAccount` still copied API-key approvals and billing caches | allowlist seed (`mcpServers` + UI preferences) |
+| 4 | Exclusion list missed policy sidecars | inverted to an allowlist of shared config entries |
+| 5/6 | `post-start` runs in background; hooks re-run on attach | `--foreground`; documented idempotency + approvals |
+| 7 | Shared `projects/` makes T3 import one session under both instances | transcripts are per account now |
+| 8 | MCP OAuth is per Keychain item | documented: authenticate per instance |
+| 9 | Deleting a home leaves its Keychain item | migration refuses signed-in legacy dirs; documented logout first |
+| 10 | Thread delete offers forced worktree removal | documented: decline it |
+| 11 | Codex effort inheritance unverified | kept unpinned, added to smoke test |
+| 12 | `removeAgentCreditsOnMerge` covers only GitHub merges | wording corrected |
+| 13/14 | Script inheritance, stow ignore, semantic prefix | documented / fixed |
+
+Implemented: homes at `~/.t3/userdata/providers/claudeAgent/<id>/home`, the
+legacy `~/.claude-t3` dirs removed (they were never signed in), both overlays
+applied, `update skills` guard moved. Remaining: the two logins and the smoke
+test in 6.5 step 7, plus checking a thread's Codex effort.

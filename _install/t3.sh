@@ -4,41 +4,51 @@
 #
 # T3 runs one "provider instance" per account. Each Claude instance gets its
 # own CLAUDE_CONFIG_DIR (T3's `homePath`), so it has its own login and
-# Keychain item — Claude Code namespaces the item per config dir. To make
-# skills, plugins, hooks, agents, CLAUDE.md and transcripts identical to the
-# CLI, every config dir is a symlink forest into ~/.claude, the same layout
-# `clauth start` uses for its runtime dirs:
+# Keychain item — Claude Code namespaces the item per config dir. The dirs
+# live in T3's own per-instance namespace, the layout T3 uses for managed
+# Codex shadow homes (providers/<driver>/<instanceId>/<role>):
 #
-#   ~/.claude-t3/<profile>/<entry>  -> ~/.claude/<entry>   (everything shared)
-#   ~/.claude-t3/<profile>/.claude.json                    (per-account copy)
+#   ~/.t3/userdata/providers/claudeAgent/<instanceId>/home/
+#     <shared entry>  -> ~/.claude/<shared entry>   (config only, see SHARED)
+#     .claude.json                                   (per-account, seeded once)
+#     everything else                                (per-account, Claude-owned)
 #
-# Never linked: credentials and the caches Claude Code fills per account or
-# organization. .claude.json is a copy because it embeds the signed-in
-# account (`oauthAccount`); only its mcpServers block is kept in sync with
-# ~/.claude.json.
+# Only configuration is shared. Transcripts, history and caches stay per
+# account: a shared projects/ makes T3 import one session under both
+# instances, and the policy/billing caches belong to whichever account wrote
+# them.
 #
-# The overlay t3/settings.json is deep-merged into ~/.t3/userdata/settings.json
-# (overlay wins, everything else T3 stores there is kept). T3 watches that file
-# and reloads it live. The live file is never stowed: it sits next to SQLite
-# databases, secrets and logs, see t3/AGENTS.md.
+# The overlays in t3/ are deep-merged into T3's live files (overlay wins,
+# everything else T3 stored is kept):
+#   t3/settings.json        -> ~/.t3/userdata/settings.json         (live reload)
+#   t3/client-settings.json -> ~/.t3/userdata/client-settings.json  (only while
+#                              T3 is closed: the app reads it once and rewrites
+#                              the whole file on every UI change)
 #
 # Usage: t3.sh   (idempotent — safe to re-run; `update skills` re-runs it)
 
+# jq filters below use jq variables ($k, $g), not shell ones.
+# shellcheck disable=SC2016
 set -euo pipefail
 
 DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
 CLAUDE_HOME="$HOME/.claude"
-T3_CLAUDE_ROOT="$HOME/.claude-t3"
 T3_USERDATA="$HOME/.t3/userdata"
-OVERLAY="$DOTFILES/t3/settings.json"
+CLAUDE_INSTANCES_ROOT="$T3_USERDATA/providers/claudeAgent"
+LEGACY_ROOT="$HOME/.claude-t3"
 
-# Must match the homePath values in t3/settings.json. Named like the clauth
-# profiles, but independent of them: T3 never goes through clauth.
-PROFILES=(private work)
+# T3 instance ids, must match `homePath` in t3/settings.json.
+# claudeAgent = private subscription, claudeWork = work subscription.
+INSTANCES=(claudeAgent claudeWork)
 
-# Per-account state: credentials plus the org policy, managed settings and
-# MCP auth caches Claude Code writes for whichever account is signed in.
-PER_ACCOUNT=(.credentials.json .claude.json policy-limits.json remote-settings.json mcp-needs-auth-cache.json)
+# Top-level ~/.claude entries shared with every instance: configuration only.
+SHARED=(CLAUDE.md agents commands hooks keybindings.json output-styles plugins
+    settings.json settings.local.json skills)
+
+# ~/.claude.json keys copied into a new per-account .claude.json. An allowlist
+# on purpose: the file also carries the signed-in identity, API-key approvals
+# and account/org model and billing caches, none of which may cross accounts.
+SEED_KEYS='["mcpServers","theme","editorMode","hasCompletedOnboarding","lastOnboardingVersion","preferredNotifChannel","autoCompactEnabled","verbose"]'
 
 if ! command -v jq &>/dev/null; then
     echo "  ERROR: jq not found on PATH — run 'brew bundle' first."
@@ -49,118 +59,157 @@ if [[ ! -d "$CLAUDE_HOME" ]]; then
     exit 1
 fi
 
-is_per_account() {
-    local name="$1" entry
-    for entry in "${PER_ACCOUNT[@]}"; do
-        [[ "$name" == "$entry" ]] && return 0
-    done
-    return 1
-}
-
-# Write stdin to $1 via a temp file + rename, owner-only, only when changed.
-write_if_changed() {
+# Run `jq "$@"` and atomically replace $dst with the result — only when jq
+# succeeded, produced a JSON object, and the content changed. Returns 0 when
+# the file was written, 1 when unchanged; exits on any jq failure, leaving
+# $dst untouched.
+jq_replace() {
     local dst="$1" tmp
+    shift
     tmp="$(mktemp "${dst}.XXXXXX")"
-    cat > "$tmp"
-    chmod 600 "$tmp"
+    if ! jq "$@" > "$tmp" || ! jq -e 'type == "object"' "$tmp" >/dev/null; then
+        rm -f "$tmp"
+        echo "  ERROR: could not build $dst — left unchanged"
+        exit 1
+    fi
     if [[ -f "$dst" ]] && cmp -s "$tmp" "$dst"; then
         rm -f "$tmp"
         return 1
     fi
+    chmod 600 "$tmp"
     mv -f "$tmp" "$dst"
 }
 
-build_forest() {
-    local dir="$1" src name dst linked=0
+logged_in() {
+    command -v claude &>/dev/null || return 1
+    CLAUDE_CONFIG_DIR="$1" claude auth status --json 2>/dev/null \
+        | jq -e '.loggedIn == true' >/dev/null
+}
+
+build_home() {
+    local dir="$1" name src dst linked=0
     mkdir -p "$dir"
-    chmod 700 "$dir"
+    chmod 700 "$dir" "$(dirname "$dir")"
 
-    # Drop links whose ~/.claude target is gone (renamed or deleted entry).
-    for dst in "$dir"/* "$dir"/.[!.]*; do
-        [[ -L "$dst" && ! -e "$dst" ]] && rm -f "$dst"
-    done
-
-    for src in "$CLAUDE_HOME"/* "$CLAUDE_HOME"/.[!.]*; do
-        [[ -e "$src" || -L "$src" ]] || continue
-        name="$(basename "$src")"
-        is_per_account "$name" && continue
-        # Atomic-write leftovers (settings.json.tmp.<pid>…) are not content.
-        [[ "$name" == *.tmp.* ]] && continue
+    for name in "${SHARED[@]}"; do
+        src="$CLAUDE_HOME/$name"
         dst="$dir/$name"
-        if [[ -L "$dst" ]]; then
+        if [[ ! -e "$src" ]]; then
+            # Entry gone from ~/.claude: drop our link, never anything else.
+            [[ -L "$dst" ]] && rm -f "$dst"
             continue
         fi
-        if [[ -e "$dst" ]]; then
-            # Claude Code rewrites settings.json atomically, which replaces the
-            # link with a regular file. Keep a diverged copy, then relink.
-            if [[ -f "$dst" ]] && ! cmp -s "$dst" "$src"; then
+        [[ -L "$dst" ]] && continue
+        if [[ -d "$dst" ]]; then
+            echo "  WARN: $dst is a real directory — left alone, not linked"
+            continue
+        fi
+        if [[ -f "$dst" ]]; then
+            # Claude Code rewrites settings.json atomically, which replaces
+            # the link with a regular file. Keep a diverged copy, then relink.
+            if cmp -s "$dst" "$src"; then
+                rm -f "$dst"
+            else
                 mv "$dst" "$dst.t3-$(date +%Y%m%d-%H%M%S)"
                 echo "  note: $dst had diverged — kept as backup, relinked"
-            else
-                rm -rf "${dst:?}"
             fi
         fi
         ln -s "$src" "$dst"
         linked=$((linked + 1))
     done
-    echo "  $(basename "$dir"): $linked new link(s)"
+    echo "  $(basename "$(dirname "$dir")"): $linked new link(s)"
 }
 
-# Seed the per-account .claude.json once (minus the global account identity),
-# then keep only its mcpServers block in sync with ~/.claude.json.
+# Seed the per-account .claude.json once from an allowlist, then keep only its
+# mcpServers block in sync with ~/.claude.json.
 sync_claude_json() {
     local dir="$1" global="$HOME/.claude.json" dst="$1/.claude.json"
+    local label
+    label="$(basename "$(dirname "$dir")")"
     [[ -f "$global" ]] || return 0
     if [[ ! -f "$dst" ]]; then
-        jq 'del(.oauthAccount)' "$global" | write_if_changed "$dst" || true
-        echo "  $(basename "$dir"): .claude.json seeded from ~/.claude.json"
+        jq_replace "$dst" --argjson keys "$SEED_KEYS" \
+            'with_entries(select(.key as $k | $keys | index($k)))' "$global" || true
+        echo "  $label: .claude.json seeded (allowlisted keys only)"
         return
     fi
-    if jq --slurpfile g "$global" '.mcpServers = ($g[0].mcpServers // {})' "$dst" \
-        | write_if_changed "$dst"; then
-        echo "  $(basename "$dir"): MCP servers synced"
+    # Compare semantically: Claude Code reformats the file on every start,
+    # so a byte compare would rewrite it (and race Claude) on every run.
+    if [[ "$(jq -cS '.mcpServers // {}' "$global")" == "$(jq -cS '.mcpServers // {}' "$dst")" ]]; then
+        return 0
     fi
+    if jq_replace "$dst" --slurpfile g "$global" \
+        '.mcpServers = ($g[0].mcpServers // {})' "$dst"; then
+        echo "  $label: MCP servers synced"
+    fi
+}
+
+# v1 kept the homes in ~/.claude-t3/<profile>. Remove them only while they
+# hold nothing but what this script put there and nobody is signed in.
+remove_legacy() {
+    local dir entry
+    [[ -d "$LEGACY_ROOT" ]] || return 0
+    for dir in "$LEGACY_ROOT"/*/; do
+        dir="${dir%/}"
+        [[ -d "$dir" ]] || continue
+        if logged_in "$dir"; then
+            echo "  WARN: $dir is signed in — kept. Log out there first:"
+            echo "        CLAUDE_CONFIG_DIR=$dir claude auth logout"
+            continue
+        fi
+        for entry in "$dir"/* "$dir"/.[!.]*; do
+            [[ -L "$entry" ]] && rm -f "$entry"
+        done
+        rm -f "$dir/.claude.json"
+        if rmdir "$dir" 2>/dev/null; then
+            echo "  removed legacy $dir"
+        else
+            echo "  WARN: $dir still has files Claude created — kept for review"
+        fi
+    done
+    rmdir "$LEGACY_ROOT" 2>/dev/null || true
 }
 
 merge_overlay() {
-    local live="$T3_USERDATA/settings.json"
-    mkdir -p "$T3_USERDATA"
+    local name="$1" live="$T3_USERDATA/$1" overlay="$DOTFILES/t3/$1"
     if [[ ! -f "$live" ]]; then
-        jq . "$OVERLAY" | write_if_changed "$live" || true
-        echo "  T3 settings created from overlay"
-        return
-    fi
-    if jq -s '.[0] * .[1]' "$live" "$OVERLAY" | write_if_changed "$live"; then
-        echo "  T3 settings updated from overlay (T3 reloads it live)"
+        jq_replace "$live" . "$overlay" || true
+        echo "  $name created from overlay"
+    elif jq_replace "$live" -s '.[0] * .[1]' "$live" "$overlay"; then
+        echo "  $name updated from overlay"
     else
-        echo "  T3 settings already up to date"
+        echo "  $name already up to date"
     fi
 }
 
-echo "  → Claude config dirs for T3 (symlink forests into ~/.claude)"
-for profile in "${PROFILES[@]}"; do
-    build_forest "$T3_CLAUDE_ROOT/$profile"
-    sync_claude_json "$T3_CLAUDE_ROOT/$profile"
+echo "  → Claude homes for T3 (config shared from ~/.claude)"
+for instance in "${INSTANCES[@]}"; do
+    home="$CLAUDE_INSTANCES_ROOT/$instance/home"
+    build_home "$home"
+    sync_claude_json "$home"
 done
+remove_legacy
 
-echo "  → T3 settings overlay"
-merge_overlay
+echo "  → T3 settings overlays"
+mkdir -p "$T3_USERDATA"
+merge_overlay settings.json
+if pgrep -qf '/T3 Code.*\.app/Contents/MacOS/'; then
+    echo "  client-settings.json skipped — T3 is running (quit T3 and re-run 'just t3')"
+else
+    merge_overlay client-settings.json
+fi
 
 # Report logins; never start one — that is an interactive browser flow.
 missing=()
-if command -v claude &>/dev/null; then
-    for profile in "${PROFILES[@]}"; do
-        if ! CLAUDE_CONFIG_DIR="$T3_CLAUDE_ROOT/$profile" claude auth status --json 2>/dev/null \
-            | jq -e '.loggedIn == true' >/dev/null; then
-            missing+=("$profile")
-        fi
-    done
-fi
+for instance in "${INSTANCES[@]}"; do
+    logged_in "$CLAUDE_INSTANCES_ROOT/$instance/home" || missing+=("$instance")
+done
 if (( ${#missing[@]} )); then
-    echo "  Not signed in yet — run once per account, with the matching subscription:"
-    for profile in "${missing[@]}"; do
-        echo "    CLAUDE_CONFIG_DIR=~/.claude-t3/$profile claude auth login"
+    echo "  Not signed in yet — run once per instance, with the matching subscription"
+    echo "  (claudeAgent = private, claudeWork = work):"
+    for instance in "${missing[@]}"; do
+        echo "    CLAUDE_CONFIG_DIR=~/.t3/userdata/providers/claudeAgent/$instance/home claude auth login"
     done
 fi
 
-echo "Done. Restart running T3 agent sessions to pick up new skills or plugins."
+echo "Done. In T3, use 'Restart agent session' to pick up changes in running threads."

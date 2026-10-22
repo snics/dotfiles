@@ -288,7 +288,7 @@ _update_skills() {
   fi
   # T3 Code's Claude config dirs link top-level ~/.claude entries, so new
   # ones (and the mcpServers block) only appear there after a re-run.
-  if [[ -d "$HOME/.claude-t3" ]]; then
+  if [[ -d "$HOME/.t3/userdata/providers/claudeAgent" ]]; then
     echo "Refreshing T3 Code config dirs..."
     bash "$HOME/.dotfiles/_install/t3.sh" >/dev/null || _skills_failed+=("t3")
   fi

@@ -1,0 +1,8 @@
+{
+  "notificationMode": "notifications",
+  "inAppNotificationsEnabled": true,
+  "planModeEnabled": true,
+  "contextWindowMeterEnabled": true,
+  "followUpBehavior": "steer",
+  "timestampFormat": "24-hour"
+}
