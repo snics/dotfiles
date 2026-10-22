@@ -228,19 +228,69 @@ _update_herdr() {
   fi
 }
 
+_update_plugins() {
+  if ! command -v claude &>/dev/null; then
+    _update_not_found "Claude Plugins"
+    return
+  fi
+  _update_header "🔌" "Claude Plugins"
+  local -a _plugins_failed=()
+  local -a _github_marketplaces=() _plugins=()
+  # Only GitHub-backed marketplaces: directory sources (clauth, gitkraken) are
+  # managed by their own tools and must not be touched from here.
+  _github_marketplaces=(${(f)"$(jq -r 'to_entries[] | select(.value.source.source == "github") | .key' \
+    "$HOME/.claude/plugins/known_marketplaces.json")"})
+  echo "Refreshing marketplaces..."
+  for m in "${_github_marketplaces[@]}"; do
+    claude plugin marketplace update "$m" >/dev/null || _plugins_failed+=("$m")
+  done
+  echo "Updating plugins..."
+  _plugins=(${(f)"$(claude plugin list --json | jq -r '.[].id')"})
+  local _out
+  for p in "${_plugins[@]}"; do
+    (( ${_github_marketplaces[(Ie)${p#*@}]} )) || continue
+    if _out=$(claude plugin update "$p" 2>&1); then
+      grep -E 'updated from' <<< "$_out"
+    else
+      _plugins_failed+=("$p")
+    fi
+  done
+  if (( ${#_plugins_failed} )); then
+    _update_fail "Claude Plugins (${(j:, :)_plugins_failed})"
+  else
+    echo "Note: restart Claude Code to load updated plugins."
+    _update_success "Claude Plugins"
+  fi
+}
+
 _update_skills() {
   if ! command -v npx &>/dev/null; then
     _update_not_found "Agent Skills"
     return
   fi
   _update_header "🧩" "Agent Skills"
+  local -a _skills_failed=()
   echo "Updating installed agent skills (skills.sh CLI)..."
   # -g pins the scope to global: `update` runs from whatever directory the
   # shell happens to be in, and the project scope would otherwise be picked
   # up from that cwd. -y skips the remaining deletion prompt, so the target
   # stays non-interactive; upstream-deleted skills are reported, never removed.
-  npx -y skills update -g -y
-  _update_success "Agent Skills"
+  # The German-law skills are installed from a locally built bundle, which the
+  # skills CLI reports as "cannot be checked" — they are rebuilt below.
+  npx -y skills update -g -y || _skills_failed+=("skills update")
+  echo "Rebuilding German-law skills from upstream..."
+  bash "$HOME/.dotfiles/_install/legal-skills.sh" >/dev/null || _skills_failed+=("legal-skills")
+  # Codex mirrors the claude-ads/claude-seo marketplace clones, so run this
+  # after the `plugins` target has refreshed them.
+  if command -v codex &>/dev/null; then
+    echo "Mirroring Claude marketing plugins into Codex..."
+    bash "$HOME/.dotfiles/_install/codex-marketing-skills.sh" >/dev/null || _skills_failed+=("codex-marketing-skills")
+  fi
+  if (( ${#_skills_failed} )); then
+    _update_fail "Agent Skills (${(j:, :)_skills_failed})"
+  else
+    _update_success "Agent Skills"
+  fi
 }
 
 _update_zsh() {
@@ -307,6 +357,7 @@ _update_run() {
     rust)   _update_rust ;;
     nvim)   _update_nvim ;;
     herdr)  _update_herdr ;;
+    plugins) _update_plugins ;;
     skills) _update_skills ;;
     krew)   _update_krew ;;
     zsh)    _update_zsh ;;
@@ -329,6 +380,7 @@ _UPDATE_TARGETS+=(
   "rust:🦀:Rust"
   "nvim:📝:Neovim Plugins"
   "herdr:🐑:herdr Plugins"
+  "plugins:🔌:Claude Plugins"
   "skills:🧩:Agent Skills"
   "krew:☸️:Krew"
   "zsh:🐚:Zsh/Zim"
@@ -359,7 +411,8 @@ _update_help() {
   echo "  rust         Rust toolchain (rustup) + cargo tools (cargo-tools.list)"
   echo "  nvim         Neovim plugins (lazy.nvim)"
   echo "  herdr        herdr plugins (herdr-lazy bundle)"
-  echo "  skills       Agent skills for Claude/Codex (skills.sh CLI)"
+  echo "  plugins      Claude Code plugins from GitHub marketplaces"
+  echo "  skills       Agent skills (skills.sh CLI, German-law bundle, Codex ads/seo)"
   echo "  krew         kubectl plugins (krew)"
   echo "  zsh          Zsh/Zim framework + plugins"
   echo ""
