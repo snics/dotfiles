@@ -54,5 +54,10 @@
         "binaryPath": "codex"
       }
     }
+  },
+  "defaultThreadEnvMode": "worktree",
+  "storageCleanup": {
+    "browserArtifactsAfterDays": 30,
+    "logsAfterDays": 30
   }
 }

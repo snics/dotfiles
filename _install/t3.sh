@@ -24,6 +24,7 @@
 #   t3/client-settings.json -> ~/.t3/userdata/client-settings.json  (only while
 #                              T3 is closed: the app reads it once and rewrites
 #                              the whole file on every UI change)
+#   t3/desktop-settings.json -> ~/.t3/userdata/desktop-settings.json (same rule)
 #
 # Usage: t3.sh   (idempotent — safe to re-run; `update skills` re-runs it)
 
@@ -223,9 +224,11 @@ echo "  → T3 settings overlays"
 mkdir -p "$T3_USERDATA"
 merge_overlay settings.json
 if pgrep -qf '/T3 Code.*\.app/Contents/MacOS/'; then
-    echo "  client-settings.json skipped — T3 is running (quit T3 and re-run 'just t3')"
+    echo "  WARN: client- and desktop-settings.json skipped — T3 is running."
+    echo "        Fonts and other client settings apply only after: quit T3 (Cmd+Q), 'just t3', start T3."
 else
     merge_overlay client-settings.json
+    merge_overlay desktop-settings.json
 fi
 
 echo "  → T3 themes"

@@ -8,5 +8,8 @@
   "fontFamilyCode": "Lilex Nerd Font",
   "fontFamilyTerminal": "Lilex Nerd Font",
   "fontSizeCode": 14,
-  "fontSizeTerminal": 14
+  "fontSizeTerminal": 14,
+  "glassOpacity": 75,
+  "panelAnimationDurationMs": 25,
+  "fontSmoothing": false
 }

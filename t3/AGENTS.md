@@ -16,6 +16,17 @@ into the live files — overlay keys win, everything else T3 stored is kept:
 |---|---|---|
 | `settings.json` | `~/.t3/userdata/settings.json` | always; T3 watches the file and reloads live |
 | `client-settings.json` | `~/.t3/userdata/client-settings.json` | only while T3 is closed — the app reads it once per start and rewrites the whole file on every UI change |
+| `desktop-settings.json` | `~/.t3/userdata/desktop-settings.json` | only while T3 is closed (same reason); holds the update channel |
+
+So a client-side change (fonts, glass, animations) needs: quit T3 (Cmd+Q),
+`just t3`, start T3. Not tracked at all: the selected theme and light/dark mode
+(browser localStorage — use `defaultTheme`, see below) and the environment's
+network access / T3 Connect toggles (security-relevant, keep off and per machine).
+
+Defaults are left out of the overlays on purpose; they hold only choices that
+differ from T3's defaults. Notable ones: new threads start in a worktree
+(`defaultThreadEnvMode`), rotated logs and browser captures are deleted after
+30 days (`storageCleanup`), worktree cleanup stays off because `wt` owns it.
 
 `.stow-local-ignore` only exists so an accidental `stow t3` cannot link them.
 
