@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/vs-code-settings-v2.json",
   "window.commandCenter": true,
-  "workbench.iconTheme": "catppuccin-macchiato",
-  "workbench.colorTheme": "Catppuccin Macchiato",
+  "workbench.iconTheme": "catppuccin-mocha",
+  "workbench.colorTheme": "Catppuccin Mocha",
   "workbench.editor.tabCloseButton": "left",
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.editor.showIcons": true,

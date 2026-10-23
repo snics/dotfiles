@@ -6,6 +6,7 @@
 # let T3 write its full, machine-specific settings back into this public repo.
 settings\.json
 client-settings\.json
+themes
 
 # Docs (local ignore overrides the global one, so re-list essentials)
 ^/README.*

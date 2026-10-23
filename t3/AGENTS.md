@@ -29,6 +29,23 @@ Rules for the overlays:
 - Keys equal to T3's defaults are stripped by T3 on its next save; `just t3`
   re-adds them. Harmless churn — prefer keys that differ from the defaults.
 
+## Theme and fonts
+
+Everything else runs Catppuccin Mocha (Ghostty, Neovim, Zed, Cursor, lazygit,
+k9s, herdr), so T3 does too. `themes/catppuccin-mocha.json` uses T3's seeded
+theme format (`canvas` + `accent`, T3 derives the rest, `colors` overrides
+roles by their theme-editor names). Canvas is Mantle `#181825` to match
+Ghostty's background, accent Mauve like lazygit.
+
+`just t3` copies `themes/*.json` into `~/.t3/userdata/themes/` (filename = id)
+and sets `defaultTheme` in `settings.json` — what `t3 theme set` does. It writes
+`defaultThemeSetAt` only when the id changes, because each new timestamp makes
+every client re-apply the theme and would undo a pick made in Settings.
+Changing colors in the file needs no re-set: clients follow a published theme.
+
+Fonts (`client-settings.json`): Lilex Nerd Font at 14 for code and the
+terminal, like Ghostty/Zed; UI and composer keep the system font.
+
 `keybindings.json` and `desktop-settings.json` are not tracked: the first holds
 only T3's defaults (T3 back-fills it on start), the second only window bounds
 and the update channel.

@@ -41,6 +41,9 @@ LEGACY_ROOT="$HOME/.claude-t3"
 # claudeAgent = private subscription, claudeWork = work subscription.
 INSTANCES=(claudeAgent claudeWork)
 
+# Environment theme, a file in t3/themes/ (Catppuccin Mocha, like Ghostty).
+DEFAULT_THEME="catppuccin-mocha"
+
 # Top-level ~/.claude entries shared with every instance: configuration only.
 SHARED=(CLAUDE.md agents commands hooks keybindings.json output-styles plugins
     settings.json settings.local.json skills)
@@ -182,6 +185,32 @@ merge_overlay() {
     fi
 }
 
+# Publish t3/themes/*.json into T3's themes dir (filename = theme id) and make
+# DEFAULT_THEME the environment theme — what `t3 theme set <id>` does, without
+# needing the CLI on PATH. The default is written only when it changes: every
+# new defaultThemeSetAt makes clients re-apply it, which would undo a theme
+# picked in Settings on each run.
+publish_themes() {
+    local src dst tmp
+    mkdir -p "$T3_USERDATA/themes"
+    for src in "$DOTFILES"/t3/themes/*.json; do
+        dst="$T3_USERDATA/themes/$(basename "$src")"
+        if cmp -s "$src" "$dst"; then
+            continue
+        fi
+        tmp="$(mktemp "${dst}.XXXXXX")"
+        cp "$src" "$tmp"
+        mv -f "$tmp" "$dst"
+        echo "  published theme $(basename "$src" .json)"
+    done
+    if [[ "$(jq -r '.defaultTheme // ""' "$T3_USERDATA/settings.json")" != "$DEFAULT_THEME" ]]; then
+        jq_replace "$T3_USERDATA/settings.json" --arg t "$DEFAULT_THEME" \
+            --arg at "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)" \
+            '.defaultTheme = $t | .defaultThemeSetAt = $at' "$T3_USERDATA/settings.json" || true
+        echo "  environment theme set to $DEFAULT_THEME"
+    fi
+}
+
 echo "  → Claude homes for T3 (config shared from ~/.claude)"
 for instance in "${INSTANCES[@]}"; do
     home="$CLAUDE_INSTANCES_ROOT/$instance/home"
@@ -199,6 +228,8 @@ else
     merge_overlay client-settings.json
 fi
 
+echo "  → T3 themes"
+publish_themes
 # Report logins; never start one — that is an interactive browser flow.
 missing=()
 for instance in "${INSTANCES[@]}"; do

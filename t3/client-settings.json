@@ -4,5 +4,9 @@
   "planModeEnabled": true,
   "contextWindowMeterEnabled": true,
   "followUpBehavior": "steer",
-  "timestampFormat": "24-hour"
+  "timestampFormat": "24-hour",
+  "fontFamilyCode": "Lilex Nerd Font",
+  "fontFamilyTerminal": "Lilex Nerd Font",
+  "fontSizeCode": 14,
+  "fontSizeTerminal": 14
 }
