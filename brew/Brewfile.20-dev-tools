@@ -19,6 +19,7 @@ brew "oxfmt" # Rust-based multi-format code formatter (JS/TS/JSON/JSONC/JSON5/MD
 brew "oxlint" # Rust-based JavaScript/TypeScript linter, 50–100× faster than ESLint. [Oxlint](https://oxc.rs/)
 brew "pkgx" # A package manager that brings any command to any shell. [Pkgx](https://pkgx.dev/)
 brew "pnpm" # Fast, disk space efficient package manager. [PNPM](https://pnpm.io/)
+brew "python@3.12" # Python 3.12 — pinned runtime for the claude-ads/claude-seo Codex mirror (_install/codex-marketing-skills.sh). [Python](https://www.python.org/)
 brew "python@3.13" # Python programming language, version 3.13. [Python](https://www.python.org/)
 brew "rustup" # The Rust toolchain installer. [Rustup](https://rustup.rs/)
 brew "shellcheck" # A shell script static analysis tool. [ShellCheck](https://www.shellcheck.net/)
