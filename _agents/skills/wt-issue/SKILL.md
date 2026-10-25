@@ -55,7 +55,11 @@ Nobody is ever prompted. The chosen mode is printed to stderr on every run.
 ## Humans (shell)
 
 - `wt issue 142` — worktree + Claude Code opens inside it with the issue as
-  its first prompt.
+  its first prompt. The zsh `wt` wrapper runs `wt-issue` directly (not through
+  the wt binary) and `wt-issue` execs the agent from inside the worktree, so
+  the agent is the pane's foreground process there. herdr reads a pane's cwd
+  from that outermost process; a `wt` left in front of the agent made
+  reviewr/tuicr/hunk open on the main checkout and show no changes.
 - `wt issue 142 --agent codex` — same with Codex.
 - `wt issue 142 --no-agent` — worktree only; the shell cds there.
 - `wt issue 142 --no-mr` — start it without a merge request after all.

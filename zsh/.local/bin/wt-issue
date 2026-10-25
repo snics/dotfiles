@@ -138,6 +138,21 @@ if $no_agent; then
   exec wt "${wt_args[@]}"
 fi
 
+# Create/switch first, then move THIS process into the worktree and replace it
+# with the agent. Deliberately not `wt switch -x "$agent"`: that keeps wt alive
+# as the pane's foreground process, sitting in the directory it was invoked
+# from, and herdr reports *that* directory as the pane's cwd (it reads the
+# outermost foreground process, not the agent below it). Every cwd-based
+# reviewer in herdr — reviewr (cmd+r), tuicr (cmd+shift+r), hunk
+# (prefix+shift+h) — then opens on the main checkout and shows no changes.
+# With cd + exec, the agent *is* the foreground process and its cwd is the
+# worktree, so herdr resolves it correctly.
+wt "${wt_args[@]}" --no-cd
+path="$(wt list --format=json \
+  | jq -r --arg b "$branch" '.items[] | select(.branch == $b) | .worktree.path // empty')"
+[[ -n "$path" && -d "$path" ]] || die "worktree for '$branch' not found after wt switch"
+cd "$path"
+
 # Short opening prompt; braces stripped so worktrunk's template engine never
 # sees {{ … }}. The agent pulls the full description/comments itself — always
 # fresh, no escaping hazards.
@@ -147,4 +162,4 @@ if [[ "$mr_mode" == true ]]; then
   mr_note="MR mode is on for this branch: publish with 'wt publish' (never a raw 'git push') — the first push opens a draft MR that closes #${issue}. Do NOT run 'wt merge' on this branch; it merges locally and bypasses the MR."
 fi
 prompt="Work on GitLab issue #${issue}: ${safe_title}. First run 'glab issue view ${issue}' and 'glab issue view ${issue} --comments' to load the description, acceptance criteria and discussion. Then, BEFORE writing any code: run a brainstorming/alignment round with the user (use the superpowers:brainstorming skill if available) — summarize your understanding of the issue, ask whether anything has changed since it was written, and clarify open questions and acceptance criteria. Only start implementing after the user confirms the direction. ${mr_note} If a project workflow skill exists, follow it for labels and reviewers."
-exec wt "${wt_args[@]}" -x "$agent" -- "$prompt"
+exec "$agent" "$prompt"
