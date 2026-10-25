@@ -6,6 +6,11 @@
 # generated file moves.
 [[ -r "$HOME/.clauth/completions/clauth.zsh" ]] && source "$HOME/.clauth/completions/clauth.zsh"
 
+# Second half of the auto-update gate (the first is `[update] auto_update =
+# false` in profiles.toml). Without it the daemon, TUI and `clauth mcp` reinstall
+# the herdr plugin at clauth's latest release tag and fight Herdr Lazy's lock.
+export CLAUTH_NO_UPDATE=1
+
 # ── clauth daemon ───────────────────────────────────────────
 # clauth's daemon keeps the 5h/7d usage windows fresh and performs rolling
 # OAuth token maintenance, which otherwise only happens while the TUI is open.

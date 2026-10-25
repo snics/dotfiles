@@ -64,6 +64,8 @@ cat > "$tmp" <<EOF
     <dict>
         <key>PATH</key>
         <string>$(dirname "$CLAUTH"):/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>CLAUTH_NO_UPDATE</key>
+        <string>1</string>
     </dict>
     <key>RunAtLoad</key>
     <true/>

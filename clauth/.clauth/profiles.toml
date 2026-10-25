@@ -9,6 +9,9 @@ theme = "full"
 count_cache = true
 refresh_interval_ms = 90000
 
+[update]
+auto_update = false
+
 [herdr]
 popup_width = "fit"
 pane_tag = true

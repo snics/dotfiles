@@ -35,7 +35,17 @@
 # rotation re-stamping a cleared rolling token) — the last one is why the
 # rolling token needs this version and not the old pin. Verified before the
 # bump that the herdr subcommand and herdr-plugin/ still exist at this tag.
-clauth git=https://github.com/uwuclxdy/clauth rev=85d28a1eb6526e705bf02981a2a41782e13da249
+#
+# Pin moved 85d28a1 -> df5410c (mommy, past v0.17.0) on 2026-10-25. Carries the
+# fix for #81 (deletes only Keychain items in its own ownership ledger — v0.15.2
+# deleted foreign ones, incl. T3 Code's per-config-dir logins; never pin it),
+# the divergence-banner fix (#104/#105, mommy only, not in v0.17.0) and the
+# watchdog no longer aborting after sleep/wake. herdr subcommand and
+# herdr-plugin/ verified present; the plugin is byte-identical to Herdr Lazy's
+# lock. Requires the auto-update gate (`[update] auto_update = false` +
+# CLAUTH_NO_UPDATE), otherwise the daemon reinstalls the herdr plugin at the
+# latest tag every 30 min. Review: _planning/clauth-pin-review.md.
+clauth git=https://github.com/uwuclxdy/clauth rev=df5410c6c51f878cef8a65e63936c79e5ad4740f
 
 # ArtCraft headless CLIs + MCP servers (`<app>-cli mcp`), https://getartcraft.com/apps
 #
