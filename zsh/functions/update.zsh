@@ -131,8 +131,20 @@ _update_brew() {
   brew upgrade --formula || _brew_failed+=("brew upgrade exit $?")
   # --greedy-auto-updates covers self-updating apps but skips `version :latest`
   # casks (fonts etc.), which plain --greedy re-downloads on every single run.
+  # Casks with a manual installer (`installer manual:`, e.g. battle-net) can't
+  # be upgraded by brew at all — listed explicitly they abort the step with
+  # "Not upgrading 1 `installer manual` cask". They update themselves anyway.
   echo "Upgrading Cask apps (auto-updating ones included)..."
-  brew upgrade --cask --greedy-auto-updates || _brew_failed+=("brew upgrade --cask exit $?")
+  local -a _casks=(${(f)"$(brew outdated --cask --greedy-auto-updates --json=v2 | jq -r '.casks[].name')"})
+  if (( ${#_casks} )); then
+    _casks=(${(f)"$(brew info --cask --json=v2 "${_casks[@]}" \
+      | jq -r '.casks[] | select(any(.artifacts[]; .installer? | arrays | any(has("manual"))) | not) | .token')"})
+  fi
+  if (( ${#_casks} )); then
+    brew upgrade --cask --greedy-auto-updates "${_casks[@]}" || _brew_failed+=("brew upgrade --cask exit $?")
+  else
+    echo "All casks up to date."
+  fi
   echo "Cleaning up..."
   brew cleanup || _brew_failed+=("brew cleanup exit $?")
   if (( ${#_brew_failed} )); then
