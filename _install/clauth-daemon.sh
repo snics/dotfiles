@@ -90,6 +90,12 @@ if [[ -f "$PLIST" ]] && cmp -s "$tmp" "$PLIST"; then
 else
     mv -f "$tmp" "$PLIST"
     launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
+    # bootout returns before the job is gone; bootstrapping too early is skipped
+    # below (the job still prints) and leaves no daemon running at all.
+    for _ in {1..20}; do
+        launchctl print "$DOMAIN/$LABEL" &>/dev/null || break
+        sleep 0.5
+    done
     echo "  wrote $PLIST"
 fi
 
