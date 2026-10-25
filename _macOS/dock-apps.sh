@@ -47,28 +47,27 @@
 
 # shellcheck disable=SC2034
 DOCK_APPS=(
-    "/System/Applications/System Settings.app"
-    "/Applications/Spotify.app"
-    "SPACER"
-    "/Applications/Google Chrome.app"
-    "/Applications/Dia.app"
-    "SPACER"
-    "/Applications/Superhuman.app"
-    "/Applications/Notion Calendar.app"
-    "/Applications/Notion.app"
-    "/Applications/Slack.app"
-    "SPACER"
-    "/Applications/Obsidian.app"
-    "/Applications/Reader.app"
-    "/Applications/Ghostty.app"
-    "/Applications/Zed.app"
-    "/Applications/GitKraken.app"
-    "SPACER"
+  "/System/Applications/System Settings.app"
+  "/Applications/Spotify.app"
+  "SPACER"
+  "/Applications/Google Chrome.app"
+  "/Applications/Dia.app"
+  "SPACER"
+  "/Applications/Superhuman.app"
+  "/Applications/Morgen.app"
+  "/Applications/Slack.app"
+  "SPACER"
+  "/Applications/Obsidian.app"
+  "/Applications/Reader.app"
+  "/Applications/Ghostty.app"
+  "/Applications/Zed.app"
+  "/Applications/GitKraken.app"
+  "SPACER"
 )
 
 # shellcheck disable=SC2034
 DOCK_FOLDERS=(
-    "$HOME/Projects|list|folder|name"
-    "$HOME/Downloads|list|folder|dateadded"
-    "/Applications|grid|folder|name"
+  "$HOME/Projects|list|folder|name"
+  "$HOME/Downloads|list|folder|dateadded"
+  "/Applications|grid|folder|name"
 )
