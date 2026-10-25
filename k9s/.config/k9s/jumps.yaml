@@ -1,0 +1,15 @@
+# k9s "Resource Jumps" (k9s 0.51 and newer): Enter on a custom resource
+# jumps to its related resources. Copy or merge this into
+# $XDG_CONFIG_HOME/k9s/jumps.yaml (usually ~/.config/k9s/jumps.yaml).
+jumps:
+  # A run to its participants, by the run's name label.
+  "workshops.devninjas.io/v1alpha1/workshopruns":
+    targetGVR: "workshops.devninjas.io/v1alpha1/participants"
+    labelSelector: "workshops.devninjas.io/run={{.metadata.name}}"
+  # A participant to the pods of its Coder workspace. Coder's Kubernetes
+  # templates label every workspace pod with the owner's username; the
+  # pods live in Coder's namespace, not in the run's.
+  "workshops.devninjas.io/v1alpha1/participants":
+    targetGVR: "v1/pods"
+    labelSelector: "com.coder.user.username={{.spec.username}}"
+    targetNamespace: "all"
