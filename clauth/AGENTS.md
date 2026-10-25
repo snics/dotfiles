@@ -193,11 +193,12 @@ Edit the file, or use the TUI's Setup tab.
 Diagnosed 2026-10-23 — evidence and timeline in
 `_planning/clauth-relogin-diagnosis.md`.
 
-- **The banner is expected at the pinned rev.** Quitting the TUI freezes
-  `~/.claude/.credentials.json` as a plain copy; the daemon later re-stamps
-  the bearer into the Keychain only, so the file drifts and the TUI flags it.
-  It also makes `clauth which` print `unknown` and silently blocks the
-  daemon's boot relink. Fixed upstream after v0.17.0 (#104), not released.
+- **The banner was expected up to 0.15.1 and is fixed at the current pin**
+  (`df5410c`, #104/#105). Quitting the TUI used to freeze
+  `~/.claude/.credentials.json` as a plain copy that drifted from the
+  Keychain; now each daemon re-stamp refreshes that copy. The fix only works on
+  a file whose token clauth recognises, so after the bump the stale banner has
+  to be resolved **once** more.
 - **Resolve it with `d` → "discard this login and restore '<active>'".**
   Never choose the first row, "overwrite '<active>' with this login": it
   stores the expired, refresh-less bearer as the profile's credentials and
@@ -215,16 +216,27 @@ Diagnosed 2026-10-23 — evidence and timeline in
 - `clauth login` is only needed when `daemon.log` shows `auth_broken` or an
   HTTP 400 on refresh; a merely expired bearer recovers on the daemon's next
   tick.
-- **The clauth Claude Code plugin is installed** (since 2026-10-07), contrary
-  to earlier notes. Its hooks run on every prompt and tool use and
-  `self-heal` on SessionStart (upstream #134). Uninstall from the TUI's Plugin
-  tab if unwanted.
-- **Upgrade caveat:** never land the pin on v0.15.2 — its `clauth mcp`
-  deletes Keychain items it did not create (#81), which would include T3
-  Code's per-instance logins (`t3/AGENTS.md`). v0.16.0+ fixes that and adds
-  the sleep watchdog and the `security -i` truncation fix (`be5c39e2`, which
-  superseded PR #66). Until the pin moves, keep the "no global OAuth MCP
-  servers" rule.
+- **The clauth Claude Code plugin is installed** (since 2026-10-07) and kept
+  on purpose (decided 2026-10-25). Its hooks run on every prompt and tool use
+  and `self-heal` on SessionStart (upstream #134). Since 0.17 it also loads
+  `register.ts` into every session (T3 included, the homes share `plugins`): a
+  bridge to `~/.clauth/bridge.sock` that stays inert without `daemon --listen`
+  and a paired device. `clauth which` and the plugin's hook cache the whole
+  Keychain item for a session's config dir in `~/.clauth/keychain-which-cache/`
+  (0600, swept after a day) — for T3 sessions that is T3's own login. Manage
+  it in the TUI's **Services tab** (formerly "Plugin tab").
+- **Auto-update gate — keep both halves.** From 0.17 the daemon and
+  `clauth mcp` reinstall the herdr plugin at clauth's latest release tag
+  whenever the installed commit differs, every 30 min — that fights Herdr
+  Lazy's lock forever. `[update] auto_update = false` in `profiles.toml`
+  (tracked) plus `CLAUTH_NO_UPDATE=1` (`66-clauth.zsh`, launchd plist) stop it.
+  A 0.15.x binary drops the `[update]` table on its next save, so after a
+  rollback re-add it.
+- **Never pin v0.15.2** — its `clauth mcp` deletes Keychain items it did not
+  create (#81), which would include T3 Code's per-instance logins
+  (`t3/AGENTS.md`). v0.16.0+ deletes only items in its own ledger and carries
+  the `security -i` truncation fix (`be5c39e2`, superseded PR #66), so the old
+  "no global OAuth MCP servers" rule could be relaxed — a separate decision.
 
 ## Version pinning
 
