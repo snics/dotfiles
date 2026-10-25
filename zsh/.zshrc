@@ -27,3 +27,5 @@ for conf in ~/.dotfiles/zsh/conf.d/[1-9]*.zsh(N); do
   source "$conf"
 done
 unset conf
+
+alias claude-mem='bun "/Users/nico/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
