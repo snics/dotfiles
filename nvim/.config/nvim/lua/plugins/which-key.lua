@@ -276,8 +276,7 @@ return {
             ---------------------------------------------------------------
             { "<leader>uC", desc = "Colorschemes", icon = "󰏘" },
             { "<leader>uH", desc = "Toggle colorizer", icon = "󰙵" },
-            { "<leader>ua", desc = "Toggle animations", icon = "󰙵" },
-            { "<leader>uh", desc = "Toggle inlay hints", icon = "󰗎" },
+            -- <leader>ua / <leader>uh are registered by Snacks.toggle with dynamic descriptions.
             { "<leader>un", desc = "Dismiss notifications", icon = "󰎟" },
 
             ---------------------------------------------------------------

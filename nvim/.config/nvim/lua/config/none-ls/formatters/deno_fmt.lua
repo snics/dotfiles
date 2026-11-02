@@ -18,7 +18,7 @@ return h.make_builtin({
   filetypes = {
     "javascript",
     "javascriptreact",
-    "typescript", 
+    "typescript",
     "typescriptreact",
     "json",
     "jsonc",
@@ -26,10 +26,21 @@ return h.make_builtin({
   },
   generator_opts = {
     command = "deno",
-    args = { "fmt", "-" },
+    args = function(params)
+      local ext = ({
+        javascript = "js",
+        javascriptreact = "jsx",
+        typescript = "ts",
+        typescriptreact = "tsx",
+        json = "json",
+        jsonc = "jsonc",
+        markdown = "md",
+      })[params.ft] or "ts"
+      return { "fmt", "--ext=" .. ext, "-" }
+    end,
     to_stdin = true,
   },
-  factory = h.generator_factory,
+  factory = h.formatter_factory,
   condition = function(utils)
     -- Only enable if deno.json or deno.jsonc exists and deno is installed (via asdf or system)
     local has_deno_config = utils.root_has_file({
@@ -38,21 +49,11 @@ return h.make_builtin({
       ".deno.json",
       ".deno.jsonc",
     })
-    
-    if not has_deno_config then
+
+    if not has_deno_config or utils.root_has_file({ "biome.json", "biome.jsonc", ".biome.json", ".biome.jsonc" }) then
       return false
     end
-    
-    -- Check if deno is available via asdf or system
-    local deno_available = vim.fn.executable("deno") == 1
-    
-    -- If not available via system, try asdf
-    if not deno_available then
-      local asdf_deno = vim.fn.system("asdf which deno 2>/dev/null")
-      deno_available = asdf_deno and asdf_deno ~= "" and not vim.startswith(asdf_deno, "asdf: deno")
-    end
-    
-    return deno_available
+
+    return vim.fn.executable("deno") == 1
   end,
 })
-

@@ -26,12 +26,12 @@ M.config = {
     },
     filetypes = {
         "yaml",
-        "yml",
         "yaml.docker-compose",
         "yaml.gitlab",
         "yaml.ansible",
     },
-    root_dir = vim.fs.root(0, {
+    -- Resolve the workspace for each buffer, rather than freezing the startup directory.
+    root_markers = {
         ".git",
         "docker-compose.yml",
         "docker-compose.yaml",
@@ -39,7 +39,7 @@ M.config = {
         "values.yaml",
         "ansible.cfg",
         ".gitlab-ci.yml",
-    }),
+    },
 }
 
 return M

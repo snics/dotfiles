@@ -44,34 +44,28 @@ return {
     config = function()
         require("codecompanion").setup({
             adapters = {
-                -- ACP agent (stateful, CLI-based)
-                codex = function()
-                    -- ChatGPT subscription auth (no OPENAI_API_KEY needed) —
-                    -- supported by codex-acp, see codecompanion ACP adapter docs
-                    return require("codecompanion.adapters").extend("codex", {
-                        defaults = {
-                            auth_method = "chatgpt",
-                        },
-                    })
-                end,
-                -- HTTP API (for inline edits — ACP doesn't support inline)
-                anthropic = function()
-                    return require("codecompanion.adapters").resolve("anthropic", {
-                        env = {
-                            -- On-demand from 1Password; requires an unlocked op
-                            -- session (first shell of the day triggers Touch ID).
-                            api_key = 'cmd:op read "op://Employee/Anthropic API Key/credential" --no-newline',
-                        },
-                        schema = {
-                            model = {
-                                default = "claude-sonnet-4-5-20250929",
+                acp = {
+                    codex = function()
+                        return require("codecompanion.adapters").extend("codex", {
+                            defaults = { auth_method = "chat-gpt" },
+                        })
+                    end,
+                },
+                http = {
+                    anthropic = function()
+                        return require("codecompanion.adapters").extend("anthropic", {
+                            env = {
+                                api_key = 'cmd:op read "op://Employee/Anthropic API Key/credential" --no-newline',
                             },
-                        },
-                    })
-                end,
+                            schema = {
+                                model = { default = "claude-sonnet-4-5-20250929" },
+                            },
+                        })
+                    end,
+                },
             },
 
-            strategies = {
+            interactions = {
                 chat = {
                     adapter = "codex",
                 },

@@ -28,8 +28,8 @@ return h.make_builtin({
   },
   generator_opts = {
     command = "biome",
-    args = { "check", "--reporter=json", "--stdin-file-path", "$FILENAME" },
-    to_stdin = true,
+    args = { "check", "--reporter=json", "$FILENAME" },
+    to_temp_file = true,
     format = "json",
     check_exit_code = function(code)
       -- biome returns 0 on success, 1 on errors/warnings
@@ -37,40 +37,32 @@ return h.make_builtin({
     end,
     on_output = function(params)
       local diagnostics = {}
-      
-      -- Parse JSON output
-      local ok, decoded = pcall(vim.json.decode, params.output)
-      if not ok or not decoded then
-        return diagnostics
-      end
-      
-      -- Process diagnostics
-      for _, diagnostic in ipairs(decoded.diagnostics or {}) do
-        local severity = h.diagnostics.severities.warning
-        
-        -- Map biome severity to none-ls severity
-        if diagnostic.level == "error" then
-          severity = h.diagnostics.severities.error
-        elseif diagnostic.level == "warning" then
-          severity = h.diagnostics.severities.warning
-        elseif diagnostic.level == "info" then
-          severity = h.diagnostics.severities.information
-        elseif diagnostic.level == "hint" then
-          severity = h.diagnostics.severities.hint
+
+      -- none-ls has already decoded JSON. Biome reports byte spans.
+      for _, diagnostic in ipairs((params.output or {}).diagnostics or {}) do
+        local location = diagnostic.location or {}
+        local source = location.sourceCode or table.concat(params.content, "\n")
+        local function position(offset)
+          local prefix = source:sub(1, offset)
+          local _, lines = prefix:gsub("\n", "")
+          local last_line = prefix:match("[^\n]*$") or ""
+          return lines + 1, #last_line + 1
         end
-        
+        local span = type(location.span) == "table" and location.span or { 0, 0 }
+        local row, col = position(span[1])
+        local end_row, end_col = position(span[2])
         table.insert(diagnostics, {
-          row = diagnostic.location.start.line + 1, -- biome uses 0-based, none-ls uses 1-based
-          col = diagnostic.location.start.column + 1,
-          end_row = diagnostic.location["end"].line + 1,
-          end_col = diagnostic.location["end"].column + 1,
-          message = diagnostic.message,
-          severity = severity,
-          code = diagnostic.rule_id,
+          row = row,
+          col = col,
+          end_row = end_row,
+          end_col = end_col,
+          message = diagnostic.description or "Biome diagnostic",
+          severity = h.diagnostics.severities[diagnostic.severity] or h.diagnostics.severities.warning,
+          code = diagnostic.category,
           source = "biome",
         })
       end
-      
+
       return diagnostics
     end,
   },

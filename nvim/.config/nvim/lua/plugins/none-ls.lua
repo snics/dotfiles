@@ -275,16 +275,7 @@ return {
                         group = augroup,
                         buffer = bufnr,
                         callback = function()
-                            vim.lsp.buf.format({
-                                bufnr = bufnr,
-                                timeout_ms = 2000, -- 2 second timeout
-                                filter = function(c)
-                                    -- Use null-ls for formatting, but allow certain LSPs as fallback
-                                    return c.name == "null-ls"
-                                        or c.name == "rust_analyzer" -- Rust has excellent built-in formatting
-                                        or c.name == "gopls"         -- Go fmt is standard
-                                end,
-                            })
+                            require("config.formatting").format(bufnr)
                         end,
                     })
                 end
@@ -293,14 +284,7 @@ return {
 
                 -- Manual formatting
                 vim.keymap.set({ "n", "v" }, "<leader>cf", function()
-                    vim.lsp.buf.format({
-                        timeout_ms = 2000,
-                        filter = function(c)
-                            return c.name == "null-ls"
-                                or c.name == "rust_analyzer"
-                                or c.name == "gopls"
-                        end,
-                    })
+                    require("config.formatting").format(bufnr)
                 end, vim.tbl_extend("force", opts, { desc = "Format file or range" }))
 
                 -- ================================================================================

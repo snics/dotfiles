@@ -1149,3 +1149,5 @@ Example: `daf` = delete around function, `cii` = change inside if-block.
 | `<S-Tab>` | Smart: prev completion → jump back | nvim-cmp |
 | `<C-u>` / `<C-d>` | Scroll completion docs up/down | nvim-cmp |
 | `<C-e>` | Close completion menu | nvim-cmp |
+
+UI toggle descriptions for `<leader>ua` and `<leader>uh` are registered dynamically by Snacks, including their current state.

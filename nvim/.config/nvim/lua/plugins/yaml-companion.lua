@@ -17,10 +17,11 @@ return {
             "<leader>yS",
             function()
                 local schema = require("yaml-companion").get_buf_schema(0)
-                if schema.result[1].name == "none" then
+                local current = schema and schema.result and schema.result[1]
+                if not current or current.name == "none" then
                     vim.notify("No schema active", vim.log.levels.INFO)
                 else
-                    vim.notify("Schema: " .. schema.result[1].name, vim.log.levels.INFO)
+                    vim.notify("Schema: " .. (current.name or current.uri or "unknown"), vim.log.levels.INFO)
                 end
             end,
             desc = "Show current YAML schema",

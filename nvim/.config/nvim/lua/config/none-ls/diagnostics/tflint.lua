@@ -27,21 +27,17 @@ return h.make_builtin({
     end,
     on_output = function(params)
       local diagnostics = {}
-      
-      -- Parse JSON output
-      local ok, decoded = pcall(vim.json.decode, params.output)
-      if not ok or not decoded then
-        return diagnostics
-      end
-      
+
+      local decoded = params.output or {}
+
       -- tflint has both "issues" and "errors" in its output
       local issues = decoded.issues or {}
       local errors = decoded.errors or {}
-      
+
       -- Process issues (linting problems)
       for _, issue in ipairs(issues) do
         local severity = h.diagnostics.severities.warning
-        
+
         -- Map tflint severity to none-ls severity
         if issue.rule and issue.rule.severity then
           if issue.rule.severity == "ERROR" then
@@ -52,7 +48,7 @@ return h.make_builtin({
             severity = h.diagnostics.severities.information
           end
         end
-        
+
         table.insert(diagnostics, {
           row = issue.range and issue.range.start and issue.range.start.line or 1,
           col = issue.range and issue.range.start and issue.range.start.column or 0,
@@ -64,7 +60,7 @@ return h.make_builtin({
           source = "tflint",
         })
       end
-      
+
       -- Process errors (tflint execution errors)
       for _, error in ipairs(errors) do
         table.insert(diagnostics, {
@@ -75,14 +71,17 @@ return h.make_builtin({
           source = "tflint",
         })
       end
-      
+
       return diagnostics
     end,
   },
   factory = h.generator_factory,
   -- Only run in Terraform projects
   condition = function(utils)
-    return utils.root_has_file({ "*.tf", "*.tfvars", ".terraform", "terraform.tfstate" })
-      and vim.fn.executable("tflint") == 1
+    return (
+      utils.root_has_file({ ".tflint.hcl", ".terraform", "terraform.tfstate", "main.tf" })
+      or vim.bo.filetype == "terraform"
+      or vim.bo.filetype == "terraform-vars"
+    ) and vim.fn.executable("tflint") == 1
   end,
 })

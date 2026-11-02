@@ -15,6 +15,7 @@ function M.setup()
 
     -- Servers managed by external plugins (they handle vim.lsp.config + vim.lsp.enable)
     local externally_managed = {
+        rust_analyzer = true, -- managed by rustaceanvim
         yamlls = true, -- managed by yaml-companion.nvim
     }
 
@@ -28,9 +29,11 @@ function M.setup()
 
         if ok and server_module.config then
             -- Server has custom configuration, apply it using vim.lsp.config
-            vim.lsp.config(server_name, vim.tbl_extend('force', server_module.config, {
+            vim.lsp.config(server_name, vim.tbl_deep_extend("force", {}, server_module.config, {
                 capabilities = M.capabilities,
             }))
+        elseif not ok and not tostring(server_module):find("module 'config.lsp.servers." .. server_name .. "' not found", 1, true) then
+            error(server_module)
         else
             -- No custom config found, use default configuration
             vim.lsp.config(server_name, {

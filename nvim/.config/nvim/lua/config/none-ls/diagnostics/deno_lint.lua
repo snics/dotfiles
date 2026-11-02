@@ -20,12 +20,14 @@ return h.make_builtin({
     "javascriptreact",
     "typescript",
     "typescriptreact",
-    "json",
-    "jsonc",
   },
   generator_opts = {
     command = "deno",
-    args = { "lint", "--json", "-" },
+    args = function(params)
+      local ext = ({ javascript = "js", javascriptreact = "jsx", typescript = "ts", typescriptreact = "tsx" })[params.ft]
+        or "ts"
+      return { "lint", "--json", "--ext=" .. ext, "-" }
+    end,
     to_stdin = true,
     format = "json",
     check_exit_code = function(code)
@@ -34,17 +36,13 @@ return h.make_builtin({
     end,
     on_output = function(params)
       local diagnostics = {}
-      
-      -- Parse JSON output
-      local ok, decoded = pcall(vim.json.decode, params.output)
-      if not ok or not decoded then
-        return diagnostics
-      end
-      
+
+      local decoded = params.output or {}
+
       -- Process linting results
       for _, diagnostic in ipairs(decoded.diagnostics or {}) do
         local severity = h.diagnostics.severities.warning
-        
+
         -- Map deno lint severity to none-ls severity
         if diagnostic.level == "error" then
           severity = h.diagnostics.severities.error
@@ -53,19 +51,19 @@ return h.make_builtin({
         elseif diagnostic.level == "info" then
           severity = h.diagnostics.severities.information
         end
-        
+
         table.insert(diagnostics, {
-          row = diagnostic.range.start.line + 1, -- deno uses 0-based, none-ls uses 1-based
-          col = diagnostic.range.start.character + 1,
-          end_row = diagnostic.range["end"].line + 1,
-          end_col = diagnostic.range["end"].character + 1,
+          row = diagnostic.range.start.line, -- Deno lines are 1-based; columns are 0-based
+          col = diagnostic.range.start.col + 1,
+          end_row = diagnostic.range["end"].line,
+          end_col = diagnostic.range["end"].col + 1,
           message = diagnostic.message,
           severity = severity,
           code = diagnostic.code,
           source = "deno_lint",
         })
       end
-      
+
       return diagnostics
     end,
   },
@@ -78,21 +76,11 @@ return h.make_builtin({
       ".deno.json",
       ".deno.jsonc",
     })
-    
-    if not has_deno_config then
+
+    if not has_deno_config or utils.root_has_file({ "biome.json", "biome.jsonc", ".biome.json", ".biome.jsonc" }) then
       return false
     end
-    
-    -- Check if deno is available via asdf or system
-    local deno_available = vim.fn.executable("deno") == 1
-    
-    -- If not available via system, try asdf
-    if not deno_available then
-      local asdf_deno = vim.fn.system("asdf which deno 2>/dev/null")
-      deno_available = asdf_deno and asdf_deno ~= "" and not vim.startswith(asdf_deno, "asdf: deno")
-    end
-    
-    return deno_available
+
+    return vim.fn.executable("deno") == 1
   end,
 })
-

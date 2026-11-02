@@ -4,7 +4,7 @@ local M = {}
 
 -- Export configuration table (for vim.lsp.config)
 M.config = {
-  filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+  filetypes = { "graphql", "svelte", "typescriptreact", "javascriptreact" },
 }
 
 return M
